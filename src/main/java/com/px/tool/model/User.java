@@ -8,9 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Collection;
@@ -35,6 +39,12 @@ public class User extends AbstractObject implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Role> authorities = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_phongban",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "phong_ban_id"))
+    private Set<PhongBan> phongBans = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

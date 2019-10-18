@@ -25,10 +25,8 @@ public class Role extends AbstractObject implements GrantedAuthority {
     @Column
     private String authority;
 
-    @Column
-    private Integer level;
     @ManyToOne
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @Override
