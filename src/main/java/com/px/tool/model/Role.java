@@ -2,6 +2,7 @@ package com.px.tool.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,28 +16,23 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "dinh_muc_lao_dong")
-public class DinhMucLaoDong {
+@Table(name = "role")
+public class Role extends AbstractObject implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long dmId;
+    private long roleId;
 
     @Column
-    private String tt;
+    private String authority;
 
     @Column
-    private String noiDungCongViec;
-
-    @Column
-    private String bacCV;
-
-    @Column
-    private String dm;
-
-    @Column
-    private String ghiChu;
-
+    private Integer level;
     @ManyToOne
-    @JoinColumn(name = "paId", insertable = false, updatable = false)
-    private PhuongAn phuongAn;
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    private User user;
+
+    @Override
+    public String getAuthority() {
+        return this.authority;
+    }
 }

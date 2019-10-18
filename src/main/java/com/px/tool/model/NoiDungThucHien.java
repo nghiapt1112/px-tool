@@ -12,31 +12,28 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Entity
+@Table(name = "noi_dung_thuc_hien")
 @Getter
 @Setter
-@Entity
-@Table(name = "dinh_muc_lao_dong")
-public class DinhMucLaoDong {
+public class NoiDungThucHien extends AbstractObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long dmId;
+    private Long noiDungId;
 
     @Column
-    private String tt;
+    private String noiDung;
 
     @Column
-    private String noiDungCongViec;
+    private String ketQua;
 
     @Column
-    private String bacCV;
+    private String nguoiLam;
 
     @Column
-    private String dm;
-
-    @Column
-    private String ghiChu;
+    private String nghiemThu;
 
     @ManyToOne
-    @JoinColumn(name = "paId", insertable = false, updatable = false)
-    private PhuongAn phuongAn;
+    @JoinColumn(name = "tpId", insertable = false, updatable = false)
+    private CongNhanThanhPham congNhanThanhPham;
 }

@@ -15,28 +15,38 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "dinh_muc_lao_dong")
-public class DinhMucLaoDong {
+@Table(name = "kiem_hong_detail")
+public class KiemHongDetail extends AbstractObject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long dmId;
+    public Long khDetailId;
 
     @Column
     private String tt;
 
     @Column
-    private String noiDungCongViec;
+    private String tenPhuKien;
 
     @Column
-    private String bacCV;
+    private String tenLinhKien;
 
     @Column
-    private String dm;
+    private String kyHieu;
 
     @Column
-    private String ghiChu;
+    private String sl;
+
+    @Column
+    private String dangHuHong;
+
+    @Column
+    private String phuongPhapKhacPhuc;
+
+    @Column
+    private String nguoiKiemHong;
 
     @ManyToOne
-    @JoinColumn(name = "paId", insertable = false, updatable = false)
-    private PhuongAn phuongAn;
+    @JoinColumn(name = "khId", insertable = false, updatable = false)
+    private KiemHong kiemHong;
 }

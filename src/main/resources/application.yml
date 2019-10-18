@@ -14,7 +14,7 @@ spring:
       maximum-pool-size: 100
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     properties:
       hibernate:
         connection:
