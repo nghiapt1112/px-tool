@@ -1,6 +1,8 @@
 package com.px.tool.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -10,7 +12,8 @@ import java.util.Date;
 
 import static com.px.tool.infrastructure.DateTimeUtils.nowAsDate;
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class EntityDefault extends AbstractObject {
 
@@ -25,6 +28,9 @@ public abstract class EntityDefault extends AbstractObject {
 
     @Column
     private Long updatedBy;
+
+    @Column
+    private boolean deleted;
 
     @PreUpdate
     protected void onUpdate() {

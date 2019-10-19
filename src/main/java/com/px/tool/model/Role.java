@@ -1,5 +1,6 @@
 package com.px.tool.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,9 +28,16 @@ public class Role extends AbstractObject implements GrantedAuthority {
     @Column
     private String authority;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "authorities")
+    private Set<User> users;
+
+    public Role() {
+    }
+
+    public Role(String authority) {
+        this.authority = authority;
+    }
 
     @Override
     public String getAuthority() {

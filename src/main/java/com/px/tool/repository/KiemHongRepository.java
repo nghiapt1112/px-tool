@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KiemHongRepository extends JpaRepository<KiemHong, Long> {
+    KiemHong findByCreatedBy(Long createdUserId);
 }
