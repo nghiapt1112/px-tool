@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "phong_ban")
-public class PhongBan extends AbstractObject {
+public class PhongBan extends EntityDefault {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long phongBanId;

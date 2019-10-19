@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "phieu_dat_hang")
-public class PhieuDatHang {
+public class PhieuDatHang extends EntityDefault{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long pdhId;

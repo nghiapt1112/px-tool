@@ -25,7 +25,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "user")
-public class User extends AbstractObject implements UserDetails {
+public class User extends EntityDefault implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

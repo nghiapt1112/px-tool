@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "cong_nhan_thanh_pham")
-public class CongNhanThanhPham extends AbstractObject {
+public class CongNhanThanhPham extends EntityDefault {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tpId; // thanh pham id

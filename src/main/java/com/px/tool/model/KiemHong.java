@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "kiem_hong")
-public class KiemHong extends AbstractObject {
+public class KiemHong extends EntityDefault {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "kh_id")
