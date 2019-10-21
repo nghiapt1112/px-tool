@@ -46,4 +46,6 @@ public class PXController {
     public List<PhongBan> findPhongBans() {
         return phongBanRepository.findAll();
     }
+
+
 }

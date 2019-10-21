@@ -1,15 +1,15 @@
 package com.px.tool;
 
+import com.px.tool.model.PhongBan;
 import com.px.tool.model.Role;
-import com.px.tool.model.User;
 import com.px.tool.model.request.UserRequest;
+import com.px.tool.repository.PhongBanRepository;
 import com.px.tool.repository.RoleRepository;
 import com.px.tool.service.UserService;
-import org.apache.commons.compress.utils.Sets;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class UserRepositoryTest extends PxApplicationTests {
@@ -20,11 +20,19 @@ public class UserRepositoryTest extends PxApplicationTests {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PhongBanRepository phongBanRepository;
+
     @Test
     public void createRole() {
         Role role = new Role();
-        role.setAuthority("USER");
+        role.setAuthority("ADMIN");
         roleRepository.save(role);
+
+
+        Role role2 = new Role();
+        role2.setAuthority("USER");
+        roleRepository.save(role2);
     }
 
     @Test
@@ -33,5 +41,19 @@ public class UserRepositoryTest extends PxApplicationTests {
         user.setUserName("admin");
         user.setPassword("123");
         this.userService.create(user);
+    }
+
+    @Test
+    public void createPhongBan() {
+        phongBanRepository.saveAll(
+                IntStream.rangeClosed(1, 80)
+                        .mapToObj(el -> {
+                            PhongBan phongBan = new PhongBan();
+                            phongBan.setName("NAME");
+                            phongBan.setLevel(2);
+                            return phongBan;
+                        })
+                        .collect(Collectors.toList())
+        );
     }
 }

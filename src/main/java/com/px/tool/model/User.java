@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,11 +41,9 @@ public class User extends EntityDefault implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_phongban",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "phong_ban_id"))
-    private Set<PhongBan> phongBans = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "phongBanId")
+    private PhongBan phongBan;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
