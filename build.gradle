@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.px.tool'
 version = 'RC'
-sourceCompatibility = '1.8'
+sourceCompatibility = '12'
 
 configurations {
     developmentOnly
@@ -28,7 +28,12 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
             'io.springfox:springfox-swagger2:2.7.0',
-            'io.springfox:springfox-swagger-ui:2.7.0'
+            'io.springfox:springfox-swagger-ui:2.7.0',
+//            'io.springfox:springfox-swagger2:2.9.2',
+//            'io.springfox:springfox-swagger-ui:2.9.2',
+            'io.jsonwebtoken:jjwt:0.9.1'
+
+
 
     )
     implementation( // excel file

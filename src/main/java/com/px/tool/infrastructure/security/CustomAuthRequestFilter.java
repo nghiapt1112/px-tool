@@ -1,6 +1,7 @@
 package com.px.tool.infrastructure.security;
 
 import com.px.tool.model.User;
+import com.px.tool.service.AuthServiceImpl;
 import com.px.tool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,13 +23,17 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthServiceImpl authService;
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = extractRequestToken(request);
-            if (token != null && token.length() > 0) {
-                String userName = "";
-                User userDetails = (User) userService.loadUserByUsername(userName);
+            if (token != null && token.length() > 0 && authService.validateToken(token)) {
+                Long userId = authService.getUserIdFromJWT(token);
+                User userDetails = userService.findById(userId);
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
