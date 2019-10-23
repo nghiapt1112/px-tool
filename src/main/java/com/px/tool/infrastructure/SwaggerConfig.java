@@ -38,7 +38,7 @@ public class SwaggerConfig {
 
     private ApiInfo metadata() {
         return new ApiInfoBuilder()//
-                .title("Dev Tool.")//
+                .title("user/password: admin/123")//
                 .build();
     }
 }

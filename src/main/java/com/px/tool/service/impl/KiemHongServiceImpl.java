@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class KiemHongServiceImpl implements KiemHongService {
@@ -17,20 +20,19 @@ public class KiemHongServiceImpl implements KiemHongService {
     private KiemHongRepository kiemHongRepository;
 
     @Override
-    public KiemHongResponse getThongTinKiemHongCuaPhongBan(Long userId) {
+    public List<KiemHongResponse> findThongTinKiemHongCuaPhongBan(Long userId) {
         // TODO: tu thong tin user, get tat ca kiemHong dang can xu ly 1 phong ban.
         //  => viec luu createdId nen de la phongBan id.
-        KiemHong kiemHong = kiemHongRepository.findByCreatedBy(userId);
-        if (kiemHong == null) {
-            kiemHong = new KiemHong();
-            Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
-            kiemHong.setKiemHongDetails(kiemHongDetails);
-        }
-        return KiemHongResponse.fromEntity(kiemHong);
+        return kiemHongRepository.findByCreatedBy(userId)
+                .stream()
+                .filter(Objects::nonNull)
+                .map(KiemHongResponse::fromEntity)
+                .collect(Collectors.toList());
+
     }
 
     @Override
-    public KiemHongResponse getThongTinKiemHong(Long id) {
+    public KiemHongResponse findThongTinKiemHong(Long id) {
         KiemHong kiemHong = kiemHongRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Khong tin thay Kiem Hong, Id = " + id));

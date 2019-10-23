@@ -1,5 +1,6 @@
 package com.px.tool.model.response;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.model.AbstractObject;
 import com.px.tool.model.KiemHong;
 import com.px.tool.model.KiemHongDetail;
@@ -17,7 +18,8 @@ public class KiemHongResponse extends AbstractObject {
     private String tenNhaMay;
     private String phanXuong;
     private String toSX;
-    private String tenVKTBKT; // may bay L39    private String nguonVao;// SCL TTNH
+    private String tenVKTBKT; // may bay L39
+    private String nguonVao;// SCL TTNH
     private String congDoan; // kiem hong chi tiet
     private String soHieu; // 8843
     private String soXX; // 8373y64
@@ -32,6 +34,7 @@ public class KiemHongResponse extends AbstractObject {
     private String toTruong;
     private String yKienGiamDoc;
 
+    @JsonManagedReference
     private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
 
     public static KiemHongResponse fromEntity(KiemHong kiemHong) {

@@ -4,7 +4,9 @@ import com.px.tool.model.KiemHong;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface KiemHongRepository extends JpaRepository<KiemHong, Long> {
-    KiemHong findByCreatedBy(Long createdUserId);
+    List<KiemHong> findByCreatedBy(Long createdUserId);
 }

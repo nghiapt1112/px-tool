@@ -1,6 +1,7 @@
 app:
   jwtExpirationInMs: 604800000
   jwtSecret: JWTSuperSecretKey
+server.port: 8081
 
 spring:
   output:
@@ -9,7 +10,7 @@ spring:
   datasource:
 #    driver-class-name: com.mysql.jdbc.Driver  # old class-driver
     driver-class-name: com.mysql.cj.jdbc.Driver # newer
-    url: jdbc:mysql://localhost:3306/px_tool?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/px_tool2?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&useUnicode=yes&characterEncoding=UTF-8
     username: root
     password: root
     hikari:
