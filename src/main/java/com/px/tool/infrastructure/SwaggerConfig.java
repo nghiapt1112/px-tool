@@ -12,6 +12,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -30,6 +32,7 @@ public class SwaggerConfig {
                 .apiInfo(metadata())//
                 .useDefaultResponseMessages(false)//
                 .securitySchemes(new ArrayList<>(Arrays.asList(new ApiKey("%token", "Authorization", "Header"))))//
+                .ignoredParameterTypes(HttpServletRequest.class, HttpServletResponse.class)
                 .genericModelSubstitutes(Optional.class);
     }
 

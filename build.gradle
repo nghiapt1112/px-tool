@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.px.tool'
 version = 'RC'
-sourceCompatibility = '12'
+sourceCompatibility = '1.8'
 
 configurations {
     developmentOnly

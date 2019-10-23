@@ -1,5 +1,6 @@
 package com.px.tool.infrastructure.security;
 
+import com.px.tool.infrastructure.RequestUtils;
 import com.px.tool.model.User;
 import com.px.tool.service.AuthServiceImpl;
 import com.px.tool.service.UserService;
@@ -30,7 +31,7 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            String token = extractRequestToken(request);
+            String token = RequestUtils.extractRequestToken(request);
             if (token != null && token.length() > 0 && authService.validateToken(token)) {
                 Long userId = authService.getUserIdFromJWT(token);
                 User userDetails = userService.findById(userId);
@@ -46,11 +47,4 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String extractRequestToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 }

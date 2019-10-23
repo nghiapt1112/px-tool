@@ -1,5 +1,7 @@
 package com.px.tool.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,7 +48,8 @@ public class KiemHongDetail extends AbstractObject {
     @Column
     private String nguoiKiemHong;
 
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "khId", insertable = false, updatable = false)
+    @JoinColumn(name = "khId")
     private KiemHong kiemHong;
 }
