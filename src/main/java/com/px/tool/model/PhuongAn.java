@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -96,5 +97,7 @@ public class PhuongAn extends EntityDefault {
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucVatTu> dinhMucVatTus = new HashSet<>();
 
+    @OneToOne(mappedBy = "phuongAn")
+    private Request request;
     //TODO: con thieu vai fields nua, fields ben duoi cho chuyen chuyen y
 }

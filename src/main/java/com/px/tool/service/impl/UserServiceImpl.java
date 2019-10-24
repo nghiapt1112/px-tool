@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(UserRequest user) {
         Role role = roleRepository
-                .findById(2L)
+                .findById(1L)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         User entity = user.toUserEntity();

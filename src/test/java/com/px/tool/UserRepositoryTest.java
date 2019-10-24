@@ -49,7 +49,7 @@ public class UserRepositoryTest extends PxApplicationTests {
                 IntStream.rangeClosed(1, 80)
                         .mapToObj(el -> {
                             PhongBan phongBan = new PhongBan();
-                            phongBan.setName("NAME");
+                            phongBan.setName("");
                             phongBan.setLevel(2);
                             return phongBan;
                         })

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,4 +45,6 @@ public class CongNhanThanhPham extends EntityDefault {
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
 
+    @OneToOne(mappedBy = "congNhanThanhPham")
+    private Request request;
 }

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,4 +68,7 @@ public class PhieuDatHang extends EntityDefault{
 
     @OneToMany(mappedBy = "phieuDatHang", cascade = CascadeType.ALL)
     private Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>();
+
+    @OneToOne(mappedBy = "phieuDatHang")
+    private Request request;
 }
