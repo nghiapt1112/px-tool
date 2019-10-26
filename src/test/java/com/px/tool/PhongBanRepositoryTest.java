@@ -15,7 +15,7 @@ public class PhongBanRepositoryTest extends PxApplicationTests {
 
     @Test
     public void create() {
-        IntStream.range(0,12)
+        IntStream.range(0,28)
         .forEach(el -> {
             PhongBan phongBan = new PhongBan();
             phongBan.setLevel(1);
