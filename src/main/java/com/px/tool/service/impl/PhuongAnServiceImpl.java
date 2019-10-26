@@ -27,12 +27,12 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     @Override
-    public PhongBan createPhuongAn(PhuongAn phuongAn) {
-        return null;
+    public PhuongAn createPhuongAn(PhuongAn phuongAn) {
+        return this.phuongAnRepository.save(phuongAn);
     }
 
     @Override
-    public PhongBan savePhuongAn(PhuongAn phuongAn) {
-        return null;
+    public PhuongAn savePhuongAn(PhuongAn phuongAn) {
+        return this.phuongAnRepository.save(phuongAn);
     }
 }
