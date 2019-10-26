@@ -32,6 +32,17 @@ public class KiemHongController extends BaseController {
         return kiemHongService.findThongTinKiemHong(id);
     }
 
+    /**
+     * tao kiem hong thi dong thoi tao 1 cai request
+     * cai request nay la cho chung toan bo 1 civong doi cua kiem hong -> dat hang -> pa -> cntp
+     * dua  theo target cua phan chuyen (cap 2 ,3 , 4A ) -> xac nhan dc step hien tai cua request dang la gi.
+     *
+     *  having 1 requirement to get all requsets of an department.  -> base on status + department id ( userId -> departmentId)
+     *  having 1 requirement to get all request of an user -> base on createdBy
+     *
+     *
+     *  validate data on backend and show  clear message for them.
+     */
     @PostMapping("/tkh")
     public KiemHong taoKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
         Long userId = extractUserInfo(httpServletRequest);
@@ -56,7 +67,7 @@ public class KiemHongController extends BaseController {
      * tu dong get tat ca thong tin kiem hong cua 1 phong ban
      */
     @GetMapping("/lkh")
-    public List<KiemHongResponse> getListKiemHongTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
+     public List<KiemHongResponse> getListKiemHongTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return kiemHongService.findThongTinKiemHongCuaPhongBan(userId);
     }

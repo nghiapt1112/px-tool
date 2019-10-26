@@ -26,7 +26,7 @@ public class PhuongAnController extends BaseController {
         return phuongAnService.findById(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public List<PhuongAn> getPhuongAnTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
         Long userId = extractUserInfo(httpServletRequest);
         return this.phuongAnService.findByPhongBan(userId);

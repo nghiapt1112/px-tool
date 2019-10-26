@@ -40,6 +40,7 @@ public class UserRepositoryTest extends PxApplicationTests {
         UserRequest user = new UserRequest();
         user.setUserName("admin");
         user.setPassword("123");
+        user.setLevel(1);
         this.userService.create(user);
     }
 
@@ -55,5 +56,18 @@ public class UserRepositoryTest extends PxApplicationTests {
                         })
                         .collect(Collectors.toList())
         );
+    }
+
+    @Test
+    public void createUsers() {
+        IntStream.rangeClosed(1,22)
+                .mapToObj(el -> {
+                    UserRequest userRequest = new UserRequest();
+                    userRequest.setPassword("123");
+                    userRequest.setUserName("");
+                    userRequest.setLevel(2);
+                    return userRequest;
+                })
+                .forEach(el -> this.userService.create(el));
     }
 }

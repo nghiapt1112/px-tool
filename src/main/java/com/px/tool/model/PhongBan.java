@@ -32,7 +32,6 @@ public class PhongBan extends EntityDefault {
     @Column
     private Integer level;
 
-
     @OneToMany(mappedBy = "phongBan", cascade = CascadeType.ALL)
     private Set<User> users;
 }

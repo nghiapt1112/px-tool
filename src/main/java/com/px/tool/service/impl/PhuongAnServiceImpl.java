@@ -1,6 +1,5 @@
 package com.px.tool.service.impl;
 
-import com.px.tool.model.PhongBan;
 import com.px.tool.model.PhuongAn;
 import com.px.tool.repository.PhuongAnRepository;
 import com.px.tool.service.PhuongAnService;
