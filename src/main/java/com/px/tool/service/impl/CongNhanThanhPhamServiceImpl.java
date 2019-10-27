@@ -6,6 +6,7 @@ import com.px.tool.service.CongNhanThanhPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -15,21 +16,23 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
 
     @Override
     public CongNhanThanhPham taoCongNhanThanhPham(CongNhanThanhPham congNhanThanhPham) {
-        return null;
+        return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
     @Override
     public CongNhanThanhPham updateCongNhanThanhPham(CongNhanThanhPham congNhanThanhPham) {
-        return null;
+        return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
     @Override
     public CongNhanThanhPham timCongNhanThanhPham(Long id) {
-        return null;
+        return congNhanThanhPhamRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Khong tim thay cong nhan thanh pham voi id: " + id));
     }
 
     @Override
     public List<CongNhanThanhPham> timCongNhanThanhPhamTheoPhongBan(Long userId) {
-        return null;
+        return Collections.emptyList();
     }
 }
