@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("cntp")
+@RequestMapping("/cntp")
 public class CongNhanThanhPhamController extends BaseController {
 
     @Autowired
