@@ -1,6 +1,7 @@
 package com.px.tool.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,9 +43,10 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column
     private String soNghiemThuDuoc;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
 
-    @OneToOne(mappedBy = "congNhanThanhPham")
-    private Request request;
+//    @OneToOne(mappedBy = "congNhanThanhPham")
+//    private Request request;
 }

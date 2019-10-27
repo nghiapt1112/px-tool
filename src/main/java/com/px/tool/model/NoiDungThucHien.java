@@ -1,5 +1,6 @@
 package com.px.tool.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,7 @@ public class NoiDungThucHien extends AbstractObject {
     @Column
     private String nghiemThu;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "tpId", insertable = false, updatable = false)
     private CongNhanThanhPham congNhanThanhPham;

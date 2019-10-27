@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserRequest user) {
-
         Role role = roleRepository
                 .findById(Long.valueOf(user.getLevel()))
                 .orElseThrow(() -> new RuntimeException("Role not found"));

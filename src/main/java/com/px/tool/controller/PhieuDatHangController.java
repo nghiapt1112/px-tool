@@ -2,6 +2,7 @@ package com.px.tool.controller;
 
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.model.PhieuDatHang;
+import com.px.tool.model.response.PhieuDatHangPayload;
 import com.px.tool.service.PhieuDatHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -37,11 +38,15 @@ public class PhieuDatHangController extends BaseController {
 
     @PostMapping
     public void taoPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
+//        PhieuDatHang phieuDatHang = new PhieuDatHang();
+//        phieuDatHangPayload.toEntity(phieuDatHang);
         this.phieuDatHangService.create(phieuDatHang);
     }
 
     @PutMapping
     public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
+//        PhieuDatHang phieuDatHang = new PhieuDatHang();
+//        phieuDatHangPayload.toEntity(phieuDatHang);
         return this.phieuDatHangService.save(phieuDatHang);
     }
 

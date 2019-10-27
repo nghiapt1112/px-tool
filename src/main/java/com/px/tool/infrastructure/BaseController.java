@@ -3,6 +3,8 @@ package com.px.tool.infrastructure;
 import com.px.tool.model.response.ErrorResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,12 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public abstract class BaseController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRootException(RuntimeException e) {
+        e.printStackTrace();
+        logger.error("Message: {}\nCause: {}\n Stacktrace: {}", e.getMessage(), e.getCause(), e.getStackTrace());
+
         return ResponseEntity
                 .badRequest()
                 .body(ErrorResponse

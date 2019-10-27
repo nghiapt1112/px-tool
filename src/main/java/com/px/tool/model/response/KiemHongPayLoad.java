@@ -51,8 +51,7 @@ public class KiemHongPayLoad extends AbstractObject {
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
         return kiemHongResponse;
     }
-    public KiemHong toEntity(@NotNull KiemHong kiemHong) {
+    public void toEntity(@NotNull KiemHong kiemHong) {
         BeanUtils.copyProperties(this, kiemHong);
-        return kiemHong;
     }
 }

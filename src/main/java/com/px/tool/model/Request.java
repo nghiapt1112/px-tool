@@ -30,24 +30,24 @@ public class Request extends EntityDefault {
     @Column
     private Long createId;
 
+//
+//    @OneToOne
+//    private KiemHong kiemHong;
 
-    @OneToOne
-    private KiemHong kiemHong;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "pdhId")
+//    private PhieuDatHang phieuDatHang;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pdhId")
-    private PhieuDatHang phieuDatHang;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "paId")
+//    private PhuongAn phuongAn;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "paId")
-    private PhuongAn phuongAn;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "tpId")
+//    private CongNhanThanhPham congNhanThanhPham;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tpId")
-    private CongNhanThanhPham congNhanThanhPham;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
-    private User user;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "userId")
+//    private User user;
 
 }

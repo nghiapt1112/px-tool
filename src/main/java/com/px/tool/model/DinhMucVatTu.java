@@ -1,5 +1,6 @@
 package com.px.tool.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -73,6 +74,7 @@ public class DinhMucVatTu {
     @Column
     private String tienLuong;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "paId", insertable = false, updatable = false)
     private PhuongAn phuongAn;

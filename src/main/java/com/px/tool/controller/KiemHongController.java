@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -44,19 +45,19 @@ public class KiemHongController extends BaseController {
      * validate data on backend and show  clear message for them.
      */
     @PostMapping("/tkh")
-    public KiemHong taoKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+    public KiemHong taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHong kiemHong) {
         Long userId = extractUserInfo(httpServletRequest);
-        KiemHong kiemHong = new KiemHong();
-        kiemHongPayLoad.toEntity(kiemHong);
+//        KiemHong kiemHong = new KiemHong();
+//        kiemHongPayLoad.toEntity(kiemHong);
         kiemHong.setCreatedBy(userId);
         return kiemHongService.taoYeuCauKiemHong(kiemHong);
     }
 
     @PutMapping("/ukh")
-    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
         Long userId = extractUserInfo(httpServletRequest);
-        KiemHong kiemHong = new KiemHong();
-        kiemHongPayLoad.toEntity(kiemHong);
+//        KiemHong kiemHong = new KiemHong();
+//        kiemHongPayLoad.toEntity(kiemHong);
         kiemHong.setCreatedBy(userId);
         return kiemHongService.taoYeuCauKiemHong(kiemHong);
     }
