@@ -8,12 +8,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-public class KiemHongResponse extends AbstractObject {
+public class KiemHongPayLoad extends AbstractObject {
     public Long khId;
     private String tenNhaMay;
     private String phanXuong;
@@ -28,20 +29,30 @@ public class KiemHongResponse extends AbstractObject {
     private String noiNhan;
     private String ngayThangNamQuanDoc;
     private String quanDoc;
+    private boolean quanDocXacNhan;
+
     private String ngayThangNamTroLyKT;
     private String troLyKT;
+    private boolean troLyKTXacNhan;
+
     private String ngayThangNamToTruong;
     private String toTruong;
+    private boolean toTruongXacNhan;
+
     private String yKienGiamDoc;
 
     @JsonManagedReference
     private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
 
-    public static KiemHongResponse fromEntity(KiemHong kiemHong) {
+    public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         kiemHong.setUpdatedAt(null);
         kiemHong.setUpdatedBy(null);
-        KiemHongResponse kiemHongResponse = new KiemHongResponse();
+        KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
         return kiemHongResponse;
+    }
+    public KiemHong toEntity(@NotNull KiemHong kiemHong) {
+        BeanUtils.copyProperties(this, kiemHong);
+        return kiemHong;
     }
 }

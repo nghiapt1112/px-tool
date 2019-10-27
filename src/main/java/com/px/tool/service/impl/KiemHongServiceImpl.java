@@ -2,7 +2,7 @@ package com.px.tool.service.impl;
 
 import com.px.tool.model.KiemHong;
 import com.px.tool.model.KiemHongDetail;
-import com.px.tool.model.response.KiemHongResponse;
+import com.px.tool.model.response.KiemHongPayLoad;
 import com.px.tool.repository.KiemHongRepository;
 import com.px.tool.service.KiemHongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +20,19 @@ public class KiemHongServiceImpl implements KiemHongService {
     private KiemHongRepository kiemHongRepository;
 
     @Override
-    public List<KiemHongResponse> findThongTinKiemHongCuaPhongBan(Long userId) {
+    public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
         // TODO: tu thong tin user, get tat ca kiemHong dang can xu ly 1 phong ban.
         //  => viec luu createdId nen de la phongBan id.
         return kiemHongRepository.findByCreatedBy(userId)
                 .stream()
                 .filter(Objects::nonNull)
-                .map(KiemHongResponse::fromEntity)
+                .map(KiemHongPayLoad::fromEntity)
                 .collect(Collectors.toList());
 
     }
 
     @Override
-    public KiemHongResponse findThongTinKiemHong(Long id) {
+    public KiemHongPayLoad findThongTinKiemHong(Long id) {
         KiemHong kiemHong = kiemHongRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Khong tin thay Kiem Hong, Id = " + id));
@@ -41,7 +41,7 @@ public class KiemHongServiceImpl implements KiemHongService {
             Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
             kiemHong.setKiemHongDetails(kiemHongDetails);
         }
-        return KiemHongResponse.fromEntity(kiemHong);
+        return KiemHongPayLoad.fromEntity(kiemHong);
     }
 
     @Override

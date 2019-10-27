@@ -3,7 +3,7 @@ package com.px.tool.controller;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.model.KiemHong;
 import com.px.tool.model.PhongBan;
-import com.px.tool.model.response.KiemHongResponse;
+import com.px.tool.model.response.KiemHongPayLoad;
 import com.px.tool.repository.PhongBanRepository;
 import com.px.tool.service.KiemHongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class KiemHongController extends BaseController {
     private PhongBanRepository phongBanRepository;
 
     @GetMapping("/ttkh/{id}")
-    public KiemHongResponse thongTinKiemHong(@PathVariable Long id) {
+    public KiemHongPayLoad thongTinKiemHong(@PathVariable Long id) {
         return kiemHongService.findThongTinKiemHong(id);
     }
 
@@ -36,16 +36,18 @@ public class KiemHongController extends BaseController {
      * tao kiem hong thi dong thoi tao 1 cai request
      * cai request nay la cho chung toan bo 1 civong doi cua kiem hong -> dat hang -> pa -> cntp
      * dua  theo target cua phan chuyen (cap 2 ,3 , 4A ) -> xac nhan dc step hien tai cua request dang la gi.
-     *
-     *  having 1 requirement to get all requsets of an department.  -> base on status + department id ( userId -> departmentId)
-     *  having 1 requirement to get all request of an user -> base on createdBy
-     *
-     *
-     *  validate data on backend and show  clear message for them.
+     * <p>
+     * having 1 requirement to get all requsets of an department.  -> base on status + department id ( userId -> departmentId)
+     * having 1 requirement to get all request of an user -> base on createdBy
+     * <p>
+     * <p>
+     * validate data on backend and show  clear message for them.
      */
     @PostMapping("/tkh")
-    public KiemHong taoKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
+    public KiemHong taoKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
         Long userId = extractUserInfo(httpServletRequest);
+        KiemHong kiemHong = new KiemHong();
+        kiemHongPayLoad.toEntity(kiemHong);
         kiemHong.setCreatedBy(userId);
         return kiemHongService.taoYeuCauKiemHong(kiemHong);
     }
@@ -67,7 +69,7 @@ public class KiemHongController extends BaseController {
      * tu dong get tat ca thong tin kiem hong cua 1 phong ban
      */
     @GetMapping("/lkh")
-     public List<KiemHongResponse> getListKiemHongTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
+    public List<KiemHongPayLoad> getListKiemHongTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return kiemHongService.findThongTinKiemHongCuaPhongBan(userId);
     }
