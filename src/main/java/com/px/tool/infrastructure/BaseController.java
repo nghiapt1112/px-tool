@@ -1,8 +1,10 @@
 package com.px.tool.infrastructure;
 
+import com.px.tool.model.response.ErrorResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,8 +17,14 @@ public abstract class BaseController {
     private String jwtSecret;
 
     @ExceptionHandler(RuntimeException.class)
-    public void handleRootException(RuntimeException e) {
-
+    public ResponseEntity<ErrorResponse> handleRootException(RuntimeException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse
+                        .builder()
+                        .message(e.getMessage())
+                        .code("500")
+                        .build());
     }
 
     public Long extractUserInfo(HttpServletRequest httpServletRequest) {
@@ -27,4 +35,6 @@ public abstract class BaseController {
                 .getBody();
         return Long.parseLong(claims.getSubject());
     }
+
+
 }

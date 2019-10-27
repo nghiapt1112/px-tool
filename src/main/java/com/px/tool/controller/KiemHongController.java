@@ -53,8 +53,10 @@ public class KiemHongController extends BaseController {
     }
 
     @PutMapping("/ukh")
-    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
+    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
         Long userId = extractUserInfo(httpServletRequest);
+        KiemHong kiemHong = new KiemHong();
+        kiemHongPayLoad.toEntity(kiemHong);
         kiemHong.setCreatedBy(userId);
         return kiemHongService.taoYeuCauKiemHong(kiemHong);
     }
