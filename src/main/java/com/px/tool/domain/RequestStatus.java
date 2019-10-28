@@ -3,5 +3,5 @@ package com.px.tool.domain;
 public enum RequestStatus {
     DANG_CHO_DUYET,
     DA_DUYET,
-    DA_HUY
+    KHONG_DUYET
 }

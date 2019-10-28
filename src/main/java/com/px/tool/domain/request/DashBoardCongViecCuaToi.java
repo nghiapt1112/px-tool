@@ -20,11 +20,11 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         dashBoardCongViecCuaToi.type = request.getType();
         if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
             dashBoardCongViecCuaToi.noiDung = request.getKiemHong().getPhanXuong();
-        } else if (dashBoardCongViecCuaToi.type == RequestType.PHIEU_DAT_HANG) {
+        } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
             dashBoardCongViecCuaToi.noiDung = request.getPhieuDatHang().getNoiDung();
         } else if (dashBoardCongViecCuaToi.type == RequestType.PHUONG_AN) {
             dashBoardCongViecCuaToi.noiDung = request.getPhuongAn().getNoiDung();
-        } else if (dashBoardCongViecCuaToi.type == RequestType.CNTP) {
+        } else if (dashBoardCongViecCuaToi.type == RequestType.CONG_NHAN_THANH_PHAM) {
             dashBoardCongViecCuaToi.noiDung = request.getCongNhanThanhPham().getNoiDung();
         }
         return dashBoardCongViecCuaToi;
