@@ -1,7 +1,7 @@
 package com.px.tool.infrastructure.security;
 
 
-import com.px.tool.service.UserService;
+import com.px.tool.domain.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

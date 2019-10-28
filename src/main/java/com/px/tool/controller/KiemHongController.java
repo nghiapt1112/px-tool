@@ -1,11 +1,11 @@
 package com.px.tool.controller;
 
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.KiemHong;
-import com.px.tool.model.PhongBan;
-import com.px.tool.model.response.KiemHongPayLoad;
-import com.px.tool.repository.PhongBanRepository;
-import com.px.tool.service.KiemHongService;
+import com.px.tool.domain.kiemhong.KiemHong;
+import com.px.tool.domain.user.PhongBan;
+import com.px.tool.domain.kiemhong.KiemHongPayLoad;
+import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.kiemhong.service.KiemHongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,23 +43,23 @@ public class KiemHongController extends BaseController {
      * <p>
      * <p>
      * validate data on backend and show  clear message for them.
+     *
+     * @return
      */
     @PostMapping("/tkh")
-    public KiemHong taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHong kiemHong) {
+    public KiemHongPayLoad taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
         Long userId = extractUserInfo(httpServletRequest);
-//        KiemHong kiemHong = new KiemHong();
-//        kiemHongPayLoad.toEntity(kiemHong);
+        KiemHong kiemHong = kiemHongPayLoad.toEntity();
         kiemHong.setCreatedBy(userId);
-        return kiemHongService.taoYeuCauKiemHong(kiemHong);
+        return kiemHongService.taoYeuCauKiemHong(userId, kiemHong);
     }
 
     @PutMapping("/ukh")
-    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
+    public KiemHongPayLoad chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
         Long userId = extractUserInfo(httpServletRequest);
-//        KiemHong kiemHong = new KiemHong();
-//        kiemHongPayLoad.toEntity(kiemHong);
+        KiemHong kiemHong = kiemHongPayLoad.toEntity();
         kiemHong.setCreatedBy(userId);
-        return kiemHongService.taoYeuCauKiemHong(kiemHong);
+        return kiemHongService.capNhatKiemHong(userId, kiemHongPayLoad.getRequestId(), kiemHong);
     }
 
     @GetMapping("/pb")

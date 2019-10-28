@@ -1,15 +1,14 @@
 package com.px.tool.infrastructure.security;
 
-import com.px.tool.infrastructure.RequestUtils;
-import com.px.tool.model.User;
-import com.px.tool.service.AuthServiceImpl;
-import com.px.tool.service.UserService;
+import com.px.tool.infrastructure.utils.RequestUtils;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.service.impl.AuthServiceImpl;
+import com.px.tool.domain.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

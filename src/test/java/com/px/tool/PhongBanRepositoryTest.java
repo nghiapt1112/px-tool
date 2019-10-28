@@ -1,7 +1,7 @@
 package com.px.tool;
 
-import com.px.tool.model.PhongBan;
-import com.px.tool.repository.PhongBanRepository;
+import com.px.tool.domain.user.PhongBan;
+import com.px.tool.domain.user.repository.PhongBanRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

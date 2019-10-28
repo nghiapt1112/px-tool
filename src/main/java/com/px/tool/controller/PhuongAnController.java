@@ -1,8 +1,8 @@
 package com.px.tool.controller;
 
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.PhuongAn;
-import com.px.tool.service.PhuongAnService;
+import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.phuongan.service.PhuongAnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;

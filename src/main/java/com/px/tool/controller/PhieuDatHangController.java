@@ -1,9 +1,8 @@
 package com.px.tool.controller;
 
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.PhieuDatHang;
-import com.px.tool.model.response.PhieuDatHangPayload;
-import com.px.tool.service.PhieuDatHangService;
+import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.DeleteMapping;

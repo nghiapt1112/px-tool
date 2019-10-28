@@ -1,8 +1,8 @@
 package com.px.tool.controller;
 
-import com.px.tool.model.User;
-import com.px.tool.model.request.UserRequest;
-import com.px.tool.service.UserService;
+import com.px.tool.domain.user.User;
+import com.px.tool.infrastructure.model.request.UserRequest;
+import com.px.tool.domain.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

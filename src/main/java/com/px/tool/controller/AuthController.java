@@ -1,10 +1,10 @@
 package com.px.tool.controller;
 
-import com.px.tool.model.TokenInfo;
-import com.px.tool.model.User;
-import com.px.tool.model.request.LoginRequest;
-import com.px.tool.repository.UserRepository;
-import com.px.tool.service.AuthServiceImpl;
+import com.px.tool.infrastructure.model.request.TokenInfo;
+import com.px.tool.domain.user.User;
+import com.px.tool.infrastructure.model.request.LoginRequest;
+import com.px.tool.domain.user.repository.UserRepository;
+import com.px.tool.domain.user.service.impl.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/sec")
