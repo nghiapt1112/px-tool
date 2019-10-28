@@ -106,12 +106,6 @@ CREATE TABLE `flyway_schema_history`  (
   PRIMARY KEY (`installed_rank`) USING BTREE,
   INDEX `flyway_schema_history_s_idx`(`success`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of flyway_schema_history
--- ----------------------------
-INSERT INTO `flyway_schema_history` VALUES (1, '1', 'CreateDB', 'SQL', 'V1__CreateDB.sql', -1513203368, 'root', '2019-10-28 15:12:18', 1271, 1);
-
 -- ----------------------------
 -- Table structure for hibernate_sequence
 -- ----------------------------
