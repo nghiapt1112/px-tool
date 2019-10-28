@@ -20,13 +20,13 @@ public class DashBoardController extends BaseController {
     private RequestService requestService;
 
     @GetMapping("/sender")
-    public List<DashBoardCongViecCuaToi> dashBoardChoNguoiGui(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
+    public List<DashBoardCongViecCuaToi> dashBoard(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return requestService.timByNguoiGui(Arrays.asList(userId));
     }
 
     @GetMapping("/receiver")
-    public List<DashBoardCongViecCuaToi> dashBoardChoNguoiNhan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
+    public List<DashBoardCongViecCuaToi> getListcongViecCuaToi(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return requestService.timByNguoiNhan(Arrays.asList(userId));
     }
