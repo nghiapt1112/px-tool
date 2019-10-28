@@ -32,7 +32,7 @@ public class KiemHongDetailPayload extends AbstractObject {
         return kiemHongDetailPayload;
     }
 
-    public KiemHongDetail toEntity(){
+    public KiemHongDetail toEntity() {
         KiemHongDetail kiemHongDetail = new KiemHongDetail();
         BeanUtils.copyProperties(this, kiemHongDetail);
         return kiemHongDetail;

@@ -1,7 +1,7 @@
 package com.px.tool.domain.request;
 
 import com.px.tool.domain.kiemhong.KiemHong;
-import com.px.tool.domain.TrangThaiRequest;
+import com.px.tool.domain.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ public class KiemHongDashBoard extends DashBoard {
         KiemHongDashBoard kiemHongDashBoard = new KiemHongDashBoard();
         kiemHongDashBoard.setKey(String.valueOf(kiemHong.getKhId()));
         kiemHongDashBoard.setNoiDung(kiemHong.getPhanXuong());
-        kiemHongDashBoard.setTrangThaiRequest(TrangThaiRequest.DANG_CHO_DUYET);
+        kiemHongDashBoard.setTrangThaiRequest(RequestStatus.DANG_CHO_DUYET);
         return kiemHongDashBoard;
     }
 }

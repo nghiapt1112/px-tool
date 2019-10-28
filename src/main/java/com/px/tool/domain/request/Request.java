@@ -6,7 +6,7 @@ import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.infrastructure.model.request.EntityDefault;
-import com.px.tool.domain.RequestStatus;
+import com.px.tool.domain.RequestType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +32,7 @@ public class Request extends EntityDefault {
 
     @Column
     @Enumerated
-    private RequestStatus status;
+    private RequestType status;
 
     @Column
     private Long createId;
@@ -57,4 +57,7 @@ public class Request extends EntityDefault {
     @JoinColumn(name = "tpId")
     private CongNhanThanhPham congNhanThanhPham;
 
+    public RequestType getType() {
+        return this.status;
+    }
 }

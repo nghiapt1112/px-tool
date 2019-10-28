@@ -6,7 +6,7 @@ import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.RequestStatus;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
@@ -37,7 +37,6 @@ public class KiemHongServiceImpl implements KiemHongService {
                 .filter(Objects::nonNull)
                 .map(KiemHongPayLoad::fromEntity)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -58,7 +57,7 @@ public class KiemHongServiceImpl implements KiemHongService {
         // TODO: khi tao kiem hong thi cung phai co status: approve hay chua, khi nao approve
         Request request = new Request();
         request.setCreatedBy(userId);
-        request.setStatus(RequestStatus.KIEM_HONG);
+        request.setStatus(RequestType.KIEM_HONG);
         request.setKiemHong(kiemHong);
         request.setCongNhanThanhPham(new CongNhanThanhPham());
         request.setPhuongAn(new PhuongAn());

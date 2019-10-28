@@ -1,7 +1,7 @@
 package com.px.tool.domain.request;
 
 import com.px.tool.domain.cntp.CongNhanThanhPham;
-import com.px.tool.domain.TrangThaiRequest;
+import com.px.tool.domain.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ public class CongNhanThanhPhamDashBoard extends DashBoard {
         CongNhanThanhPhamDashBoard congNhanThanhPhamDashBoard = new CongNhanThanhPhamDashBoard();
         congNhanThanhPhamDashBoard.setKey(String.valueOf(congNhanThanhPham.getTpId()));
         congNhanThanhPhamDashBoard.setNoiDung(congNhanThanhPham.getNoiDung());
-        congNhanThanhPhamDashBoard.setTrangThaiRequest(TrangThaiRequest.DANG_CHO_DUYET);
+        congNhanThanhPhamDashBoard.setTrangThaiRequest(RequestStatus.DANG_CHO_DUYET);
         return congNhanThanhPhamDashBoard;
     }
 }

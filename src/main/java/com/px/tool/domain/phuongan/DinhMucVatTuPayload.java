@@ -46,7 +46,7 @@ public class DinhMucVatTuPayload extends AbstractObject {
 
     private String tienLuong;
 
-    public DinhMucVatTuPayload fromEntity(DinhMucVatTu dinhMucVatTu) {
+    public static DinhMucVatTuPayload fromEntity(DinhMucVatTu dinhMucVatTu) {
         DinhMucVatTuPayload dinhMucVatTuPayload = new DinhMucVatTuPayload();
         BeanUtils.copyProperties(dinhMucVatTu, dinhMucVatTuPayload);
         return dinhMucVatTuPayload;

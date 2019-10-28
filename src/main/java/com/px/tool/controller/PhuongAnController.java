@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
@@ -33,12 +34,14 @@ public class PhuongAnController extends BaseController {
     }
 
     @PostMapping
-    public PhuongAn createPhuongAn(@RequestBody PhuongAn phuongAn) {
+    public PhuongAn createPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
+        PhuongAn phuongAn = phuongAnPayload.toEntity();
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 
     @PutMapping
-    public PhuongAn capNhatPhuongAn(@RequestBody PhuongAn phuongAn) {
+    public PhuongAn capNhatPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
+        PhuongAn phuongAn = phuongAnPayload.toEntity();
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 }

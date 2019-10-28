@@ -26,7 +26,7 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
         return phieuDatHangDetail;
     }
 
-    public PhieuDatHangDetailPayload fromEntity(PhieuDatHangDetail phieuDatHangDetail) {
+    public static PhieuDatHangDetailPayload fromEntity(PhieuDatHangDetail phieuDatHangDetail) {
         PhieuDatHangDetailPayload phieuDatHangDetailPayload = new PhieuDatHangDetailPayload();
         BeanUtils.copyProperties(phieuDatHangDetail, phieuDatHangDetailPayload);
         return phieuDatHangDetailPayload;

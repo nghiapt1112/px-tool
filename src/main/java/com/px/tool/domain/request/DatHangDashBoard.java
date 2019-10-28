@@ -1,7 +1,7 @@
 package com.px.tool.domain.request;
 
 import com.px.tool.domain.dathang.PhieuDatHang;
-import com.px.tool.domain.TrangThaiRequest;
+import com.px.tool.domain.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ public class DatHangDashBoard extends DashBoard {
         DatHangDashBoard datHangDashBoard = new DatHangDashBoard();
         datHangDashBoard.setKey(String.valueOf(phieuDatHang.getPdhId()));
         datHangDashBoard.setNoiDung(phieuDatHang.getNoiDung());
-        datHangDashBoard.setTrangThaiRequest(TrangThaiRequest.DANG_CHO_DUYET);
+        datHangDashBoard.setTrangThaiRequest(RequestStatus.DANG_CHO_DUYET);
         return datHangDashBoard;
     }
 }

@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class PhieuDatHangPayload extends AbstractObject {
-    public Long pdhId;
+    private Long requestId;
+    private Long pdhId;
     private String tenNhaMay;
     private String tenPhong;
     private String so;
@@ -38,9 +39,19 @@ public class PhieuDatHangPayload extends AbstractObject {
                 .map(PhieuDatHangDetailPayload::toEntity)
                 .collect(Collectors.toSet())
         );
-
         return phieuDatHang;
+    }
 
+    public PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
+        PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
+        BeanUtils.copyProperties(phieuDatHang, phieuDatHangPayload);
+        phieuDatHangPayload.setPhieuDatHangDetails(
+                phieuDatHang.getPhieuDatHangDetails()
+                .stream()
+                .map(PhieuDatHangDetailPayload::fromEntity)
+                .collect(Collectors.toSet())
+        );
+        return phieuDatHangPayload;
     }
 
 }

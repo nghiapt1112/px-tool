@@ -1,7 +1,7 @@
 package com.px.tool.domain.request.service.impl;
 
+import com.px.tool.domain.request.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.DashBoardPayload;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -24,24 +25,28 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public DashBoardPayload timByNguoiGui(Collection<Long> userIds) {
+    public List<DashBoardCongViecCuaToi> timByNguoiGui(Collection<Long> userIds) {
         List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
-        DashBoardPayload dashBoardPayload = new DashBoardPayload();
-        requestsByNguoiGui
+//        DashBoardPayload dashBoardPayload = new DashBoardPayload();
+//        requestsByNguoiGui
+//                .stream()
+//                .forEach(dashBoardPayload::fromEntity);
+//        return dashBoardPayload;
+        return requestsByNguoiGui
                 .stream()
-                .forEach(dashBoardPayload::fromEntity);
-        return dashBoardPayload;
+                .map(DashBoardCongViecCuaToi::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public DashBoardPayload timByNguoiNhan(Collection<Long> userIds) {
+    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Collection<Long> userIds) {
         List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
 
-        DashBoardPayload dashBoardPayload = new DashBoardPayload();
-        requestsByNguoiGui
+
+        return requestsByNguoiGui
                 .stream()
-                .forEach(dashBoardPayload::fromEntity);
-        return dashBoardPayload;
+                .map(DashBoardCongViecCuaToi::fromEntity)
+        .collect(Collectors.toList());
     }
 
     @Override

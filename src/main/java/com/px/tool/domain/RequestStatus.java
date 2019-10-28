@@ -1,8 +1,7 @@
 package com.px.tool.domain;
 
 public enum RequestStatus {
-    KIEM_HONG,
-    PHIEU_DAT_HANG,
-    PHUONG_AN,
-    CNTP
+    DANG_CHO_DUYET,
+    DA_DUYET,
+    DA_HUY
 }

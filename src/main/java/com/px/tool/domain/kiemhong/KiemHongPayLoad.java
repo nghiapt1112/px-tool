@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class KiemHongPayLoad extends AbstractObject {
-    public Long requestId;
-    public Long khId;
+    private Long requestId;
+    private Long khId;
     private String tenNhaMay;
     private String phanXuong;
     private String toSX;

@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,10 +37,36 @@ public class PhuongAnPayload extends AbstractObject {
     private BigDecimal tongDMVTKho;
     private BigDecimal tongDMVTMuaNgoai;
     private BigDecimal tienLuong;
-    private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();
-    private Set<DinhMucVatTu> dinhMucVatTus = new HashSet<>();
+    private Set<DinhMucLaoDongPayload> dinhMucLaoDongs = new HashSet<>();
+    private Set<DinhMucVatTuPayload> dinhMucVatTus = new HashSet<>();
 
-    public void toEntity(PhuongAn phuongAn) {
+    public PhuongAn toEntity() {
+        PhuongAn phuongAn = new PhuongAn();
         BeanUtils.copyProperties(this, phuongAn);
+        phuongAn.setDinhMucLaoDongs(
+                dinhMucLaoDongs
+                        .stream()
+                        .map(DinhMucLaoDongPayload::toEntity)
+                        .collect(Collectors.toSet())
+        );
+        phuongAn.setDinhMucVatTus(
+                dinhMucVatTus.stream()
+                        .map(DinhMucVatTuPayload::toEntity)
+                        .collect(Collectors.toSet())
+        );
+        return phuongAn;
     }
+
+    public PhuongAnPayload fromEntity(PhuongAn phuongAn) {
+        PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
+        BeanUtils.copyProperties(phuongAn, phuongAnPayload);
+        phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
+                .map(DinhMucLaoDongPayload::fromEntity)
+                .collect(Collectors.toSet());
+        phuongAnPayload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
+                .map(DinhMucVatTuPayload::fromEntity)
+                .collect(Collectors.toSet());
+        return phuongAnPayload;
+    }
+
 }

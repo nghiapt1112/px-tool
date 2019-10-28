@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
                 .findById(Long.valueOf(user.getLevel()))
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
+        if(userRepository.findByEmail(user.getUserName()).isPresent()) {
+            throw new RuntimeException("User existed");
+        }
         User entity = user.toUserEntity();
         entity.setPassword(passwordEncoder.encode(user.getPassword()));
         entity.setAuthorities(Sets.newHashSet(role));
