@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
@@ -36,16 +37,14 @@ public class PhieuDatHangController extends BaseController {
     }
 
     @PostMapping
-    public void taoPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
-//        PhieuDatHang phieuDatHang = new PhieuDatHang();
-//        phieuDatHangPayload.toEntity(phieuDatHang);
+    public void taoPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+        PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
         this.phieuDatHangService.create(phieuDatHang);
     }
 
     @PutMapping
-    public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
-//        PhieuDatHang phieuDatHang = new PhieuDatHang();
-//        phieuDatHangPayload.toEntity(phieuDatHang);
+    public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+        PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
         return this.phieuDatHangService.save(phieuDatHang);
     }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,10 +28,19 @@ public class PhieuDatHangPayload extends AbstractObject {
     private String NguoiDatHang;
     private String yKienGiamDoc;
 
-    private Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>();
+    private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 
-    public void toEntity(PhieuDatHang phieuDatHang) {
+    public PhieuDatHang toEntity() {
+        PhieuDatHang phieuDatHang = new PhieuDatHang();
         BeanUtils.copyProperties(this, phieuDatHang);
+        phieuDatHang.setPhieuDatHangDetails(
+                phieuDatHangDetails.stream()
+                .map(PhieuDatHangDetailPayload::toEntity)
+                .collect(Collectors.toSet())
+        );
+
+        return phieuDatHang;
+
     }
 
 }
