@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class PhuongAnPayload extends AbstractObject {
-    public Long paId;
+    private Long paId;
+    private Long requestId;
     private String tenNhaMay;
     private String ngayThangNamPheDuyet;
     private String maSo;

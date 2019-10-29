@@ -41,15 +41,11 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     @Override
     public KiemHongPayLoad findThongTinKiemHong(Long id) {
-        KiemHong kiemHong = kiemHongRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Khong tin thay Kiem Hong, Id = " + id));
-        if (kiemHong == null) {
-            kiemHong = new KiemHong();
-            Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
-            kiemHong.setKiemHongDetails(kiemHongDetails);
+        Request request = requestService.findById(id);
+        if (request != null) {
+            return KiemHongPayLoad.fromEntity(request.getKiemHong());
         }
-        return KiemHongPayLoad.fromEntity(kiemHong);
+        throw new RuntimeException("Kiem hong not found");
     }
 
     @Override

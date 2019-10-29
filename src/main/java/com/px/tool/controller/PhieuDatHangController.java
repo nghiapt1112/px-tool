@@ -1,6 +1,8 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.dathang.PhieuDatHangPayload;
+import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
@@ -23,6 +25,8 @@ public class PhieuDatHangController extends BaseController {
     @Autowired
     private PhieuDatHangService phieuDatHangService;
 
+    @Autowired
+    private RequestService requestService;
 
     @GetMapping("/{id}")
     public PhieuDatHang getPhieuDatHangDetail(@PathVariable Long id) {
@@ -40,6 +44,8 @@ public class PhieuDatHangController extends BaseController {
     public void taoPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
         logger.info("Tao Phieui dat hang, \ndata: {}", phieuDatHangPayload);
         PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
+        Request request = this.requestService.findById(phieuDatHangPayload.getRequestId());
+        phieuDatHang.setRequest(request);
         this.phieuDatHangService.create(phieuDatHang);
     }
 
@@ -47,6 +53,8 @@ public class PhieuDatHangController extends BaseController {
     public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
         logger.info("update phieu dat hang, \ndata: {}", phieuDatHangPayload);
         PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
+        Request request = this.requestService.findById(phieuDatHangPayload.getRequestId());
+        phieuDatHang.setRequest(request);
         return this.phieuDatHangService.save(phieuDatHang);
     }
 

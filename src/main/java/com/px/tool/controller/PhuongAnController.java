@@ -1,6 +1,8 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.phuongan.PhuongAnPayload;
+import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
@@ -22,6 +24,9 @@ public class PhuongAnController extends BaseController {
     @Autowired
     private PhuongAnService phuongAnService;
 
+    @Autowired
+    private RequestService requestService;
+
     @GetMapping("/{id}")
     public PhuongAn getPhuongAnDetail(@PathVariable Long id) {
         return phuongAnService.findById(id);
@@ -37,6 +42,8 @@ public class PhuongAnController extends BaseController {
     public PhuongAn createPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
         logger.info("Tao Phuong An, \ndata: {}", phuongAnPayload);
         PhuongAn phuongAn = phuongAnPayload.toEntity();
+        Request request = this.requestService.findById(phuongAnPayload.getRequestId());
+        phuongAn.setRequest(request);
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 
@@ -44,6 +51,8 @@ public class PhuongAnController extends BaseController {
     public PhuongAn capNhatPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
         logger.info("Cap nhat phuong an, \ndata: {}", phuongAnPayload);
         PhuongAn phuongAn = phuongAnPayload.toEntity();
+        Request request = this.requestService.findById(phuongAnPayload.getRequestId());
+        phuongAn.setRequest(request);
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 }
