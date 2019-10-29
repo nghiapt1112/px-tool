@@ -1,11 +1,12 @@
 package com.px.tool.domain.phuongan.service;
 
 import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.phuongan.PhuongAnPayload;
 
 import java.util.List;
 
 public interface PhuongAnService {
-    PhuongAn findById(Long id);
+    PhuongAnPayload findById(Long id);
 
     List<PhuongAn> findByPhongBan(Long userId);
 

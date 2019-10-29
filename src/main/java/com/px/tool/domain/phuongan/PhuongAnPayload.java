@@ -58,7 +58,7 @@ public class PhuongAnPayload extends AbstractObject {
         return phuongAn;
     }
 
-    public PhuongAnPayload fromEntity(PhuongAn phuongAn) {
+    public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
         BeanUtils.copyProperties(phuongAn, phuongAnPayload);
         phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()

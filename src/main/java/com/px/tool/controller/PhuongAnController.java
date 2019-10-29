@@ -30,7 +30,7 @@ public class PhuongAnController extends BaseController {
     private RequestService requestService;
 
     @GetMapping("/{id}")
-    public PhuongAn getPhuongAnDetail(@PathVariable Long id) {
+    public PhuongAnPayload getPhuongAnDetail(@PathVariable Long id) {
         return phuongAnService.findById(id);
     }
 

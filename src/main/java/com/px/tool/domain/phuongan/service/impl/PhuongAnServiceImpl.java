@@ -1,8 +1,11 @@
 package com.px.tool.domain.phuongan.service.impl;
 
 import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +16,15 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Autowired
     private PhuongAnRepository phuongAnRepository;
 
+    @Autowired
+    private RequestService requestService;
+
     @Override
-    public PhuongAn findById(Long id) {
-        return phuongAnRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Phuong An not found"));
+    public PhuongAnPayload findById(Long id) {
+        Request request = requestService.findById(id);
+        PhuongAnPayload payload = PhuongAnPayload.fromEntity(request.getPhuongAn());
+        payload.setRequestId(request.getRequestId());
+        return payload;
     }
 
     @Override
