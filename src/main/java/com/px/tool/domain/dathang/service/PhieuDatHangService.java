@@ -1,11 +1,12 @@
 package com.px.tool.domain.dathang.service;
 
 import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.dathang.PhieuDatHangPayload;
 
 import java.util.List;
 
 public interface PhieuDatHangService {
-    PhieuDatHang findById(Long id);
+    PhieuDatHangPayload findById(Long id);
 
     List<PhieuDatHang> findByPhongBan(Long userId);
 

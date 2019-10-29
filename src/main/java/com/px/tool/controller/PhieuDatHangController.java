@@ -30,7 +30,7 @@ public class PhieuDatHangController extends BaseController {
     private RequestService requestService;
 
     @GetMapping("/{id}")
-    public PhieuDatHang getPhieuDatHangDetail(@PathVariable Long id) {
+    public PhieuDatHangPayload getPhieuDatHangDetail(@PathVariable Long id) {
         return this.phieuDatHangService.findById(id);
     }
 

@@ -1,6 +1,7 @@
 package com.px.tool.domain.dathang.service.impl;
 
 import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.request.Request;
@@ -24,9 +25,11 @@ public class PhieuDatHangServiceImpl implements PhieuDatHangService {
     }
 
     @Override
-    public PhieuDatHang findById(Long id) {
+    public PhieuDatHangPayload findById(Long id) {
         Request request = requestService.findById(id);
-        return request.getPhieuDatHang();
+        PhieuDatHangPayload payload = PhieuDatHangPayload.fromEntity(request.getPhieuDatHang());
+        payload.setRequestId(request.getRequestId());
+        return payload;
     }
 
     @Override
