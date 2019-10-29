@@ -56,6 +56,7 @@ public class PhuongAnController extends BaseController {
         PhuongAn phuongAn = phuongAnPayload.toEntity();
         Request request = this.requestService.findById(phuongAnPayload.getRequestId());
         phuongAn.setRequest(request);
+        request.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 }
