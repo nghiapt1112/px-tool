@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.model.request.TokenInfo;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.LoginRequest;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/sec")
-public class AuthController {
+public class AuthController extends BaseController {
 
     @Autowired
     AuthenticationManager authenticationManager;

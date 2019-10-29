@@ -2,6 +2,7 @@ package com.px.tool.domain.request.service.impl;
 
 import com.px.tool.domain.request.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.ThongKePayload;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,10 @@ public class RequestServiceImpl implements RequestService {
         return this.requestRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
+    }
+
+    @Override
+    public List<ThongKePayload> findByUserId(Long userId) {
+        return null;
     }
 }

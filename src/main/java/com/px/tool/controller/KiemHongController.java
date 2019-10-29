@@ -6,6 +6,8 @@ import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/px")
 public class KiemHongController extends BaseController {
+
     @Autowired
     private KiemHongService kiemHongService;
 
@@ -48,6 +51,7 @@ public class KiemHongController extends BaseController {
      */
     @PostMapping("/tkh")
     public KiemHongPayLoad taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+        logger.info("Tao kiem hong, \ndata: {}", kiemHongPayLoad);
         Long userId = extractUserInfo(httpServletRequest);
         KiemHong kiemHong = kiemHongPayLoad.toEntity();
         kiemHong.setCreatedBy(userId);
@@ -56,6 +60,7 @@ public class KiemHongController extends BaseController {
 
     @PutMapping("/ukh")
     public KiemHongPayLoad chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+        logger.info("Update kiem hong, \ndata: {}", kiemHongPayLoad);
         Long userId = extractUserInfo(httpServletRequest);
         KiemHong kiemHong = kiemHongPayLoad.toEntity();
         kiemHong.setCreatedBy(userId);

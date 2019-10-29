@@ -35,12 +35,14 @@ public class PhuongAnController extends BaseController {
 
     @PostMapping
     public PhuongAn createPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
+        logger.info("Tao Phuong An, \ndata: {}", phuongAnPayload);
         PhuongAn phuongAn = phuongAnPayload.toEntity();
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 
     @PutMapping
     public PhuongAn capNhatPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
+        logger.info("Cap nhat phuong an, \ndata: {}", phuongAnPayload);
         PhuongAn phuongAn = phuongAnPayload.toEntity();
         return this.phuongAnService.createPhuongAn(phuongAn);
     }

@@ -38,12 +38,14 @@ public class PhieuDatHangController extends BaseController {
 
     @PostMapping
     public void taoPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+        logger.info("Tao Phieui dat hang, \ndata: {}", phieuDatHangPayload);
         PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
         this.phieuDatHangService.create(phieuDatHang);
     }
 
     @PutMapping
     public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+        logger.info("update phieu dat hang, \ndata: {}", phieuDatHangPayload);
         PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
         return this.phieuDatHangService.save(phieuDatHang);
     }

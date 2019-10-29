@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public abstract class BaseController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;
