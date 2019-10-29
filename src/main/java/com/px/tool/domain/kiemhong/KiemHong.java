@@ -6,6 +6,7 @@ import com.px.tool.infrastructure.model.request.EntityDefault;
 import com.px.tool.domain.request.Request;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "kiem_hong")
 public class KiemHong extends EntityDefault {
