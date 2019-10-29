@@ -1,7 +1,7 @@
 package com.px.tool.domain.request;
 
-import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.RequestStatus;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
 import lombok.Getter;
 import lombok.Setter;
 

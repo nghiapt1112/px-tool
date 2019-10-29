@@ -29,18 +29,6 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 
-    public CongNhanThanhPham toEntity() {
-        CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
-        BeanUtils.copyProperties(this, congNhanThanhPham);
-        congNhanThanhPham.setNoiDungThucHiens(
-                this.getNoiDungThucHiens()
-                .stream()
-                .map(NoiDungThucHienPayload::toEntity)
-                .collect(Collectors.toSet())
-        );
-        return congNhanThanhPham;
-    }
-
     public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {
         CongNhanThanhPhamPayload congNhanThanhPhamPayload = new CongNhanThanhPhamPayload();
         BeanUtils.copyProperties(congNhanThanhPham, congNhanThanhPhamPayload);
@@ -51,5 +39,20 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
                         .collect(Collectors.toSet())
         );
         return congNhanThanhPhamPayload;
+    }
+
+    public CongNhanThanhPham toEntity() {
+        CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
+        if (tpId <= 0) {
+            tpId = null;
+        }
+        BeanUtils.copyProperties(this, congNhanThanhPham);
+        congNhanThanhPham.setNoiDungThucHiens(
+                this.getNoiDungThucHiens()
+                        .stream()
+                        .map(NoiDungThucHienPayload::toEntity)
+                        .collect(Collectors.toSet())
+        );
+        return congNhanThanhPham;
     }
 }

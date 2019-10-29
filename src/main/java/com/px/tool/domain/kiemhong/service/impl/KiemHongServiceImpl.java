@@ -1,23 +1,20 @@
 package com.px.tool.domain.kiemhong.service.impl;
 
-import com.px.tool.domain.cntp.CongNhanThanhPham;
-import com.px.tool.domain.kiemhong.KiemHong;
-import com.px.tool.domain.kiemhong.KiemHongDetail;
-import com.px.tool.domain.dathang.PhieuDatHang;
-import com.px.tool.domain.phuongan.PhuongAn;
-import com.px.tool.domain.request.Request;
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
+import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

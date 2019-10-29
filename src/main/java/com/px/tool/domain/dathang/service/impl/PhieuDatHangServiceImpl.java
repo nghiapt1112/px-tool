@@ -41,5 +41,5 @@ public class PhieuDatHangServiceImpl implements PhieuDatHangService {
     public PhieuDatHang save(PhieuDatHang phieuDatHang) {
         return this.phieuDatHangRepository.save(phieuDatHang);
     }
-    
+
 }

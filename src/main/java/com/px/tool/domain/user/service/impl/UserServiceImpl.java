@@ -3,10 +3,10 @@ package com.px.tool.domain.user.service.impl;
 import com.google.common.collect.Sets;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.request.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.model.request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 .findById(Long.valueOf(user.getLevel()))
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        if(userRepository.findByEmail(user.getUserName()).isPresent()) {
+        if (userRepository.findByEmail(user.getUserName()).isPresent()) {
             throw new RuntimeException("User existed");
         }
         User entity = user.toUserEntity();

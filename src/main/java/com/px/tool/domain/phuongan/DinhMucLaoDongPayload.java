@@ -20,15 +20,15 @@ public class DinhMucLaoDongPayload extends AbstractObject {
 
     private String ghiChu;
 
-    public DinhMucLaoDong toEntity() {
-        DinhMucLaoDong dinhMucLaoDong = new DinhMucLaoDong();
-        BeanUtils.copyProperties(this, dinhMucLaoDong);
-        return dinhMucLaoDong;
-    }
-
     public static DinhMucLaoDongPayload fromEntity(DinhMucLaoDong dinhMucLaoDong) {
         DinhMucLaoDongPayload dinhMucLaoDongPayload = new DinhMucLaoDongPayload();
         BeanUtils.copyProperties(dinhMucLaoDong, dinhMucLaoDongPayload);
         return dinhMucLaoDongPayload;
+    }
+
+    public DinhMucLaoDong toEntity() {
+        DinhMucLaoDong dinhMucLaoDong = new DinhMucLaoDong();
+        BeanUtils.copyProperties(this, dinhMucLaoDong);
+        return dinhMucLaoDong;
     }
 }

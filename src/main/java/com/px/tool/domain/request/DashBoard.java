@@ -1,7 +1,7 @@
 package com.px.tool.domain.request;
 
-import com.px.tool.infrastructure.model.request.AbstractObject;
 import com.px.tool.domain.RequestStatus;
+import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 

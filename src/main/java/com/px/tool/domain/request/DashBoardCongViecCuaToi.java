@@ -5,9 +5,6 @@ import com.px.tool.domain.RequestType;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.util.StringUtils;
-
-import java.util.UUID;
 
 @Getter
 @Setter

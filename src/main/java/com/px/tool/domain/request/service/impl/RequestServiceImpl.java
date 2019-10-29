@@ -47,7 +47,7 @@ public class RequestServiceImpl implements RequestService {
         return requestsByNguoiGui
                 .stream()
                 .map(DashBoardCongViecCuaToi::fromEntity)
-        .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface KiemHongService {
     KiemHongPayLoad findThongTinKiemHong(Long id);
+
     List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId);
 
     /**
      * Buoc dau tien tao yeu cau kiem hong
+     *
      * @param userId
      * @param kiemHong
      * @return

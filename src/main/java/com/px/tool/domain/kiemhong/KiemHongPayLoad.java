@@ -42,11 +42,6 @@ public class KiemHongPayLoad extends AbstractObject {
     private Set<KiemHongDetailPayload> kiemHongDetails = new HashSet<>();
     private Long chuyen; // id cua user dc nhan
 
-    public KiemHongPayLoad andRequestId(Long requestId) {
-        this.requestId = requestId;
-        return this;
-    }
-
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
@@ -57,8 +52,16 @@ public class KiemHongPayLoad extends AbstractObject {
         return kiemHongResponse;
     }
 
+    public KiemHongPayLoad andRequestId(Long requestId) {
+        this.requestId = requestId;
+        return this;
+    }
+
     public KiemHong toEntity() {
         KiemHong kiemHong = new KiemHong();
+        if (khId <= 0) {
+            khId = null;
+        }
         BeanUtils.copyProperties(this, kiemHong);
         kiemHong.setKiemHongDetails(
                 this.kiemHongDetails

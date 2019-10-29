@@ -2,8 +2,8 @@ package com.px.tool.domain.kiemhong;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.px.tool.infrastructure.model.request.EntityDefault;
 import com.px.tool.domain.request.Request;
+import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

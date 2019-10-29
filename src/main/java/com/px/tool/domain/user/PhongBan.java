@@ -1,4 +1,5 @@
 package com.px.tool.domain.user;
+
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;

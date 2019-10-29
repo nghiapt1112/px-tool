@@ -41,8 +41,24 @@ public class PhuongAnPayload extends AbstractObject {
     private Set<DinhMucLaoDongPayload> dinhMucLaoDongs = new HashSet<>();
     private Set<DinhMucVatTuPayload> dinhMucVatTus = new HashSet<>();
     private Long chuyen; // id cua user dc nhan
+
+    public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
+        PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
+        BeanUtils.copyProperties(phuongAn, phuongAnPayload);
+        phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
+                .map(DinhMucLaoDongPayload::fromEntity)
+                .collect(Collectors.toSet());
+        phuongAnPayload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
+                .map(DinhMucVatTuPayload::fromEntity)
+                .collect(Collectors.toSet());
+        return phuongAnPayload;
+    }
+
     public PhuongAn toEntity() {
         PhuongAn phuongAn = new PhuongAn();
+        if (paId <= 0) {
+            paId = null;
+        }
         BeanUtils.copyProperties(this, phuongAn);
         phuongAn.setDinhMucLaoDongs(
                 dinhMucLaoDongs
@@ -56,18 +72,6 @@ public class PhuongAnPayload extends AbstractObject {
                         .collect(Collectors.toSet())
         );
         return phuongAn;
-    }
-
-    public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
-        PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
-        BeanUtils.copyProperties(phuongAn, phuongAnPayload);
-        phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
-                .map(DinhMucLaoDongPayload::fromEntity)
-                .collect(Collectors.toSet());
-        phuongAnPayload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
-                .map(DinhMucVatTuPayload::fromEntity)
-                .collect(Collectors.toSet());
-        return phuongAnPayload;
     }
 
 }

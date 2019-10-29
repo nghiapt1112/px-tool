@@ -31,27 +31,30 @@ public class PhieuDatHangPayload extends AbstractObject {
     private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 
-    public PhieuDatHang toEntity() {
-        PhieuDatHang phieuDatHang = new PhieuDatHang();
-        BeanUtils.copyProperties(this, phieuDatHang);
-        phieuDatHang.setPhieuDatHangDetails(
-                phieuDatHangDetails.stream()
-                .map(PhieuDatHangDetailPayload::toEntity)
-                .collect(Collectors.toSet())
-        );
-        return phieuDatHang;
-    }
-
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
         BeanUtils.copyProperties(phieuDatHang, phieuDatHangPayload);
         phieuDatHangPayload.setPhieuDatHangDetails(
                 phieuDatHang.getPhieuDatHangDetails()
-                .stream()
-                .map(PhieuDatHangDetailPayload::fromEntity)
-                .collect(Collectors.toSet())
+                        .stream()
+                        .map(PhieuDatHangDetailPayload::fromEntity)
+                        .collect(Collectors.toSet())
         );
         return phieuDatHangPayload;
+    }
+
+    public PhieuDatHang toEntity() {
+        PhieuDatHang phieuDatHang = new PhieuDatHang();
+        if (pdhId <= 0) {
+            pdhId = null;
+        }
+        BeanUtils.copyProperties(this, phieuDatHang);
+        phieuDatHang.setPhieuDatHangDetails(
+                phieuDatHangDetails.stream()
+                        .map(PhieuDatHangDetailPayload::toEntity)
+                        .collect(Collectors.toSet())
+        );
+        return phieuDatHang;
     }
 
 }

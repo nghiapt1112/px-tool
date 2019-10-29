@@ -20,16 +20,19 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
     private String soPhieuDatHang;
     private String nguoiThucHien;
 
-    public PhieuDatHangDetail toEntity() {
-        PhieuDatHangDetail phieuDatHangDetail = new PhieuDatHangDetail();
-        BeanUtils.copyProperties(this, phieuDatHangDetail);
-        return phieuDatHangDetail;
-    }
-
     public static PhieuDatHangDetailPayload fromEntity(PhieuDatHangDetail phieuDatHangDetail) {
         PhieuDatHangDetailPayload phieuDatHangDetailPayload = new PhieuDatHangDetailPayload();
         BeanUtils.copyProperties(phieuDatHangDetail, phieuDatHangDetailPayload);
         return phieuDatHangDetailPayload;
+    }
+
+    public PhieuDatHangDetail toEntity() {
+        PhieuDatHangDetail phieuDatHangDetail = new PhieuDatHangDetail();
+        if (pdhDetailId <= 0) {
+            pdhDetailId = null;
+        }
+        BeanUtils.copyProperties(this, phieuDatHangDetail);
+        return phieuDatHangDetail;
     }
 
 }

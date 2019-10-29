@@ -1,12 +1,12 @@
 package com.px.tool.domain.request;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.infrastructure.model.request.EntityDefault;
-import com.px.tool.domain.RequestType;
 import lombok.Getter;
 import lombok.Setter;
 
