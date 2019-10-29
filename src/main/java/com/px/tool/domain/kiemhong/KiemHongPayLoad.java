@@ -40,6 +40,7 @@ public class KiemHongPayLoad extends AbstractObject {
     private String yKienGiamDoc;
 
     private Set<KiemHongDetailPayload> kiemHongDetails = new HashSet<>();
+    private Long chuyen; // id cua user dc nhan
 
     public KiemHongPayLoad andRequestId(Long requestId) {
         this.requestId = requestId;

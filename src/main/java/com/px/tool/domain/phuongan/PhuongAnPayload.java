@@ -39,7 +39,7 @@ public class PhuongAnPayload extends AbstractObject {
     private BigDecimal tienLuong;
     private Set<DinhMucLaoDongPayload> dinhMucLaoDongs = new HashSet<>();
     private Set<DinhMucVatTuPayload> dinhMucVatTus = new HashSet<>();
-
+    private Long chuyen; // id cua user dc nhan
     public PhuongAn toEntity() {
         PhuongAn phuongAn = new PhuongAn();
         BeanUtils.copyProperties(this, phuongAn);

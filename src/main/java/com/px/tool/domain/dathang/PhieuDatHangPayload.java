@@ -28,7 +28,7 @@ public class PhieuDatHangPayload extends AbstractObject {
     private String ngayThangNamNguoiDatHang;
     private String NguoiDatHang;
     private String yKienGiamDoc;
-
+    private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 
     public PhieuDatHang toEntity() {

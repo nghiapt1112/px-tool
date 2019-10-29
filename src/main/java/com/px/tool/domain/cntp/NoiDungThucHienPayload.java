@@ -17,7 +17,7 @@ public class NoiDungThucHienPayload extends AbstractObject {
     private String nguoiLam;
 
     private String nghiemThu;
-
+    private Long chuyen; // id cua user dc nhan
     public NoiDungThucHien toEntity() {
         NoiDungThucHien noiDungThucHien = new NoiDungThucHien();
         BeanUtils.copyProperties(this, noiDungThucHien);
