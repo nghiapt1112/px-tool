@@ -27,7 +27,7 @@ public class NoiDungThucHienPayload extends AbstractObject {
 
     public NoiDungThucHien toEntity() {
         NoiDungThucHien noiDungThucHien = new NoiDungThucHien();
-        if (noiDungId <= 0) {
+        if (noiDungId != null && noiDungId <= 0) {
             noiDungId = null;
         }
         BeanUtils.copyProperties(this, noiDungThucHien);

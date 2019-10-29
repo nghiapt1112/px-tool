@@ -43,7 +43,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
     public CongNhanThanhPham toEntity() {
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
-        if (tpId <= 0) {
+        if (tpId != null && tpId <= 0) {
             tpId = null;
         }
         BeanUtils.copyProperties(this, congNhanThanhPham);

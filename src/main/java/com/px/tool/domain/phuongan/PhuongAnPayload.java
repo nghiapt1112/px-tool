@@ -56,7 +56,7 @@ public class PhuongAnPayload extends AbstractObject {
 
     public PhuongAn toEntity() {
         PhuongAn phuongAn = new PhuongAn();
-        if (paId <= 0) {
+        if (paId != null && paId <= 0) {
             paId = null;
         }
         BeanUtils.copyProperties(this, phuongAn);

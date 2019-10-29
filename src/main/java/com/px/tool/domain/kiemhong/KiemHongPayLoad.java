@@ -59,7 +59,7 @@ public class KiemHongPayLoad extends AbstractObject {
 
     public KiemHong toEntity() {
         KiemHong kiemHong = new KiemHong();
-        if (khId <= 0) {
+        if (khId != null && khId <= 0) {
             khId = null;
         }
         BeanUtils.copyProperties(this, kiemHong);

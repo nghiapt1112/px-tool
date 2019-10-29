@@ -33,7 +33,7 @@ public class KiemHongDetailPayload extends AbstractObject {
     }
 
     public KiemHongDetail toEntity() {
-        if (khDetailId <= 0) {
+        if (khDetailId != null && khDetailId <= 0) {
             khDetailId = null;
         }
         KiemHongDetail kiemHongDetail = new KiemHongDetail();

@@ -28,6 +28,9 @@ public class DinhMucLaoDongPayload extends AbstractObject {
 
     public DinhMucLaoDong toEntity() {
         DinhMucLaoDong dinhMucLaoDong = new DinhMucLaoDong();
+        if (dmId != null && dmId <= 0) {
+            dmId = null;
+        }
         BeanUtils.copyProperties(this, dinhMucLaoDong);
         return dinhMucLaoDong;
     }

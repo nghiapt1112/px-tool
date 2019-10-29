@@ -54,6 +54,9 @@ public class DinhMucVatTuPayload extends AbstractObject {
 
     public DinhMucVatTu toEntity() {
         DinhMucVatTu dinhMucVatTu = new DinhMucVatTu();
+        if (vtId != null && vtId <= 0) {
+            vtId = null;
+        }
         BeanUtils.copyProperties(this, dinhMucVatTu);
         return dinhMucVatTu;
     }
