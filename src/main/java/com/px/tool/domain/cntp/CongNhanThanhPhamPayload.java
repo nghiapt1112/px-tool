@@ -41,7 +41,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
         return congNhanThanhPham;
     }
 
-    public CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {
+    public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {
         CongNhanThanhPhamPayload congNhanThanhPhamPayload = new CongNhanThanhPhamPayload();
         BeanUtils.copyProperties(congNhanThanhPham, congNhanThanhPhamPayload);
         congNhanThanhPhamPayload.setNoiDungThucHiens(

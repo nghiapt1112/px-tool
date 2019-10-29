@@ -31,7 +31,7 @@ public class CongNhanThanhPhamController extends BaseController {
     private RequestService requestService;
 
     @GetMapping("/{id}")
-    public CongNhanThanhPham timCongNhanThanhPham(@PathVariable Long id) {
+    public CongNhanThanhPhamPayload timCongNhanThanhPham(@PathVariable Long id) {
         return this.congNhanThanhPhamService.timCongNhanThanhPham(id);
     }
 
