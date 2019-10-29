@@ -25,6 +25,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         dashBoardCongViecCuaToi.type = request.getType();
         if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
             dashBoardCongViecCuaToi.noiDung = request.getKiemHong().getPhanXuong();
+
         } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
             dashBoardCongViecCuaToi.noiDung = request.getPhieuDatHang().getNoiDung();
         } else if (dashBoardCongViecCuaToi.type == RequestType.PHUONG_AN) {

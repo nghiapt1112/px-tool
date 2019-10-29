@@ -1,5 +1,7 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.RequestStatus;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
@@ -44,6 +46,7 @@ public class PhuongAnController extends BaseController {
         PhuongAn phuongAn = phuongAnPayload.toEntity();
         Request request = this.requestService.findById(phuongAnPayload.getRequestId());
         phuongAn.setRequest(request);
+        request.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
         return this.phuongAnService.createPhuongAn(phuongAn);
     }
 

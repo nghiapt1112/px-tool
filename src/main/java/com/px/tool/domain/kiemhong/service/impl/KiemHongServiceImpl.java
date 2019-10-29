@@ -53,13 +53,13 @@ public class KiemHongServiceImpl implements KiemHongService {
         // TODO: khi tao kiem hong thi cung phai co status: approve hay chua, khi nao approve
         Request request = new Request();
         request.setCreatedBy(userId);
-        request.setStatus(RequestType.KIEM_HONG);
         request.setKiemHong(kiemHong);
         request.setCongNhanThanhPham(new CongNhanThanhPham());
         request.setPhuongAn(new PhuongAn());
         request.setPhieuDatHang(new PhieuDatHang());
         Request savedRequest = this.requestService.save(request);
-
+        // TODO: validate kiem hong de co the biet dc khi nao thji chuyen  status sang job khac
+        request.setStatus(RequestType.DAT_HANG);
         return KiemHongPayLoad
                 .fromEntity(savedRequest.getKiemHong())
                 .andRequestId(savedRequest.getRequestId());

@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
@@ -46,6 +47,7 @@ public class PhieuDatHangController extends BaseController {
         PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
         Request request = this.requestService.findById(phieuDatHangPayload.getRequestId());
         phieuDatHang.setRequest(request);
+        request.setStatus(RequestType.PHUONG_AN);
         this.phieuDatHangService.create(phieuDatHang);
     }
 
