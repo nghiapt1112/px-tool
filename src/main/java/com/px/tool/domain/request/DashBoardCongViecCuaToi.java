@@ -32,6 +32,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         } else if (dashBoardCongViecCuaToi.type == RequestType.CONG_NHAN_THANH_PHAM) {
             dashBoardCongViecCuaToi.noiDung = request.getCongNhanThanhPham().getNoiDung();
         }
+        dashBoardCongViecCuaToi.status = RequestStatus.DANG_CHO_DUYET;
         return dashBoardCongViecCuaToi;
     }
 }
