@@ -1,0 +1,1 @@
+ALTER TABLE `request` CHANGE `create_id` `receiver_id` bigint(20) DEFAULT NULL;
