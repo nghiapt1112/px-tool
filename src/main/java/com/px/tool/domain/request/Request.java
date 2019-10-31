@@ -35,7 +35,7 @@ public class Request extends EntityDefault {
     private RequestType status;
 
     @Column
-    private Long createId;
+    private Long receiverId;
 
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
