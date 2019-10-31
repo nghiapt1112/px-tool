@@ -27,15 +27,15 @@ public class KiemHongPayLoad extends AbstractObject {
     private String noiNhan;
     private String ngayThangNamQuanDoc;
     private String quanDoc;
-    private boolean quanDocXacNhan;
+    private Boolean quanDocXacNhan;
 
     private String ngayThangNamTroLyKT;
     private String troLyKT;
-    private boolean troLyKTXacNhan;
+    private Boolean troLyKTXacNhan;
 
     private String ngayThangNamToTruong;
     private String toTruong;
-    private boolean toTruongXacNhan;
+    private Boolean toTruongXacNhan;
 
     private String yKienGiamDoc;
 
