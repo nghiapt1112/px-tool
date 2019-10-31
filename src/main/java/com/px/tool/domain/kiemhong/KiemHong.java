@@ -28,7 +28,6 @@ import java.util.Set;
 public class KiemHong extends EntityDefault {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "kh_id")
     public Long khId;
 
     @Column
@@ -67,17 +66,27 @@ public class KiemHong extends EntityDefault {
     @Column
     private String ngayThangNamQuanDoc;
 
+    @Column(name = "quan_doc_xac_nhan")
+    private boolean quanDocXacNhan;
+
     @Column
     private String quanDoc;
 
     @Column
     private String ngayThangNamTroLyKT;
 
+    @Column(name = "tro_lykt_xac_nhan")
+    private boolean troLyKTXacNhan;
+
+
     @Column
     private String troLyKT;
 
     @Column
     private String ngayThangNamToTruong;
+
+    @Column(name = "to_truong_xac_nhan")
+    private boolean toTruongXacNhan;
 
     @Column
     private String toTruong;

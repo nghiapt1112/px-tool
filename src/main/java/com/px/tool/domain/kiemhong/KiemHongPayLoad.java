@@ -57,8 +57,7 @@ public class KiemHongPayLoad extends AbstractObject {
         return this;
     }
 
-    public KiemHong toEntity() {
-        KiemHong kiemHong = new KiemHong();
+    public KiemHong toEntity(KiemHong kiemHong) {
         if (khId != null && khId <= 0) {
             khId = null;
         }
@@ -66,8 +65,18 @@ public class KiemHongPayLoad extends AbstractObject {
         kiemHong.setKiemHongDetails(
                 this.kiemHongDetails
                         .stream()
-                        .map(KiemHongDetailPayload::toEntity)
+                        .map(payload -> {
+                            KiemHongDetail entity = payload.toEntity();
+                            if (kiemHong.getKhId() != null) {
+                                entity.setKiemHong(kiemHong);
+                            }
+                            return entity;
+                        })
                         .collect(Collectors.toSet()));
         return kiemHong;
+    }
+
+    public boolean notIncludeId() {
+        return khId != null && khId <= 0;
     }
 }

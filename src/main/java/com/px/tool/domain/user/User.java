@@ -3,6 +3,7 @@ package com.px.tool.domain.user;
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,6 +36,10 @@ public class User extends EntityDefault implements UserDetails {
 
     @Column
     private String password;
+
+    @Column
+    @Type(type="text")
+    private String signImg;
 
     @ManyToMany
     @JoinTable(name = "user_role",

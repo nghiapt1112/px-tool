@@ -6,14 +6,11 @@ import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,19 +50,17 @@ public class KiemHongController extends BaseController {
     public KiemHongPayLoad taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
         logger.info("Tao kiem hong, \ndata: {}", kiemHongPayLoad);
         Long userId = extractUserInfo(httpServletRequest);
-        KiemHong kiemHong = kiemHongPayLoad.toEntity();
-        kiemHong.setCreatedBy(userId);
-        return kiemHongService.taoYeuCauKiemHong(userId, kiemHong);
+        return kiemHongService.save(userId, kiemHongPayLoad);
     }
 
-    @PutMapping("/ukh")
-    public KiemHongPayLoad chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
-        logger.info("Update kiem hong, \ndata: {}", kiemHongPayLoad);
-        Long userId = extractUserInfo(httpServletRequest);
-        KiemHong kiemHong = kiemHongPayLoad.toEntity();
-        kiemHong.setCreatedBy(userId);
-        return kiemHongService.capNhatKiemHong(userId, kiemHongPayLoad.getRequestId(), kiemHong);
-    }
+//    @PutMapping("/ukh")
+//    public KiemHongPayLoad chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+//        logger.info("Update kiem hong, \ndata: {}", kiemHongPayLoad);
+//        Long userId = extractUserInfo(httpServletRequest);
+//        KiemHong kiemHong = kiemHongPayLoad.toEntity();
+//        kiemHong.setCreatedBy(userId);
+//        return kiemHongService.capNhatKiemHong(userId, kiemHongPayLoad);
+//    }
 
     @GetMapping("/pb")
     public List<PhongBan> findPhongBans() {
