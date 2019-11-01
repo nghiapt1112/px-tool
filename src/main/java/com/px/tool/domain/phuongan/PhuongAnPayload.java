@@ -43,6 +43,12 @@ public class PhuongAnPayload extends AbstractObject {
     private Set<DinhMucVatTuPayload> dinhMucVatTus = new HashSet<>();
     private Long chuyen; // id cua user dc nhan
 
+
+    private Boolean truongPhongKTHKXacNhan;
+    private Boolean truongPhongKeHoachXacNhan;
+    private Boolean truongPhongVatTuXacNhan;
+    private Boolean nguoiLapXacNhan;
+
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
         BeanUtils.copyProperties(phuongAn, phuongAnPayload);

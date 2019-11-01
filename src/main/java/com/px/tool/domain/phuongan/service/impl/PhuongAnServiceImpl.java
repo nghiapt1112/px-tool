@@ -14,6 +14,7 @@ import com.px.tool.domain.request.service.RequestService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +49,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     @Override
+    @Transactional
     public PhuongAn save(PhuongAnPayload phuongAnPayload) {
         if (Objects.isNull(phuongAnPayload.getPaId())) {
             throw new RuntimeException("Phuong an phai co id");
@@ -58,17 +60,13 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         cleanOldDetailData(existedPhuongAn);
 
-
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
         }
-        PhuongAn savedPhuongAn = phuongAnRepository.save(phuongAn);
-//        dinhMucVatTuRepository.saveAll(savedPhuongAn.getDinhMucVatTus());
-//        dinhMucLaoDongRepository.saveAll(savedPhuongAn.getDinhMucLaoDongs());
-        return savedPhuongAn;
+        return phuongAnRepository.save(phuongAn);
     }
 
     private void cleanOldDetailData(PhuongAn existedPhuongAn) {

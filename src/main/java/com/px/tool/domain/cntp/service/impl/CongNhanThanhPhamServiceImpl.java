@@ -21,7 +21,10 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     private RequestService requestService;
 
     @Override
-    public CongNhanThanhPham taoCongNhanThanhPham(CongNhanThanhPham congNhanThanhPham) {
+    public CongNhanThanhPham taoCongNhanThanhPham(CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
+        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamPayload.toEntity();
+        Request request = this.requestService.findById(congNhanThanhPhamPayload.getRequestId());
+        congNhanThanhPham.setRequest(request);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 

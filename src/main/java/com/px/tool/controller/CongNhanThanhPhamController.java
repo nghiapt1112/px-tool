@@ -43,21 +43,9 @@ public class CongNhanThanhPhamController extends BaseController {
 
     @PostMapping
     public CongNhanThanhPham taoCongNhanThanhPham(@RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
-        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamPayload.toEntity();
-        Request request = this.requestService.findById(congNhanThanhPhamPayload.getRequestId());
-        congNhanThanhPham.setRequest(request);
-        return congNhanThanhPhamService.taoCongNhanThanhPham(congNhanThanhPham);
+
+        return congNhanThanhPhamService.taoCongNhanThanhPham(congNhanThanhPhamPayload);
     }
-
-
-    @PutMapping
-    public CongNhanThanhPham updateCongNhanThanhPham(@RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
-        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamPayload.toEntity();
-        Request request = this.requestService.findById(congNhanThanhPhamPayload.getRequestId());
-        congNhanThanhPham.setRequest(request);
-        return congNhanThanhPhamService.updateCongNhanThanhPham(congNhanThanhPham);
-    }
-
 
     @DeleteMapping
     public long deleteCongNhanThanhPham() {
