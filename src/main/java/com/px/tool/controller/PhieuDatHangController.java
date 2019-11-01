@@ -1,9 +1,12 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.RequestType;
+import com.px.tool.domain.dathang.PhieuDatHangPayload;
+import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.PhieuDatHang;
-import com.px.tool.model.response.PhieuDatHangPayload;
-import com.px.tool.service.PhieuDatHangService;
+import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +26,11 @@ public class PhieuDatHangController extends BaseController {
     @Autowired
     private PhieuDatHangService phieuDatHangService;
 
+    @Autowired
+    private RequestService requestService;
 
     @GetMapping("/{id}")
-    public PhieuDatHang getPhieuDatHangDetail(@PathVariable Long id) {
+    public PhieuDatHangPayload getPhieuDatHangDetail(@PathVariable Long id) {
         return this.phieuDatHangService.findById(id);
     }
 
@@ -37,17 +42,9 @@ public class PhieuDatHangController extends BaseController {
     }
 
     @PostMapping
-    public void taoPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
-//        PhieuDatHang phieuDatHang = new PhieuDatHang();
-//        phieuDatHangPayload.toEntity(phieuDatHang);
-        this.phieuDatHangService.create(phieuDatHang);
-    }
-
-    @PutMapping
-    public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHang phieuDatHang) {
-//        PhieuDatHang phieuDatHang = new PhieuDatHang();
-//        phieuDatHangPayload.toEntity(phieuDatHang);
-        return this.phieuDatHangService.save(phieuDatHang);
+    public void taoPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+        logger.info("Save Phieu dat hang, \ndata: {}", phieuDatHangPayload);
+        this.phieuDatHangService.save(phieuDatHangPayload);
     }
 
     @DeleteMapping

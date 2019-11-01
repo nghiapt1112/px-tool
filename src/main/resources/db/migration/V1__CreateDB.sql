@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50726
+ Source Server Version : 50727
  Source Host           : localhost:3306
  Source Schema         : px_tool2
 
  Target Server Type    : MySQL
- Target Server Version : 50726
+ Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 26/10/2019 11:48:38
+ Date: 28/10/2019 23:48:05
 */
 
 SET NAMES utf8mb4;
@@ -36,6 +36,11 @@ CREATE TABLE `cong_nhan_thanh_pham`  (
   `ten_san_pham` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`tp_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cong_nhan_thanh_pham
+-- ----------------------------
+INSERT INTO `cong_nhan_thanh_pham` VALUES (299, '2019-10-28 15:26:42', NULL, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for dinh_muc_lao_dong
@@ -84,6 +89,24 @@ CREATE TABLE `dinh_muc_vat_tu`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for flyway_schema_history
+-- ----------------------------
+DROP TABLE IF EXISTS `flyway_schema_history`;
+CREATE TABLE `flyway_schema_history`  (
+  `installed_rank` int(11) NOT NULL,
+  `version` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `script` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `checksum` int(11) NULL DEFAULT NULL,
+  `installed_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `installed_on` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `execution_time` int(11) NOT NULL,
+  `success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`installed_rank`) USING BTREE,
+  INDEX `flyway_schema_history_s_idx`(`success`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+-- ----------------------------
 -- Table structure for hibernate_sequence
 -- ----------------------------
 DROP TABLE IF EXISTS `hibernate_sequence`;
@@ -94,19 +117,19 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
-INSERT INTO `hibernate_sequence` VALUES (215);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
+INSERT INTO `hibernate_sequence` VALUES (304);
 
 -- ----------------------------
 -- Table structure for kiem_hong
@@ -141,6 +164,11 @@ CREATE TABLE `kiem_hong`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of kiem_hong
+-- ----------------------------
+INSERT INTO `kiem_hong` VALUES (300, '2019-10-28 15:26:42', 217, b'0', NULL, NULL, 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string');
+
+-- ----------------------------
 -- Table structure for kiem_hong_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `kiem_hong_detail`;
@@ -159,6 +187,11 @@ CREATE TABLE `kiem_hong_detail`  (
   INDEX `FK5oy0dm0r5rhhav4j2cfoenpab`(`kh_id`) USING BTREE,
   CONSTRAINT `FK5oy0dm0r5rhhav4j2cfoenpab` FOREIGN KEY (`kh_id`) REFERENCES `kiem_hong` (`kh_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of kiem_hong_detail
+-- ----------------------------
+INSERT INTO `kiem_hong_detail` VALUES (301, 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', NULL);
 
 -- ----------------------------
 -- Table structure for noi_dung_thuc_hien
@@ -203,6 +236,11 @@ CREATE TABLE `phieu_dat_hang`  (
   `y_kien_giam_doc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`pdh_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of phieu_dat_hang
+-- ----------------------------
+INSERT INTO `phieu_dat_hang` VALUES (302, '2019-10-28 15:26:42', NULL, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for phieu_dat_hang_detail
@@ -329,6 +367,86 @@ INSERT INTO `phong_ban` VALUES (82, '2019-10-25 16:41:08', NULL, b'0', NULL, NUL
 INSERT INTO `phong_ban` VALUES (83, '2019-10-25 16:41:08', NULL, b'0', NULL, NULL, 1, 'TO_MA', NULL);
 INSERT INTO `phong_ban` VALUES (85, NULL, NULL, b'0', NULL, NULL, 1, 'TO_ULD', NULL);
 INSERT INTO `phong_ban` VALUES (86, NULL, NULL, b'0', NULL, NULL, 1, 'TO_DOLLY', NULL);
+INSERT INTO `phong_ban` VALUES (218, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (219, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (220, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (221, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (222, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (223, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (224, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (225, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (226, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (227, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (228, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (229, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (230, '2019-10-28 15:16:08', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (231, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (232, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (233, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (234, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (235, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (236, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (237, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (238, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (239, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (240, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (241, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (242, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (243, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (244, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (245, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (246, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (247, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (248, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (249, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (250, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (251, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (252, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (253, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (254, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (255, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (256, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (257, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (258, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (259, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (260, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (261, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (262, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (263, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (264, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (265, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (266, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (267, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (268, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (269, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (270, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (271, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (272, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (273, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (274, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (275, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (276, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (277, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (278, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (279, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (280, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (281, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (282, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (283, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (284, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (285, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (286, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (287, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (288, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (289, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (290, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (291, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (292, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (293, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (294, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (295, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (296, '2019-10-28 15:16:09', NULL, b'0', NULL, NULL, 2, '', NULL);
+INSERT INTO `phong_ban` VALUES (297, '2019-10-28 15:16:10', NULL, b'0', NULL, NULL, 2, '', NULL);
 
 -- ----------------------------
 -- Table structure for phuong_an
@@ -366,6 +484,11 @@ CREATE TABLE `phuong_an`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of phuong_an
+-- ----------------------------
+INSERT INTO `phuong_an` VALUES (303, '2019-10-28 15:26:42', NULL, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
 -- Table structure for request
 -- ----------------------------
 DROP TABLE IF EXISTS `request`;
@@ -379,22 +502,27 @@ CREATE TABLE `request`  (
   `create_id` bigint(20) NULL DEFAULT NULL,
   `status` int(11) NULL DEFAULT NULL,
   `tp_id` bigint(20) NULL DEFAULT NULL,
-  `kiem_hong_kh_id` bigint(20) NULL DEFAULT NULL,
+  `kh_id` bigint(20) NULL DEFAULT NULL,
   `pdh_id` bigint(20) NULL DEFAULT NULL,
   `pa_id` bigint(20) NULL DEFAULT NULL,
   `user_id` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`request_id`) USING BTREE,
   INDEX `FKhx216w8xik6t8ilmb0olgyy8r`(`tp_id`) USING BTREE,
-  INDEX `FKe5xafpywjfklmj576eh7vpfnw`(`kiem_hong_kh_id`) USING BTREE,
+  INDEX `FKe5xafpywjfklmj576eh7vpfnw`(`kh_id`) USING BTREE,
   INDEX `FK5am580ieoytavfegava5f4b6b`(`pdh_id`) USING BTREE,
   INDEX `FK3u0y738afx7s56ukl3x7uvcck`(`pa_id`) USING BTREE,
   INDEX `FKge50vg07rwkpubod0qwqaly50`(`user_id`) USING BTREE,
   CONSTRAINT `FK3u0y738afx7s56ukl3x7uvcck` FOREIGN KEY (`pa_id`) REFERENCES `phuong_an` (`pa_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK5am580ieoytavfegava5f4b6b` FOREIGN KEY (`pdh_id`) REFERENCES `phieu_dat_hang` (`pdh_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FKe5xafpywjfklmj576eh7vpfnw` FOREIGN KEY (`kiem_hong_kh_id`) REFERENCES `kiem_hong` (`kh_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FKe5xafpywjfklmj576eh7vpfnw` FOREIGN KEY (`kh_id`) REFERENCES `kiem_hong` (`kh_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKge50vg07rwkpubod0qwqaly50` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKhx216w8xik6t8ilmb0olgyy8r` FOREIGN KEY (`tp_id`) REFERENCES `cong_nhan_thanh_pham` (`tp_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of request
+-- ----------------------------
+INSERT INTO `request` VALUES (298, '2019-10-28 15:26:42', 217, b'0', NULL, NULL, NULL, 0, 299, 300, 302, 303, NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -413,6 +541,8 @@ INSERT INTO `role` VALUES (1, 'ADMIN');
 INSERT INTO `role` VALUES (2, 'LEVEL2');
 INSERT INTO `role` VALUES (3, 'LEVEL3');
 INSERT INTO `role` VALUES (4, 'LEVEL4');
+INSERT INTO `role` VALUES (215, 'ADMIN');
+INSERT INTO `role` VALUES (216, 'USER');
 
 -- ----------------------------
 -- Table structure for user
@@ -458,7 +588,8 @@ INSERT INTO `user` VALUES (210, '2019-10-26 04:46:31', NULL, b'0', NULL, NULL, '
 INSERT INTO `user` VALUES (211, '2019-10-26 04:46:31', NULL, b'0', NULL, NULL, '', '$2a$10$niklDBvA9ipivXVb5jfKY.BD3m8Q5.TxQi2TMN9KVM5bkQdwfA2JK', NULL);
 INSERT INTO `user` VALUES (212, '2019-10-26 04:46:32', NULL, b'0', NULL, NULL, '', '$2a$10$LZGHV4G0Qra4.0Y9IJQIV.IVvgGzhx98dPsZxbWfUoeNGR25DZUZ6', NULL);
 INSERT INTO `user` VALUES (213, '2019-10-26 04:46:32', NULL, b'0', NULL, NULL, '', '$2a$10$YT1sevtZUdtJDtnM5dfO1Ou7g5NDRPsSPpNGHWSvxOglzWwbgdKbW', NULL);
-INSERT INTO `user` VALUES (214, '2019-10-26 04:48:24', NULL, b'0', NULL, NULL, 'admin', '$2a$10$u46w0yecqymcCirhEcrV1OaPtVuu4Bgu5VpTc.kLXAiL4NdQgk5hS', NULL);
+INSERT INTO `user` VALUES (214, '2019-10-26 04:48:24', NULL, b'0', NULL, NULL, 'admin2', '$2a$10$u46w0yecqymcCirhEcrV1OaPtVuu4Bgu5VpTc.kLXAiL4NdQgk5hS', NULL);
+INSERT INTO `user` VALUES (217, '2019-10-28 15:15:41', NULL, b'0', NULL, NULL, 'admin', '$2a$10$Ae3uXKVaV/JxeHt4KmkXGenKla2uAW9NYXWYX1wNQBJnaGgH9SSrW', NULL);
 
 -- ----------------------------
 -- Table structure for user_role
@@ -477,6 +608,7 @@ CREATE TABLE `user_role`  (
 -- Records of user_role
 -- ----------------------------
 INSERT INTO `user_role` VALUES (214, 1);
+INSERT INTO `user_role` VALUES (217, 1);
 INSERT INTO `user_role` VALUES (192, 2);
 INSERT INTO `user_role` VALUES (193, 2);
 INSERT INTO `user_role` VALUES (194, 2);

@@ -1,11 +1,11 @@
 package com.px.tool;
 
-import com.px.tool.model.PhongBan;
-import com.px.tool.model.Role;
-import com.px.tool.model.request.UserRequest;
-import com.px.tool.repository.PhongBanRepository;
-import com.px.tool.repository.RoleRepository;
-import com.px.tool.service.UserService;
+import com.px.tool.domain.user.PhongBan;
+import com.px.tool.domain.user.Role;
+import com.px.tool.infrastructure.model.request.UserRequest;
+import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.user.repository.RoleRepository;
+import com.px.tool.domain.user.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

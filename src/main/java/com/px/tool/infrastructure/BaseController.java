@@ -1,6 +1,7 @@
 package com.px.tool.infrastructure;
 
-import com.px.tool.model.response.ErrorResponse;
+import com.px.tool.infrastructure.model.ErrorResponse;
+import com.px.tool.infrastructure.utils.RequestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public abstract class BaseController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${app.jwtSecret}")
     private String jwtSecret;

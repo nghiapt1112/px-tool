@@ -1,8 +1,11 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.cntp.CongNhanThanhPhamPayload;
+import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.CongNhanThanhPham;
-import com.px.tool.service.CongNhanThanhPhamService;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +26,12 @@ public class CongNhanThanhPhamController extends BaseController {
     @Autowired
     private CongNhanThanhPhamService congNhanThanhPhamService;
 
+
+    @Autowired
+    private RequestService requestService;
+
     @GetMapping("/{id}")
-    public CongNhanThanhPham timCongNhanThanhPham(@PathVariable Long id) {
+    public CongNhanThanhPhamPayload timCongNhanThanhPham(@PathVariable Long id) {
         return this.congNhanThanhPhamService.timCongNhanThanhPham(id);
     }
 
@@ -35,14 +42,19 @@ public class CongNhanThanhPhamController extends BaseController {
     }
 
     @PostMapping
-    public CongNhanThanhPham taoCongNhanThanhPham(@RequestBody CongNhanThanhPham congNhanThanhPham) {
-
+    public CongNhanThanhPham taoCongNhanThanhPham(@RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
+        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamPayload.toEntity();
+        Request request = this.requestService.findById(congNhanThanhPhamPayload.getRequestId());
+        congNhanThanhPham.setRequest(request);
         return congNhanThanhPhamService.taoCongNhanThanhPham(congNhanThanhPham);
     }
 
 
     @PutMapping
-    public CongNhanThanhPham updateCongNhanThanhPham(@RequestBody CongNhanThanhPham congNhanThanhPham) {
+    public CongNhanThanhPham updateCongNhanThanhPham(@RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
+        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamPayload.toEntity();
+        Request request = this.requestService.findById(congNhanThanhPhamPayload.getRequestId());
+        congNhanThanhPham.setRequest(request);
         return congNhanThanhPhamService.updateCongNhanThanhPham(congNhanThanhPham);
     }
 

@@ -1,17 +1,16 @@
 package com.px.tool.controller;
 
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.model.KiemHong;
-import com.px.tool.model.PhongBan;
-import com.px.tool.model.response.KiemHongPayLoad;
-import com.px.tool.repository.PhongBanRepository;
-import com.px.tool.service.KiemHongService;
+import com.px.tool.domain.kiemhong.KiemHong;
+import com.px.tool.domain.user.PhongBan;
+import com.px.tool.domain.kiemhong.KiemHongPayLoad;
+import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.kiemhong.service.KiemHongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/px")
 public class KiemHongController extends BaseController {
+
     @Autowired
     private KiemHongService kiemHongService;
 
@@ -43,23 +43,14 @@ public class KiemHongController extends BaseController {
      * <p>
      * <p>
      * validate data on backend and show  clear message for them.
+     *
+     * @return
      */
     @PostMapping("/tkh")
-    public KiemHong taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHong kiemHong) {
+    public KiemHongPayLoad taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+        logger.info("Tao kiem hong, \ndata: {}", kiemHongPayLoad);
         Long userId = extractUserInfo(httpServletRequest);
-//        KiemHong kiemHong = new KiemHong();
-//        kiemHongPayLoad.toEntity(kiemHong);
-        kiemHong.setCreatedBy(userId);
-        return kiemHongService.taoYeuCauKiemHong(kiemHong);
-    }
-
-    @PutMapping("/ukh")
-    public KiemHong chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHong kiemHong) {
-        Long userId = extractUserInfo(httpServletRequest);
-//        KiemHong kiemHong = new KiemHong();
-//        kiemHongPayLoad.toEntity(kiemHong);
-        kiemHong.setCreatedBy(userId);
-        return kiemHongService.taoYeuCauKiemHong(kiemHong);
+        return kiemHongService.save(userId, kiemHongPayLoad);
     }
 
     @GetMapping("/pb")
