@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -105,5 +106,11 @@ public class PhuongAn extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "phuongAn")
     private Request request;
+
+    public boolean allApproved() {
+//        return
+//                Objects.nonNull(tpkthkXacNhan) && tpkthkXacNhan &&
+        return false;
+    }
     //TODO: con thieu vai fields nua, fields ben duoi cho chuyen chuyen y
 }

@@ -60,7 +60,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
         }
         PhieuDatHang savedPhieuDatHang = phieuDatHangRepository.save(phieuDatHang);
-        phieuDatHangDetailRepository.saveAll(savedPhieuDatHang.getPhieuDatHangDetails());
+//        phieuDatHangDetailRepository.saveAll(savedPhieuDatHang.getPhieuDatHangDetails());
         return phieuDatHang;
     }
 

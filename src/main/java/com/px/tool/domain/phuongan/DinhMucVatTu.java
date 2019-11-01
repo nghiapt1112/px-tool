@@ -76,6 +76,6 @@ public class DinhMucVatTu {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "paId", insertable = false, updatable = false)
+    @JoinColumn(name = "paId")
     private PhuongAn phuongAn;
 }

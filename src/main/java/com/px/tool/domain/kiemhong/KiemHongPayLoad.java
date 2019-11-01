@@ -1,11 +1,13 @@
 package com.px.tool.domain.kiemhong;
 
 import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.time.DateTimeException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,6 +53,11 @@ public class KiemHongPayLoad extends AbstractObject {
                 .stream()
                 .map(KiemHongDetailPayload::fromEntity)
                 .collect(Collectors.toSet());
+
+        kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
+        kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
+        kiemHongResponse.ngayThangNamTroLyKT = DateTimeUtils.nowAsString();
+
         return kiemHongResponse;
     }
 

@@ -15,13 +15,11 @@ import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
-import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -120,13 +118,13 @@ public class KiemHongServiceImpl implements KiemHongService {
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
         }
-        existedKiemHong = kiemHongRepository.save(requestKiemHong);
-        createPhieuKiemHong(requestKiemHong, pdh);
+        kiemHongRepository.save(requestKiemHong);
+        createPhieuDatHang(requestKiemHong, pdh);
         kiemHongPayLoad.setRequestId(requestId);
         return kiemHongPayLoad;
     }
 
-    private void createPhieuKiemHong(KiemHong requestKiemHong, PhieuDatHang pdh) {
+    private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
         pdh.setSo(requestKiemHong.getSoHieu());
         pdh.setDonViYeuCau(requestKiemHong.getToSX()); // C3 sheet1
         pdh.setPhanXuong(requestKiemHong.getPhanXuong()); // C2 sheet1

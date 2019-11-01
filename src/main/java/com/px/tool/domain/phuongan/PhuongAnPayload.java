@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,8 +55,7 @@ public class PhuongAnPayload extends AbstractObject {
         return phuongAnPayload;
     }
 
-    public PhuongAn toEntity() {
-        PhuongAn phuongAn = new PhuongAn();
+    public PhuongAn toEntity(PhuongAn phuongAn) {
         if (paId != null && paId <= 0) {
             paId = null;
         }
@@ -63,12 +63,24 @@ public class PhuongAnPayload extends AbstractObject {
         phuongAn.setDinhMucLaoDongs(
                 dinhMucLaoDongs
                         .stream()
-                        .map(DinhMucLaoDongPayload::toEntity)
+                        .map(payload -> {
+                            DinhMucLaoDong entity = payload.toEntity();
+                            if (Objects.nonNull(phuongAn.getPaId())) {
+                                entity.setPhuongAn(phuongAn);
+                            }
+                            return entity;
+                        })
                         .collect(Collectors.toSet())
         );
         phuongAn.setDinhMucVatTus(
                 dinhMucVatTus.stream()
-                        .map(DinhMucVatTuPayload::toEntity)
+                        .map(payload -> {
+                            DinhMucVatTu entity = payload.toEntity();
+                            if (Objects.nonNull(phuongAn.getPaId())) {
+                                entity.setPhuongAn(phuongAn);
+                            }
+                            return entity;
+                        })
                         .collect(Collectors.toSet())
         );
         return phuongAn;
