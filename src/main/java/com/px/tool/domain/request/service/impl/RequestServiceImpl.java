@@ -28,11 +28,6 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<DashBoardCongViecCuaToi> timByNguoiGui(Collection<Long> userIds) {
         List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
-//        DashBoardPayload dashBoardPayload = new DashBoardPayload();
-//        requestsByNguoiGui
-//                .stream()
-//                .forEach(dashBoardPayload::fromEntity);
-//        return dashBoardPayload;
         return requestsByNguoiGui
                 .stream()
                 .map(DashBoardCongViecCuaToi::fromEntity)
@@ -42,8 +37,6 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<DashBoardCongViecCuaToi> timByNguoiNhan(Collection<Long> userIds) {
         List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
-
-
         return requestsByNguoiGui
                 .stream()
                 .map(DashBoardCongViecCuaToi::fromEntity)

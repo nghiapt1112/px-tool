@@ -48,7 +48,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         if (phieuDatHangPayload.notIncludeId()) {
             throw new RuntimeException("Phieu dat hang phai co id");
         }
-        PhieuDatHang existedPhieuDatHang = phieuDatHangRepository.findById(phieuDatHangPayload.getPdhId()).orElse(null);
+        PhieuDatHang existedPhieuDatHang = phieuDatHangRepository
+                .findById(phieuDatHangPayload.getPdhId())
+                .orElse(null);
         cleanOldDetailData(existedPhieuDatHang);
 
         PhieuDatHang phieuDatHang = new PhieuDatHang();

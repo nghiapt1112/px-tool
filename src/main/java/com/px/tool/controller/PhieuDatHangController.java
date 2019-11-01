@@ -47,15 +47,6 @@ public class PhieuDatHangController extends BaseController {
         this.phieuDatHangService.save(phieuDatHangPayload);
     }
 
-//    @PutMapping
-//    public PhieuDatHang capNhatPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
-//        logger.info("update phieu dat hang, \ndata: {}", phieuDatHangPayload);
-//        PhieuDatHang phieuDatHang = phieuDatHangPayload.toEntity();
-//        Request request = this.requestService.findById(phieuDatHangPayload.getRequestId());
-//        phieuDatHang.setRequest(request);
-//        return this.phieuDatHangService.save(phieuDatHang);
-//    }
-
     @DeleteMapping
     public void xoaPhieuDatHang() {
         

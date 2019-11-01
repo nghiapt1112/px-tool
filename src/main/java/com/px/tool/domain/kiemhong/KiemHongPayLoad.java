@@ -3,6 +3,7 @@ package com.px.tool.domain.kiemhong;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.HashSet;
@@ -74,6 +75,9 @@ public class KiemHongPayLoad extends AbstractObject {
                             return entity;
                         })
                         .collect(Collectors.toSet()));
+        if (CollectionUtils.isEmpty(kiemHong.getKiemHongDetails())) {
+            throw new RuntimeException("Thieu thong tin detail cua kiem hong");
+        }
         return kiemHong;
     }
 

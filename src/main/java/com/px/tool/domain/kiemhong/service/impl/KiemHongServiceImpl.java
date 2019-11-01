@@ -3,7 +3,11 @@ package com.px.tool.domain.kiemhong.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.dathang.PhieuDatHang;
+import com.px.tool.domain.dathang.PhieuDatHangDetail;
+import com.px.tool.domain.dathang.repository.PhieuDatHangDetailRepository;
+import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.kiemhong.KiemHong;
+import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.repository.KiemHongDetailRepository;
 import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
@@ -11,12 +15,17 @@ import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
+import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +38,12 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private PhieuDatHangRepository phieuDatHangRepository;
+
+    @Autowired
+    private PhieuDatHangDetailRepository phieuDatHangDetailRepository;
 
     @Override
     public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
@@ -45,7 +60,9 @@ public class KiemHongServiceImpl implements KiemHongService {
     public KiemHongPayLoad findThongTinKiemHong(Long id) {
         Request request = requestService.findById(id);
         if (request != null) {
-            return KiemHongPayLoad.fromEntity(request.getKiemHong());
+            return KiemHongPayLoad
+                    .fromEntity(request.getKiemHong())
+                    .andRequestId(request.getRequestId());
         }
         throw new RuntimeException("Kiem hong not found");
     }
@@ -92,21 +109,67 @@ public class KiemHongServiceImpl implements KiemHongService {
                 .findById(kiemHongPayLoad.getKhId())
                 .orElseThrow(() -> new RuntimeException("Khong tim thay kiem hong"));
 
+        cleanKiemHongDetails(existedKiemHong);
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
 
         // TODO: get current user info , check permission. vi khong phai ai cung approve dc cho nguoi khac
+        Long requestId = existedKiemHong.getRequest().getRequestId();
+        PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
         if (requestKiemHong.allApproved()) {
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
         }
-        kiemHongRepository.save(requestKiemHong);
-        kiemHongPayLoad.setRequestId(existedKiemHong.getRequest().getRequestId());
+        existedKiemHong = kiemHongRepository.save(requestKiemHong);
+        createPhieuKiemHong(requestKiemHong, pdh);
+        kiemHongPayLoad.setRequestId(requestId);
         return kiemHongPayLoad;
+    }
+
+    private void createPhieuKiemHong(KiemHong requestKiemHong, PhieuDatHang pdh) {
+        pdh.setSo(requestKiemHong.getSoHieu());
+        pdh.setDonViYeuCau(requestKiemHong.getToSX()); // C3 sheet1
+        pdh.setPhanXuong(requestKiemHong.getPhanXuong()); // C2 sheet1
+        pdh.setNoiDung(requestKiemHong.getNguonVao() + " " + requestKiemHong.getTenVKTBKT() + " " + requestKiemHong.getSoHieu() + " " + requestKiemHong.getSoXX()); // E2 sheet1 + E1 sheet1
+        PhieuDatHang savedPdh = phieuDatHangRepository.save(pdh);
+
+        Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>(requestKiemHong.getKiemHongDetails().size());
+        PhieuDatHangDetail detail = null;
+        for (KiemHongDetail kiemHongDetail : requestKiemHong.getKiemHongDetails()) {
+            detail = new PhieuDatHangDetail();
+            detail.setTenPhuKien(kiemHongDetail.getTenPhuKien());
+            detail.setTenVatTuKyThuat(kiemHongDetail.getTenLinhKien());
+            detail.setKiMaHieu(kiemHongDetail.getKyHieu());
+            detail.setDvt("Cái");
+            detail.setSl(kiemHongDetail.getSl());
+            detail.setPhuongPhapKhacPhuc(kiemHongDetail.getPhuongPhapKhacPhuc());
+            detail.setPhieuDatHang(savedPdh);
+            phieuDatHangDetails.add(detail);
+        }
+        phieuDatHangDetailRepository.saveAll(phieuDatHangDetails);
     }
 
     @Override
     public boolean isExisted(Long id) {
         return kiemHongRepository.existsById(id);
+    }
+
+    public void cleanKiemHongDetails(KiemHong existedKiemHong) {
+        try {
+            if (Objects.isNull(existedKiemHong)) {
+                return;
+            }
+            Set<Long> kiemHongDetailIds = existedKiemHong.getKiemHongDetails()
+                    .stream()
+                    .map(KiemHongDetail::getKhDetailId)
+                    .collect(Collectors.toSet());
+            if (CollectionUtils.isEmpty(kiemHongDetailIds)) {
+                return;
+            }
+            kiemHongDetailRepository.deleteAllByIds(kiemHongDetailIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Clean kiemhong detail khong thanh cong.");
+        }
     }
 }

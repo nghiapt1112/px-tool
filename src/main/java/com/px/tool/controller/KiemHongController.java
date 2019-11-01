@@ -53,15 +53,6 @@ public class KiemHongController extends BaseController {
         return kiemHongService.save(userId, kiemHongPayLoad);
     }
 
-//    @PutMapping("/ukh")
-//    public KiemHongPayLoad chinhSuaKiemHong(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
-//        logger.info("Update kiem hong, \ndata: {}", kiemHongPayLoad);
-//        Long userId = extractUserInfo(httpServletRequest);
-//        KiemHong kiemHong = kiemHongPayLoad.toEntity();
-//        kiemHong.setCreatedBy(userId);
-//        return kiemHongService.capNhatKiemHong(userId, kiemHongPayLoad);
-//    }
-
     @GetMapping("/pb")
     public List<PhongBan> findPhongBans() {
         return phongBanRepository.findAll();
