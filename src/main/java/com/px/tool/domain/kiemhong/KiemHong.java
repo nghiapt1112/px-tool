@@ -91,6 +91,9 @@ public class KiemHong extends EntityDefault {
     @Column
     private String toTruong;
 
+    @Column(name = "giam_doc_xac_nhan")
+    private Boolean giamDocXacNhan;
+
     @Column
     private String yKienGiamDoc;
 

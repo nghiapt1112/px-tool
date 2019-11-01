@@ -37,6 +37,7 @@ public class KiemHongPayLoad extends AbstractObject {
     private String toTruong;
     private Boolean toTruongXacNhan;
 
+    private Boolean giamDocXacNhan;
     private String yKienGiamDoc;
 
     private Set<KiemHongDetailPayload> kiemHongDetails = new HashSet<>();
