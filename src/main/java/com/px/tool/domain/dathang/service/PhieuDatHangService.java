@@ -3,6 +3,7 @@ package com.px.tool.domain.dathang.service;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.dathang.PhieuDatHangPayload;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PhieuDatHangService {
@@ -10,7 +11,7 @@ public interface PhieuDatHangService {
 
     List<PhieuDatHang> findByPhongBan(Long userId);
 
-    PhieuDatHang create(PhieuDatHang phieuDatHang);
+    PhieuDatHang save(PhieuDatHangPayload phieuDatHangPayload);
 
     PhieuDatHang save(PhieuDatHang phieuDatHang);
 

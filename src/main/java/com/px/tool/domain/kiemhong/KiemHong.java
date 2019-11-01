@@ -1,6 +1,7 @@
 package com.px.tool.domain.kiemhong;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.EntityDefault;
@@ -18,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -78,7 +80,6 @@ public class KiemHong extends EntityDefault {
     @Column(name = "tro_lykt_xac_nhan")
     private Boolean troLyKTXacNhan;
 
-
     @Column
     private String troLyKT;
 
@@ -104,4 +105,14 @@ public class KiemHong extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "kiemHong")
     private Request request;
+
+    @JsonIgnore
+    public boolean allApproved() {
+        return
+                Objects.nonNull(toTruongXacNhan) && toTruongXacNhan
+                && Objects.nonNull(troLyKTXacNhan) && troLyKTXacNhan
+                && Objects.nonNull(quanDocXacNhan) && quanDocXacNhan
+                && Objects.nonNull(giamDocXacNhan) && giamDocXacNhan;
+
+    }
 }

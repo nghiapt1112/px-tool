@@ -54,6 +54,6 @@ public class PhieuDatHangDetail {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "pdhId", insertable = false, updatable = false)
+    @JoinColumn(name = "pdhId")
     private PhieuDatHang phieuDatHang;
 }

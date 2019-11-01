@@ -28,9 +28,9 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
 
     public PhieuDatHangDetail toEntity() {
         PhieuDatHangDetail phieuDatHangDetail = new PhieuDatHangDetail();
-        if (pdhDetailId != null && pdhDetailId <= 0) {
-            pdhDetailId = null;
-        }
+//        if (pdhDetailId != null && pdhDetailId <= 0) {
+        pdhDetailId = null;
+//        }
         BeanUtils.copyProperties(this, phieuDatHangDetail);
         return phieuDatHangDetail;
     }

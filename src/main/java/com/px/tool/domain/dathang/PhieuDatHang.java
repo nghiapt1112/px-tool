@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -70,6 +71,15 @@ public class PhieuDatHang extends EntityDefault {
     @Column
     private String yKienGiamDoc;
 
+    @Column(name = "tpkthk_xac_nhan")
+    private Boolean tpkthkXacNhan;
+
+    @Column(name = "tpvattu_xac_nhan")
+    private Boolean tpvatTuXacNhan;
+
+    @Column(name = "nguoi_dat_hang_xac_nhan")
+    private Boolean nguoiDatHangXacNhan;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phieuDatHang", cascade = CascadeType.ALL)
     private Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>();
@@ -77,4 +87,11 @@ public class PhieuDatHang extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "phieuDatHang")
     private Request request;
+
+    public boolean allApproved() {
+        return
+                Objects.nonNull(tpkthkXacNhan) && tpkthkXacNhan &&
+                Objects.nonNull(tpvatTuXacNhan) && tpvatTuXacNhan &&
+                Objects.nonNull(nguoiDatHangXacNhan) && nguoiDatHangXacNhan;
+    }
 }

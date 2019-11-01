@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,14 @@ public class PhieuDatHangPayload extends AbstractObject {
     private String noiNhan;
     private String ngayThangNamTPKTHK;
     private String TPKTHK;
+    private Boolean tpkthkXacNhan;
     private String ngayThangNamTPVatTu;
     private String TPVatTu;
+    private Boolean tpvatTuXacNhan;
     private String ngayThangNamNguoiDatHang;
     private String NguoiDatHang;
+    private Boolean nguoiDatHangXacNhan;
+
     private String yKienGiamDoc;
     private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
@@ -43,18 +48,32 @@ public class PhieuDatHangPayload extends AbstractObject {
         return phieuDatHangPayload;
     }
 
-    public PhieuDatHang toEntity() {
-        PhieuDatHang phieuDatHang = new PhieuDatHang();
+    public PhieuDatHang toEntity(PhieuDatHang phieuDatHang) {
         if (pdhId != null && pdhId <= 0) {
             pdhId = null;
         }
         BeanUtils.copyProperties(this, phieuDatHang);
         phieuDatHang.setPhieuDatHangDetails(
                 phieuDatHangDetails.stream()
-                        .map(PhieuDatHangDetailPayload::toEntity)
+                        .map(payload -> {
+                            PhieuDatHangDetail entity = payload.toEntity();
+                            if (Objects.nonNull(phieuDatHang.getPdhId())) {
+                                entity.setPhieuDatHang(phieuDatHang);
+                            }
+                            return entity;
+                        })
                         .collect(Collectors.toSet())
         );
         return phieuDatHang;
     }
 
+    public boolean notIncludeId() {
+        return pdhId != null && pdhId <= 0;
+    }
+
+    public Set<Long> getDetailIds() {
+        return phieuDatHangDetails.stream()
+                .map(PhieuDatHangDetailPayload::getPdhDetailId)
+                .collect(Collectors.toSet());
+    }
 }

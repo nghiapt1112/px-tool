@@ -86,7 +86,6 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     }
 
-    // TODO: validate kiem hong de co the biet dc khi nao thji chuyen  status sang job khac
     @Override
     public KiemHongPayLoad capNhatKiemHong(Long userId, KiemHongPayLoad kiemHongPayLoad) {
         KiemHong existedKiemHong = kiemHongRepository
@@ -96,8 +95,11 @@ public class KiemHongServiceImpl implements KiemHongService {
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
 
-        requestKiemHong.setRequest(existedKiemHong.getRequest());
-
+        // TODO: get current user info , check permission. vi khong phai ai cung approve dc cho nguoi khac
+        if (requestKiemHong.allApproved()) {
+            existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
+            requestKiemHong.setRequest(existedKiemHong.getRequest());
+        }
         kiemHongRepository.save(requestKiemHong);
         kiemHongPayLoad.setRequestId(existedKiemHong.getRequest().getRequestId());
         return kiemHongPayLoad;
