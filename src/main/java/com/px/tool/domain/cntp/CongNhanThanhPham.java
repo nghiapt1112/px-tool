@@ -46,6 +46,33 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column
     private String soNghiemThuDuoc;
 
+    @Column
+    private Boolean nguoiGiaoViecXacNhan;
+
+    @Column
+    private Boolean nguoiThucHienXacNhan;
+
+    @Column
+    private Boolean tpkcsXacNhan;
+
+    @Column
+    private Float dong;
+
+    @Column
+    private Float gioX;
+
+    @Column
+    private Float laoDongTienLuong;
+
+    @Column
+    private String dvt;
+
+    @Column
+    private String to;
+
+    @Column
+    private String soLuong;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();

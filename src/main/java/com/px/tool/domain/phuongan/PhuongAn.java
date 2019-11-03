@@ -108,6 +108,9 @@ public class PhuongAn extends EntityDefault {
     @Column(name = "nguoilap_xacnhan")
     private Boolean nguoiLapXacNhan;
 
+    @Column(name = "giamdoc_xacnhan")
+    private Boolean giamDocXacNhan;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();
@@ -125,6 +128,7 @@ public class PhuongAn extends EntityDefault {
                 Objects.nonNull(truongPhongKTHKXacNhan) && truongPhongKTHKXacNhan &&
                         Objects.nonNull(truongPhongKeHoachXacNhan) && truongPhongKeHoachXacNhan &&
                         Objects.nonNull(truongPhongVatTuXacNhan) && truongPhongVatTuXacNhan &&
-                        Objects.nonNull(nguoiLapXacNhan) && nguoiLapXacNhan;
+                        Objects.nonNull(nguoiLapXacNhan) && nguoiLapXacNhan &&
+                        Objects.nonNull(giamDocXacNhan) && giamDocXacNhan;
     }
 }

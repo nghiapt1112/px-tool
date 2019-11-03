@@ -32,6 +32,19 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
     private String soNghiemThuDuoc;
 
+    private Boolean nguoiGiaoViecXacNhan;
+    private Boolean nguoiThucHienXacNhan;
+    private Boolean tpkcsXacNhan;
+
+    private Float dong;
+    private Float gioX;
+    private Float laoDongTienLuong;
+
+    private String dvt;
+    private String to;
+    private String soLuong;
+
+
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 
     public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {

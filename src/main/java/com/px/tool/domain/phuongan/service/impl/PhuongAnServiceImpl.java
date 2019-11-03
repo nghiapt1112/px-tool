@@ -1,6 +1,9 @@
 package com.px.tool.domain.phuongan.service.impl;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
+import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
@@ -35,6 +38,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Autowired
     private DinhMucLaoDongRepository dinhMucLaoDongRepository;
 
+    @Autowired
+    private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
+
     @Override
     public PhuongAnPayload findById(Long id) {
         Request request = requestService.findById(id);
@@ -60,13 +66,25 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         cleanOldDetailData(existedPhuongAn);
 
+        CongNhanThanhPham thanhPham = existedPhuongAn.getRequest().getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
+            taoCNTP(phuongAn, thanhPham);
         }
         return phuongAnRepository.save(phuongAn);
+    }
+
+    private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {
+//        CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
+        congNhanThanhPham.setTenSanPham(phuongAn.getSanPham());
+        congNhanThanhPham.setNoiDung(phuongAn.getNoiDung());
+        congNhanThanhPham.setSoPA(phuongAn.getMaSo());
+        congNhanThanhPham.setDonviThucHien("neu chuyen ve px 3 hien px 3"); // TODO : set ten phan xuong vao day
+
+        congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
     private void cleanOldDetailData(PhuongAn existedPhuongAn) {
