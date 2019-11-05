@@ -1,11 +1,10 @@
 package com.px.tool.controller;
 
-import com.px.tool.infrastructure.BaseController;
-import com.px.tool.domain.kiemhong.KiemHong;
-import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
-import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
+import com.px.tool.domain.user.PhongBan;
+import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;

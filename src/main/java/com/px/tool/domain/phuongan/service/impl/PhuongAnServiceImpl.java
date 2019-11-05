@@ -3,7 +3,6 @@ package com.px.tool.domain.phuongan.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
-import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
