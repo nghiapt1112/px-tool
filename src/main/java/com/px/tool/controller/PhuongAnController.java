@@ -3,7 +3,6 @@ package com.px.tool.controller;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
-import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -21,9 +20,6 @@ import java.util.List;
 public class PhuongAnController extends BaseController {
     @Autowired
     private PhuongAnService phuongAnService;
-
-    @Autowired
-    private RequestService requestService;
 
     @GetMapping("/{id}")
     public PhuongAnPayload getPhuongAnDetail(@PathVariable Long id) {

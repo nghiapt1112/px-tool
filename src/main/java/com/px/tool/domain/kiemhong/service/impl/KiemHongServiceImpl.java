@@ -71,6 +71,8 @@ public class KiemHongServiceImpl implements KiemHongService {
 
         try {
             if (kiemHongPayLoad.notIncludeId()) {
+                // TODO: check co quyen tao kiem hong hay khong?
+                // TODO: tao kiem hong thi khong dc co giam_doc_xac_nhan
                 KiemHong kiemHong = new KiemHong();
                 kiemHongPayLoad.toEntity(kiemHong);
                 kiemHong.setCreatedBy(userId);

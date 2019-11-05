@@ -46,8 +46,8 @@ public class KiemHongController extends BaseController {
      * @return
      */
     @PostMapping("/tkh")
-    public KiemHongPayLoad taoKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
-        logger.info("Tao kiem hong, \ndata: {}", kiemHongPayLoad);
+    public KiemHongPayLoad saveKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
+        logger.info("save kiem hong, \ndata: {}", kiemHongPayLoad);
         Long userId = extractUserInfo(httpServletRequest);
         return kiemHongService.save(userId, kiemHongPayLoad);
     }

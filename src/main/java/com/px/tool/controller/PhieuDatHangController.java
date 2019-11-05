@@ -3,7 +3,6 @@ package com.px.tool.controller;
 import com.px.tool.domain.dathang.PhieuDatHang;
 import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
-import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -22,9 +21,6 @@ import java.util.List;
 public class PhieuDatHangController extends BaseController {
     @Autowired
     private PhieuDatHangService phieuDatHangService;
-
-    @Autowired
-    private RequestService requestService;
 
     @GetMapping("/{id}")
     public PhieuDatHangPayload getPhieuDatHangDetail(@PathVariable Long id) {
