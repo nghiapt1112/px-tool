@@ -21,7 +21,7 @@ public class RequestController extends BaseController {
     private UserService userService;
 
     @GetMapping("/noi-nhan")
-    public LinkedList<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest, @RequestParam String requestId) {
+    public LinkedList<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest, @RequestParam(required = false) Long requestId) {
         return IntStream.rangeClosed(1,10)
                 .mapToObj(el -> {
                     NoiNhan noiNhan = new NoiNhan();
