@@ -16,5 +16,5 @@ public interface RequestService {
 
     List<DashBoardCongViecCuaToi> timByNguoiNhan(Collection<Long> userIds);
 
-    List<ThongKePayload> collectDataThongKe(Long userId, Long requestId);
+    List<ThongKePayload> collectDataThongKe(Long userId);
 }

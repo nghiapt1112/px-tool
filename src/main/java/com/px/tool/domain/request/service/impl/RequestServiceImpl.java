@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -51,8 +53,34 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<ThongKePayload> collectDataThongKe(Long userId, Long requestId) {
+    public List<ThongKePayload> collectDataThongKe(Long userId) {
+        List<Request> requests = requestRepository.findAll();
+        List<ThongKePayload> tks = requests.stream()
+                .map(ThongKePayload::fromRequestEntity)
+                .collect(Collectors.toList());
         Request request = findById(userId);
-        return null;
+        return IntStream.rangeClosed(1, 20)
+                .mapToObj(el -> {
+                    ThongKePayload tk = new ThongKePayload();
+                    tk.tt = Long.valueOf(el);
+                    tk.tenPhuKien = "Ten phi kien __ " + el;
+                    tk.tenLinhKien = "Ten link kien " + el;
+                    tk.kyHieu = "Ki hieu " + el;
+                    tk.SL = 10L;
+                    tk.dangHuHong = "Dang hu hong" + el;
+                    tk.ngayKiemHong = "ngay kiem hong" + el;
+                    tk.phuongPhapKhacPhuc = "phuong phap khac phuc" + el;
+                    tk.ngayChuyenPhongVatTu = "11/12/2018";
+                    tk.soPhieuDatHang = "so phieu dat hang" + el;
+                    tk.ngayChuyenKT = "15/03/2018";
+                    tk.soPA = "So phuong an" + el;
+                    tk.ngayRaPA = "15/03/2018";
+                    tk.ngayChuyenKH = "15/03/2018";
+                    tk.ngayPheDuyet = "15/03/2018";
+                    tk.ngayHoanThanh = "15/03/2018";
+                    tk.xacNhanHoanThanh = "Da hoan thanh";
+                    return tk;
+                })
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 }
