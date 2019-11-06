@@ -51,7 +51,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<ThongKePayload> findByUserId(Long userId) {
+    public List<ThongKePayload> collectDataThongKe(Long userId, Long requestId) {
+        Request request = findById(userId);
         return null;
     }
 }

@@ -9,21 +9,21 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ThongKePayload extends AbstractObject {
-    private Long tt;
-    private String tenPhuKien;
-    private String tenLinhKien;
-    private String kyHieu;
-    private Long SL;
-    private String dangHuHong;
-    private String ngayKiemHong;
-    private String phuongPhapKhacPhuc;
-    private String ngayChuyenPhongVatTu;
-    private String soPhieuDatHang;
-    private String ngayChuyenKT;
-    private String soPA;
-    private String ngayRaPA;
-    private String ngayChuyenKH;
-    private String ngayPheDuyet;
-    private String ngayHoanThanh;
-    private String xacNhanHoanThanh;
+    public Long   tt;
+    public String tenPhuKien;
+    public String tenLinhKien;
+    public String kyHieu;
+    public Long   SL;
+    public String dangHuHong;
+    public String ngayKiemHong;
+    public String phuongPhapKhacPhuc;
+    public String ngayChuyenPhongVatTu;
+    public String soPhieuDatHang;
+    public String ngayChuyenKT;
+    public String soPA;
+    public String ngayRaPA;
+    public String ngayChuyenKH;
+    public String ngayPheDuyet;
+    public String ngayHoanThanh;
+    public String xacNhanHoanThanh;
 }

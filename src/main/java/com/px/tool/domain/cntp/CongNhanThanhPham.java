@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @Getter
 @Setter
@@ -80,4 +81,5 @@ public class CongNhanThanhPham extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "congNhanThanhPham")
     private Request request;
+
 }
