@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +41,9 @@ public class User extends EntityDefault implements UserDetails {
     @Column
     @Type(type="text")
     private String signImg;
+
+    @Column
+    private String fullName;
 
     @ManyToMany
     @JoinTable(name = "user_role",
@@ -84,5 +88,9 @@ public class User extends EntityDefault implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getFullName() {
+        return StringUtils.isEmpty(fullName) ? email : fullName;
     }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `full_name`  varchar(255) NULL DEFAULT NULL;

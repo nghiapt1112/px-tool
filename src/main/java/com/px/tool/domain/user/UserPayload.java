@@ -12,13 +12,14 @@ public class UserPayload extends AbstractObject {
     public Long userId;
     private String email;
     private String signImg;
-//    private String password;
+    private String fullName;
 
     public static UserPayload fromEntity(User user) {
         UserPayload userPayload = new UserPayload();
         userPayload.userId = user.getUserId();
         userPayload.email = user.getEmail();
         userPayload.signImg = user.getSignImg();
+        userPayload.fullName = user.getFullName();
         return userPayload;
     }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `phong_ban` CHANGE `level` `group` int(11) NULL DEFAULT NULL

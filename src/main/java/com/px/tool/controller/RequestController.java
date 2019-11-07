@@ -22,14 +22,8 @@ public class RequestController extends BaseController {
 
     @GetMapping("/noi-nhan")
     public LinkedList<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest, @RequestParam(required = false) Long requestId) {
-        return IntStream.rangeClosed(1,10)
-                .mapToObj(el -> {
-                    NoiNhan noiNhan = new NoiNhan();
-                    noiNhan.setId(Long.valueOf(el));
-                    noiNhan.setName("Name __" + el);
-                    return noiNhan;
-                })
-                .collect(Collectors.toCollection(LinkedList::new));
+        return userService.findNoiNhan(extractUserInfo(httpServletRequest), requestId);
+
     }
 
 }

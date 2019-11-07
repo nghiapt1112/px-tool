@@ -27,7 +27,7 @@ public class PhongBan extends EntityDefault {
     private String name;
 
     @Column
-    private Integer level;
+    private Integer group;
 
     @OneToMany(mappedBy = "phongBan", cascade = CascadeType.ALL)
     private Set<User> users;

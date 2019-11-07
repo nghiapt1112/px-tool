@@ -6,7 +6,7 @@ import com.px.tool.domain.user.UserPayload;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.infrastructure.model.request.UserRequest;
+import com.px.tool.domain.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +52,6 @@ public class UserController extends BaseController {
                 .map(PhongBanPayload::fromEntity)
                 .collect(Collectors.toList());
     }
-
 
     @GetMapping("/info")
     public UserPayload getUserInfo(HttpServletRequest httpServletRequest) {
