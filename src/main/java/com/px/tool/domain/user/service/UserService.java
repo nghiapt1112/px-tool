@@ -17,5 +17,5 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long userId);
 
-    LinkedList<NoiNhan> findNoiNhan(Long extractUserInfo, Long requestId);
+    LinkedList<NoiNhan> findNoiNhan(Long userId, Long requestId);
 }

@@ -39,7 +39,7 @@ public class User extends EntityDefault implements UserDetails {
     private String password;
 
     @Column
-    @Type(type="text")
+    @Type(type = "text")
     private String signImg;
 
     @Column
@@ -92,5 +92,41 @@ public class User extends EntityDefault implements UserDetails {
 
     public String getFullName() {
         return StringUtils.isEmpty(fullName) ? email : fullName;
+    }
+
+    public boolean isTroLyKT() {
+        return // TODO cap 4a
+                this.phongBan != null && (
+                        phongBan.getGroup().equals(8)
+                                || phongBan.getGroup().equals(9)
+                );
+    }
+
+    public boolean isToTruong() {
+        return // TODO cap 4b
+                this.phongBan != null && (
+                        phongBan.getGroup().equals(17)
+                                || phongBan.getGroup().equals(18)
+                                || phongBan.getGroup().equals(19)
+                                || phongBan.getGroup().equals(20)
+                                || phongBan.getGroup().equals(21)
+                                || phongBan.getGroup().equals(22)
+                                || phongBan.getGroup().equals(23)
+                                || phongBan.getGroup().equals(24)
+                );
+    }
+
+    public boolean isQuanDocPhanXuong() {
+        return // TODO cap 3
+                this.phongBan != null && (
+                        phongBan.getGroup().equals(17)
+                                || phongBan.getGroup().equals(18)
+                                || phongBan.getGroup().equals(19)
+                                || phongBan.getGroup().equals(20)
+                                || phongBan.getGroup().equals(21)
+                                || phongBan.getGroup().equals(22)
+                                || phongBan.getGroup().equals(23)
+                                || phongBan.getGroup().equals(24)
+                );
     }
 }

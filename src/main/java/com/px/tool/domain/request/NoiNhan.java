@@ -1,5 +1,6 @@
 package com.px.tool.domain.request;
 
+import com.px.tool.domain.user.PhongBan;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +12,11 @@ import lombok.ToString;
 public class NoiNhan extends AbstractObject {
     private Long id;
     private String name;
+
+    public static NoiNhan fromPhongBanEntity(PhongBan phongBan) {
+        NoiNhan noiNhan = new NoiNhan();
+        noiNhan.id = phongBan.getPhongBanId();
+        noiNhan.name = phongBan.getName();
+        return noiNhan;
+    }
 }
