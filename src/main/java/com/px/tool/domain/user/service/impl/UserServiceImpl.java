@@ -91,9 +91,10 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(requestId)) {
             // tao kiem hong lan dau tien
             // find kiem hong (level 4a, 4b)
+        } else {
+            Request existedRequest = requestService.findById(requestId);
+            existedRequest.getStatus();
         }
-        Request existedRequest = requestService.findById(requestId);
-        existedRequest.getStatus();
         return IntStream.rangeClosed(1,10)
                 .mapToObj(el -> {
                     NoiNhan noiNhan = new NoiNhan();

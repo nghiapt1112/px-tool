@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -47,6 +48,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request findById(Long id) {
+        if (Objects.isNull(id)) {
+            throw new RuntimeException("requestId khong duoc null");
+        }
         return this.requestRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Request not found"));
