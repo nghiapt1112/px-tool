@@ -1,6 +1,7 @@
 package com.px.tool.domain.user.service.impl;
 
 import com.google.common.collect.Sets;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.request.NoiNhan;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
@@ -89,11 +90,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public LinkedList<NoiNhan> findNoiNhan(Long extractUserInfo, Long requestId) {
         if (Objects.isNull(requestId)) {
-            // tao kiem hong lan dau tien
-            // find kiem hong (level 4a, 4b)
+            // current user TO TRUONG =  51->81, chuyen den 4a: 29-40
+            // TRO LY KT 4a: 29-40, chuyen den cap 3 : 17-25
+            // QUAN_DOC_PX cap 3: 17-25 , chuyen den 50a, 50b, 50c
+
         } else {
+            // TODO: van phai check lai case kiem hong nhe'
             Request existedRequest = requestService.findById(requestId);
-            existedRequest.getStatus();
+            if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
+                if (!existedRequest.getKiemHong().getToTruongXacNhan()) {
+                    //
+                }
+            }
         }
         return IntStream.rangeClosed(1,10)
                 .mapToObj(el -> {
