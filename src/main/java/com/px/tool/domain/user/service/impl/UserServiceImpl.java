@@ -8,22 +8,20 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.UserRequest;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.domain.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.px.tool.domain.user.repository.PhongBanRepository.group_12;
 import static com.px.tool.domain.user.repository.PhongBanRepository.group_17_25;
@@ -60,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User  create(UserRequest user) {
+    public User create(UserRequest user) {
         Role role = roleRepository
                 .findById(Long.valueOf(user.getLevel()))
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -96,7 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LinkedList<NoiNhan> findNoiNhan(Long userId, Long requestId) {
+    public List<NoiNhan> findNoiNhan(Long userId, Long requestId) {
         User currentUser = findById(userId);
         List<PhongBan> pbs = null;
         if (Objects.isNull(requestId)) {
@@ -118,12 +116,20 @@ public class UserServiceImpl implements UserService {
                 } else if (currentUser.isQuanDocPhanXuong()) {
                     pbs = phongBanRepository.findByGroup(group_12);
                 }
+            } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
+                // nhan vien vat tu review va gui den truong phong vtu. all o group 12
+                // 12 ok => chuyen den group_29_40
+                // group_29_40 ok thi chuyen den group_8_9
+            } else if (existedRequest.getStatus() == RequestType.PHUONG_AN) {
+
+            } else if (existedRequest.getStatus() == RequestType.CONG_NHAN_THANH_PHAM) {
+
             }
         }
 
         return pbs.stream()
                 .map(NoiNhan::fromPhongBanEntity)
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toList());
 
 //        return IntStream.rangeClosed(1,10)
 //                .mapToObj(el -> {

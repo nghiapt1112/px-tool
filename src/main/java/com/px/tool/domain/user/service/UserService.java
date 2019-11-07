@@ -5,7 +5,6 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.UserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -17,5 +16,5 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long userId);
 
-    LinkedList<NoiNhan> findNoiNhan(Long userId, Long requestId);
+    List<NoiNhan> findNoiNhan(Long userId, Long requestId);
 }
