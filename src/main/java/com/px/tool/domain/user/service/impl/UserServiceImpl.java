@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -42,8 +43,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RequestService requestService;
 
-    @Autowired
-    private PhongBanRepository phongBanRepository;
+//    @Autowired
+//    private PhongBanRepository phongBanRepository;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User existed");
         }
         User entity = user.toUserEntity();
-        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        entity.setPassword("$2a$10$hAeQFOj8DhOYHdZ3mpPf8ORb05RmqWB/eIuAP.FWd4roXqKFwf8zy");
         entity.setAuthorities(Sets.newHashSet(role));
         return userRepository.save(entity);
     }
@@ -96,9 +97,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<NoiNhan> findNoiNhan(Long userId, Long requestId) {
         User currentUser = findById(userId);
-        List<PhongBan> pbs = null;
+        List<User> pbs = null;
         if (Objects.isNull(requestId)) {
-            pbs = phongBanRepository.findByGroup(group_29_40);
+            pbs = userRepository.findByGroup(group_29_40);
 
             // current user TO TRUONG =  51->81, chuyen den 4a: 29-40`
 
@@ -110,11 +111,11 @@ public class UserServiceImpl implements UserService {
             Request existedRequest = requestService.findById(requestId);
             if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
                 if (currentUser.isToTruong()) {
-                    pbs = phongBanRepository.findByGroup(group_29_40);
+                    pbs = userRepository.findByGroup(group_29_40);
                 } else if (currentUser.isTroLyKT()) {
-                    pbs = phongBanRepository.findByGroup(group_17_25);
+                    pbs = userRepository.findByGroup(group_17_25);
                 } else if (currentUser.isQuanDocPhanXuong()) {
-                    pbs = phongBanRepository.findByGroup(group_12);
+                    pbs = userRepository.findByGroup(group_12);
                 }
             } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
                 // nhan vien vat tu review va gui den truong phong vtu. all o group 12
@@ -126,9 +127,12 @@ public class UserServiceImpl implements UserService {
 
             }
         }
+        if (Objects.isNull(pbs)) {
+            return Collections.emptyList();
+        }
 
         return pbs.stream()
-                .map(NoiNhan::fromPhongBanEntity)
+                .map(NoiNhan::fromUserEntity)
                 .collect(Collectors.toList());
 
 //        return IntStream.rangeClosed(1,10)

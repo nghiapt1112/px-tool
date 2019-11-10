@@ -84,6 +84,7 @@ public class KiemHongServiceImpl implements KiemHongService {
                 request.setPhuongAn(new PhuongAn());
                 request.setPhieuDatHang(new PhieuDatHang());
                 request.setStatus(RequestType.KIEM_HONG);
+                // TODO: set data cho chuyen -- la thong tin nguoi nhan
                 Request savedRequest = this.requestService.save(request);
 
                 KiemHong savedKiemHong = savedRequest.getKiemHong();

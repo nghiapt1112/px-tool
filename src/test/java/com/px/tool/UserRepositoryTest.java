@@ -2,13 +2,18 @@ package com.px.tool;
 
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.Role;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.UserRequest;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.repository.RoleRepository;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.domain.user.UserRequest;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,6 +21,9 @@ public class UserRepositoryTest extends PxApplicationTests {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -49,7 +57,7 @@ public class UserRepositoryTest extends PxApplicationTests {
                 IntStream.rangeClosed(1, 80)
                         .mapToObj(el -> {
                             PhongBan phongBan = new PhongBan();
-                            phongBan.setName("");
+                            phongBan.setName("email__" + el);
                             phongBan.setGroup(5);
                             return phongBan;
                         })
@@ -69,6 +77,23 @@ public class UserRepositoryTest extends PxApplicationTests {
                     return userRequest;
                 })
                 .forEach(el -> this.userService.create(el));
+    }
+
+    @Test
+    public void findUsers() {
+        boolean wrongData = false;
+        for (User el : userService.findUsers()) {
+            if (el != null && CollectionUtils.isEmpty(el.getAuthorities())) {
+                wrongData = true;
+            }
+        }
+        Assert.assertEquals(false, wrongData);
+    }
+
+    @Test
+    public void findByPhongBan() {
+        List<User> users = userRepository.findByGroup(UserRepository.group_29_40);
+        System.out.println(users.size());
     }
 
 }

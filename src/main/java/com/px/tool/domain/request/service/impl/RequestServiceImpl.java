@@ -5,12 +5,18 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.ThongKePayload;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.repository.UserRepository;
+import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -21,6 +27,12 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private RequestRepository requestRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -38,8 +50,23 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Collection<Long> userIds) {
-        List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
+    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId) {
+        // TODO: if level 3 => nhan ca team
+        // TODO: if level 4,5 => nhan theo userId
+
+        User currentUser = userService.findById(userId);
+        List<Request> requestsByNguoiGui = null;
+        if (currentUser.getLevel() == 3) {
+            List<User> members = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()));
+            if (CollectionUtils.isEmpty(members)) {
+                throw new PXException("member.not_found");
+            }
+            requestsByNguoiGui = requestRepository.findByNguoiNhan(
+                    members.stream().map(User::getUserId).collect(Collectors.toSet())
+            );
+        } else {
+            requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId));
+        }
         return requestsByNguoiGui
                 .stream()
                 .map(DashBoardCongViecCuaToi::fromEntity)
@@ -58,11 +85,10 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<ThongKePayload> collectDataThongKe(Long userId) {
-        List<Request> requests = requestRepository.findAll();
-        List<ThongKePayload> tks = requests.stream()
-                .map(ThongKePayload::fromRequestEntity)
-                .collect(Collectors.toList());
-        Request request = findById(userId);
+//        List<Request> requests = requestRepository.findAll();
+//        List<ThongKePayload> tks = requests.stream()
+//                .map(ThongKePayload::fromRequestEntity)
+//                .collect(Collectors.toList());
         return IntStream.rangeClosed(1, 20)
                 .mapToObj(el -> {
                     ThongKePayload tk = new ThongKePayload();
@@ -85,6 +111,6 @@ public class RequestServiceImpl implements RequestService {
                     tk.xacNhanHoanThanh = "Da hoan thanh";
                     return tk;
                 })
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(() -> new ArrayList<>(20)));
     }
 }
