@@ -1,1 +1,0 @@
-ALTER TABLE `kiem_hong` ADD giam_doc_xac_nhan  tinyint(1) UNSIGNED NULL DEFAULT NULL;

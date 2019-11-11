@@ -5,11 +5,9 @@ import com.px.tool.domain.RequestType;
 import com.px.tool.domain.request.NoiNhan;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
-import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.UserRequest;
-import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
@@ -24,9 +22,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.px.tool.domain.user.repository.PhongBanRepository.group_12;
-import static com.px.tool.domain.user.repository.PhongBanRepository.group_17_25;
-import static com.px.tool.domain.user.repository.PhongBanRepository.group_29_40;
+import static com.px.tool.domain.user.repository.UserRepository.group_12;
+import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
+import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -134,14 +132,5 @@ public class UserServiceImpl implements UserService {
         return pbs.stream()
                 .map(NoiNhan::fromUserEntity)
                 .collect(Collectors.toList());
-
-//        return IntStream.rangeClosed(1,10)
-//                .mapToObj(el -> {
-//                    NoiNhan noiNhan = new NoiNhan();
-//                    noiNhan.setId(Long.valueOf(el));
-//                    noiNhan.setName("Name __" + el);
-//                    return noiNhan;
-//                })
-//                .collect(Collectors.toCollection(LinkedList::new));
     }
 }
