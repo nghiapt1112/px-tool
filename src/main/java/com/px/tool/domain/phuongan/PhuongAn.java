@@ -95,6 +95,22 @@ public class PhuongAn extends EntityDefault {
     @Column
     private BigDecimal tienLuong;
 
+
+    @Column(name = "truongphong_kthk_xacnhan")
+    private Boolean truongPhongKTHKXacNhan;
+
+    @Column(name = "truongphong_kehoach_xacnhan")
+    private Boolean truongPhongKeHoachXacNhan;
+
+    @Column(name = "truongphong_vattu_xacnhan")
+    private Boolean truongPhongVatTuXacNhan;
+
+    @Column(name = "nguoilap_xacnhan")
+    private Boolean nguoiLapXacNhan;
+
+    @Column(name = "giamdoc_xacnhan")
+    private Boolean giamDocXacNhan;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();
@@ -108,9 +124,11 @@ public class PhuongAn extends EntityDefault {
     private Request request;
 
     public boolean allApproved() {
-//        return
-//                Objects.nonNull(tpkthkXacNhan) && tpkthkXacNhan &&
-        return false;
+        return
+                Objects.nonNull(truongPhongKTHKXacNhan) && truongPhongKTHKXacNhan &&
+                        Objects.nonNull(truongPhongKeHoachXacNhan) && truongPhongKeHoachXacNhan &&
+                        Objects.nonNull(truongPhongVatTuXacNhan) && truongPhongVatTuXacNhan &&
+                        Objects.nonNull(nguoiLapXacNhan) && nguoiLapXacNhan &&
+                        Objects.nonNull(giamDocXacNhan) && giamDocXacNhan;
     }
-    //TODO: con thieu vai fields nua, fields ben duoi cho chuyen chuyen y
 }

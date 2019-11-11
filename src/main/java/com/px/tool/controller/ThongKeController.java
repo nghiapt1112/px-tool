@@ -21,6 +21,6 @@ public class ThongKeController extends BaseController {
     @GetMapping
     private List<ThongKePayload> getDataChoThongKe(HttpServletRequest httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
-        return requestService.findByUserId(userId);
+        return requestService.collectDataThongKe(userId);
     }
 }

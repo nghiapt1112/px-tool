@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @Getter
 @Setter
@@ -46,6 +47,33 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column
     private String soNghiemThuDuoc;
 
+    @Column
+    private Boolean nguoiGiaoViecXacNhan;
+
+    @Column
+    private Boolean nguoiThucHienXacNhan;
+
+    @Column
+    private Boolean tpkcsXacNhan;
+
+    @Column
+    private Float dong;
+
+    @Column
+    private Float gioX;
+
+    @Column
+    private Float laoDongTienLuong;
+
+    @Column
+    private String dvt;
+
+    @Column
+    private String to;
+
+    @Column
+    private String soLuong;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
@@ -53,4 +81,5 @@ public class CongNhanThanhPham extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "congNhanThanhPham")
     private Request request;
+
 }

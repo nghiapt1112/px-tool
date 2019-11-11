@@ -28,6 +28,6 @@ public class DashBoardController extends BaseController {
     @GetMapping("/receiver")
     public List<DashBoardCongViecCuaToi> getListcongViecCuaToi(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
-        return requestService.timByNguoiNhan(Arrays.asList(userId));
+        return requestService.timByNguoiNhan(userId);
     }
 }

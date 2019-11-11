@@ -37,6 +37,6 @@ public class NoiDungThucHien extends AbstractObject {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "tpId", insertable = false, updatable = false)
+    @JoinColumn(name = "tpId")
     private CongNhanThanhPham congNhanThanhPham;
 }

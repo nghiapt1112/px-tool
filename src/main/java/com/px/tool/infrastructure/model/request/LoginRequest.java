@@ -1,6 +1,5 @@
 package com.px.tool.infrastructure.model.request;
 
-import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

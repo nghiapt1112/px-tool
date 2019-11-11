@@ -6,9 +6,10 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -39,19 +40,28 @@ public class PhuongAnPayload extends AbstractObject {
     private BigDecimal tongDMVTKho;
     private BigDecimal tongDMVTMuaNgoai;
     private BigDecimal tienLuong;
-    private Set<DinhMucLaoDongPayload> dinhMucLaoDongs = new HashSet<>();
-    private Set<DinhMucVatTuPayload> dinhMucVatTus = new HashSet<>();
+    private List<DinhMucLaoDongPayload> dinhMucLaoDongs = new LinkedList<>();
+    private List<DinhMucVatTuPayload> dinhMucVatTus = new LinkedList<>();
     private Long chuyen; // id cua user dc nhan
+
+
+    private Boolean giamDocXacNhan;
+    private Boolean truongPhongKTHKXacNhan;
+    private Boolean truongPhongKeHoachXacNhan;
+    private Boolean truongPhongVatTuXacNhan;
+    private Boolean nguoiLapXacNhan;
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
         BeanUtils.copyProperties(phuongAn, phuongAnPayload);
         phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
                 .map(DinhMucLaoDongPayload::fromEntity)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparingLong(DinhMucLaoDongPayload::getDmId))
+                .collect(Collectors.toCollection(LinkedList::new));
         phuongAnPayload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
                 .map(DinhMucVatTuPayload::fromEntity)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
+                .collect(Collectors.toCollection(LinkedList::new));
         return phuongAnPayload;
     }
 

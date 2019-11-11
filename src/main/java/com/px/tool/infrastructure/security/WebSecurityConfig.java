@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/sec/login**", "/sec/token/refresh").permitAll()
+                .antMatchers("/sec/login**", "/sec/token/refresh", "/req/noi-nhan").permitAll()
                 .anyRequest().authenticated();
 
         // Add our custom JWT service filter

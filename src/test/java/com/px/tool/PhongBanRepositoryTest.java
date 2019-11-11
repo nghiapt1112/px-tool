@@ -18,7 +18,7 @@ public class PhongBanRepositoryTest extends PxApplicationTests {
         IntStream.range(0,28)
         .forEach(el -> {
             PhongBan phongBan = new PhongBan();
-            phongBan.setLevel(1);
+            phongBan.setGroup(1);
             phongBan.setName(UUID.randomUUID().toString() + el);
             this.phongBanRepository.save(phongBan);
         });

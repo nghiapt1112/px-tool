@@ -1,7 +1,6 @@
 package com.px.tool.infrastructure.utils;
 
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

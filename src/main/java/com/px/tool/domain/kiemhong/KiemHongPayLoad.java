@@ -4,12 +4,11 @@ import com.px.tool.infrastructure.model.request.AbstractObject;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
-import java.time.DateTimeException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -43,7 +42,7 @@ public class KiemHongPayLoad extends AbstractObject {
     private Boolean giamDocXacNhan;
     private String yKienGiamDoc;
 
-    private Set<KiemHongDetailPayload> kiemHongDetails = new HashSet<>();
+    private List<KiemHongDetailPayload> kiemHongDetails = new LinkedList<>();
     private Long chuyen; // id cua user dc nhan
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
@@ -52,7 +51,8 @@ public class KiemHongPayLoad extends AbstractObject {
         kiemHongResponse.kiemHongDetails = kiemHong.getKiemHongDetails()
                 .stream()
                 .map(KiemHongDetailPayload::fromEntity)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparingLong(KiemHongDetailPayload::getKhDetailId))
+                .collect(Collectors.toCollection(LinkedList::new));
 
         kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
         kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
@@ -82,9 +82,6 @@ public class KiemHongPayLoad extends AbstractObject {
                             return entity;
                         })
                         .collect(Collectors.toSet()));
-        if (CollectionUtils.isEmpty(kiemHong.getKiemHongDetails())) {
-            throw new RuntimeException("Thieu thong tin detail cua kiem hong");
-        }
         return kiemHong;
     }
 

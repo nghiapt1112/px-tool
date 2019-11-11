@@ -1,12 +1,9 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.RequestType;
-import com.px.tool.domain.phuongan.PhuongAnPayload;
-import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.service.RequestService;
-import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +20,6 @@ import java.util.List;
 public class PhuongAnController extends BaseController {
     @Autowired
     private PhuongAnService phuongAnService;
-
-    @Autowired
-    private RequestService requestService;
 
     @GetMapping("/{id}")
     public PhuongAnPayload getPhuongAnDetail(@PathVariable Long id) {
@@ -44,13 +38,4 @@ public class PhuongAnController extends BaseController {
         return this.phuongAnService.save(phuongAnPayload);
     }
 
-//    @PutMapping
-//    public PhuongAn capNhatPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
-//        logger.info("Cap nhat phuong an, \ndata: {}", phuongAnPayload);
-//        PhuongAn phuongAn = phuongAnPayload.toEntity();
-//        Request request = this.requestService.findById(phuongAnPayload.getRequestId());
-//        phuongAn.setRequest(request);
-//        request.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
-//        return this.phuongAnService.createPhuongAn(phuongAn);
-//    }
 }

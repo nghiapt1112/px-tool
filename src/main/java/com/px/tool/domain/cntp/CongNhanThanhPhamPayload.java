@@ -1,11 +1,13 @@
 package com.px.tool.domain.cntp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,13 +21,29 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
     private String noiDung;
 
+    @JsonProperty("soPa")
     private String soPA;
 
+    @JsonProperty("donViThucHien")
     private String donviThucHien;
 
+    @JsonProperty("donViDatHang")
     private String donviDatHang;
 
     private String soNghiemThuDuoc;
+
+    private Boolean nguoiGiaoViecXacNhan;
+    private Boolean nguoiThucHienXacNhan;
+    private Boolean tpkcsXacNhan;
+
+    private Float dong;
+    private Float gioX;
+    private Float laoDongTienLuong;
+
+    private String dvt;
+    private String to;
+    private String soLuong;
+
 
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 
@@ -41,8 +59,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
         return congNhanThanhPhamPayload;
     }
 
-    public CongNhanThanhPham toEntity() {
-        CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
+    public CongNhanThanhPham toEntity(CongNhanThanhPham congNhanThanhPham) {
         if (tpId != null && tpId <= 0) {
             tpId = null;
         }
@@ -50,7 +67,13 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
         congNhanThanhPham.setNoiDungThucHiens(
                 this.getNoiDungThucHiens()
                         .stream()
-                        .map(NoiDungThucHienPayload::toEntity)
+                        .map(detail -> {
+                            NoiDungThucHien entity = detail.toEntity();
+                            if(Objects.nonNull(congNhanThanhPham.getTpId())) {
+                                entity.setCongNhanThanhPham(congNhanThanhPham);
+                            }
+                            return entity;
+                        })
                         .collect(Collectors.toSet())
         );
         return congNhanThanhPham;
