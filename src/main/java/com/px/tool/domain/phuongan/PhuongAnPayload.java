@@ -42,7 +42,7 @@ public class PhuongAnPayload extends AbstractObject {
     private BigDecimal tienLuong;
     private List<DinhMucLaoDongPayload> dinhMucLaoDongs = new LinkedList<>();
     private List<DinhMucVatTuPayload> dinhMucVatTus = new LinkedList<>();
-    private Long chuyen; // id cua user dc nhan
+    private Long noiNhan; // id cua user dc nhan
 
 
     private Boolean giamDocXacNhan;

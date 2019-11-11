@@ -35,9 +35,9 @@ public class PhieuDatHangController extends BaseController {
     }
 
     @PostMapping
-    public void taoPhieuDatHang(@RequestBody PhieuDatHangPayload phieuDatHangPayload) {
+    public void taoPhieuDatHang(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody PhieuDatHangPayload phieuDatHangPayload) {
         logger.info("Save Phieu dat hang, \ndata: {}", phieuDatHangPayload);
-        this.phieuDatHangService.save(phieuDatHangPayload);
+        this.phieuDatHangService.save(extractUserInfo(httpServletRequest), phieuDatHangPayload);
     }
 
     @DeleteMapping

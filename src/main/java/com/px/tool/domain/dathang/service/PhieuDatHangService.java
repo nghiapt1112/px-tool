@@ -10,7 +10,7 @@ public interface PhieuDatHangService {
 
     List<PhieuDatHang> findByPhongBan(Long userId);
 
-    PhieuDatHang save(PhieuDatHangPayload phieuDatHangPayload);
+    PhieuDatHang save(Long userId, PhieuDatHangPayload phieuDatHangPayload);
 
     PhieuDatHang save(PhieuDatHang phieuDatHang);
 

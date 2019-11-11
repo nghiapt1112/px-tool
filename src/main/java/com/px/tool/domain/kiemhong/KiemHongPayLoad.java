@@ -26,7 +26,7 @@ public class KiemHongPayLoad extends AbstractObject {
     private String soXX; // 8373y64
     private String toSo;
     private String soTo;
-    private String noiNhan;
+    private Long noiNhan;
     private String ngayThangNamQuanDoc;
     private String quanDoc;
     private Boolean quanDocXacNhan;
@@ -43,7 +43,7 @@ public class KiemHongPayLoad extends AbstractObject {
     private String yKienGiamDoc;
 
     private List<KiemHongDetailPayload> kiemHongDetails = new LinkedList<>();
-    private Long chuyen; // id cua user dc nhan
+//    private Long chuyen; // id cua user dc nhan
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
@@ -54,6 +54,9 @@ public class KiemHongPayLoad extends AbstractObject {
                 .sorted(Comparator.comparingLong(KiemHongDetailPayload::getKhDetailId))
                 .collect(Collectors.toCollection(LinkedList::new));
 
+        if (kiemHong.getRequest() != null) {
+            kiemHongResponse.noiNhan = kiemHong.getRequest().getKiemHongReceiverId();
+        }
         kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
         kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
         kiemHongResponse.ngayThangNamTroLyKT = DateTimeUtils.nowAsString();

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
 
     @Override
     @Transactional
-    public PhieuDatHang save(PhieuDatHangPayload phieuDatHangPayload) {
+    public PhieuDatHang save(Long userId, PhieuDatHangPayload phieuDatHangPayload) {
         if (phieuDatHangPayload.notIncludeId()) {
             throw new RuntimeException("Phieu dat hang phai co id");
         }
@@ -53,14 +54,21 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
                 .orElse(null);
         cleanOldDetailData(existedPhieuDatHang);
 
+        Long kiemHongReceiverId = existedPhieuDatHang.getRequest().getKiemHongReceiverId();
+        Long phieuDatHangReceiverId = existedPhieuDatHang.getRequest().getPhieuDatHangReceiverId();
+        Long phuongAnReceiverId = existedPhieuDatHang.getRequest().getPhuongAnReceiverId();
+        Long cntpReceiverId = existedPhieuDatHang.getRequest().getCntpReceiverId();
+
+        Long requestId = existedPhieuDatHang.getRequest().getRequestId();
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN);
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
+            phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
         }
-        PhieuDatHang savedPhieuDatHang = phieuDatHangRepository.save(phieuDatHang);
-//        phieuDatHangDetailRepository.saveAll(savedPhieuDatHang.getPhieuDatHangDetails());
+        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
+        phieuDatHangRepository.save(phieuDatHang);
         return phieuDatHang;
     }
 

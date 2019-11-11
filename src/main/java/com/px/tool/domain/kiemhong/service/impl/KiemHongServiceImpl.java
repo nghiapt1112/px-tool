@@ -67,7 +67,7 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     @Override
     @Transactional
-    public KiemHongPayLoad save(Long userId, KiemHongPayLoad kiemHongPayLoad) {
+    public KiemHongPayLoad save(Long currentUserId, KiemHongPayLoad kiemHongPayLoad) {
 
         try {
             if (kiemHongPayLoad.notIncludeId()) {
@@ -75,16 +75,16 @@ public class KiemHongServiceImpl implements KiemHongService {
                 // TODO: tao kiem hong thi khong dc co giam_doc_xac_nhan
                 KiemHong kiemHong = new KiemHong();
                 kiemHongPayLoad.toEntity(kiemHong);
-                kiemHong.setCreatedBy(userId);
+                kiemHong.setCreatedBy(currentUserId);
 
                 Request request = new Request();
-                request.setCreatedBy(userId);
+                request.setCreatedBy(currentUserId);
                 request.setKiemHong(kiemHong);
                 request.setCongNhanThanhPham(new CongNhanThanhPham());
                 request.setPhuongAn(new PhuongAn());
                 request.setPhieuDatHang(new PhieuDatHang());
                 request.setStatus(RequestType.KIEM_HONG);
-                // TODO: set data cho chuyen -- la thong tin nguoi nhan
+                request.setKiemHongReceiverId(Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? currentUserId : kiemHongPayLoad.getNoiNhan());
                 Request savedRequest = this.requestService.save(request);
 
                 KiemHong savedKiemHong = savedRequest.getKiemHong();
@@ -95,7 +95,7 @@ public class KiemHongServiceImpl implements KiemHongService {
                         .fromEntity(savedRequest.getKiemHong())
                         .andRequestId(savedRequest.getRequestId());
             } else {
-                return capNhatKiemHong(userId, kiemHongPayLoad);
+                return capNhatKiemHong(currentUserId, kiemHongPayLoad);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,12 +117,18 @@ public class KiemHongServiceImpl implements KiemHongService {
         // TODO: get current user info , check permission. vi khong phai ai cung approve dc cho nguoi khac
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
+        Long kiemHongReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
+        Long phieuDatHangReceiverId = existedKiemHong.getRequest().getPhieuDatHangReceiverId();
+        Long phuongAnReceiverId = existedKiemHong.getRequest().getPhuongAnReceiverId();
+        Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();
         if (requestKiemHong.allApproved()) {
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
+            phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
+            createPhieuDatHang(requestKiemHong, pdh);
         }
+        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         kiemHongRepository.save(requestKiemHong);
-        createPhieuDatHang(requestKiemHong, pdh);
         kiemHongPayLoad.setRequestId(requestId);
         return kiemHongPayLoad;
     }

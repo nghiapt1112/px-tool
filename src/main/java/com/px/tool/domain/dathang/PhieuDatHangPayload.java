@@ -21,7 +21,7 @@ public class PhieuDatHangPayload extends AbstractObject {
     private String donViYeuCau;
     private String phanXuong;
     private String noiDung;
-    private String noiNhan;
+    private Long noiNhan;
     private String ngayThangNamTPKTHK;
     private String TPKTHK;
     private Boolean tpkthkXacNhan;

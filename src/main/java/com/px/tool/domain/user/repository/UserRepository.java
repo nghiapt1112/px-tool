@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     List<Long> group_29_40 = ImmutableList.of(8L, 9L);
     List<Long> group_17_25 = ImmutableList.of(17L, 18L, 19L, 20L, 21L, 22L, 23L, 24L, 25L);
-    List<Long> group_12 = ImmutableList.of(12L);
+    List<Long> group_12 = ImmutableList.of(12L, 8L, 9L);
 
     Optional<User> findByEmail(String username);
 

@@ -55,7 +55,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     @Override
     @Transactional
-    public PhuongAn save(PhuongAnPayload phuongAnPayload) {
+    public PhuongAn save(Long userId, PhuongAnPayload phuongAnPayload) {
         if (Objects.isNull(phuongAnPayload.getPaId())) {
             throw new RuntimeException("Phuong an phai co id");
         }
@@ -65,6 +65,13 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         cleanOldDetailData(existedPhuongAn);
 
+        Long kiemHongReceiverId = existedPhuongAn.getRequest().getKiemHongReceiverId();
+        Long phieuDatHangReceiverId = existedPhuongAn.getRequest().getPhieuDatHangReceiverId();
+        Long phuongAnReceiverId = existedPhuongAn.getRequest().getPhuongAnReceiverId();
+        Long cntpReceiverId = existedPhuongAn.getRequest().getCntpReceiverId();
+
+        Long requestId =  existedPhuongAn.getRequest().getRequestId();
+
         CongNhanThanhPham thanhPham = existedPhuongAn.getRequest().getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
@@ -72,7 +79,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
             taoCNTP(phuongAn, thanhPham);
+            cntpReceiverId = phuongAnPayload.getNoiNhan();
         }
+        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return phuongAnRepository.save(phuongAn);
     }
 

@@ -102,17 +102,16 @@ public class User extends EntityDefault implements UserDetails {
      * Hiện cấp 4a để lựa chọn và chuyển
      */
     public boolean isToTruong() {
-        return this.getLevel() == 4 &&
-                this.phongBan != null && (
-                        phongBan.getGroup().equals(17)
-                                || phongBan.getGroup().equals(18)
-                                || phongBan.getGroup().equals(19)
-                                || phongBan.getGroup().equals(20)
-                                || phongBan.getGroup().equals(21)
-                                || phongBan.getGroup().equals(22)
-                                || phongBan.getGroup().equals(23)
-                                || phongBan.getGroup().equals(24)
-                );
+        return this.getLevel() == 5 && this.phongBan != null && (
+                phongBan.getGroup().equals(17)
+                        || phongBan.getGroup().equals(18)
+                        || phongBan.getGroup().equals(19)
+                        || phongBan.getGroup().equals(20)
+                        || phongBan.getGroup().equals(21)
+                        || phongBan.getGroup().equals(22)
+                        || phongBan.getGroup().equals(23)
+                        || phongBan.getGroup().equals(24)
+        );
     }
 
     /**
@@ -120,11 +119,10 @@ public class User extends EntityDefault implements UserDetails {
      * Hiện cấp 3 (từ account 17 đến 25) để lựa chọn và chuyển
      */
     public boolean isTroLyKT() {
-        return this.getLevel() == 4 &&
-                this.phongBan != null && (
-                        phongBan.getGroup().equals(8)
-                                || phongBan.getGroup().equals(9)
-                );
+        return this.getLevel() == 4 && this.phongBan != null && (
+                phongBan.getGroup().equals(8)
+                        || phongBan.getGroup().equals(9)
+        );
     }
 
     /**
@@ -133,17 +131,16 @@ public class User extends EntityDefault implements UserDetails {
      * Hiện cấp 4a từ account 29 đến 40 nếu không đồng ý (phải có nguyên nhân ) (lặp đến khi nào Quản đốc đồng ý)
      */
     public boolean isQuanDocPhanXuong() {
-        return this.getLevel() == 3 &&
-                this.phongBan != null && (
-                        phongBan.getGroup().equals(17)
-                                || phongBan.getGroup().equals(18)
-                                || phongBan.getGroup().equals(19)
-                                || phongBan.getGroup().equals(20)
-                                || phongBan.getGroup().equals(21)
-                                || phongBan.getGroup().equals(22)
-                                || phongBan.getGroup().equals(23)
-                                || phongBan.getGroup().equals(24)
-                );
+        return this.getLevel() == 3 && this.phongBan != null && (
+                phongBan.getGroup().equals(17)
+                        || phongBan.getGroup().equals(18)
+                        || phongBan.getGroup().equals(19)
+                        || phongBan.getGroup().equals(20)
+                        || phongBan.getGroup().equals(21)
+                        || phongBan.getGroup().equals(22)
+                        || phongBan.getGroup().equals(23)
+                        || phongBan.getGroup().equals(24)
+        );
     }
 
     public boolean isAdmin() {
@@ -186,5 +183,38 @@ public class User extends EntityDefault implements UserDetails {
                 ", email='" + email + '\'' +
                 ", authorities=" + authorities +
                 '}';
+    }
+
+    /**
+     * Nhân viên vật tư (50a, 50b, 50c) Chuyển cho Nhân viên vật tư khác (50a, 50b, 50c) hoặc Trưởng phòng Vật tư (account 12).
+     */
+    public boolean isNhanVienVatTu() {
+        return false;
+    }
+
+    /**
+     * Chuyển cho Trợ lý Phòng KTHK (Trợ lý Phòng Kỹ thuật hàng không) hoặc Trợ lý Phòng Xe máy đặc chủng (các trợ lý này từ account 29 đến 40).
+     * Nếu đồng ý  Hiện cấp 50a, 50b, 50c
+     * nếu không đồng ý phải có nguyên nhân (lặp đến khi nào Trưởng phòng đồng ý)
+     */
+    public boolean isTruongPhongVatTu() {
+        return false;
+    }
+
+    /**
+     * (Trợ lý Phòng Kỹ thuật hàng không) hoặc Trợ lý Phòng Xe máy đặc chủng (các trợ lý này từ account 29 đến 40)
+     * Chuyển cho Trưởng Phòng KTHK (account 8) hoặc Trưởng Phòng Xe máy đặc chủng (account 9).
+     */
+    public boolean isTroLyPhongKTHK() {
+        return false;
+    }
+
+    /**
+     * (account 8) hoặc Trưởng Phòng Xe máy đặc chủng (account 9)
+     * Nếu đồng ý ký chuyển, văn bản đến sẽ được gửi đến: account có trong NGƯỜI THỰC HIỆN (H7) và PVT, PKTHK (hay Phòng Xe máy ĐẶC CHỦNG tùy thằng ký) Lưu ý trong VĂN BẢN ĐẾN (KHÔNG PHẢI VĂN BẢN CẦN GIẢI QUYẾT)
+     * Hiện cấp account 29 đến 40 nếu không đồng ý phải có nguyên nhân (lặp đến khi nào Trưởng phòng đồng ý)
+     */
+    public boolean isTruongPhongKTHK() {
+        return false;
     }
 }

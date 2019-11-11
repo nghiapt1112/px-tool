@@ -113,4 +113,9 @@ public class RequestServiceImpl implements RequestService {
                 })
                 .collect(Collectors.toCollection(() -> new ArrayList<>(20)));
     }
+
+    @Override
+    public void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId) {
+        requestRepository.updateReceiverId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
+    }
 }

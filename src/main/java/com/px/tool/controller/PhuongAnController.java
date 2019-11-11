@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -33,9 +34,9 @@ public class PhuongAnController extends BaseController {
     }
 
     @PostMapping
-    public PhuongAn createPhuongAn(@RequestBody PhuongAnPayload phuongAnPayload) {
+    public PhuongAn createPhuongAn(HttpServletRequest httpServletRequest, @RequestBody PhuongAnPayload phuongAnPayload) {
         logger.info("Tao Phuong An, \ndata: {}", phuongAnPayload);
-        return this.phuongAnService.save(phuongAnPayload);
+        return this.phuongAnService.save(extractUserInfo(httpServletRequest), phuongAnPayload);
     }
 
 }

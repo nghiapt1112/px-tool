@@ -10,7 +10,7 @@ public interface PhuongAnService {
 
     List<PhuongAn> findByPhongBan(Long userId);
 
-    PhuongAn save(PhuongAnPayload phuongAnPayload);
+    PhuongAn save(Long userId, PhuongAnPayload phuongAnPayload);
 
     PhuongAn savePhuongAn(PhuongAn phuongAn);
 }

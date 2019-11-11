@@ -17,4 +17,6 @@ public interface RequestService {
     List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId);
 
     List<ThongKePayload> collectDataThongKe(Long userId);
+
+    void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 }

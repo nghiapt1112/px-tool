@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User existed");
         }
         User entity = user.toUserEntity();
-        entity.setPassword("$2a$10$hAeQFOj8DhOYHdZ3mpPf8ORb05RmqWB/eIuAP.FWd4roXqKFwf8zy");
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
         entity.setAuthorities(Sets.newHashSet(role));
         return userRepository.save(entity);
     }
@@ -98,27 +99,36 @@ public class UserServiceImpl implements UserService {
         List<User> pbs = null;
         if (Objects.isNull(requestId)) {
             pbs = userRepository.findByGroup(group_29_40);
-
-            // current user TO TRUONG =  51->81, chuyen den 4a: 29-40`
-
-            // TRO LY KT 4a: 29-40, chuyen den cap 3 : 17-25
-            // QUAN_DOC_PX cap 3: 17-25 , chuyen den 50a, 50b, 50c
-
         } else {
             // TODO: van phai check lai case kiem hong nhe'
             Request existedRequest = requestService.findById(requestId);
             if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
                 if (currentUser.isToTruong()) {
-                    pbs = userRepository.findByGroup(group_29_40);
+                    pbs = userRepository.findByGroup(group_29_40)
+                            .stream()
+                            .filter(el -> el.getLevel() == 4)
+                            .collect(Collectors.toList());
                 } else if (currentUser.isTroLyKT()) {
-                    pbs = userRepository.findByGroup(group_17_25);
+                    pbs = userRepository.findByGroup(group_17_25)
+                            .stream()
+                            .filter(el -> el.getLevel() == 3)
+                            .collect(Collectors.toList());
                 } else if (currentUser.isQuanDocPhanXuong()) {
-                    pbs = userRepository.findByGroup(group_12);
+                    pbs = userRepository.findByGroup(group_12)
+                            .stream()
+                            .filter(el -> (el.getLevel() == 3 || el.getLevel() == 4))
+                            .collect(Collectors.toList());
                 }
             } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
-                // nhan vien vat tu review va gui den truong phong vtu. all o group 12
-                // 12 ok => chuyen den group_29_40
-                // group_29_40 ok thi chuyen den group_8_9
+                if (currentUser.isNhanVienVatTu()) {
+
+                } else if (currentUser.isTruongPhongVatTu()) {
+
+                } else if (currentUser.isTroLyPhongKTHK()) {
+
+                } else if (currentUser.isTruongPhongKTHK()) {
+
+                }
             } else if (existedRequest.getStatus() == RequestType.PHUONG_AN) {
 
             } else if (existedRequest.getStatus() == RequestType.CONG_NHAN_THANH_PHAM) {
@@ -131,6 +141,7 @@ public class UserServiceImpl implements UserService {
 
         return pbs.stream()
                 .map(NoiNhan::fromUserEntity)
+                .sorted(Comparator.comparingLong(NoiNhan::getId))
                 .collect(Collectors.toList());
     }
 }
