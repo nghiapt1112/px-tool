@@ -24,8 +24,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12;
+import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
+import static com.px.tool.domain.user.repository.UserRepository.group_14;
 import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
+import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong_phong;
+import static com.px.tool.domain.user.repository.UserRepository.group_giam_doc;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -114,25 +118,69 @@ public class UserServiceImpl implements UserService {
                             .filter(el -> el.getLevel() == 3)
                             .collect(Collectors.toList());
                 } else if (currentUser.isQuanDocPhanXuong()) {
-                    pbs = userRepository.findByGroup(group_12)
+                    pbs = userRepository.findByGroup(group_12_PLUS)
                             .stream()
                             .filter(el -> (el.getLevel() == 3 || el.getLevel() == 4))
                             .collect(Collectors.toList());
                 }
             } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
                 if (currentUser.isNhanVienVatTu()) {
-
+                    pbs = userRepository.findByGroup(group_12);
                 } else if (currentUser.isTruongPhongVatTu()) {
-
+                    pbs = userRepository.findByGroup(group_29_40)
+                            .stream()
+                            .filter(el -> el.getLevel() == 4)
+                            .collect(Collectors.toList());
                 } else if (currentUser.isTroLyPhongKTHK()) {
-
+                    pbs = userRepository.findByGroup(group_29_40)
+                            .stream()
+                            .filter(el -> el.getLevel() == 3)
+                            .collect(Collectors.toList());
                 } else if (currentUser.isTruongPhongKTHK()) {
-
+                    pbs = userRepository.findByGroup(group_29_40)
+                            .stream()
+                            .filter(el -> el.getLevel() == 4)
+                            .collect(Collectors.toList());
                 }
             } else if (existedRequest.getStatus() == RequestType.PHUONG_AN) {
-
+                if (currentUser.isNguoiLapPhieu()) {
+                    pbs = userRepository.findByGroup(group_29_40)
+                            .stream()
+                            .filter(el -> el.getLevel() == 3)
+                            .collect(Collectors.toList());
+                } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d
+                    pbs = userRepository.findByGroup(group_12)
+                            .stream()
+                            .filter(el -> el.getLevel() == 4)
+                            .collect(Collectors.toList());
+                } else if (currentUser.isNhanVienTiepLieu()) {
+                    pbs = userRepository.findByGroup(group_12)
+                            .stream()
+                            .filter(el -> el.getLevel() == 3)
+                            .collect(Collectors.toList());
+                } else if (currentUser.isTruongPhongVatTu()) { // chuyen 50e
+                    pbs = userRepository.findByGroup(group_14)
+                            .stream()
+                            .filter(el -> el.getLevel() == 4)
+                            .collect(Collectors.toList());
+                } else if (currentUser.isNhanVienDinhMuc()) { // chuyen truong phong ke hoach
+                    pbs = userRepository.findByGroup(group_14)
+                            .stream()
+                            .filter(el -> el.getLevel() == 3)
+                            .collect(Collectors.toList());
+                } else if (currentUser.isTruongPhongKeHoach()) {
+                    pbs = userRepository.findByGroup(group_giam_doc);
+                } else if (currentUser.getLevel() == 2) {
+                    pbs = userRepository.findByGroup(group_cac_truong_phong);
+                }
             } else if (existedRequest.getStatus() == RequestType.CONG_NHAN_THANH_PHAM) {
+                if (currentUser.isNguoiLapPhieuCNTP()) {
 
+                } else if (currentUser.isNhanVienKCS()) {
+
+                } else if (currentUser.isTruongPhongKCS()) {
+
+                }
             }
         }
         if (Objects.isNull(pbs)) {

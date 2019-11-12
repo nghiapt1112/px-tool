@@ -96,6 +96,38 @@ public class User extends EntityDefault implements UserDetails {
         return StringUtils.isEmpty(fullName) ? email : fullName;
     }
 
+    public boolean isAdmin() {
+        if (CollectionUtils.isEmpty(this.authorities)) {
+            return false;
+        } else {
+            for (Role authority : authorities) {
+                return authority.getAuthority().equalsIgnoreCase("ADMIN");
+            }
+        }
+        return false;
+    }
+
+    public int getLevel() {
+        if (CollectionUtils.isEmpty(this.authorities)) {
+            return -1;
+        } else {
+            for (Role authority : authorities) {
+                switch (authority.getAuthority()) {
+                    case "ADMIN":
+                        return 1;
+                    case "LEVEL2":
+                        return 2;
+                    case "LEVEL3":
+                        return 3;
+                    case "LEVEL4":
+                        return 4;
+                    case "LEVEL5":
+                        return 5;
+                }
+            }
+        }
+        return -1;
+    }
 
     /**
      * (cấp 4b từ account 51 đến 81) là người lập phiếu) => Lưu và Chuyển phiếu cho Trợ lý KT (cấp 4a từ account 29 đến 40)
@@ -143,53 +175,12 @@ public class User extends EntityDefault implements UserDetails {
         );
     }
 
-    public boolean isAdmin() {
-        if (CollectionUtils.isEmpty(this.authorities)) {
-            return false;
-        } else {
-            for (Role authority : authorities) {
-                return authority.getAuthority().equalsIgnoreCase("ADMIN");
-            }
-        }
-        return false;
-    }
-
-    public int getLevel() {
-        if (CollectionUtils.isEmpty(this.authorities)) {
-            return -1;
-        } else {
-            for (Role authority : authorities) {
-                switch (authority.getAuthority()) {
-                    case "ADMIN":
-                        return 1;
-                    case "LEVEL2":
-                        return 2;
-                    case "LEVEL3":
-                        return 3;
-                    case "LEVEL4":
-                        return 4;
-                    case "LEVEL5":
-                        return 5;
-                }
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", email='" + email + '\'' +
-                ", authorities=" + authorities +
-                '}';
-    }
 
     /**
      * Nhân viên vật tư (50a, 50b, 50c) Chuyển cho Nhân viên vật tư khác (50a, 50b, 50c) hoặc Trưởng phòng Vật tư (account 12).
      */
     public boolean isNhanVienVatTu() {
-        return false;
+        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(12));
     }
 
     /**
@@ -198,7 +189,7 @@ public class User extends EntityDefault implements UserDetails {
      * nếu không đồng ý phải có nguyên nhân (lặp đến khi nào Trưởng phòng đồng ý)
      */
     public boolean isTruongPhongVatTu() {
-        return false;
+        return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(12));
     }
 
     /**
@@ -206,7 +197,10 @@ public class User extends EntityDefault implements UserDetails {
      * Chuyển cho Trưởng Phòng KTHK (account 8) hoặc Trưởng Phòng Xe máy đặc chủng (account 9).
      */
     public boolean isTroLyPhongKTHK() {
-        return false;
+        return this.getLevel() == 4 && this.phongBan != null && (
+                phongBan.getGroup().equals(8)
+                        || phongBan.getGroup().equals(9)
+        );
     }
 
     /**
@@ -215,6 +209,55 @@ public class User extends EntityDefault implements UserDetails {
      * Hiện cấp account 29 đến 40 nếu không đồng ý phải có nguyên nhân (lặp đến khi nào Trưởng phòng đồng ý)
      */
     public boolean isTruongPhongKTHK() {
+        return this.getLevel() == 3 && this.phongBan != null && (
+                phongBan.getGroup().equals(8)
+                        || phongBan.getGroup().equals(9)
+        );
+    }
+
+    /**
+     * Người lập phiếu: Trợ lý Phòng KTHK (Trợ lý Phòng Kỹ thuật hàng không) hoặc Trợ lý Phòng Xe máy đặc chủng (các trợ lý này từ account 29 đến 40): nhập liệu, sau đó Lưu và
+     * Chuyển cho Trưởng Phòng KTHK (account 8) hoặc Trưởng Phòng Xe máy đặc chủng (account 9).
+     *
+     * @return
+     */
+    public boolean isNguoiLapPhieu() {
+        return isTroLyPhongKTHK();
+    }
+
+    /**
+     * Nhân viên tiếp liệu (account 50.d): nhập liệu trang 2 từ H29 đến N29, sau đó ấn Lưu và Chuyển cho Trưởng phòng Vật tư (account 12)
+     */
+    public boolean isNhanVienTiepLieu() {
+        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(12));
+    }
+
+
+    /**
+     * Nhân viên Định mức (account 50.e): sửa số liệu, sửa cột dữ liệu (dòng L11 đến L15),  nhập liệu D33 ấn Lưu và Chuyển cho Trưởng phòng Kế hoạch (account 14).
+     */
+    public boolean isNhanVienDinhMuc() {
+        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(14));
+    }
+
+    /**
+     * Trưởng phòng Kế hoạch (account 14): sửa số liệu, sau đó đồng ý (chữ ký) và ấn Chuyển cho account số 2,4,5,6 cấp 2 chỉ được chọn 1 và lựa chọn account 50.e (em vẫn chưa hiểu chỗ này ạ?)
+     * Hiện acount 2 đến 6 để chọn và chuyển, nếu đồng ý
+     * Hiện cấp account 50d nếu không đồng ý phải có nguyên nhân (lặp đến khi nào Trưởng phòng đồng ý)
+     */
+    public boolean isTruongPhongKeHoach() {
+        return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(14));
+    }
+
+    public boolean isNguoiLapPhieuCNTP() {
+        return false;
+    }
+
+    public boolean isNhanVienKCS() {
+        return false;
+    }
+
+    public boolean isTruongPhongKCS() {
         return false;
     }
 }
