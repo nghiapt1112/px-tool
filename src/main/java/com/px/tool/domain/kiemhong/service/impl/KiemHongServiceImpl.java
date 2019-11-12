@@ -144,6 +144,7 @@ public class KiemHongServiceImpl implements KiemHongService {
         PhieuDatHangDetail detail = null;
         for (KiemHongDetail kiemHongDetail : requestKiemHong.getKiemHongDetails()) {
             detail = new PhieuDatHangDetail();
+            detail.setKiemHongDetailId(kiemHongDetail.getKhDetailId());
             detail.setTenPhuKien(kiemHongDetail.getTenPhuKien());
             detail.setTenVatTuKyThuat(kiemHongDetail.getTenLinhKien());
             detail.setKiMaHieu(kiemHongDetail.getKyHieu());

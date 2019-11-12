@@ -85,10 +85,10 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<ThongKePayload> collectDataThongKe(Long userId) {
-//        List<Request> requests = requestRepository.findAll();
-//        List<ThongKePayload> tks = requests.stream()
-//                .map(ThongKePayload::fromRequestEntity)
-//                .collect(Collectors.toList());
+        List<Request> requests = requestRepository.findAll();
+        List<ThongKePayload> tks = requests.stream()
+                .map(ThongKePayload::fromRequestEntity)
+                .collect(Collectors.toList());
         return IntStream.rangeClosed(1, 20)
                 .mapToObj(el -> {
                     ThongKePayload tk = new ThongKePayload();

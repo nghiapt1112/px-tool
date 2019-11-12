@@ -46,6 +46,7 @@ public class ThongKePayload extends AbstractObject {
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = "11/12/1993";
             // TODO: set them thong tin cua kiem hong id de lay dc data.
+            // TODO: cho ra map<kiemhongDetailId, kiemhong>
         }
         return tk;
     }

@@ -52,6 +52,9 @@ public class PhieuDatHangDetail {
     @Column
     private String nguoiThucHien;
 
+    @Column(name = "kh_detail_id")
+    private Long kiemHongDetailId;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pdhId")
