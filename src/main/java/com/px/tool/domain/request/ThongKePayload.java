@@ -1,5 +1,6 @@
 package com.px.tool.domain.request;
 
+import com.google.common.collect.Sets;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.infrastructure.model.request.AbstractObject;
@@ -9,6 +10,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +35,7 @@ public class ThongKePayload extends AbstractObject {
     public String ngayPheDuyet;
     public String ngayHoanThanh;
     public String xacNhanHoanThanh;
+    public Long requestId;
 
     public static ThongKePayload fromRequestEntity(Request request) {
         List<ThongKePayload> tks = new ArrayList<>();
@@ -49,25 +52,26 @@ public class ThongKePayload extends AbstractObject {
             tk.tenPhuKien = detail.getTenPhuKien();
             tk.tenLinhKien = detail.getTenLinhKien();
             tk.kyHieu = detail.getKyHieu();
-            tk.SL = Long.valueOf(detail.getSl());
+            tk.SL = Long.valueOf(detail.getSl() != null ? detail.getSl() : "0");
             tk.dangHuHong = detail.getDangHuHong();
             tk.ngayKiemHong = "detail .get() ngay kiem hong";
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = "11/12/1993";
-            // TODO: set them thong tin cua kiem hong id de lay dc data.
-            // TODO: cho ra map<kiemhongDetailId, kiemhong>
+            tk.soPhieuDatHang = "";
+            try {
+                pdhDt = pdhDetailById.get(detail.getKhDetailId());
+                tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
+            } catch (Exception e) {
 
-
-//            tk.tt = Long.valueOf(el);
-            pdhDt = pdhDetailById.get(detail.getKhDetailId());
-            tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
+            }
             tk.ngayChuyenKT = request.getPhieuDatHang().getNgayThangNamTPVatTu();
 //            tk.soPA = "So phuong an" + el;
             tk.ngayRaPA = request.getPhuongAn().getNgayThangNamNguoiLap();
             tk.ngayChuyenKH = request.getPhuongAn().getNgayThangNamtpVatTu();
             tk.ngayPheDuyet = request.getPhuongAn().getNgayThangNamTPKTHK();
-//            tk.ngayHoanThanh = request.getCongNhanThanhPham().getNguoiThucHienXacNhan();
-//            tk.xacNhanHoanThanh = "Da hoan thanh";
+//            tk.ngayHoanThanh = request.getCongNhanThanhPham().getNguoiThucHienXacNhan(); // TODO: thieu field nay
+            tk.xacNhanHoanThanh = request.getStatus().name();
+            tk.requestId = request.getRequestId();
         }
         return tk;
     }

@@ -40,21 +40,28 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
                 .findById(congNhanThanhPhamPayload.getTpId())
                 .orElse(null);
 
-        cleanOldDetailData(existedCongNhanThanhPham);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
+        cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
 
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
-    private void cleanOldDetailData(CongNhanThanhPham existedCongNhanThanhPham) {
+    private void cleanOldDetailData(CongNhanThanhPham requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
         if (Objects.isNull(existedCongNhanThanhPham)) {
             return;
         }
         try {
+
+            Set<Long> requestIds = requestCNTP.getNoiDungThucHiens()
+                    .stream()
+                    .map(NoiDungThucHien::getNoiDungId)
+                    .collect(Collectors.toSet());
+
             Set<Long> ids = existedCongNhanThanhPham.getNoiDungThucHiens()
                     .stream()
                     .map(NoiDungThucHien::getNoiDungId)
+                    .filter(el -> !requestIds.contains(el))
                     .collect(Collectors.toSet());
 
             if (!CollectionUtils.isEmpty(ids)) {

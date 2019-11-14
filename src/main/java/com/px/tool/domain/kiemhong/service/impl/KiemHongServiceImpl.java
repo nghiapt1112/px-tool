@@ -1,6 +1,5 @@
 package com.px.tool.domain.kiemhong.service.impl;
 
-import com.px.tool.PxApplication;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.dathang.PhieuDatHang;
@@ -150,7 +149,7 @@ public class KiemHongServiceImpl implements KiemHongService {
         kiemHongPayLoad.toEntity(requestKiemHong);
         capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
         validateXacNhan(userId, requestKiemHong, existedKiemHong);
-        cleanKiemHongDetails(existedKiemHong);
+        cleanKiemHongDetails(requestKiemHong, existedKiemHong);
         // TODO: get current user info , check permission. vi khong phai ai cung approve dc cho nguoi khac
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
@@ -242,15 +241,22 @@ public class KiemHongServiceImpl implements KiemHongService {
         return kiemHongRepository.existsById(id);
     }
 
-    public void cleanKiemHongDetails(KiemHong existedKiemHong) {
+    public void cleanKiemHongDetails(KiemHong requestKiemHong, KiemHong existedKiemHong) {
         try {
             if (Objects.isNull(existedKiemHong)) {
                 return;
             }
+            Set<Long> requestDetailIds = requestKiemHong.getKiemHongDetails()
+                    .stream()
+                    .map(el -> el.getKhDetailId())
+                    .collect(Collectors.toSet());
+
             Set<Long> kiemHongDetailIds = existedKiemHong.getKiemHongDetails()
                     .stream()
                     .map(KiemHongDetail::getKhDetailId)
+                    .filter(el -> !requestDetailIds.contains(el))
                     .collect(Collectors.toSet());
+
             if (CollectionUtils.isEmpty(kiemHongDetailIds)) {
                 return;
             }

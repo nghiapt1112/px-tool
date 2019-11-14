@@ -90,7 +90,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             taoCNTP(phuongAn, thanhPham);
             cntpReceiverId = phuongAnPayload.getNoiNhan();
         }
-        cleanOldDetailData(existedPhuongAn);
+        cleanOldDetailData(phuongAn, existedPhuongAn);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return phuongAnRepository.save(phuongAn);
     }
@@ -146,18 +146,32 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
         }
     }
-    private void cleanOldDetailData(PhuongAn existedPhuongAn) {
+    private void cleanOldDetailData(PhuongAn requestPhuongAn, PhuongAn existedPhuongAn) {
         try {
             if (Objects.isNull(existedPhuongAn)) {
                 return;
             }
-            Set<Long> vatuIds = existedPhuongAn.getDinhMucVatTus()
+
+            Set<Long> requsetDinhMucVatTuIds = requestPhuongAn.getDinhMucVatTus()
                     .stream()
                     .map(DinhMucVatTu::getVtId)
                     .collect(Collectors.toSet());
+
+            Set<Long> vatuIds = existedPhuongAn.getDinhMucVatTus()
+                    .stream()
+                    .map(DinhMucVatTu::getVtId)
+                    .filter(el -> !requsetDinhMucVatTuIds.contains(el))
+                    .collect(Collectors.toSet());
+
+            Set<Long> requsetLaoDongIds = requestPhuongAn.getDinhMucLaoDongs()
+                    .stream()
+                    .map(DinhMucLaoDong::getDmId)
+                    .collect(Collectors.toSet());
+
             Set<Long> laoDongIds = existedPhuongAn.getDinhMucLaoDongs()
                     .stream()
                     .map(DinhMucLaoDong::getDmId)
+                    .filter(el -> !requsetLaoDongIds.contains(el))
                     .collect(Collectors.toSet());
             if (!CollectionUtils.isEmpty(vatuIds)) {
                 dinhMucVatTuRepository.deleteAllByIds(vatuIds);

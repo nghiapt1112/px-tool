@@ -75,7 +75,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
             phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
         }
-        cleanOldDetailData(existedPhieuDatHang);
+        cleanOldDetailData(phieuDatHang, existedPhieuDatHang);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         phieuDatHangRepository.save(phieuDatHang);
         return phieuDatHang;
@@ -125,18 +125,23 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         }
     }
 
-    private void cleanOldDetailData(PhieuDatHang existedPhieuDatHang) {
+    private void cleanOldDetailData(PhieuDatHang requestPhieuDatHang, PhieuDatHang existedPhieuDatHang) {
         try {
             logger.info("Dang clean da ta cu cua phieu dat hang");
-            Set<Long> oldIds = null;
+            Set<Long> deleteIds = null;
             if (existedPhieuDatHang != null) {
-                oldIds = existedPhieuDatHang.getPhieuDatHangDetails()
+                Set<Long> requestIds = requestPhieuDatHang.getPhieuDatHangDetails()
+                        .stream()
+                        .map(el -> el.getPdhDetailId())
+                        .collect(Collectors.toSet());
+                deleteIds = existedPhieuDatHang.getPhieuDatHangDetails()
                         .stream()
                         .map(detail -> detail.getPdhDetailId())
+                        .filter(el -> !requestIds.contains(el))
                         .collect(Collectors.toSet());
             }
-            if (!CollectionUtils.isEmpty(oldIds)) {
-                phieuDatHangDetailRepository.deleteAllByIds(oldIds);
+            if (!CollectionUtils.isEmpty(deleteIds)) {
+                phieuDatHangDetailRepository.deleteAllByIds(deleteIds);
             }
         } catch (Exception e) {
             e.printStackTrace();
