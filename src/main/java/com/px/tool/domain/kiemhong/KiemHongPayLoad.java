@@ -43,10 +43,12 @@ public class KiemHongPayLoad extends AbstractObject {
     private String yKienGiamDoc;
 
     private List<KiemHongDetailPayload> kiemHongDetails = new LinkedList<>();
-//    private Long chuyen; // id cua user dc nhan
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
+//        kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
+//        kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
+//        kiemHongResponse.ngayThangNamTroLyKT = DateTimeUtils.nowAsString();
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
         kiemHongResponse.kiemHongDetails = kiemHong.getKiemHongDetails()
                 .stream()
@@ -57,10 +59,6 @@ public class KiemHongPayLoad extends AbstractObject {
         if (kiemHong.getRequest() != null) {
             kiemHongResponse.noiNhan = kiemHong.getRequest().getKiemHongReceiverId();
         }
-        kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
-        kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
-        kiemHongResponse.ngayThangNamTroLyKT = DateTimeUtils.nowAsString();
-
         return kiemHongResponse;
     }
 
@@ -90,5 +88,21 @@ public class KiemHongPayLoad extends AbstractObject {
 
     public boolean notIncludeId() {
         return khId != null && khId <= 0;
+    }
+
+    public Boolean getQuanDocXacNhan() {
+        return quanDocXacNhan == null ? false : quanDocXacNhan;
+    }
+
+    public Boolean getTroLyKTXacNhan() {
+        return troLyKTXacNhan == null ? false : troLyKTXacNhan;
+    }
+
+    public Boolean getToTruongXacNhan() {
+        return toTruongXacNhan == null ? false : toTruongXacNhan;
+    }
+
+    public Boolean getGiamDocXacNhan() {
+        return giamDocXacNhan == null ? false : giamDocXacNhan;
     }
 }

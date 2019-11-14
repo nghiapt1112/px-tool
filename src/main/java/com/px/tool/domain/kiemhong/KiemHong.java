@@ -63,7 +63,7 @@ public class KiemHong extends EntityDefault {
     private String soTo;
 
     @Column
-    private String noiNhan;
+    private Long noiNhan;
 
     @Column
     private String ngayThangNamQuanDoc;
@@ -105,6 +105,22 @@ public class KiemHong extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "kiemHong")
     private Request request;
+
+    public Boolean getQuanDocXacNhan() {
+        return quanDocXacNhan == null ? false : quanDocXacNhan;
+    }
+
+    public Boolean getTroLyKTXacNhan() {
+        return troLyKTXacNhan == null ? false : troLyKTXacNhan;
+    }
+
+    public Boolean getToTruongXacNhan() {
+        return toTruongXacNhan == null ? false : toTruongXacNhan;
+    }
+
+    public Boolean getGiamDocXacNhan() {
+        return giamDocXacNhan == null ? false : giamDocXacNhan;
+    }
 
     @JsonIgnore
     public boolean allApproved() {

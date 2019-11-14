@@ -15,6 +15,10 @@ import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,9 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     @Autowired
     private PhieuDatHangDetailRepository phieuDatHangDetailRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
@@ -71,8 +78,8 @@ public class KiemHongServiceImpl implements KiemHongService {
 
         try {
             if (kiemHongPayLoad.notIncludeId()) {
-                // TODO: check co quyen tao kiem hong hay khong?
-                // TODO: tao kiem hong thi khong dc co giam_doc_xac_nhan
+                validateTaoKiemHong(currentUserId, kiemHongPayLoad);
+
                 KiemHong kiemHong = new KiemHong();
                 kiemHongPayLoad.toEntity(kiemHong);
                 kiemHong.setCreatedBy(currentUserId);
@@ -98,10 +105,28 @@ public class KiemHongServiceImpl implements KiemHongService {
                 return capNhatKiemHong(currentUserId, kiemHongPayLoad);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Co loi trong qua trinh save Kiem Hong");
+            if (e instanceof PXException) {
+                throw e;
+            } else {
+                throw new PXException("Co loi trong qua trinh save Kiem Hong");
+            }
         }
 
+    }
+
+    /**
+     * Chỉ tổ trưởng mới có quyền lập  phiếu
+     *
+     * Khi lập phiếu thì không được có xác nhận.
+     */
+    private void validateTaoKiemHong(Long currentUserId, KiemHongPayLoad kiemHongPayLoad) {
+        User user = userService.findById(currentUserId);
+        if (!user.isToTruong()) {
+            throw new PXException("Chỉ tổ trưởng mới có quyền lập phiếu");
+        }
+        if (kiemHongPayLoad.getToTruongXacNhan() || kiemHongPayLoad.getQuanDocXacNhan() || kiemHongPayLoad.getTroLyKTXacNhan()) {
+            throw new PXException("Xác nhận dành cho tổ trưởng.");
+        }
     }
 
     @Override
@@ -127,10 +152,50 @@ public class KiemHongServiceImpl implements KiemHongService {
             phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
             createPhieuDatHang(requestKiemHong, pdh);
         }
+        capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
+        validateXacNhan(userId, requestKiemHong, existedKiemHong);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         kiemHongRepository.save(requestKiemHong);
         kiemHongPayLoad.setRequestId(requestId);
         return kiemHongPayLoad;
+    }
+
+    /**
+     * Phai dung permission khi xac nhan
+     * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
+     */
+    private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
+            throw new PXException("Nơi nhận phải được chọn");
+        }
+        if (!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan() && requestKiemHong.getNoiNhan() != null) {
+            throw new PXException("Phải có người xác nhận");
+        }
+        User user = userService.findById(userId);
+        if(user.isToTruong() && !requestKiemHong.getToTruongXacNhan() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+            throw new PXException("Tổ trưởng xác nhận ở ô tổ trưởng");
+        }
+        if(user.isTroLyKT() && !requestKiemHong.getTroLyKTXacNhan() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
+            throw new PXException("Trợ lý KT xác nhận ở ô trợ lý KT");
+        }
+        if(user.isQuanDocPhanXuong() && !requestKiemHong.getQuanDocXacNhan() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+            throw new PXException("Quản đốc xác nhận ở ô quản đốc");
+        }
+    }
+
+    /**
+     * khi co xac nhan thi cap nhat ngay thang
+     */
+    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
+            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
+        }
+        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
+            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
+        }
+        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
+            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
+        }
     }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {

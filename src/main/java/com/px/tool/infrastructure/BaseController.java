@@ -23,8 +23,6 @@ public abstract class BaseController {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRootException(RuntimeException e) {
         e.printStackTrace();
-        logger.error("Message: {}\nCause: {}\n Stacktrace: {}", e.getMessage(), e.getCause(), e.getStackTrace());
-
         return ResponseEntity
                 .badRequest()
                 .body(ErrorResponse
