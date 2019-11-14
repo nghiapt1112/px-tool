@@ -3,6 +3,7 @@ package com.px.tool.domain.phuongan.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
+import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
@@ -13,6 +14,10 @@ import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +45,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Autowired
     private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public PhuongAnPayload findById(Long id) {
         Request request = requestService.findById(id);
@@ -63,7 +72,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
                 .findById(phuongAnPayload.getPaId())
                 .orElse(null);
 
-        cleanOldDetailData(existedPhuongAn);
+
 
         Long kiemHongReceiverId = existedPhuongAn.getRequest().getKiemHongReceiverId();
         Long phieuDatHangReceiverId = existedPhuongAn.getRequest().getPhieuDatHangReceiverId();
@@ -81,6 +90,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             taoCNTP(phuongAn, thanhPham);
             cntpReceiverId = phuongAnPayload.getNoiNhan();
         }
+        cleanOldDetailData(existedPhuongAn);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return phuongAnRepository.save(phuongAn);
     }
@@ -95,6 +105,47 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
+    /**
+     * Phai dung permission khi xac nhan
+     * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
+     */
+    private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
+            throw new PXException("Nơi nhận phải được chọn");
+        }
+        if (!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan() && requestKiemHong.getNoiNhan() != null) {
+            throw new PXException("Phải có người xác nhận");
+        }
+        User user = userService.findById(userId);
+        if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
+            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
+        }
+        if (user.isTroLyKT() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
+            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
+            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
+        }
+        if (user.isQuanDocPhanXuong() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
+            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
+        }
+
+    }
+
+    /**
+     * khi co xac nhan thi cap nhat ngay thang
+     */
+    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
+            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
+        }
+        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
+            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
+        }
+        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
+            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
+        }
+    }
     private void cleanOldDetailData(PhuongAn existedPhuongAn) {
         try {
             if (Objects.isNull(existedPhuongAn)) {

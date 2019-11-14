@@ -85,6 +85,10 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<ThongKePayload> collectDataThongKe(Long userId) {
+        User user = userService.findById(userId);
+        if (user.getLevel() >2) {
+            throw new PXException("Chỉ giám đốc hoặc admin mới có quyền xem thống kê.");
+        }
         List<Request> requests = requestRepository.findAll();
         List<ThongKePayload> tks = requests.stream()
                 .map(ThongKePayload::fromRequestEntity)
