@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +51,7 @@ public class PhuongAnPayload extends AbstractObject {
     private Boolean truongPhongKeHoachXacNhan;
     private Boolean truongPhongVatTuXacNhan;
     private Boolean nguoiLapXacNhan;
+    private List<String> files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();

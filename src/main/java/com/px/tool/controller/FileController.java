@@ -34,6 +34,7 @@ public class FileController {
 
     @PostMapping("/upload")
     public void uploadMultipleFiles(@RequestParam RequestType requestType, @RequestParam MultipartFile[] files, @RequestParam Long requestId) {
+        logger.info("Number of request files: {}", files.length);
         for (MultipartFile file : files) {
             fileStorageService.storeFile(file, requestType, requestId);
         }

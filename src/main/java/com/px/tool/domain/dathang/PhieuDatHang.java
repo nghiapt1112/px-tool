@@ -48,7 +48,7 @@ public class PhieuDatHang extends EntityDefault {
     private String noiDung;
 
     @Column
-    private String noiNhan;
+    private Long noiNhan;
 
     @Column
     private String ngayThangNamTPKTHK;
@@ -93,5 +93,17 @@ public class PhieuDatHang extends EntityDefault {
                 Objects.nonNull(tpkthkXacNhan) && tpkthkXacNhan &&
                 Objects.nonNull(tpvatTuXacNhan) && tpvatTuXacNhan &&
                 Objects.nonNull(nguoiDatHangXacNhan) && nguoiDatHangXacNhan;
+    }
+
+    public Boolean getTpkthkXacNhan() {
+        return tpkthkXacNhan == null ? false : tpkthkXacNhan;
+    }
+
+    public Boolean getTpvatTuXacNhan() {
+        return tpvatTuXacNhan == null ? false : tpvatTuXacNhan;
+    }
+
+    public Boolean getNguoiDatHangXacNhan() {
+        return nguoiDatHangXacNhan == null ? false : nguoiDatHangXacNhan;
     }
 }
