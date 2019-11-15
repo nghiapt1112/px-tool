@@ -172,6 +172,7 @@ public class User extends EntityDefault implements UserDetails {
                         || phongBan.getGroup().equals(22)
                         || phongBan.getGroup().equals(23)
                         || phongBan.getGroup().equals(24)
+                        || phongBan.getGroup().equals(25)
         );
     }
 
