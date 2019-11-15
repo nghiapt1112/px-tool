@@ -92,6 +92,7 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requests = requestRepository.findAll();
         return requests.stream()
                 .map(ThongKePayload::fromRequestEntity)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 //        return IntStream.rangeClosed(1, 20)
 //                .mapToObj(el -> {
