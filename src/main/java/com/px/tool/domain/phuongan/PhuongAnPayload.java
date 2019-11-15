@@ -51,7 +51,7 @@ public class PhuongAnPayload extends AbstractObject {
     private Boolean truongPhongKeHoachXacNhan;
     private Boolean truongPhongVatTuXacNhan;
     private Boolean nguoiLapXacNhan;
-    private List<String> files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
+    private List<String> files ;
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
@@ -64,6 +64,7 @@ public class PhuongAnPayload extends AbstractObject {
                 .map(DinhMucVatTuPayload::fromEntity)
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
+        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
         return phuongAnPayload;
     }
 
