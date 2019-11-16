@@ -161,7 +161,7 @@ public class KiemHongServiceImpl implements KiemHongService {
         if (requestKiemHong.allApproved()) {
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
-            phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
+            phieuDatHangReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
             createPhieuDatHang(requestKiemHong, pdh);
         }
 

@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12;
-import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 import static com.px.tool.domain.user.repository.UserRepository.group_14;
 import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
@@ -138,7 +137,9 @@ public class UserServiceImpl implements UserService {
         } else if (currentUser.isTruongPhongKCS()) {
 
         }
-//        users = pbs.collect(Collectors.toList());
+//        if (pbs != null) {
+//            users.addAll(pbs.collect(Collectors.toList()));
+//        }
     }
 
     private void filterTheoPhuongAn(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
@@ -168,7 +169,9 @@ public class UserServiceImpl implements UserService {
         } else if (currentUser.getLevel() == 2) {
             pbs = userRepository.findByGroup(group_cac_truong_phong).stream();
         }
-        users.addAll(pbs.collect(Collectors.toList()));
+        if (pbs != null) {
+            users.addAll(pbs.collect(Collectors.toList()));
+        }
     }
 
     private void filterTheoDatHang(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
@@ -188,7 +191,9 @@ public class UserServiceImpl implements UserService {
                     .stream()
                     .filter(el -> el.getLevel() == 4);
         }
-        users.addAll(pbs.collect(Collectors.toList()));
+        if (pbs != null) {
+            users.addAll(pbs.collect(Collectors.toList()));
+        }
     }
 
     private void filterTheoKiemHong(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
@@ -202,13 +207,18 @@ public class UserServiceImpl implements UserService {
                     .stream()
                     .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isQuanDocPhanXuong()) {
-            pbs = userRepository.findByGroup(group_12_PLUS).stream();
             if (requestParams.getQuanDoc()) {
-                pbs = pbs.filter(el -> el.getLevel() == 3);
+                pbs = userRepository.findByGroup(group_12)
+                        .stream()
+                        .filter(el -> el.getLevel() == 4);
             } else {
-                pbs = pbs.filter(el -> el.getLevel() == 4);
+                pbs = userRepository.findByGroup(group_29_40)
+                        .stream()
+                        .filter(el -> el.getLevel() == 4);
             }
         }
-        users.addAll(pbs.collect(Collectors.toList()));
+        if (pbs != null) {
+            users.addAll(pbs.collect(Collectors.toList()));
+        }
     }
 }
