@@ -1,6 +1,7 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,21 @@ public class RequestController extends BaseController {
                                         @RequestParam(required = false) Long userId
 
     ) {
-        return userService.findNoiNhan(extractUserInfo(httpServletRequest), requestId);
+
+        return userService.findNoiNhan(extractUserInfo(httpServletRequest), NoiNhanRequestParams.builder()
+                .requestId(requestId)
+                .toTruong(toTruong)
+                .troLyKT(troLyKT)
+                .quanDoc(quanDoc)
+                .nguoiDatHang(nguoiDatHang)
+                .nguoiLap(nguoiLap)
+                .tpVatTu(tpVatTu)
+                .tpKeHoach(tpKeHoach)
+                .tpKTHK(tpKTHK)
+                .tpKCS(tpKCS)
+                .nguoiThucHien(nguoiThucHien)
+                .nguoiGiaoViec(nguoiGiaoViec)
+                .build());
     }
 
 }

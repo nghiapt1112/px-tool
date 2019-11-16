@@ -5,7 +5,7 @@ import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import java.util.List;
 
 public interface KiemHongService {
-    KiemHongPayLoad findThongTinKiemHong(Long id);
+    KiemHongPayLoad findThongTinKiemHong(Long userId, Long id);
 
     List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId);
 

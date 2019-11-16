@@ -28,8 +28,10 @@ public class KiemHongController extends BaseController {
     private PhongBanRepository phongBanRepository;
 
     @GetMapping("/ttkh/{id}")
-    public KiemHongPayLoad thongTinKiemHong(@PathVariable Long id) {
-        return kiemHongService.findThongTinKiemHong(id);
+    public KiemHongPayLoad thongTinKiemHong(@PathVariable Long id, HttpServletRequest httpServletRequest) {
+        Long userId = extractUserInfo(httpServletRequest);
+
+        return kiemHongService.findThongTinKiemHong(userId, id);
     }
 
     /**

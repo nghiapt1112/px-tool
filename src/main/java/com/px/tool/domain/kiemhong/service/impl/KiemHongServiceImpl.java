@@ -62,7 +62,8 @@ public class KiemHongServiceImpl implements KiemHongService {
     }
 
     @Override
-    public KiemHongPayLoad findThongTinKiemHong(Long id) {
+    public KiemHongPayLoad findThongTinKiemHong(Long userId, Long id) {
+        User currentUser = userService.findById(userId);
         Request request = requestService.findById(id);
         if (request != null) {
             return KiemHongPayLoad
@@ -77,7 +78,7 @@ public class KiemHongServiceImpl implements KiemHongService {
     public KiemHongPayLoad save(Long currentUserId, KiemHongPayLoad kiemHongPayLoad) {
 
         try {
-            if (kiemHongPayLoad.notIncludeId()) {
+            if (!kiemHongPayLoad.includedId()) {
                 validateTaoKiemHong(currentUserId, kiemHongPayLoad);
 
                 KiemHong kiemHong = new KiemHong();

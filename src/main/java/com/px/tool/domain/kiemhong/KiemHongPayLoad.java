@@ -44,11 +44,14 @@ public class KiemHongPayLoad extends AbstractObject {
 
     private List<KiemHongDetailPayload> kiemHongDetails = new LinkedList<>();
 
+    // Permission to edit chu ky:
+    private boolean quanDocEdit;
+    private boolean troLyKTEdit;
+    private boolean toTruongEdit;
+
+
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
-//        kiemHongResponse.ngayThangNamQuanDoc = DateTimeUtils.nowAsString();
-//        kiemHongResponse.ngayThangNamToTruong = DateTimeUtils.nowAsString();
-//        kiemHongResponse.ngayThangNamTroLyKT = DateTimeUtils.nowAsString();
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
         kiemHongResponse.kiemHongDetails = kiemHong.getKiemHongDetails()
                 .stream()
@@ -86,8 +89,8 @@ public class KiemHongPayLoad extends AbstractObject {
         return kiemHong;
     }
 
-    public boolean notIncludeId() {
-        return khId != null && khId <= 0;
+    public boolean includedId() {
+        return khId != null && khId > 0;
     }
 
     public Boolean getQuanDocXacNhan() {

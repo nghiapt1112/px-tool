@@ -1,6 +1,7 @@
 package com.px.tool.domain.user.service;
 
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.UserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,5 +17,5 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long userId);
 
-    List<NoiNhan> findNoiNhan(Long userId, Long requestId);
+    List<NoiNhan> findNoiNhan(Long userId, NoiNhanRequestParams requestId);
 }

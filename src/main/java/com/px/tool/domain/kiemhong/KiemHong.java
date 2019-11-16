@@ -127,8 +127,7 @@ public class KiemHong extends EntityDefault {
         return
                 Objects.nonNull(toTruongXacNhan) && toTruongXacNhan
                 && Objects.nonNull(troLyKTXacNhan) && troLyKTXacNhan
-                && Objects.nonNull(quanDocXacNhan) && quanDocXacNhan
-                && Objects.nonNull(giamDocXacNhan) && giamDocXacNhan;
+                && Objects.nonNull(quanDocXacNhan) && quanDocXacNhan;
 
     }
 }
