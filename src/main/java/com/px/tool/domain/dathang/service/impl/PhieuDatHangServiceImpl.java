@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
 
 
         Long kiemHongReceiverId = existedPhieuDatHang.getRequest().getKiemHongReceiverId();
-        Long phieuDatHangReceiverId = existedPhieuDatHang.getRequest().getPhieuDatHangReceiverId();
+        Long phieuDatHangReceiverId = Objects.isNull(phieuDatHangPayload.getNoiNhan()) ? userId : phieuDatHangPayload.getNoiNhan();
         Long phuongAnReceiverId = existedPhieuDatHang.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = existedPhieuDatHang.getRequest().getCntpReceiverId();
 
@@ -86,13 +87,13 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
     private void validateXacNhan(Long userId, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
-        if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan() || requestPhieuDH.getTpkthkXacNhan()) && requestPhieuDH.getNoiNhan() == null) {
-            throw new PXException("Nơi nhận phải được chọn");
+        User user = userService.findById(userId);
+        if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan()) && !user.isTruongPhongKTHK() && requestPhieuDH.getNoiNhan() == null) {
+            throw new PXException("noi_nhan.must_choose");
         }
         if (!requestPhieuDH.getNguoiDatHangXacNhan() && !requestPhieuDH.getTpvatTuXacNhan() && !requestPhieuDH.getTpkthkXacNhan()) {
             throw new PXException("Phải có người xác nhận");
         }
-        User user = userService.findById(userId);
         if (user.isNhanVienVatTu()) {
 //            throw new PXException("Người giao hàng xác nhận ở người giao hàng");
             requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());

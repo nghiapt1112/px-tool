@@ -1,12 +1,15 @@
 package com.px.tool.infrastructure;
 
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.model.ErrorResponse;
 import com.px.tool.infrastructure.utils.RequestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,16 +23,23 @@ public abstract class BaseController {
     @Value("${app.jwtSecret}")
     private String jwtSecret;
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRootException(RuntimeException e) {
+    @Autowired
+    private Environment environment;
+
+    @ExceptionHandler(PXException.class)
+    public ResponseEntity<ErrorResponse> handleRootException(PXException e) {
         e.printStackTrace();
         return ResponseEntity
                 .badRequest()
                 .body(ErrorResponse
                         .builder()
-                        .message(e.getMessage())
+                        .message(getStrVal(e.getMessage()))
                         .code("500")
                         .build());
+    }
+
+    private String getStrVal(String k) {
+        return environment.getProperty(k, k);
     }
 
     public Long extractUserInfo(HttpServletRequest httpServletRequest) {

@@ -159,9 +159,12 @@ public class KiemHongServiceImpl implements KiemHongService {
         Long phuongAnReceiverId = existedKiemHong.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();
         if (requestKiemHong.allApproved()) {
+            if (Objects.isNull(kiemHongPayLoad.getNoiNhan())) {
+                throw new PXException("noi_nhan.must_choose");
+            }
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
-            phieuDatHangReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
+            phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
             createPhieuDatHang(requestKiemHong, pdh);
         }
 
@@ -177,7 +180,7 @@ public class KiemHongServiceImpl implements KiemHongService {
      */
     private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
         if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
-            throw new PXException("Nơi nhận phải được chọn");
+            throw new PXException("noi_nhan.must_choose");
         }
         if (!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan() && requestKiemHong.getNoiNhan() != null) {
             throw new PXException("Phải có người xác nhận");

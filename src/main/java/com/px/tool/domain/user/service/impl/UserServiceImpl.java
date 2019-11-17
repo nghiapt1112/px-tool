@@ -187,9 +187,12 @@ public class UserServiceImpl implements UserService {
                     .stream()
                     .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKTHK()) {
-            pbs = userRepository.findByGroup(group_29_40)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            //TODO: neu truong phong kthk dong y thi tao van ban den
+            if (!requestParams.getTpKTHK()) {
+                pbs = userRepository.findByGroup(group_29_40)
+                        .stream()
+                        .filter(el -> el.getLevel() == 4);
+            }
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));
