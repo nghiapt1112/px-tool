@@ -81,7 +81,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         CongNhanThanhPham thanhPham = existedPhuongAn.getRequest().getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
-        validateXacNhan(requestId, phuongAn, existedPhuongAn);
+        validateXacNhan(userId, phuongAn, existedPhuongAn);
         capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
