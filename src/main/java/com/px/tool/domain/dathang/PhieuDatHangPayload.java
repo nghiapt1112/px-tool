@@ -1,5 +1,6 @@
 package com.px.tool.domain.dathang;
 
+import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,5 +82,19 @@ public class PhieuDatHangPayload extends AbstractObject {
         return phieuDatHangDetails.stream()
                 .map(PhieuDatHangDetailPayload::getPdhDetailId)
                 .collect(Collectors.toSet());
+    }
+
+    public PhieuDatHangPayload filterPermission(User currentUser) {
+        nguoiDatHangDisable = true;
+        tpkthkDisable = true;
+        tpvatTuDisable = true;
+        if (currentUser.isNhanVienVatTu()) {
+            nguoiDatHangDisable = false;
+        } else if (currentUser.isTruongPhongVatTu()) {
+            tpvatTuDisable = false;
+        } else if (currentUser.isTruongPhongKTHK()) {
+            tpkthkDisable = false;
+        }
+        return this;
     }
 }

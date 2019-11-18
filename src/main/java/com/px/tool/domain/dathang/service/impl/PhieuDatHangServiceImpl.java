@@ -43,9 +43,11 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     }
 
     @Override
-    public PhieuDatHangPayload findById(Long id) {
+    public PhieuDatHangPayload findById(Long userId, Long id) {
         Request request = requestService.findById(id);
-        PhieuDatHangPayload payload = PhieuDatHangPayload.fromEntity(request.getPhieuDatHang());
+        PhieuDatHangPayload payload = PhieuDatHangPayload
+                .fromEntity(request.getPhieuDatHang())
+                .filterPermission(userService.findById(userId));;
         payload.setRequestId(request.getRequestId());
         return payload;
     }
@@ -106,7 +108,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         }
         if (user.isTruongPhongKTHK()) {
 //            throw new PXException("Trưởng phòng KTHK xác nhận ở trưởng phòng KTHK");
-            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
+            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getTpkthkXacNhan());
             requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
         }
     }

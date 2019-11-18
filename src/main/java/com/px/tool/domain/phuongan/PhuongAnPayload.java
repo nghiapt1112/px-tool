@@ -1,5 +1,6 @@
 package com.px.tool.domain.phuongan;
 
+import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -105,4 +106,20 @@ public class PhuongAnPayload extends AbstractObject {
         return phuongAn;
     }
 
+    public PhuongAnPayload filterPermission(User user) {
+        truongPhongKTHKDisable = true;
+        truongPhongKeHoachDisable = true;
+        truongPhongVatTuDisable = true;
+        nguoiLapDisable = true;
+        if (user.isTruongPhongKTHK()) {
+            truongPhongKTHKDisable = false;
+        } else if (user.isTruongPhongKeHoach()) {
+            truongPhongKeHoachDisable = false;
+        } else if (user.isTruongPhongVatTu()) {
+            truongPhongVatTuDisable = false;
+        } else if (user.isNguoiLapPhieu()) {
+            nguoiLapDisable = false;
+        }
+        return this;
+    }
 }

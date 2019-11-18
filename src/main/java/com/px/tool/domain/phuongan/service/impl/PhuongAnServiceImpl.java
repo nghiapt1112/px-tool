@@ -3,7 +3,6 @@ package com.px.tool.domain.phuongan.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
-import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
@@ -16,7 +15,6 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +48,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     private UserService userService;
 
     @Override
-    public PhuongAnPayload findById(Long id) {
+    public PhuongAnPayload findById(Long userId, Long id) {
         Request request = requestService.findById(id);
-        PhuongAnPayload payload = PhuongAnPayload.fromEntity(request.getPhuongAn());
+        PhuongAnPayload payload = PhuongAnPayload.fromEntity(request.getPhuongAn())
+                .filterPermission(userService.findById(userId));;;
         payload.setRequestId(request.getRequestId());
         return payload;
     }
@@ -73,17 +72,17 @@ public class PhuongAnServiceImpl implements PhuongAnService {
                 .orElse(null);
 
 
-
         Long kiemHongReceiverId = existedPhuongAn.getRequest().getKiemHongReceiverId();
         Long phieuDatHangReceiverId = existedPhuongAn.getRequest().getPhieuDatHangReceiverId();
         Long phuongAnReceiverId = existedPhuongAn.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = existedPhuongAn.getRequest().getCntpReceiverId();
 
-        Long requestId =  existedPhuongAn.getRequest().getRequestId();
-
+        Long requestId = existedPhuongAn.getRequest().getRequestId();
         CongNhanThanhPham thanhPham = existedPhuongAn.getRequest().getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
+        validateXacNhan(requestId, phuongAn, existedPhuongAn);
+        capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
@@ -109,43 +108,52 @@ public class PhuongAnServiceImpl implements PhuongAnService {
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
-        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
-            throw new PXException("Nơi nhận phải được chọn");
-        }
-        if (!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan() && requestKiemHong.getNoiNhan() != null) {
-            throw new PXException("Phải có người xác nhận");
-        }
+    private void validateXacNhan(Long userId, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
         User user = userService.findById(userId);
-        if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
+        if (user.isNguoiLapPhieu()) {
+            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
         }
-        if (user.isTroLyKT() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
-            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
+        if (user.isTruongPhongVatTu()) {
+            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
+            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
         }
-        if (user.isQuanDocPhanXuong() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
-            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
+        if (user.isTruongPhongKeHoach()) {
+            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
+            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
+        }
+        if (user.isTruongPhongKTHK()) {
+            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
         }
 
     }
 
     /**
      * khi co xac nhan thi cap nhat ngay thang
+     *
+     * @param phuongAn
+     * @param existedPhuongAn
      */
-    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
-        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
-            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
+    private void capNhatNgayThangChuKy(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+        if (existedPhuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
+            phuongAn.setNgayThangNamtpVatTu(DateTimeUtils.nowAsString());
         }
-        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
-            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
+        if (existedPhuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
+            phuongAn.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
         }
-        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
-            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
+        if (existedPhuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
+            phuongAn.setNgayThangNamNguoiLap(DateTimeUtils.nowAsString());
+        }
+        if (existedPhuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
+            phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
         }
     }
+
     private void cleanOldDetailData(PhuongAn requestPhuongAn, PhuongAn existedPhuongAn) {
         try {
             if (Objects.isNull(existedPhuongAn)) {

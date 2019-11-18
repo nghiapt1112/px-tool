@@ -23,8 +23,8 @@ public class PhuongAnController extends BaseController {
     private PhuongAnService phuongAnService;
 
     @GetMapping("/{id}")
-    public PhuongAnPayload getPhuongAnDetail(@PathVariable Long id) {
-        return phuongAnService.findById(id);
+    public PhuongAnPayload getPhuongAnDetail(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
+        return phuongAnService.findById(extractUserInfo(httpServletRequest), id);
     }
 
     @GetMapping

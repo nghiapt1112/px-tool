@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public final class DateTimeUtils {
 
@@ -60,7 +61,12 @@ public final class DateTimeUtils {
     }
 
     public static String nowAsString() {
-        return toString(new Date(), DATE_TIME_PATTERN);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Saigon"));
+        cal.setTime(new Date());
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return String.format("Ngày %s Tháng %s Năm %s", day, month, year);
     }
 
     public static boolean isBefore(Date date) {

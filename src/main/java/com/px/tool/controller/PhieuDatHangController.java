@@ -23,8 +23,8 @@ public class PhieuDatHangController extends BaseController {
     private PhieuDatHangService phieuDatHangService;
 
     @GetMapping("/{id}")
-    public PhieuDatHangPayload getPhieuDatHangDetail(@PathVariable Long id) {
-        return this.phieuDatHangService.findById(id);
+    public PhieuDatHangPayload getPhieuDatHangDetail(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
+        return this.phieuDatHangService.findById(extractUserInfo(httpServletRequest), id);
     }
 
     @GetMapping

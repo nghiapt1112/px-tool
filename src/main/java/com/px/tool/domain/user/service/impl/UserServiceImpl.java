@@ -179,20 +179,21 @@ public class UserServiceImpl implements UserService {
         if (currentUser.isNhanVienVatTu()) {
             pbs = userRepository.findByGroup(group_12).stream();
         } else if (currentUser.isTruongPhongVatTu()) {
-            pbs = userRepository.findByGroup(group_29_40)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            if (!requestParams.getTpVatTu()) {
+                pbs = userRepository.findByGroup(group_12).stream()
+                        .filter(el -> el.getLevel() == 4);
+            } else {
+                pbs = userRepository.findByGroup(group_29_40).stream()
+                        .filter(el -> el.getLevel() == 4);
+            }
+
         } else if (currentUser.isTroLyPhongKTHK()) {
-            pbs = userRepository.findByGroup(group_29_40)
-                    .stream()
+            pbs = userRepository.findByGroup(group_29_40).stream()
                     .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKTHK()) {
             //TODO: neu truong phong kthk dong y thi tao van ban den
-            if (!requestParams.getTpKTHK()) {
-                pbs = userRepository.findByGroup(group_29_40)
-                        .stream()
-                        .filter(el -> el.getLevel() == 4);
-            }
+            pbs = userRepository.findByGroup(group_29_40).stream()
+                    .filter(el -> el.getLevel() == 4);
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));

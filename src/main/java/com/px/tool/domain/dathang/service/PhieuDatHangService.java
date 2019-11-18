@@ -6,7 +6,7 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import java.util.List;
 
 public interface PhieuDatHangService {
-    PhieuDatHangPayload findById(Long id);
+    PhieuDatHangPayload findById(Long userId, Long id);
 
     List<PhieuDatHang> findByPhongBan(Long userId);
 

@@ -6,7 +6,7 @@ import com.px.tool.domain.phuongan.PhuongAnPayload;
 import java.util.List;
 
 public interface PhuongAnService {
-    PhuongAnPayload findById(Long id);
+    PhuongAnPayload findById(Long userId, Long id);
 
     List<PhuongAn> findByPhongBan(Long userId);
 
