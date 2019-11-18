@@ -19,7 +19,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
 
 @Getter
 @Setter
@@ -73,6 +72,19 @@ public class CongNhanThanhPham extends EntityDefault {
 
     @Column
     private String soLuong;
+
+    @Column
+    private String yKienNguoiGiaoViec;
+
+    @Column
+    private String yKienNguoiThucHien;
+
+    @Column
+    private String yKienTPKCS;
+
+    @Column
+    private String yKienTpkcsXacNhan;
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)

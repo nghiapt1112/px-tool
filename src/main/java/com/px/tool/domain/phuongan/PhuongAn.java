@@ -111,6 +111,21 @@ public class PhuongAn extends EntityDefault {
     @Column(name = "giamdoc_xacnhan")
     private Boolean giamDocXacNhan;
 
+    @Column
+    private String yKienNguoiLap;
+
+    @Column
+    private String yKienTruongPhongKTHK;
+
+    @Column
+    private String yKienTruongPhongKeHoach;
+
+    @Column
+    private String yKienTruongPhongVatTu;
+
+    @Column
+    private String ykienTruongPhongKeHoach;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();

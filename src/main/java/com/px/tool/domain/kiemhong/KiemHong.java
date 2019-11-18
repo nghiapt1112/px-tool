@@ -98,6 +98,15 @@ public class KiemHong extends EntityDefault {
     @Column
     private String yKienGiamDoc;
 
+    @Column
+    private String yKienQuanDoc;
+
+    @Column
+    private String yKienToTruong;
+
+    @Column
+    private String yKienTroLyKT;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "kiemHong", cascade = CascadeType.ALL)
     private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
@@ -126,8 +135,8 @@ public class KiemHong extends EntityDefault {
     public boolean allApproved() {
         return
                 Objects.nonNull(toTruongXacNhan) && toTruongXacNhan
-                && Objects.nonNull(troLyKTXacNhan) && troLyKTXacNhan
-                && Objects.nonNull(quanDocXacNhan) && quanDocXacNhan;
+                        && Objects.nonNull(troLyKTXacNhan) && troLyKTXacNhan
+                        && Objects.nonNull(quanDocXacNhan) && quanDocXacNhan;
 
     }
 }

@@ -2,7 +2,6 @@ package com.px.tool.domain.kiemhong;
 
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +49,9 @@ public class KiemHongPayLoad extends AbstractObject {
     private boolean troLyKTDisable;
     private boolean toTruongDisable;
 
+    private String yKienQuanDoc;
+    private String yKienToTruong;
+    private String yKienTroLyKT;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();

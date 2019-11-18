@@ -48,7 +48,10 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private String to;
     private String soLuong;
 
-
+    private String yKienNguoiGiaoViec;
+    private String yKienNguoiThucHien;
+    private String yKienTPKCS;
+    private String yKienTpkcsXacNhan;
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 
     public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {

@@ -38,8 +38,9 @@ public class PhieuDatHangPayload extends AbstractObject {
     private boolean tpkthkDisable;
 
 
-
-    private String yKienGiamDoc;
+    private String yKienNguoiDatHang;
+    private String yKienTPKTHK;
+    private String yKienTPVatTu;
     private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 

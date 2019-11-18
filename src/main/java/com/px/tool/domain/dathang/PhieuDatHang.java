@@ -80,6 +80,15 @@ public class PhieuDatHang extends EntityDefault {
     @Column(name = "nguoi_dat_hang_xac_nhan")
     private Boolean nguoiDatHangXacNhan;
 
+    @Column
+    private String yKienNguoiDatHang;
+
+    @Column
+    private String yKienTPKTHK;
+
+    @Column
+    private String yKienTPVatTu;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phieuDatHang", cascade = CascadeType.ALL)
     private Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>();

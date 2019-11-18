@@ -74,7 +74,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         Long kiemHongReceiverId = existedPhuongAn.getRequest().getKiemHongReceiverId();
         Long phieuDatHangReceiverId = existedPhuongAn.getRequest().getPhieuDatHangReceiverId();
-        Long phuongAnReceiverId = existedPhuongAn.getRequest().getPhuongAnReceiverId();
+        Long phuongAnReceiverId = Objects.isNull(phuongAnPayload.getNoiNhan()) ? userId : phuongAnPayload.getNoiNhan();
         Long cntpReceiverId = existedPhuongAn.getRequest().getCntpReceiverId();
 
         Long requestId = existedPhuongAn.getRequest().getRequestId();
@@ -140,16 +140,16 @@ public class PhuongAnServiceImpl implements PhuongAnService {
      * @param existedPhuongAn
      */
     private void capNhatNgayThangChuKy(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-        if (existedPhuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
+        if (phuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             phuongAn.setNgayThangNamtpVatTu(DateTimeUtils.nowAsString());
         }
-        if (existedPhuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
+        if (phuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
             phuongAn.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
         }
-        if (existedPhuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
+        if (phuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
             phuongAn.setNgayThangNamNguoiLap(DateTimeUtils.nowAsString());
         }
-        if (existedPhuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
+        if (phuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
             phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
         }
     }
