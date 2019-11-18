@@ -52,7 +52,11 @@ public class ThongKePayload extends AbstractObject {
             tk.tenPhuKien = detail.getTenPhuKien();
             tk.tenLinhKien = detail.getTenLinhKien();
             tk.kyHieu = detail.getKyHieu();
-            tk.SL = Long.valueOf(detail.getSl() != null ? detail.getSl() : "0");
+            try {
+                tk.SL = Long.valueOf(detail.getSl() != null ? detail.getSl() : "0");
+            } catch (NumberFormatException e) {
+                tk.SL = 0L;
+            }
             tk.dangHuHong = detail.getDangHuHong();
             tk.ngayKiemHong = "detail .get() ngay kiem hong";
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();

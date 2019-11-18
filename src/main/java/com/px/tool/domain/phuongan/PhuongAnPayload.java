@@ -51,6 +51,12 @@ public class PhuongAnPayload extends AbstractObject {
     private Boolean truongPhongKeHoachXacNhan;
     private Boolean truongPhongVatTuXacNhan;
     private Boolean nguoiLapXacNhan;
+
+    private boolean truongPhongKTHKDisable;
+    private boolean truongPhongKeHoachDisable;
+    private boolean truongPhongVatTuDisable;
+    private boolean nguoiLapDisable;
+
     private List<String> files ;
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {

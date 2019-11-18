@@ -36,6 +36,10 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private Boolean nguoiThucHienXacNhan;
     private Boolean tpkcsXacNhan;
 
+    private boolean nguoiGiaoViecDisable;
+    private boolean nguoiThucHienDisable;
+    private boolean tpkcsDisable;
+
     private Float dong;
     private Float gioX;
     private Float laoDongTienLuong;

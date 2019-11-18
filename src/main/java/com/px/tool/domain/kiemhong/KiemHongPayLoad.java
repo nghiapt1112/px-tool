@@ -1,5 +1,6 @@
 package com.px.tool.domain.kiemhong;
 
+import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
@@ -45,9 +46,9 @@ public class KiemHongPayLoad extends AbstractObject {
     private List<KiemHongDetailPayload> kiemHongDetails = new LinkedList<>();
 
     // Permission to edit chu ky:
-    private boolean quanDocEdit;
-    private boolean troLyKTEdit;
-    private boolean toTruongEdit;
+    private boolean quanDocDisable;
+    private boolean troLyKTDisable;
+    private boolean toTruongDisable;
 
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
@@ -62,6 +63,9 @@ public class KiemHongPayLoad extends AbstractObject {
         if (kiemHong.getRequest() != null) {
             kiemHongResponse.noiNhan = kiemHong.getRequest().getKiemHongReceiverId();
         }
+        kiemHongResponse.quanDocDisable = true;
+        kiemHongResponse.troLyKTDisable = true;
+        kiemHongResponse.toTruongDisable = true;
         return kiemHongResponse;
     }
 
@@ -107,5 +111,19 @@ public class KiemHongPayLoad extends AbstractObject {
 
     public Boolean getGiamDocXacNhan() {
         return giamDocXacNhan == null ? false : giamDocXacNhan;
+    }
+
+    public KiemHongPayLoad filterPermission(User currentUser) {
+        troLyKTDisable = true;
+        toTruongDisable = true;
+        quanDocDisable = true;
+        if (currentUser.isTroLyKT()) {
+            this.troLyKTDisable = false;
+        } else if (currentUser.isToTruong()) {
+            toTruongDisable = false;
+        } else if (currentUser.isQuanDocPhanXuong()) {
+            quanDocDisable = false;
+        }
+        return this;
     }
 }

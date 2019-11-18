@@ -9,22 +9,22 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class RequestServiceImpl implements RequestService {
-
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private RequestRepository requestRepository;
 
@@ -53,7 +53,7 @@ public class RequestServiceImpl implements RequestService {
     public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId) {
         // TODO: if level 3 => nhan ca team
         // TODO: if level 4,5 => nhan theo userId
-
+        logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         List<Request> requestsByNguoiGui = null;
         if (currentUser.getLevel() == 3) {
@@ -62,7 +62,7 @@ public class RequestServiceImpl implements RequestService {
                 throw new PXException("member.not_found");
             }
             requestsByNguoiGui = requestRepository.findByNguoiNhan(
-                    members.stream().map(User::getUserId).collect(Collectors.toSet())
+                    members.stream().map(User::getUserId).collect(Collectors.toSet()) // list toan bo danh sach cua 1 team
             );
         } else {
             requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId));

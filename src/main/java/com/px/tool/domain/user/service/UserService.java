@@ -18,4 +18,6 @@ public interface UserService extends UserDetailsService {
     User findById(Long userId);
 
     List<NoiNhan> findNoiNhan(Long userId, NoiNhanRequestParams requestId);
+
+    List<NoiNhan> findVanBanDenNoiNhan(Long extractUserInfo);
 }

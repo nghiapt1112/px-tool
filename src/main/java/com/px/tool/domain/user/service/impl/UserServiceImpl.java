@@ -224,4 +224,15 @@ public class UserServiceImpl implements UserService {
             users.addAll(pbs.collect(Collectors.toList()));
         }
     }
+
+    @Override
+    public List<NoiNhan> findVanBanDenNoiNhan(Long userId) {
+        List<User> users = userRepository.findAll();
+        if (users != null) {
+            return users.stream()
+                    .map(NoiNhan::fromUserEntity)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
 }

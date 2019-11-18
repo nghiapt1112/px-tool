@@ -56,5 +56,8 @@ public class RequestController extends BaseController {
                 .nguoiGiaoViec(nguoiGiaoViec)
                 .build());
     }
-
+    @GetMapping("/vbd/noi-nhan")
+    public List<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest) {
+        return userService.findVanBanDenNoiNhan(extractUserInfo(httpServletRequest));
+    }
 }

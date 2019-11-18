@@ -63,14 +63,15 @@ public class KiemHongServiceImpl implements KiemHongService {
 
     @Override
     public KiemHongPayLoad findThongTinKiemHong(Long userId, Long id) {
-        User currentUser = userService.findById(userId);
         Request request = requestService.findById(id);
-        if (request != null) {
-            return KiemHongPayLoad
-                    .fromEntity(request.getKiemHong())
-                    .andRequestId(request.getRequestId());
+
+        if (request.getKiemHong() == null) {
+            throw new RuntimeException("kiemhong.not_found");
         }
-        throw new RuntimeException("Kiem hong not found");
+        return KiemHongPayLoad
+                .fromEntity(request.getKiemHong())
+                .andRequestId(request.getRequestId())
+                .filterPermission(userService.findById(userId));
     }
 
     @Override
@@ -182,7 +183,7 @@ public class KiemHongServiceImpl implements KiemHongService {
         if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
             throw new PXException("noi_nhan.must_choose");
         }
-        if (!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan() && requestKiemHong.getNoiNhan() != null) {
+        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
             throw new PXException("Phải có người xác nhận");
         }
         User user = userService.findById(userId);
