@@ -8,6 +8,7 @@ import com.px.tool.domain.cntp.repository.NoiDungThucHienRepository;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.service.UserService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
 
     @Autowired
     private NoiDungThucHienRepository noiDungThucHienRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional
@@ -79,10 +83,11 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     }
 
     @Override
-    public CongNhanThanhPhamPayload timCongNhanThanhPham(Long id) {
+    public CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id) {
         Request request = requestService.findById(id);
         CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(request.getCongNhanThanhPham());
         payload.setRequestId(request.getRequestId());
+        payload.filterPermission(userService.findById(userId));
         return payload;
     }
 

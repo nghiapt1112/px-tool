@@ -24,8 +24,8 @@ public class CongNhanThanhPhamController extends BaseController {
     private CongNhanThanhPhamService congNhanThanhPhamService;
 
     @GetMapping("/{id}")
-    public CongNhanThanhPhamPayload timCongNhanThanhPham(@PathVariable Long id) {
-        return this.congNhanThanhPhamService.timCongNhanThanhPham(id);
+    public CongNhanThanhPhamPayload timCongNhanThanhPham(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
+        return this.congNhanThanhPhamService.timCongNhanThanhPham(extractUserInfo(httpServletRequest), id);
     }
 
     @GetMapping

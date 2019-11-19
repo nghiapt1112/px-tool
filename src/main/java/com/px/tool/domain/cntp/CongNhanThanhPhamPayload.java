@@ -1,6 +1,7 @@
 package com.px.tool.domain.cntp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,7 +84,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
                         .stream()
                         .map(detail -> {
                             NoiDungThucHien entity = detail.toEntity();
-                            if(Objects.nonNull(congNhanThanhPham.getTpId())) {
+                            if (Objects.nonNull(congNhanThanhPham.getTpId())) {
                                 entity.setCongNhanThanhPham(congNhanThanhPham);
                             }
                             return entity;
@@ -91,5 +92,18 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
                         .collect(Collectors.toSet())
         );
         return congNhanThanhPham;
+    }
+
+    public void filterPermission(User user) {
+        nguoiGiaoViecDisable = true;
+        nguoiThucHienDisable = true;
+        tpkcsDisable = true;
+        if (user.isNguoiLapPhieu()) {
+            nguoiGiaoViecDisable = false;
+        } else if (user.isNhanVienKCS()) {
+            nguoiThucHienDisable = false;
+        } else if (user.isTruongPhongKCS()) {
+            tpkcsDisable = false;
+        }
     }
 }
