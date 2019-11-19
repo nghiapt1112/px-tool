@@ -259,7 +259,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ToSXPayload> findListToSanXuat(Long pxId) {
-        return userRepository.findByGroup(Arrays.asList(pxId))
+        return userRepository.findByGroup(Arrays.asList(findById(pxId).getPhongBan().getPhongBanId()))
                 .stream()
                 .filter(el -> el.getLevel() == 4)
                 .map(ToSXPayload::fromUserEntity)
