@@ -85,38 +85,11 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<ThongKePayload> collectDataThongKe(Long userId) {
-//        User user = userService.findById(userId);
-//        if (user.getLevel() >2) {
-//            throw new PXException("Chỉ giám đốc hoặc admin mới có quyền xem thống kê.");
-//        }
         List<Request> requests = requestRepository.findAll();
         return requests.stream()
                 .map(ThongKePayload::fromRequestEntity)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-//        return IntStream.rangeClosed(1, 20)
-//                .mapToObj(el -> {
-//                    ThongKePayload tk = new ThongKePayload();
-//                    tk.tt = Long.valueOf(el);
-//                    tk.tenPhuKien = "Ten phi kien __ " + el;
-//                    tk.tenLinhKien = "Ten link kien " + el;
-//                    tk.kyHieu = "Ki hieu " + el;
-//                    tk.SL = 10L;
-//                    tk.dangHuHong = "Dang hu hong" + el;
-//                    tk.ngayKiemHong = "ngay kiem hong" + el;
-//                    tk.phuongPhapKhacPhuc = "phuong phap khac phuc" + el;
-//                    tk.ngayChuyenPhongVatTu = "11/12/2018";
-//                    tk.soPhieuDatHang = "so phieu dat hang" + el;
-//                    tk.ngayChuyenKT = "15/03/2018";
-//                    tk.soPA = "So phuong an" + el;
-//                    tk.ngayRaPA = "15/03/2018";
-//                    tk.ngayChuyenKH = "15/03/2018";
-//                    tk.ngayPheDuyet = "15/03/2018";
-//                    tk.ngayHoanThanh = "15/03/2018";
-//                    tk.xacNhanHoanThanh = "Da hoan thanh";
-//                    return tk;
-//                })
-//                .collect(Collectors.toCollection(() -> new ArrayList<>(20)));
     }
 
     @Override

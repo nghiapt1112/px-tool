@@ -61,7 +61,7 @@ public class ThongKePayload extends AbstractObject {
             tk.ngayKiemHong = "detail .get() ngay kiem hong";
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = "11/12/1993";
-            tk.soPhieuDatHang = "";
+            tk.soPhieuDatHang = "PDH";
             try {
                 pdhDt = pdhDetailById.get(detail.getKhDetailId());
                 tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
@@ -69,7 +69,7 @@ public class ThongKePayload extends AbstractObject {
 
             }
             tk.ngayChuyenKT = request.getPhieuDatHang().getNgayThangNamTPVatTu();
-//            tk.soPA = "So phuong an" + el;
+            tk.soPA = "PA";
             tk.ngayRaPA = request.getPhuongAn().getNgayThangNamNguoiLap();
             tk.ngayChuyenKH = request.getPhuongAn().getNgayThangNamtpVatTu();
             tk.ngayPheDuyet = request.getPhuongAn().getNgayThangNamTPKTHK();
