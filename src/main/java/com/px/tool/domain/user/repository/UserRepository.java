@@ -19,6 +19,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Long> group_14 = ImmutableList.of(14L);
     List<Long> group_giam_doc = ImmutableList.of(2L, 3L, 4L, 5L, 6L);
     List<Long> group_cac_truong_phong = ImmutableList.of(8L, 9L, 12L, 14L);
+    // CNTP
+    List<Long> group_ke_hoach = ImmutableList.of(12L);
+    List<Long> group_nv_KCS = ImmutableList.of(10L);
 
     Optional<User> findByEmail(String username);
 

@@ -32,6 +32,8 @@ import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
 import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong_phong;
 import static com.px.tool.domain.user.repository.UserRepository.group_giam_doc;
+import static com.px.tool.domain.user.repository.UserRepository.group_ke_hoach;
+import static com.px.tool.domain.user.repository.UserRepository.group_nv_KCS;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -131,15 +133,21 @@ public class UserServiceImpl implements UserService {
     private void filterTheoCNTP(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
         Stream<User> pbs = null;
         if (currentUser.isNguoiLapPhieuCNTP()) {
-
+            pbs = userRepository.findByGroup(group_29_40)
+                    .stream()
+                    .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isNhanVienKCS()) {
-
+            pbs = userRepository.findByGroup(group_ke_hoach)
+                    .stream()
+                    .filter(el -> el.getLevel() == 4);
         } else if (currentUser.isTruongPhongKCS()) {
-
+            pbs = userRepository.findByGroup(group_nv_KCS)
+                    .stream()
+                    .filter(el -> el.getLevel() == 4);
         }
-//        if (pbs != null) {
-//            users.addAll(pbs.collect(Collectors.toList()));
-//        }
+        if (pbs != null) {
+            users.addAll(pbs.collect(Collectors.toList()));
+        }
     }
 
     private void filterTheoPhuongAn(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
