@@ -94,6 +94,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         phuongAnPayload.toEntity(phuongAn);
         validateXacNhan(userId, phuongAn, existedPhuongAn);
         capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
+        guiVanBanDen(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
@@ -103,6 +104,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         cleanOldDetailData(phuongAn, existedPhuongAn);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return phuongAnRepository.save(phuongAn);
+    }
+
+    private void guiVanBanDen(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+
     }
 
     private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {

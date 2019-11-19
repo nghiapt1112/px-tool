@@ -3,7 +3,9 @@ package com.px.tool.domain.user.service.impl;
 import com.google.common.collect.Sets;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.request.PhanXuongPayload;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.Role;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -243,5 +246,23 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<PhanXuongPayload> findListPhanXuong() {
+        return userRepository.findByGroup(group_17_25)
+                .stream()
+                .filter(el -> el.getLevel() == 3)
+                .map(PhanXuongPayload::fromUserEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ToSXPayload> findListToSanXuat(Long pxId) {
+        return userRepository.findByGroup(Arrays.asList(pxId))
+                .stream()
+                .filter(el -> el.getLevel() == 4)
+                .map(ToSXPayload::fromUserEntity)
+                .collect(Collectors.toList());
     }
 }

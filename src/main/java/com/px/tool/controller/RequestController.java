@@ -1,6 +1,8 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.request.PhanXuongPayload;
+import com.px.tool.domain.request.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
@@ -56,8 +58,19 @@ public class RequestController extends BaseController {
                 .nguoiGiaoViec(nguoiGiaoViec)
                 .build());
     }
+
     @GetMapping("/vbd/noi-nhan")
     public List<NoiNhan> getListNoiNhan() {
         return userService.findVanBanDenNoiNhan();
+    }
+
+    @GetMapping("/phan-xuong")
+    public List<PhanXuongPayload> getPhanXuong() {
+        return userService.findListPhanXuong();
+    }
+
+    @GetMapping("/to-sx")
+    public List<ToSXPayload> getToSanXuat(@RequestParam Long pxId) {
+        return userService.findListToSanXuat(pxId);
     }
 }

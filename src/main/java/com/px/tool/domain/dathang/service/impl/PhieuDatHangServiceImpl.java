@@ -6,6 +6,7 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.repository.PhieuDatHangDetailRepository;
 import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
+import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
@@ -81,9 +82,13 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         cleanOldDetailData(phieuDatHang, existedPhieuDatHang);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         phieuDatHangRepository.save(phieuDatHang);
+
         return phieuDatHang;
     }
 
+    private void guiVanBanDen(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+
+    }
     /**
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen

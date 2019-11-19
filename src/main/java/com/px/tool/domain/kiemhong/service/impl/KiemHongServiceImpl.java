@@ -16,8 +16,12 @@ import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +34,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
+
 @Service
-public class KiemHongServiceImpl implements KiemHongService {
+public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongService {
     @Autowired
     private KiemHongRepository kiemHongRepository;
 
@@ -50,6 +56,11 @@ public class KiemHongServiceImpl implements KiemHongService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private VanBanDenRepository vanBanDenRepository;
     @Override
     public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
         // TODO: tu thong tin user, get tat ca kiemHong dang can xu ly 1 phong ban.
@@ -167,12 +178,34 @@ public class KiemHongServiceImpl implements KiemHongService {
             requestKiemHong.setRequest(existedKiemHong.getRequest());
             phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
             createPhieuDatHang(requestKiemHong, pdh);
+            guiVanBanDen();
         }
 
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         kiemHongRepository.save(requestKiemHong);
         kiemHongPayLoad.setRequestId(requestId);
         return kiemHongPayLoad;
+    }
+
+    /**
+     * Phiếu kiểm hỏng sẽ được chuyển đến account 8,9,12 và phân xưởng lập kiểm hỏng trong VĂN BẢN ĐẾN
+     */
+    private void guiVanBanDen() {
+        try {
+            List<VanBanDen> contents = userRepository.findByGroup(group_12_PLUS).stream()
+                    .filter(el -> el.getLevel() == 3)
+                    .map(el -> {
+                        VanBanDen vanBanDen = new VanBanDen();
+                        vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                        vanBanDen.setNoiNhan(el.getUserId());
+                        return vanBanDen;
+                    })
+                    .collect(Collectors.toList());
+
+            vanBanDenRepository.saveAll(contents);
+        } catch (Exception e) {
+            logger.error("[Kiem hong] Can't save Van Ban Den");
+        }
     }
 
     /**

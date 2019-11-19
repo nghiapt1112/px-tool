@@ -1,6 +1,8 @@
 package com.px.tool.domain.user.service;
 
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.request.PhanXuongPayload;
+import com.px.tool.domain.request.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.UserRequest;
@@ -20,4 +22,8 @@ public interface UserService extends UserDetailsService {
     List<NoiNhan> findNoiNhan(Long userId, NoiNhanRequestParams requestId);
 
     List<NoiNhan> findVanBanDenNoiNhan();
+
+    List<PhanXuongPayload> findListPhanXuong();
+
+    List<ToSXPayload> findListToSanXuat(Long pxId);
 }
