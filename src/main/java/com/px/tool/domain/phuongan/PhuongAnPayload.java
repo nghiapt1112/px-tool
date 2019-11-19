@@ -1,5 +1,6 @@
 package com.px.tool.domain.phuongan;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class PhuongAnPayload extends AbstractObject {
     private List<DinhMucVatTuPayload> dinhMucVatTus = new LinkedList<>();
     private Long noiNhan; // id cua user dc nhan
 
-
+    private String ngayThangNamGiamDoc;
     private Boolean giamDocXacNhan;
     private Boolean truongPhongKTHKXacNhan;
     private Boolean truongPhongKeHoachXacNhan;
@@ -57,14 +57,21 @@ public class PhuongAnPayload extends AbstractObject {
     private boolean truongPhongKeHoachDisable;
     private boolean truongPhongVatTuDisable;
     private boolean nguoiLapDisable;
+    private boolean giamDocDisable;
 
+    @JsonProperty("yKienNguoiLap")
     private String yKienNguoiLap;
-    private String yKienTruongPhongKTHK;
-    private String yKienTruongPhongKeHoach;
-    private String yKienTruongPhongVatTu;
-    private String ykienTruongPhongKeHoach;
 
-    private List<String> files ;
+    @JsonProperty("yKienTruongPhongKTHK")
+    private String yKienTruongPhongKTHK;
+
+    @JsonProperty("yKienTruongPhongKeHoach")
+    private String yKienTruongPhongKeHoach;
+
+    @JsonProperty("yKienTruongPhongVatTu")
+    private String yKienTruongPhongVatTu;
+
+    private List<String> files;
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
@@ -77,8 +84,13 @@ public class PhuongAnPayload extends AbstractObject {
                 .map(DinhMucVatTuPayload::fromEntity)
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
-        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
+//        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
         return phuongAnPayload;
+    }
+
+    public PhuongAnPayload withFiles(List<String> files) {
+        this.files = files;
+        return this;
     }
 
     public PhuongAn toEntity(PhuongAn phuongAn) {
@@ -117,6 +129,7 @@ public class PhuongAnPayload extends AbstractObject {
         truongPhongKeHoachDisable = true;
         truongPhongVatTuDisable = true;
         nguoiLapDisable = true;
+        giamDocDisable = true;
         if (user.isTruongPhongKTHK()) {
             truongPhongKTHKDisable = false;
         } else if (user.isTruongPhongKeHoach()) {
@@ -125,7 +138,10 @@ public class PhuongAnPayload extends AbstractObject {
             truongPhongVatTuDisable = false;
         } else if (user.isNguoiLapPhieu()) {
             nguoiLapDisable = false;
+        } else if (user.getLevel() == 2) {
+            giamDocDisable = false;
         }
         return this;
     }
+
 }

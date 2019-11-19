@@ -1,5 +1,6 @@
 package com.px.tool.domain.dathang;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
@@ -38,8 +39,13 @@ public class PhieuDatHangPayload extends AbstractObject {
     private boolean tpkthkDisable;
 
 
+    @JsonProperty("yKienNguoiDatHang")
     private String yKienNguoiDatHang;
+
+    @JsonProperty("yKienTPKTHK")
     private String yKienTPKTHK;
+
+    @JsonProperty("yKienTPVatTu")
     private String yKienTPVatTu;
     private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();

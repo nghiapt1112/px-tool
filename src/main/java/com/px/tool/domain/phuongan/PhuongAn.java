@@ -112,6 +112,9 @@ public class PhuongAn extends EntityDefault {
     private Boolean giamDocXacNhan;
 
     @Column
+    private String ngayThangNamGiamDoc;
+
+    @Column
     private String yKienNguoiLap;
 
     @Column

@@ -32,7 +32,6 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            logger.info("");
             String token = RequestUtils.extractRequestToken(request);
             if (token != null && token.length() > 0 && authService.validateToken(token)) {
                 Long userId = authService.getUserIdFromJWT(token);

@@ -3,6 +3,8 @@ package com.px.tool.domain.phuongan.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
+import com.px.tool.domain.file.FileStorage;
+import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
@@ -17,10 +19,13 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -28,6 +33,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PhuongAnServiceImpl implements PhuongAnService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private PhuongAnRepository phuongAnRepository;
 
@@ -43,17 +50,31 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Autowired
     private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
-
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Override
     public PhuongAnPayload findById(Long userId, Long id) {
         Request request = requestService.findById(id);
+
         PhuongAnPayload payload = PhuongAnPayload.fromEntity(request.getPhuongAn())
-                .filterPermission(userService.findById(userId));;;
+                .filterPermission(userService.findById(userId))
+                .withFiles(getFileNames(id));
         payload.setRequestId(request.getRequestId());
         return payload;
+    }
+
+    private List<String> getFileNames(Long requestId) {
+        List<FileStorage> files = fileStorageService.listFile(RequestType.PHUONG_AN, requestId);
+        List<String> fileNames = new ArrayList<>(files.size());
+        for (FileStorage fileStorage : files) {
+            fileNames.add(fileStorage.getFileName());
+        }
+        logger.info("\nTotal files in Phuong An: {}\n", fileNames.size());
+        return fileNames;
     }
 
     @Override
@@ -151,6 +172,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         }
         if (phuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
             phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
+        }
+        if (phuongAn.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
+            phuongAn.setNgayThangNamGiamDoc(DateTimeUtils.nowAsString());
         }
     }
 

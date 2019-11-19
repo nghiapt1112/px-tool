@@ -180,12 +180,12 @@ public class KiemHongServiceImpl implements KiemHongService {
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
     private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
-        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
-            throw new PXException("noi_nhan.must_choose");
-        }
-        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
-            throw new PXException("Phải có người xác nhận");
-        }
+//        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
+//            throw new PXException("noi_nhan.must_choose");
+//        }
+//        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
+//            throw new PXException("Phải có người xác nhận");
+//        }
         User user = userService.findById(userId);
         if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
             requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());

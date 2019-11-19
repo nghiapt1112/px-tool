@@ -48,9 +48,16 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private String to;
     private String soLuong;
 
+    @JsonProperty("yKienNguoiGiaoViec")
     private String yKienNguoiGiaoViec;
+
+    @JsonProperty("yKienNguoiThucHien")
     private String yKienNguoiThucHien;
+
+    @JsonProperty("yKienTPKCS")
     private String yKienTPKCS;
+
+    @JsonProperty("yKienTpkcsXacNhan")
     private String yKienTpkcsXacNhan;
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 

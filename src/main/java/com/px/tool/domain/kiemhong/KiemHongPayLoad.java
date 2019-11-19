@@ -1,5 +1,6 @@
 package com.px.tool.domain.kiemhong;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
@@ -49,8 +50,13 @@ public class KiemHongPayLoad extends AbstractObject {
     private boolean troLyKTDisable;
     private boolean toTruongDisable;
 
+    @JsonProperty("yKienQuanDoc")
     private String yKienQuanDoc;
+
+    @JsonProperty("yKienToTruong")
     private String yKienToTruong;
+
+    @JsonProperty("yKienTroLyKT")
     private String yKienTroLyKT;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
