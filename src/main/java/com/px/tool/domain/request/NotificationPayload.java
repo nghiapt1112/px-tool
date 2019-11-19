@@ -12,4 +12,5 @@ public class NotificationPayload {
     private Long requestId;
     private String body;
     private boolean isRead;
+    private String time;
 }
