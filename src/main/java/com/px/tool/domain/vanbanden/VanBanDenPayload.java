@@ -25,6 +25,11 @@ public class VanBanDenPayload {
     public VanBanDen toEntity() {
         VanBanDen vanBanDen = new VanBanDen();
         BeanUtils.copyProperties(this, vanBanDen);
+        try{
+            vanBanDen.setNoiNhan(Long.valueOf(this.noiNhan));
+        } catch (Exception ex) {
+
+        }
         return vanBanDen;
     }
 

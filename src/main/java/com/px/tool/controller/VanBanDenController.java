@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,8 @@ public class VanBanDenController extends BaseController {
     private VanBanDenRepository vanBanDenRepository;
 
     @GetMapping
-    public List<VanBanDenPayload> list() {
-        return vanBanDenService.findAll();
+    public List<VanBanDenPayload> list(HttpServletRequest httpServletRequest) {
+        return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
 

@@ -1,6 +1,5 @@
 package com.px.tool.domain.request;
 
-import com.google.common.collect.Sets;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.infrastructure.model.request.AbstractObject;
@@ -10,7 +9,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 

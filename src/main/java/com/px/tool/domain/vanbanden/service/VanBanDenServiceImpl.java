@@ -31,13 +31,13 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Autowired
     private UserService userService;
 
-    public List<VanBanDenPayload> findAll() {
+    public List<VanBanDenPayload> findAll(Long userId) {
         List<VanBanDen> val = vanBanDenRepository.findAll();
         Set<Long> ids = new HashSet<>();
         for (VanBanDen vanBanDen : val) {
             ids.add(vanBanDen.getNoiNhan());
         }
-        Map<Long, String> noiNhanById = new HashMap<>(100);
+        Map<Long, String> noiNhanById = new HashMap<>();
         for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
             noiNhanById.put(noiNhan.getId(), noiNhan.getName());
         }
