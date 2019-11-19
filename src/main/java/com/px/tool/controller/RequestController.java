@@ -83,7 +83,13 @@ public class RequestController extends BaseController {
                 .mapToObj(el -> {
                     NotificationPayload payload = new NotificationPayload();
                     payload.setRequestId(Long.valueOf(el));
+                    payload.setNotiId(Long.valueOf(el));
                     payload.setBody("Bạn đang có 1 thông báo mới. click ");
+                    if (el % 2 == 0) {
+                        payload.setRead(true);
+                    } else {
+                        payload.setRead(false);
+                    }
                     return payload;
                 })
                 .collect(Collectors.toList());
