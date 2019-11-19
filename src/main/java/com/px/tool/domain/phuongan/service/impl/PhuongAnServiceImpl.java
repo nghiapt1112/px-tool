@@ -62,19 +62,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         PhuongAnPayload payload = PhuongAnPayload.fromEntity(request.getPhuongAn())
                 .filterPermission(userService.findById(userId))
-                .withFiles(getFileNames(id));
+                .withFiles(fileStorageService.listFileNames(RequestType.PHUONG_AN, id));
         payload.setRequestId(request.getRequestId());
         return payload;
-    }
-
-    private List<String> getFileNames(Long requestId) {
-        List<FileStorage> files = fileStorageService.listFile(RequestType.PHUONG_AN, requestId);
-        List<String> fileNames = new ArrayList<>(files.size());
-        for (FileStorage fileStorage : files) {
-            fileNames.add(fileStorage.getFileName());
-        }
-        logger.info("\nTotal files in Phuong An: {}\n", fileNames.size());
-        return fileNames;
     }
 
     @Override

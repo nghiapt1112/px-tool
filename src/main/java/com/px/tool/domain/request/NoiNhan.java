@@ -27,4 +27,8 @@ public class NoiNhan extends AbstractObject {
         noiNhan.name = phongBan.getUsername();
         return noiNhan;
     }
+
+    public NoiNhan self() {
+        return this;
+    }
 }

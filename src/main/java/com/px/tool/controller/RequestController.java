@@ -57,7 +57,7 @@ public class RequestController extends BaseController {
                 .build());
     }
     @GetMapping("/vbd/noi-nhan")
-    public List<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest) {
-        return userService.findVanBanDenNoiNhan(extractUserInfo(httpServletRequest));
+    public List<NoiNhan> getListNoiNhan() {
+        return userService.findVanBanDenNoiNhan();
     }
 }

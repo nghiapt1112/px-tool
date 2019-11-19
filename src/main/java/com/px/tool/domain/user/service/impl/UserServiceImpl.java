@@ -227,7 +227,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<NoiNhan> findVanBanDenNoiNhan(Long userId) {
+    public List<NoiNhan> findVanBanDenNoiNhan() {
         List<User> users = userRepository.findAll();
         if (users != null) {
             return users.stream()

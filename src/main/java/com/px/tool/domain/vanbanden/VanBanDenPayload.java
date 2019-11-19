@@ -11,10 +11,10 @@ import java.util.List;
 @Setter
 @ToString
 public class VanBanDenPayload {
-    public Long vbdId;
-    public Long noiNhan;
-    public String noiDung;
-    public List<String> files;
+    private Long vbdId;
+    private String noiNhan;
+    private String noiDung;
+    private List<String> files;
 
     public static VanBanDenPayload fromEntity(VanBanDen vanBanDen) {
         VanBanDenPayload payload = new VanBanDenPayload();
@@ -29,4 +29,8 @@ public class VanBanDenPayload {
     }
 
 
+    public VanBanDenPayload withFilesName(List<String> listFile) {
+        this.files = listFile;
+        return this;
+    }
 }

@@ -4,6 +4,8 @@ import com.px.tool.domain.RequestType;
 import com.px.tool.domain.file.repository.FileStorageRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import java.util.UUID;
 
 @Service
 public class FileStorageService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Path fileStorageLocation;
 
@@ -92,5 +96,15 @@ public class FileStorageService {
 
     public void delete(Long id) {
         fileStorageRepository.deleteById(id);
+    }
+
+    public List<String> listFileNames(RequestType requestType, Long id) {
+        List<FileStorage> files = listFile(requestType, id);
+        List<String> fileNames = new ArrayList<>(files.size());
+        for (FileStorage fileStorage : files) {
+            fileNames.add(fileStorage.getFileName());
+        }
+        logger.info("\nTotal files in {}: {}\n", requestType, fileNames.size());
+        return fileNames;
     }
 }
