@@ -77,7 +77,7 @@ public class RequestController extends BaseController {
         return userService.findListToSanXuat(pxId);
     }
 
-    @GetMapping
+    @GetMapping("/notification")
     public List<NotificationPayload> getNotification() {
         return IntStream.rangeClosed(1, 3)
                 .mapToObj(el -> {
