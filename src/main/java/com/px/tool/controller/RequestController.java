@@ -7,8 +7,11 @@ import com.px.tool.domain.request.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,8 +93,15 @@ public class RequestController extends BaseController {
                     } else {
                         payload.setRead(false);
                     }
+                    payload.setTime(DateTimeUtils.nowAsString());
                     return payload;
                 })
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/notification/{id}")
+    public void readNoti(@PathVariable Long id) {
+        logger.info("Updating notification to read.");
+    }
+
 }
