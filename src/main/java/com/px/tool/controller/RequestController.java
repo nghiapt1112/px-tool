@@ -1,6 +1,7 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.request.NotificationPayload;
 import com.px.tool.domain.request.PhanXuongPayload;
 import com.px.tool.domain.request.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/req")
@@ -72,5 +75,17 @@ public class RequestController extends BaseController {
     @GetMapping("/to-sx")
     public List<ToSXPayload> getToSanXuat(@RequestParam Long pxId) {
         return userService.findListToSanXuat(pxId);
+    }
+
+    @GetMapping
+    public List<NotificationPayload> getNotification() {
+        return IntStream.rangeClosed(1, 3)
+                .mapToObj(el -> {
+                    NotificationPayload payload = new NotificationPayload();
+                    payload.setRequestId(Long.valueOf(el));
+                    payload.setBody("Bạn đang có 1 thông báo mới. click ");
+                    return payload;
+                })
+                .collect(Collectors.toList());
     }
 }
