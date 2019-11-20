@@ -1,6 +1,7 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.vanbanden.VanBanDenPayload;
+import com.px.tool.domain.vanbanden.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +23,22 @@ public class VanBanDenController extends BaseController {
     private VanBanDenServiceImpl vanBanDenService;
 
     @GetMapping
-    public List<VanBanDenPayload> list(HttpServletRequest httpServletRequest) {
+    public List<VanBanDenResponse> list(HttpServletRequest httpServletRequest) {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
     @GetMapping("/receive")
-    public List<VanBanDenPayload> listVanBanDenCuaToi(HttpServletRequest httpServletRequest) {
+    public List<VanBanDenResponse> listVanBanDenCuaToi(HttpServletRequest httpServletRequest) {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
     @PostMapping
-    public VanBanDenPayload save(@RequestBody VanBanDenPayload payload) {
+    public VanBanDenResponse save(@RequestBody VanBanDenRequest payload) {
         return vanBanDenService.save(payload);
     }
 
     @GetMapping("/{id}")
-    public VanBanDenPayload detail(@PathVariable Long id) {
+    public VanBanDenResponse detail(@PathVariable Long id) {
         return vanBanDenService.findById(id);
     }
 

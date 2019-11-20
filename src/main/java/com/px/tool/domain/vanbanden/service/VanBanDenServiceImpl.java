@@ -5,7 +5,8 @@ import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.request.NoiNhan;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
-import com.px.tool.domain.vanbanden.VanBanDenPayload;
+import com.px.tool.domain.vanbanden.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
@@ -31,7 +32,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Autowired
     private UserService userService;
 
-    public List<VanBanDenPayload> findAll(Long userId) {
+    public List<VanBanDenResponse> findAll(Long userId) {
         List<VanBanDen> val = vanBanDenRepository.findAll();
         Set<Long> ids = new HashSet<>();
         for (VanBanDen vanBanDen : val) {
@@ -43,7 +44,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         }
         return val.stream()
                 .map(el -> {
-                    VanBanDenPayload payload = VanBanDenPayload.fromEntity(el);
+                    VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
                     payload.setNoiNhan(noiNhanById.get(el.getNoiNhan()));
                     return payload;
                 })
@@ -51,12 +52,12 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     }
 
     @Transactional
-    public VanBanDenPayload save(VanBanDenPayload payload) {
-        return VanBanDenPayload.fromEntity(vanBanDenRepository.save(payload.toEntity()));
+    public VanBanDenResponse save(VanBanDenRequest payload) {
+        return VanBanDenResponse.fromEntity(vanBanDenRepository.save(payload.toEntity()));
     }
 
-    public VanBanDenPayload findById(Long id) {
-        return VanBanDenPayload
+    public VanBanDenResponse findById(Long id) {
+        return VanBanDenResponse
                 .fromEntity(vanBanDenRepository.findById(id).orElseThrow(() -> new PXException("vanbanden_notFound")))
                 .withFilesName(fileStorageService.listFileNames(RequestType.VAN_BAN_DEN, id));
     }
