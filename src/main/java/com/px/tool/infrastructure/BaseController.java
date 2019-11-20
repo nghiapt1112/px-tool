@@ -13,7 +13,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MultipartException;
 
+import javax.naming.SizeLimitExceededException;
 import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
@@ -34,6 +36,18 @@ public abstract class BaseController {
                 .body(ErrorResponse
                         .builder()
                         .message(getStrVal(e.getMessage()))
+                        .code("500")
+                        .build());
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<ErrorResponse> sizeLimitExceeded(MultipartException e) {
+        e.printStackTrace();
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse
+                        .builder()
+                        .message(getStrVal("fileSize.limitExceeded"))
                         .code("500")
                         .build());
     }
