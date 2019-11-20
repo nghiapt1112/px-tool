@@ -23,18 +23,18 @@ public class VanBanDenController extends BaseController {
     private VanBanDenServiceImpl vanBanDenService;
 
     @GetMapping
-    public List<VanBanDenResponse> list(HttpServletRequest httpServletRequest) {
+    public List<VanBanDenResponse> findSent(HttpServletRequest httpServletRequest) {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
     @GetMapping("/receive")
-    public List<VanBanDenResponse> listVanBanDenCuaToi(HttpServletRequest httpServletRequest) {
-        return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
+    public List<VanBanDenResponse> findInBox(HttpServletRequest httpServletRequest) {
+        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest));
     }
 
     @PostMapping
-    public VanBanDenResponse save(@RequestBody VanBanDenRequest payload) {
-        return vanBanDenService.save(payload);
+    public VanBanDenResponse save(HttpServletRequest httpServletRequest, @RequestBody VanBanDenRequest payload) {
+        return vanBanDenService.save(extractUserInfo(httpServletRequest), payload);
     }
 
     @GetMapping("/{id}")

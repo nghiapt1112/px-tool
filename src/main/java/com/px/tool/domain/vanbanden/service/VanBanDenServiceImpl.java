@@ -13,7 +13,9 @@ import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,8 +34,26 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Autowired
     private UserService userService;
 
+    /**
+     * Những văn bản đã gửi.
+     */
     public List<VanBanDenResponse> findAll(Long userId) {
-        List<VanBanDen> val = vanBanDenRepository.findAll();
+        List<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId);
+        return toResponse(val);
+    }
+
+    /**
+     * Những văn bản cua toi.
+     */
+    public List<VanBanDenResponse> findInBox(Long userId) {
+        List<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId);
+        return toResponse(val);
+    }
+
+    private List<VanBanDenResponse> toResponse(List<VanBanDen> val) {
+        if (CollectionUtils.isEmpty(val)) {
+            return Collections.emptyList();
+        }
         Set<Long> ids = new HashSet<>();
         for (VanBanDen vanBanDen : val) {
             ids.add(vanBanDen.getNoiNhan());
@@ -52,8 +72,10 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     }
 
     @Transactional
-    public VanBanDenResponse save(VanBanDenRequest payload) {
-        return VanBanDenResponse.fromEntity(vanBanDenRepository.save(payload.toEntity()));
+    public VanBanDenResponse save(Long userId, VanBanDenRequest payload) {
+        VanBanDen entity = payload.toEntity();
+        entity.setCreatedBy(userId);
+        return VanBanDenResponse.fromEntity(vanBanDenRepository.save(entity));
     }
 
     public VanBanDenResponse findById(Long id) {
