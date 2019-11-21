@@ -2,6 +2,7 @@ package com.px.tool.domain.request.service;
 
 import com.px.tool.domain.request.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.ThongKeDetailPayload;
 import com.px.tool.domain.request.ThongKePayload;
 
 import java.util.Collection;
@@ -16,7 +17,7 @@ public interface RequestService {
 
     List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId);
 
-    List<ThongKePayload> collectDataThongKe(Long userId);
+    ThongKePayload collectDataThongKe(Long userId);
 
     void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 }

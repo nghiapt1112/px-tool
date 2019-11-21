@@ -31,7 +31,6 @@ public class VanBanDenController extends BaseController {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
-
     @PostMapping
     public VanBanDenPayload save(@RequestBody VanBanDenPayload payload) {
         return vanBanDenService.save(payload);

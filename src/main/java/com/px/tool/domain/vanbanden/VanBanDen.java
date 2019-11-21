@@ -28,4 +28,7 @@ public class VanBanDen extends EntityDefault {
     @Column
     public String noiDung;
 
+    @Column
+    public String type;
+
 }

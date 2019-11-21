@@ -2,6 +2,7 @@ package com.px.tool.domain.request.service.impl;
 
 import com.px.tool.domain.request.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.ThongKeDetailPayload;
 import com.px.tool.domain.request.ThongKePayload;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
@@ -84,12 +85,16 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<ThongKePayload> collectDataThongKe(Long userId) {
+    public ThongKePayload collectDataThongKe(Long userId) {
         List<Request> requests = requestRepository.findAll();
-        return requests.stream()
-                .map(ThongKePayload::fromRequestEntity)
+        ThongKePayload tkPayload = new ThongKePayload();
+        tkPayload.setSanPham("");
+        tkPayload.setTienDo("0");
+        tkPayload.setDetails(requests.stream()
+                .map(ThongKeDetailPayload::fromRequestEntity)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return tkPayload;
     }
 
     @Override

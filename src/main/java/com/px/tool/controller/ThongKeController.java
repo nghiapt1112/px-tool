@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/thongke")
@@ -19,7 +18,7 @@ public class ThongKeController extends BaseController {
     private RequestService requestService;
 
     @GetMapping
-    private List<ThongKePayload> getDataChoThongKe(HttpServletRequest httpServletRequest) {
+    private ThongKePayload getDataChoThongKe(HttpServletRequest httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return requestService.collectDataThongKe(userId);
     }
