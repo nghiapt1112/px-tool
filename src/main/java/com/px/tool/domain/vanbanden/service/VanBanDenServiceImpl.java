@@ -5,14 +5,17 @@ import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.request.NoiNhan;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
-import com.px.tool.domain.vanbanden.VanBanDenPayload;
+import com.px.tool.domain.vanbanden.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,8 +34,26 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Autowired
     private UserService userService;
 
-    public List<VanBanDenPayload> findAll(Long userId) {
-        List<VanBanDen> val = vanBanDenRepository.findAll();
+    /**
+     * Những văn bản đã gửi.
+     */
+    public List<VanBanDenResponse> findAll(Long userId) {
+        List<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId);
+        return toResponse(val);
+    }
+
+    /**
+     * Những văn bản cua toi.
+     */
+    public List<VanBanDenResponse> findInBox(Long userId) {
+        List<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId);
+        return toResponse(val);
+    }
+
+    private List<VanBanDenResponse> toResponse(List<VanBanDen> val) {
+        if (CollectionUtils.isEmpty(val)) {
+            return Collections.emptyList();
+        }
         Set<Long> ids = new HashSet<>();
         for (VanBanDen vanBanDen : val) {
             ids.add(vanBanDen.getNoiNhan());
@@ -43,7 +64,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         }
         return val.stream()
                 .map(el -> {
-                    VanBanDenPayload payload = VanBanDenPayload.fromEntity(el);
+                    VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
                     payload.setNoiNhan(noiNhanById.get(el.getNoiNhan()));
                     return payload;
                 })
@@ -51,12 +72,14 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     }
 
     @Transactional
-    public VanBanDenPayload save(VanBanDenPayload payload) {
-        return VanBanDenPayload.fromEntity(vanBanDenRepository.save(payload.toEntity()));
+    public VanBanDenResponse save(Long userId, VanBanDenRequest payload) {
+        VanBanDen entity = payload.toEntity();
+        entity.setCreatedBy(userId);
+        return VanBanDenResponse.fromEntity(vanBanDenRepository.save(entity));
     }
 
-    public VanBanDenPayload findById(Long id) {
-        return VanBanDenPayload
+    public VanBanDenResponse findById(Long id) {
+        return VanBanDenResponse
                 .fromEntity(vanBanDenRepository.findById(id).orElseThrow(() -> new PXException("vanbanden_notFound")))
                 .withFilesName(fileStorageService.listFileNames(RequestType.VAN_BAN_DEN, id));
     }

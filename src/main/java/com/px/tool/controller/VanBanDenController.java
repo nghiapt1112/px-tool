@@ -1,10 +1,9 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.vanbanden.VanBanDenPayload;
-import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
+import com.px.tool.domain.vanbanden.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.BaseController;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,26 +22,30 @@ public class VanBanDenController extends BaseController {
     @Autowired
     private VanBanDenServiceImpl vanBanDenService;
 
-    @Autowired
-    private VanBanDenRepository vanBanDenRepository;
-
     @GetMapping
-    public List<VanBanDenPayload> list(HttpServletRequest httpServletRequest) {
+    public List<VanBanDenResponse> findSent(HttpServletRequest httpServletRequest) {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
     }
 
+    @GetMapping("/receive")
+    public List<VanBanDenResponse> findInBox(HttpServletRequest httpServletRequest) {
+        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest));
+    }
+
     @PostMapping
-    public VanBanDenPayload save(@RequestBody VanBanDenPayload payload) {
-        return vanBanDenService.save(payload);
+    public VanBanDenResponse save(HttpServletRequest httpServletRequest, @RequestBody VanBanDenRequest payload) {
+        return vanBanDenService.save(extractUserInfo(httpServletRequest), payload);
     }
 
     @GetMapping("/{id}")
-    public VanBanDenPayload detail(@PathVariable Long id){
+    public VanBanDenResponse detail(@PathVariable Long id) {
         return vanBanDenService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         vanBanDenService.deleteById(id);
     }
+
+
 }

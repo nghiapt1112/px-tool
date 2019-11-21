@@ -3,29 +3,31 @@ package com.px.tool.domain.vanbanden;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class VanBanDenPayload {
+public class VanBanDenRequest {
     private Long vbdId;
-    private String noiNhan;
+    private Long noiNhan;
     private String noiDung;
     private List<String> files;
 
-    public static VanBanDenPayload fromEntity(VanBanDen vanBanDen) {
-        VanBanDenPayload payload = new VanBanDenPayload();
-        BeanUtils.copyProperties(vanBanDen, payload);
+    public static VanBanDenRequest fromEntity(VanBanDen vanBanDen) {
+        VanBanDenRequest payload = new VanBanDenRequest();
+        payload.vbdId = vanBanDen.getVbdId();
+        payload.noiNhan = vanBanDen.getNoiNhan();
+        payload.noiDung = vanBanDen.getNoiDung();
         return payload;
     }
 
     public VanBanDen toEntity() {
         VanBanDen vanBanDen = new VanBanDen();
-        BeanUtils.copyProperties(this, vanBanDen);
-        try{
+        vanBanDen.setVbdId(this.vbdId);
+        vanBanDen.setNoiDung(this.noiDung);
+        try {
             vanBanDen.setNoiNhan(Long.valueOf(this.noiNhan));
         } catch (Exception ex) {
 
@@ -33,9 +35,4 @@ public class VanBanDenPayload {
         return vanBanDen;
     }
 
-
-    public VanBanDenPayload withFilesName(List<String> listFile) {
-        this.files = listFile;
-        return this;
-    }
 }

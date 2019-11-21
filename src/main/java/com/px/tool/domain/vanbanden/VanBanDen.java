@@ -4,6 +4,7 @@ import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ public class VanBanDen extends EntityDefault {
     public Long noiNhan;
 
     @Column
+    @Type(type="text")
     public String noiDung;
 
     @Column
