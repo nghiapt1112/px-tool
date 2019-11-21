@@ -3,6 +3,7 @@ package com.px.tool.domain.vanbanden.service;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.VanBanDenRequest;
@@ -10,6 +11,7 @@ import com.px.tool.domain.vanbanden.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,9 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Những văn bản đã gửi.
@@ -90,6 +95,24 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
             vanBanDenRepository.deleteById(id);
         } catch (Exception e) {
             throw new PXException("vanbanden_deleteFailed");
+        }
+    }
+
+    @Transactional
+    public void guiVanBanDen(List<Long> group) {
+        try {
+            List<VanBanDen> contents = userRepository.findByGroup(group).stream()
+                    .filter(el -> el.getLevel() == 3)
+                    .map(el -> {
+                        VanBanDen vanBanDen = new VanBanDen();
+                        vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                        vanBanDen.setNoiNhan(el.getUserId());
+                        return vanBanDen;
+                    })
+                    .collect(Collectors.toList());
+            vanBanDenRepository.saveAll(contents);
+        } catch (Exception e) {
+            logger.error("[Kiem hong] Can't save Van Ban Den");
         }
     }
 }

@@ -17,6 +17,7 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong_phong;
 
 @Service
 public class PhuongAnServiceImpl implements PhuongAnService {
@@ -55,6 +58,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    private VanBanDenServiceImpl vanBanDenService;
 
     @Override
     public PhuongAnPayload findById(Long userId, Long id) {
@@ -94,20 +100,21 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         phuongAnPayload.toEntity(phuongAn);
         validateXacNhan(userId, phuongAn, existedPhuongAn);
         capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
-        guiVanBanDen(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
             taoCNTP(phuongAn, thanhPham);
             cntpReceiverId = phuongAnPayload.getNoiNhan();
+            guiVanBanDen();
+
         }
         cleanOldDetailData(phuongAn, existedPhuongAn);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return phuongAnRepository.save(phuongAn);
     }
 
-    private void guiVanBanDen(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-
+    private void guiVanBanDen() {
+        vanBanDenService.guiVanBanDen(group_cac_truong_phong);
     }
 
     private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {

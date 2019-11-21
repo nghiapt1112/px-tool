@@ -11,6 +11,7 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 
 @Service
 public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDatHangService {
@@ -37,6 +40,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VanBanDenServiceImpl vanBanDenService;
 
     @Override
     public List<PhieuDatHang> findByPhongBan(Long userId) {
@@ -78,6 +84,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN);
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
             phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
+            guiVanBanDen();
         }
         cleanOldDetailData(phieuDatHang, existedPhieuDatHang);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
@@ -86,8 +93,8 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         return phieuDatHang;
     }
 
-    private void guiVanBanDen(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-
+    private void guiVanBanDen() {
+        vanBanDenService.guiVanBanDen(group_12_PLUS);
     }
     /**
      * Phai dung permission khi xac nhan
