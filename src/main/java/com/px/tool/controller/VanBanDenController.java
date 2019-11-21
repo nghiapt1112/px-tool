@@ -47,5 +47,4 @@ public class VanBanDenController extends BaseController {
         vanBanDenService.deleteById(id);
     }
 
-
 }

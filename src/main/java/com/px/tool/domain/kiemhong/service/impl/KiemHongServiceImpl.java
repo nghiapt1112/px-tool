@@ -201,7 +201,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                         return vanBanDen;
                     })
                     .collect(Collectors.toList());
-
             vanBanDenRepository.saveAll(contents);
         } catch (Exception e) {
             logger.error("[Kiem hong] Can't save Van Ban Den");
