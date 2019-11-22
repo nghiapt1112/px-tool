@@ -159,7 +159,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
         validateXacNhan(userId, requestKiemHong, existedKiemHong);
         cleanKiemHongDetails(requestKiemHong, existedKiemHong);
-        // TODO: get current user info , check permission. vi khong phai ai cung approve dc cho nguoi khac
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
         Long kiemHongReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
@@ -172,7 +171,12 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             }
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
+            // clear back recieverid
             phieuDatHangReceiverId = kiemHongPayLoad.getNoiNhan();
+            kiemHongReceiverId = null;
+            phuongAnReceiverId = null;
+            cntpReceiverId = null;
+
             createPhieuDatHang(requestKiemHong, pdh);
             guiVanBanDen();
         }

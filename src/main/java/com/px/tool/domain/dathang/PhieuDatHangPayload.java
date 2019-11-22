@@ -50,6 +50,15 @@ public class PhieuDatHangPayload extends AbstractObject {
     private Long chuyen; // id cua user dc nhan
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 
+    // chuky + ten
+    private boolean nguoiDatHangSignImg;
+    private boolean tpvatTuSignImg;
+    private boolean tpkthkSignImg;
+
+    private boolean nguoiDatHangFullName;
+    private boolean tpvatTuFullName;
+    private boolean tpkthkFullName1;
+
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
         BeanUtils.copyProperties(phieuDatHang, phieuDatHangPayload);

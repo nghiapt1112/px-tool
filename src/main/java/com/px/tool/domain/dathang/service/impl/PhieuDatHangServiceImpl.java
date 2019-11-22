@@ -83,8 +83,12 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN);
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
-            phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
             guiVanBanDen();
+            // clear back recieverid
+            phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
+            phieuDatHangReceiverId = null;
+            kiemHongReceiverId = null;
+            cntpReceiverId = null;
         }
         cleanOldDetailData(phieuDatHang, existedPhieuDatHang);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);

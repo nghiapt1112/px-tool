@@ -20,7 +20,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         dashBoardCongViecCuaToi.ma = "Key-" + request.getRequestId();
         dashBoardCongViecCuaToi.requestId = request.getRequestId();
         dashBoardCongViecCuaToi.type = request.getType();
-        dashBoardCongViecCuaToi.noiDung = request.getKiemHong().getPhanXuong() + "- " + request.getKiemHong().getToSX();
+        dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: "+ request.getKiemHong().getPhanXuong() + "- Tổ sản xuất: " + request.getKiemHong().getToSX();
 
 //        if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
 //            dashBoardCongViecCuaToi.noiDung = request.getKiemHong().getPhanXuong();

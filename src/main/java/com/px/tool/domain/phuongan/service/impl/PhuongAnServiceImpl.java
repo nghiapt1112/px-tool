@@ -104,8 +104,12 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             phuongAn.setRequest(existedPhuongAn.getRequest());
             taoCNTP(phuongAn, thanhPham);
-            cntpReceiverId = phuongAnPayload.getNoiNhan();
             guiVanBanDen();
+            // clear receiverId
+            cntpReceiverId = phuongAnPayload.getNoiNhan();
+            phuongAnReceiverId = null;
+            phieuDatHangReceiverId = null;
+            kiemHongReceiverId = null;
 
         }
         cleanOldDetailData(phuongAn, existedPhuongAn);

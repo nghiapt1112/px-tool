@@ -59,6 +59,17 @@ public class KiemHongPayLoad extends AbstractObject {
     @JsonProperty("yKienTroLyKT")
     private String yKienTroLyKT;
 
+    // chu ky + ten
+    private String quanDocSignImg;
+    private String troLyKTSignImg;
+    private String toTruongSignImg;
+
+    private String quanDocfullName;
+    private String troLyfullName;
+    private String toTruongfullName;
+
+
+
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
         BeanUtils.copyProperties(kiemHong, kiemHongResponse);
