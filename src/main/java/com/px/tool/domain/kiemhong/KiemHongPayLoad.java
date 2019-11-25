@@ -68,7 +68,9 @@ public class KiemHongPayLoad extends AbstractObject {
     private String troLyfullName;
     private String toTruongfullName;
 
-
+    private Long quanDocId;
+    private Long troLyId;
+    private Long toTruongId;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
@@ -144,5 +146,15 @@ public class KiemHongPayLoad extends AbstractObject {
             quanDocDisable = false;
         }
         return this;
+    }
+
+    public void capNhatChuKy(User user) {
+        if (user.isQuanDocPhanXuong() && quanDocXacNhan) {
+            quanDocId = user.getUserId();
+        } else if (user.isTroLyKT() && troLyKTXacNhan) {
+            troLyId = user.getUserId();
+        } else if (user.isToTruong() & toTruongXacNhan) {
+            toTruongId = user.getUserId();
+        }
     }
 }

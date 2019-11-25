@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -102,6 +103,11 @@ public class UserServiceImpl implements UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    }
+
+    @Override
+    public List<User> findByIds(Collection<Long> userIds) {
+        return userRepository.findByIds(userIds);
     }
 
     @Override

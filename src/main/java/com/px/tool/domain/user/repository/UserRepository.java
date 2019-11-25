@@ -28,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT fb FROM User fb WHERE fb.phongBan.phongBanId IN ?1")
     List<User> findByGroup(Collection<Long> groups);
 
+    @Query("SELECT u FROM User u WHERE u.userId IN ?1")
+    List<User> findByIds(Collection<Long> ids);
 }

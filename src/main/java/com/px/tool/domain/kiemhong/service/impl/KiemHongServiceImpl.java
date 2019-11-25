@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -59,8 +60,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
     @Override
     public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
-        // TODO: tu thong tin user, get tat ca kiemHong dang can xu ly 1 phong ban.
-        //  => viec luu createdId nen de la phongBan id.
         return kiemHongRepository.findByCreatedBy(userId)
                 .stream()
                 .filter(Objects::nonNull)
@@ -75,10 +74,40 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         if (request.getKiemHong() == null) {
             throw new RuntimeException("kiemhong.not_found");
         }
-        return KiemHongPayLoad
+        KiemHongPayLoad payload = KiemHongPayLoad
                 .fromEntity(request.getKiemHong())
                 .andRequestId(request.getRequestId())
                 .filterPermission(userService.findById(userId));
+        List<Long> signedIds = new ArrayList<>(3);
+        if (payload.getQuanDocXacNhan()) {
+            signedIds.add(payload.getQuanDocId());
+        }
+        if (payload.getTroLyKTXacNhan()) {
+            signedIds.add(payload.getTroLyId());
+        }
+        if (payload.getToTruongXacNhan()) {
+            signedIds.add(payload.getToTruongId());
+        }
+
+        if (CollectionUtils.isEmpty(signedIds)) {
+            return payload;
+        }
+        for (User user : userService.findByIds(signedIds)) {
+            if (payload.getQuanDocXacNhan() && user.getUserId().equals(payload.getQuanDocId())) {
+                payload.setQuanDocfullName(user.getFullName());
+                payload.setQuanDocSignImg(user.getSignImg());
+            }
+            if (payload.getTroLyKTXacNhan() && user.getUserId().equals(payload.getTroLyId())) {
+                payload.setTroLyfullName(user.getFullName());
+                payload.setTroLyId(user.getUserId());
+            }
+            if (payload.getToTruongXacNhan() && user.getUserId().equals(payload.getToTruongId())) {
+                payload.setToTruongfullName(user.getFullName());
+                payload.setToTruongSignImg(user.getSignImg());
+            }
+        }
+
+        return payload;
     }
 
     @Override
@@ -153,18 +182,21 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 .findById(kiemHongPayLoad.getKhId())
                 .orElseThrow(() -> new PXException("Không tìm thấy kiểm hỏng"));
 
-
+        User user = userService.findById(userId);
+        kiemHongPayLoad.capNhatChuKy(user);
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
         capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
-        validateXacNhan(userId, requestKiemHong, existedKiemHong);
+        validateXacNhan(user, requestKiemHong, existedKiemHong);
         cleanKiemHongDetails(requestKiemHong, existedKiemHong);
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
+
         Long kiemHongReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
         Long phieuDatHangReceiverId = existedKiemHong.getRequest().getPhieuDatHangReceiverId();
         Long phuongAnReceiverId = existedKiemHong.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();
+
         if (requestKiemHong.allApproved()) {
             if (Objects.isNull(kiemHongPayLoad.getNoiNhan())) {
                 throw new PXException("noi_nhan.must_choose");
@@ -198,14 +230,13 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(Long userId, KiemHong requestKiemHong, KiemHong existedKiemHong) {
+    private void validateXacNhan(User user, KiemHong requestKiemHong, KiemHong existedKiemHong) {
 //        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
 //            throw new PXException("noi_nhan.must_choose");
 //        }
 //        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
 //            throw new PXException("Phải có người xác nhận");
 //        }
-        User user = userService.findById(userId);
         if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
             requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
             requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
@@ -227,7 +258,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
         if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
             requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
-            requestKiemHong.setToTruongSignImg("");// current user. getimg
         }
         if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
             requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
@@ -235,6 +265,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
             requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
         }
+
+
     }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {

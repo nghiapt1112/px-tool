@@ -107,12 +107,12 @@ public class KiemHong extends EntityDefault {
     @Column
     private String yKienTroLyKT;
 
-    @Column
-    private String quanDocSignImg;
-    @Column
-    private String troLyKTSignImg;
-    @Column
-    private String toTruongSignImg;
+//    @Column
+//    private String quanDocSignImg;
+//    @Column
+//    private String troLyKTSignImg;
+//    @Column
+//    private String toTruongSignImg;
 
     @Column
     private String quanDocfullName;
@@ -120,6 +120,14 @@ public class KiemHong extends EntityDefault {
     private String troLyfullName;
     @Column
     private String toTruongfullName;
+
+    // sign Id
+    @Column
+    private Long quanDocId;
+    @Column
+    private Long troLyId;
+    @Column
+    private Long toTruongId;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "kiemHong", cascade = CascadeType.ALL)

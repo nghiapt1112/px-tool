@@ -8,6 +8,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.UserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -19,6 +20,8 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long userId);
 
+    List<User> findByIds(Collection<Long> userIds);
+
     List<NoiNhan> findNoiNhan(Long userId, NoiNhanRequestParams requestId);
 
     List<NoiNhan> findVanBanDenNoiNhan();
@@ -26,4 +29,6 @@ public interface UserService extends UserDetailsService {
     List<PhanXuongPayload> findListPhanXuong();
 
     List<ToSXPayload> findListToSanXuat(Long pxId);
+
+
 }
