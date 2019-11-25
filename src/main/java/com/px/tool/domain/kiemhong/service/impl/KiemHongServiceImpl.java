@@ -99,7 +99,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             }
             if (payload.getTroLyKTXacNhan() && user.getUserId().equals(payload.getTroLyId())) {
                 payload.setTroLyfullName(user.getFullName());
-                payload.setTroLyId(user.getUserId());
+                payload.setTroLyKTSignImg(user.getSignImg());
             }
             if (payload.getToTruongXacNhan() && user.getUserId().equals(payload.getToTruongId())) {
                 payload.setToTruongfullName(user.getFullName());
