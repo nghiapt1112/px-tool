@@ -107,6 +107,20 @@ public class KiemHong extends EntityDefault {
     @Column
     private String yKienTroLyKT;
 
+    @Column
+    private String quanDocSignImg;
+    @Column
+    private String troLyKTSignImg;
+    @Column
+    private String toTruongSignImg;
+
+    @Column
+    private String quanDocfullName;
+    @Column
+    private String troLyfullName;
+    @Column
+    private String toTruongfullName;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "kiemHong", cascade = CascadeType.ALL)
     private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();

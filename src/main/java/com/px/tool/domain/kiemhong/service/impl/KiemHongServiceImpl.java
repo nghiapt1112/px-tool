@@ -191,7 +191,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
      * Phiếu kiểm hỏng sẽ được chuyển đến account 8,9,12 và phân xưởng lập kiểm hỏng trong VĂN BẢN ĐẾN
      */
     private void guiVanBanDen() {
-        vanBanDenService.guiVanBanDen(group_12_PLUS);
+        vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.KIEM_HONG);
     }
 
     /**
@@ -227,6 +227,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
         if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
             requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
+            requestKiemHong.setToTruongSignImg();// current user. getimg
         }
         if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
             requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());

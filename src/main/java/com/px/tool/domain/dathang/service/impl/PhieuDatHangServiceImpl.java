@@ -98,7 +98,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     }
 
     private void guiVanBanDen() {
-        vanBanDenService.guiVanBanDen(group_12_PLUS);
+        vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.DAT_HANG);
     }
     /**
      * Phai dung permission khi xac nhan

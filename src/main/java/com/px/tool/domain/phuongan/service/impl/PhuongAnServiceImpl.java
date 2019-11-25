@@ -118,7 +118,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     private void guiVanBanDen() {
-        vanBanDenService.guiVanBanDen(group_cac_truong_phong);
+        vanBanDenService.guiVanBanDen(group_cac_truong_phong, RequestType.PHUONG_AN);
     }
 
     private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {

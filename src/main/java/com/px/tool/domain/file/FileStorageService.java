@@ -50,6 +50,7 @@ public class FileStorageService {
     public String storeFile(MultipartFile file, RequestType requestType, Long requestId) {
         String orgFileName = StringUtils.cleanPath(file.getOriginalFilename());
         String fileName = requestType.name()
+                .concat("/")
                 .concat(UUID.randomUUID().toString())
                 .concat(".")
                 .concat(FilenameUtils.getExtension(orgFileName));

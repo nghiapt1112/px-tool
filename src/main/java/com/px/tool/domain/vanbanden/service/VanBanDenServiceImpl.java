@@ -99,13 +99,19 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     }
 
     @Transactional
-    public void guiVanBanDen(List<Long> group) {
+    public void guiVanBanDen(List<Long> group, RequestType requestType) {
         try {
             List<VanBanDen> contents = userRepository.findByGroup(group).stream()
                     .filter(el -> el.getLevel() == 3)
                     .map(el -> {
                         VanBanDen vanBanDen = new VanBanDen();
-                        vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                        if (requestType == RequestType.KIEM_HONG) {
+                            vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                        } else if (requestType == RequestType.DAT_HANG) {
+                            vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                        } else if (requestType == RequestType.PHUONG_AN) {
+                            vanBanDen.setNoiDung(vbdDatHang + "ngày: " + DateTimeUtils.nowAsString());
+                        }
                         vanBanDen.setNoiNhan(el.getUserId());
                         return vanBanDen;
                     })

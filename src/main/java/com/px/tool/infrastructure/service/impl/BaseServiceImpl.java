@@ -9,4 +9,10 @@ public abstract class BaseServiceImpl {
 
     @Value("{vanbanden.kiemhong.noidung}")
     protected String vbdKiemHong;
+
+    @Value("{vanbanden.dathang.noidung}")
+    protected String vbdDatHang;
+
+    @Value("{vanbanden.phuongan.noidung}")
+    protected String vbdPhuongAn;
 }
