@@ -51,13 +51,17 @@ public class PhieuDatHangPayload extends AbstractObject {
     private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
 
     // chuky + ten
-    private boolean nguoiDatHangSignImg;
-    private boolean tpvatTuSignImg;
-    private boolean tpkthkSignImg;
+    private String nguoiDatHangSignImg;
+    private String tpvatTuSignImg;
+    private String tpkthkSignImg;
 
-    private boolean nguoiDatHangFullName;
-    private boolean tpvatTuFullName;
-    private boolean tpkthkFullName1;
+    private String nguoiDatHangFullName;
+    private String tpvatTuFullName;
+    private String tpkthkFullName;
+
+    private Long nguoiDatHangId;
+    private Long tpvatTuId;
+    private Long tpkthkId;
 
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
@@ -112,5 +116,17 @@ public class PhieuDatHangPayload extends AbstractObject {
             tpkthkDisable = false;
         }
         return this;
+    }
+
+    public void capNhatChuKy(User user) {
+        if (user.isNhanVienVatTu() && nguoiDatHangXacNhan) {
+            this.nguoiDatHangId = user.getUserId();
+        }
+        if (user.isTruongPhongVatTu() && tpvatTuXacNhan) {
+            tpvatTuId = user.getUserId();
+        }
+        if (user.isTruongPhongKTHK() && tpkthkXacNhan) {
+            tpkthkId = user.getUserId();
+        }
     }
 }

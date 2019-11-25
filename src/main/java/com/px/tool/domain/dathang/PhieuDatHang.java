@@ -89,6 +89,17 @@ public class PhieuDatHang extends EntityDefault {
     @Column
     private String yKienTPVatTu;
 
+    // sign id
+
+    @Column
+    private Long nguoiDatHangId;
+
+    @Column
+    private Long tpvatTuId;
+
+    @Column
+    private Long tpkthkId;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phieuDatHang", cascade = CascadeType.ALL)
     private Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>();
@@ -100,8 +111,8 @@ public class PhieuDatHang extends EntityDefault {
     public boolean allApproved() {
         return
                 Objects.nonNull(tpkthkXacNhan) && tpkthkXacNhan &&
-                Objects.nonNull(tpvatTuXacNhan) && tpvatTuXacNhan &&
-                Objects.nonNull(nguoiDatHangXacNhan) && nguoiDatHangXacNhan;
+                        Objects.nonNull(tpvatTuXacNhan) && tpvatTuXacNhan &&
+                        Objects.nonNull(nguoiDatHangXacNhan) && nguoiDatHangXacNhan;
     }
 
     public Boolean getTpkthkXacNhan() {

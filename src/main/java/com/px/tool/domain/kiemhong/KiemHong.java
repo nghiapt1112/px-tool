@@ -107,20 +107,6 @@ public class KiemHong extends EntityDefault {
     @Column
     private String yKienTroLyKT;
 
-//    @Column
-//    private String quanDocSignImg;
-//    @Column
-//    private String troLyKTSignImg;
-//    @Column
-//    private String toTruongSignImg;
-
-    @Column
-    private String quanDocfullName;
-    @Column
-    private String troLyfullName;
-    @Column
-    private String toTruongfullName;
-
     // sign Id
     @Column
     private Long quanDocId;

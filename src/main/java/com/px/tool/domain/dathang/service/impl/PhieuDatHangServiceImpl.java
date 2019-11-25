@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -56,6 +57,34 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
                 .fromEntity(request.getPhieuDatHang())
                 .filterPermission(userService.findById(userId));;
         payload.setRequestId(request.getRequestId());
+
+        List<Long> signedIds = new ArrayList<>(3);
+        if (payload.getNguoiDatHangXacNhan()) {
+            signedIds.add(payload.getNguoiDatHangId());
+        }
+        if(payload.getTpkthkXacNhan()) {
+            signedIds.add(payload.getTpkthkId());
+        }
+        if (payload.getTpvatTuXacNhan()) {
+            signedIds.add(payload.getTpvatTuId());
+        }
+        if (CollectionUtils.isEmpty(signedIds)) {
+            return payload;
+        }
+        for (User user : userService.findByIds(signedIds)) {
+            if (payload.getNguoiDatHangXacNhan() && user.getUserId().equals(payload.getNguoiDatHangId())) {
+                payload.setNguoiDatHangFullName(user.getFullName());
+                payload.setNguoiDatHangSignImg(user.getSignImg());
+            }
+            if(payload.getTpkthkXacNhan() && user.getUserId().equals(payload.getTpkthkId())) {
+                payload.setTpkthkFullName(user.getFullName());
+                payload.setTpkthkSignImg(user.getSignImg());
+            }
+            if (payload.getTpvatTuXacNhan() && user.getUserId().equals(payload.getTpvatTuId())) {
+                payload.setTpvatTuFullName(user.getFullName());
+                payload.setTpvatTuSignImg(user.getSignImg());
+            }
+        }
         return payload;
     }
 
@@ -75,11 +104,14 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         Long phuongAnReceiverId = existedPhieuDatHang.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = existedPhieuDatHang.getRequest().getCntpReceiverId();
 
+        User user = userService.findById(userId);
+
+        phieuDatHangPayload.capNhatChuKy(user);
         Long requestId = existedPhieuDatHang.getRequest().getRequestId();
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
         capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
-        validateXacNhan(userId, phieuDatHang, existedPhieuDatHang);
+        validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN);
             phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
@@ -104,8 +136,8 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(Long userId, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
-        User user = userService.findById(userId);
+    private void validateXacNhan(User user, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
+
         if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan()) && !user.isTruongPhongKTHK() && requestPhieuDH.getNoiNhan() == null) {
             throw new PXException("noi_nhan.must_choose");
         }
