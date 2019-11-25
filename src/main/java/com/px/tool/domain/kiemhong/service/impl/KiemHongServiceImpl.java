@@ -227,7 +227,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
         if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
             requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
-            requestKiemHong.setToTruongSignImg();// current user. getimg
+            requestKiemHong.setToTruongSignImg("");// current user. getimg
         }
         if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
             requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
