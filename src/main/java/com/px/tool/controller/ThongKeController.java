@@ -1,6 +1,6 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.request.ThongKePayload;
+import com.px.tool.domain.request.payload.ThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
@@ -21,6 +21,7 @@ public class ThongKeController extends BaseController {
 
     @GetMapping
     private ThongKePayload getDataChoThongKe(HttpServletRequest httpServletRequest,
+                                             @RequestParam(required = false, defaultValue = "1") String spId,
                                              @RequestParam(required = false, defaultValue = "1") Integer page,
                                              @RequestParam(required = false, defaultValue = "10") Integer size
     ) {

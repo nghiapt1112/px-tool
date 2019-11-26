@@ -2,7 +2,7 @@ package com.px.tool.domain.vanbanden.service;
 
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.file.FileStorageService;
-import com.px.tool.domain.request.NoiNhan;
+import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;

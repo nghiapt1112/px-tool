@@ -1,9 +1,9 @@
 package com.px.tool.domain.request.service.impl;
 
-import com.px.tool.domain.request.DashBoardCongViecCuaToi;
+import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.ThongKeDetailPayload;
-import com.px.tool.domain.request.ThongKePayload;
+import com.px.tool.domain.request.payload.ThongKeDetailPayload;
+import com.px.tool.domain.request.payload.ThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -46,21 +45,22 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId) {
+    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId, com.px.tool.domain.request.payload.PageRequest pageRequest) {
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         Map<Long, User> userById = userService.userById();
-        List<Request> requestsByNguoiGui = null;
+        Page<Request> requestsByNguoiGui = null;
         if (currentUser.getLevel() == 3) {
             List<User> members = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()));
             if (CollectionUtils.isEmpty(members)) {
                 throw new PXException("member.not_found");
             }
             requestsByNguoiGui = requestRepository.findByNguoiNhan(
-                    members.stream().map(User::getUserId).collect(Collectors.toSet()) // list toan bo danh sach cua 1 team
+                    members.stream().map(User::getUserId).collect(Collectors.toSet()), // list toan bo danh sach cua 1 team
+                    PageRequest.of(pageRequest.getPage(), pageRequest.getSize())
             );
         } else {
-            requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId));
+            requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId), PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
         }
         return requestsByNguoiGui
                 .stream()
@@ -88,6 +88,9 @@ public class RequestServiceImpl implements RequestService {
                 .map(ThongKeDetailPayload::fromRequestEntity)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
+        tkPayload.setTotal(requests.getTotalPages());
+        tkPayload.setSize(request.getSize());
+        tkPayload.setPage(request.getPage());
         return tkPayload;
     }
 

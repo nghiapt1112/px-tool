@@ -1,4 +1,4 @@
-package com.px.tool.domain.request;
+package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;

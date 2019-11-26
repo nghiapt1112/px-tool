@@ -1,12 +1,11 @@
 package com.px.tool.domain.request.service;
 
-import com.px.tool.domain.request.DashBoardCongViecCuaToi;
+import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.ThongKeDetailPayload;
-import com.px.tool.domain.request.ThongKePayload;
+import com.px.tool.domain.request.payload.PageRequest;
+import com.px.tool.domain.request.payload.ThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface RequestService {
@@ -14,7 +13,7 @@ public interface RequestService {
 
     Request findById(Long id);
 
-    List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId);
+    List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId, PageRequest pageRequest);
 
     ThongKePayload collectDataThongKe(ThongKeRequest request);
 

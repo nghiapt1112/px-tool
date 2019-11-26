@@ -19,7 +19,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findByNguoiGui(Collection<Long> userIds);
 
     @Query("SELECT rq FROM Request rq WHERE rq.kiemHongReceiverId IN ?1 OR rq.phieuDatHangReceiverId IN ?1 OR rq.phuongAnReceiverId IN ?1 OR rq.cntpReceiverId IN ?1")
-    List<Request> findByNguoiNhan(Collection<Long> userIds);
+    Page<Request> findByNguoiNhan(Collection<Long> userIds, Pageable pageable);
 
     @Modifying
     @Transactional

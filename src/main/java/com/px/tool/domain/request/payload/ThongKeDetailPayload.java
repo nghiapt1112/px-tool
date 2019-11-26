@@ -1,15 +1,14 @@
-package com.px.tool.domain.request;
+package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
+import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter

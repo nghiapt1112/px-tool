@@ -1,8 +1,7 @@
 package com.px.tool;
 
-import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.ThongKePayload;
+import com.px.tool.domain.request.payload.ThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.impl.RequestServiceImpl;
@@ -11,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
 
 public class ThongKeTest extends PxApplicationTests{
     @Autowired

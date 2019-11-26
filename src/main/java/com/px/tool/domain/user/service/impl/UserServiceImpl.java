@@ -2,10 +2,10 @@ package com.px.tool.domain.user.service.impl;
 
 import com.google.common.collect.Sets;
 import com.px.tool.domain.RequestType;
-import com.px.tool.domain.request.NoiNhan;
-import com.px.tool.domain.request.PhanXuongPayload;
+import com.px.tool.domain.request.payload.NoiNhan;
+import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.ToSXPayload;
+import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.Role;

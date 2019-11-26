@@ -1,9 +1,9 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.request.NoiNhan;
-import com.px.tool.domain.request.NotificationPayload;
-import com.px.tool.domain.request.PhanXuongPayload;
-import com.px.tool.domain.request.ToSXPayload;
+import com.px.tool.domain.request.payload.NoiNhan;
+import com.px.tool.domain.request.payload.NotificationPayload;
+import com.px.tool.domain.request.payload.PhanXuongPayload;
+import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
