@@ -18,8 +18,8 @@ public class KiemHongPayLoad extends AbstractObject {
     private Long requestId;
     private Long khId;
     private String tenNhaMay;
-    private String phanXuong;
-    private String toSX;
+    private Long phanXuong;
+    private Long toSX;
     private String tenVKTBKT; // may bay L39
     private String nguonVao;// SCL TTNH
     private String congDoan; // kiem hong chi tiet
@@ -87,6 +87,8 @@ public class KiemHongPayLoad extends AbstractObject {
         kiemHongResponse.quanDocDisable = true;
         kiemHongResponse.troLyKTDisable = true;
         kiemHongResponse.toTruongDisable = true;
+        kiemHongResponse.phanXuong = Long.valueOf(kiemHong.getPhanXuong());
+        kiemHongResponse.toSX = Long.valueOf(kiemHong.getToSX());
         return kiemHongResponse;
     }
 

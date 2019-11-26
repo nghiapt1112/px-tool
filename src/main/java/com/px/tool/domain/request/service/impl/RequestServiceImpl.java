@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,16 +47,15 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
         return requestsByNguoiGui
                 .stream()
-                .map(DashBoardCongViecCuaToi::fromEntity)
+                .map(request -> DashBoardCongViecCuaToi.fromEntity(request, null))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId) {
-        // TODO: if level 3 => nhan ca team
-        // TODO: if level 4,5 => nhan theo userId
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
+        Map<Long, User> userById = userService.userById();
         List<Request> requestsByNguoiGui = null;
         if (currentUser.getLevel() == 3) {
             List<User> members = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()));
@@ -70,7 +70,7 @@ public class RequestServiceImpl implements RequestService {
         }
         return requestsByNguoiGui
                 .stream()
-                .map(DashBoardCongViecCuaToi::fromEntity)
+                .map(el -> DashBoardCongViecCuaToi.fromEntity(el, userById))
                 .collect(Collectors.toList());
     }
 

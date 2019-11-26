@@ -29,6 +29,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -271,8 +272,9 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
         pdh.setSo(requestKiemHong.getSoHieu());
-        pdh.setDonViYeuCau(requestKiemHong.getToSX()); // C3 sheet1
-        pdh.setPhanXuong(requestKiemHong.getPhanXuong()); // C2 sheet1
+        Map<Long, User> userById = userService.userById();
+        pdh.setDonViYeuCau(userById.get(requestKiemHong.getToSX()).getFullName()); // C3 sheet1
+        pdh.setPhanXuong(userById.get(requestKiemHong.getPhanXuong()).getFullName()); // C2 sheet1
         pdh.setNoiDung(requestKiemHong.getNguonVao() + " " + requestKiemHong.getTenVKTBKT() + " " + requestKiemHong.getSoHieu() + " " + requestKiemHong.getSoXX()); // E2 sheet1 + E1 sheet1
         PhieuDatHang savedPdh = phieuDatHangRepository.save(pdh);
 

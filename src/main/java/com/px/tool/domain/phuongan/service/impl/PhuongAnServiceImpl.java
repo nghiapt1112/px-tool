@@ -94,11 +94,14 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         Long phuongAnReceiverId = Objects.isNull(phuongAnPayload.getNoiNhan()) ? userId : phuongAnPayload.getNoiNhan();
         Long cntpReceiverId = existedPhuongAn.getRequest().getCntpReceiverId();
 
+        User user = userService.findById(userId);
+        phuongAnPayload.capNhatChuKy(user);
         Long requestId = existedPhuongAn.getRequest().getRequestId();
         CongNhanThanhPham thanhPham = existedPhuongAn.getRequest().getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
-        validateXacNhan(userId, phuongAn, existedPhuongAn);
+
+        validateXacNhan(user, phuongAn, existedPhuongAn);
         capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.getRequest().setStatus(RequestType.CONG_NHAN_THANH_PHAM);
@@ -135,8 +138,8 @@ public class PhuongAnServiceImpl implements PhuongAnService {
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(Long userId, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-        User user = userService.findById(userId);
+    private void validateXacNhan(User user, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+
         if (user.isNguoiLapPhieu()) {
             phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
             phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());

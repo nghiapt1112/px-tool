@@ -26,7 +26,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -270,5 +272,12 @@ public class UserServiceImpl implements UserService {
                 .filter(el -> el.getLevel() == 5)
                 .map(ToSXPayload::fromUserEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Long, User> userById() {
+        return userRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(User::getUserId, Function.identity()));
     }
 }

@@ -47,12 +47,31 @@ public class ExcelServiceImpl implements ExcelService {
         headerCell.setCellValue("Age");
         headerCell.setCellStyle(headerStyle);
 
-        merge(sheet, 2, 2, 1, 3);
 
         Row row2 = sheet.createRow(2);
+        Row row3 = sheet.createRow(3);
+        Row row4 = sheet.createRow(4);
+        Row row5 = sheet.createRow(5);
+        Row row6 = sheet.createRow(6);
+        Row row7 = sheet.createRow(7);
+        Row row8 = sheet.createRow(8);
+        Row row9 = sheet.createRow(9);
+        Row row10 = sheet.createRow(10);
+        merge(sheet, 2, 2, 1, 3);
         Cell cell22 = row2.createCell(1);
         cell22.setCellValue("Nha may A41");
 
+
+        row3.createCell(0).setCellValue("a");
+        row4.createCell(0).setCellValue("b");
+        row5.createCell(0).setCellValue("c");
+        row6.createCell(0).setCellValue("d");
+        row7.createCell(0).setCellValue("d1");
+        row8.createCell(0).setCellValue("d2");
+        row9.createCell(0).setCellValue("d3");
+        row10.createCell(0).setCellValue("d4");
+
+        sheet.shiftRows(4,5, 1);
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
 

@@ -36,10 +36,10 @@ public class KiemHong extends EntityDefault {
     private String tenNhaMay;
 
     @Column
-    private String phanXuong;
+    private Long phanXuong;
 
     @Column
-    private String toSX;
+    private Long toSX;
 
     @Column
     private String tenVKTBKT; // may bay L39
