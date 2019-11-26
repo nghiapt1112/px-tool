@@ -163,8 +163,20 @@ public class PhuongAnPayload extends AbstractObject {
     }
 
     public void capNhatChuKy(User user) {
-        if (user.isTruongPhongKeHoach()) {
-
+        if (user.isNguoiLapPhieu() && nguoiLapXacNhan) {
+            nguoiLapId = user.getUserId();
+        }
+        if (user.isTruongPhongVatTu() && truongPhongVatTuXacNhan) {
+            truongPhongVatTuId = user.getUserId();
+        }
+        if (user.isTruongPhongKeHoach() && truongPhongKeHoachXacNhan) {
+            truongPhongKeHoachId = user.getUserId();
+        }
+        if (user.isTruongPhongKTHK() && truongPhongKTHKXacNhan) {
+            truongPhongKTHKId = user.getUserId();
+        }
+        if (user.getLevel() == 3 && giamDocXacNhan) {
+            giamDocId = user.getUserId();
         }
     }
 }

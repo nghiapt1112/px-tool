@@ -3,7 +3,6 @@ package com.px.tool.domain.phuongan.service.impl;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
-import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
@@ -70,6 +69,54 @@ public class PhuongAnServiceImpl implements PhuongAnService {
                 .filterPermission(userService.findById(userId))
                 .withFiles(fileStorageService.listFileNames(RequestType.PHUONG_AN, id));
         payload.setRequestId(request.getRequestId());
+
+        List<Long> signedIds = new ArrayList<>(3);
+
+        if (payload.getGiamDocXacNhan()) {
+            signedIds.add(payload.getGiamDocId());
+        }
+        if (payload.getTruongPhongKTHKXacNhan()) {
+            signedIds.add(payload.getTruongPhongKTHKId());
+        }
+        if (payload.getTruongPhongKeHoachXacNhan()) {
+            signedIds.add(payload.getTruongPhongKeHoachId());
+        }
+        if (payload.getTruongPhongVatTuXacNhan()) {
+            signedIds.add(payload.getTruongPhongVatTuId());
+        }
+        if (payload.getNguoiLapXacNhan()) {
+            signedIds.add(payload.getNguoiLapId());
+        }
+
+        if (CollectionUtils.isEmpty(signedIds)) {
+            return payload;
+        }
+        for (User user : userService.findByIds(signedIds)) {
+            if (payload.getGiamDocXacNhan() && user.getUserId().equals(payload.getGiamDocId())) {
+                payload.setGiamDocSignImg(user.getSignImg());
+                payload.setGiamDocFullName(user.getFullName());
+            }
+            if (payload.getTruongPhongKTHKXacNhan() && user.getUserId().equals(payload.getTruongPhongKTHKId())) {
+                payload.setTruongPhongKTHKSignImg(user.getSignImg());
+                payload.setTruongPhongKTHKFullName(user.getFullName());
+            }
+            if (payload.getTruongPhongKeHoachXacNhan() && user.getUserId().equals(payload.getTruongPhongKeHoachId())) {
+                payload.setTruongPhongKeHoachSignImg(user.getSignImg());
+                payload.setTruongPhongKeHoachFullName(user.getFullName());
+            }
+            if (payload.getTruongPhongVatTuXacNhan() && user.getUserId().equals(payload.getTruongPhongVatTuId())) {
+                payload.setTruongPhongVatTuSignImg(user.getSignImg());
+                payload.setTruongPhongVatTuFullName(user.getFullName());
+            }
+            if (payload.getNguoiLapXacNhan() && user.getUserId().equals(payload.getNguoiLapId())) {
+                payload.setNguoiLapSignImg(user.getSignImg());
+                payload.setNguoiLapFullName(user.getFullName());
+            }
+
+            if (CollectionUtils.isEmpty(signedIds)) {
+                return payload;
+            }
+        }
         return payload;
     }
 
