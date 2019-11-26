@@ -4,6 +4,7 @@ import com.px.tool.domain.request.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.ThongKeDetailPayload;
 import com.px.tool.domain.request.ThongKePayload;
+import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
@@ -13,6 +14,8 @@ import com.px.tool.infrastructure.exception.PXException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -40,15 +43,6 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public Request save(Request request) {
         return requestRepository.save(request);
-    }
-
-    @Override
-    public List<DashBoardCongViecCuaToi> timByNguoiGui(Collection<Long> userIds) {
-        List<Request> requestsByNguoiGui = requestRepository.findByNguoiGui(userIds);
-        return requestsByNguoiGui
-                .stream()
-                .map(request -> DashBoardCongViecCuaToi.fromEntity(request, null))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -85,8 +79,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public ThongKePayload collectDataThongKe(Long userId) {
-        List<Request> requests = requestRepository.findAll();
+    public ThongKePayload collectDataThongKe(ThongKeRequest request) {
+        Page<Request> requests = requestRepository.findPaging(request, PageRequest.of(request.getPage(),request.getSize()));
         ThongKePayload tkPayload = new ThongKePayload();
         tkPayload.setSanPham("");
         tkPayload.setTienDo("0");

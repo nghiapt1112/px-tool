@@ -1,6 +1,9 @@
 package com.px.tool.domain.request.repository;
 
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.payload.ThongKeRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +25,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Transactional
     @Query("UPDATE Request rq SET rq.kiemHongReceiverId =?2, rq.phieuDatHangReceiverId = ?3, rq.phuongAnReceiverId = ?4, rq.cntpReceiverId =?5 WHERE rq.requestId = ?1")
     void updateReceiverId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
+
+
+    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES")
+    Page<Request> findPaging(ThongKeRequest thongKeRequest, Pageable pageable);
 }

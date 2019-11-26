@@ -36,7 +36,6 @@ public class ThongKeDetailPayload extends AbstractObject {
     public Long requestId;
 
     public static ThongKeDetailPayload fromRequestEntity(Request request) {
-        List<ThongKeDetailPayload> tks = new ArrayList<>();
         ThongKeDetailPayload tk = null;
         Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
         for (PhieuDatHangDetail phieuDatHangDetail : request.getPhieuDatHang().getPhieuDatHangDetails()) {

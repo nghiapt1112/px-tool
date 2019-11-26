@@ -35,8 +35,9 @@ public class CongNhanThanhPhamController extends BaseController {
     }
 
     @PostMapping
-    public CongNhanThanhPham taoCongNhanThanhPham(@RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
-        return congNhanThanhPhamService.taoCongNhanThanhPham(congNhanThanhPhamPayload);
+    public CongNhanThanhPham saveCongNhanThanhPham(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
+        Long userId = extractUserInfo(httpServletRequest);
+        return congNhanThanhPhamService.saveCongNhanThanhPham(userId, congNhanThanhPhamPayload);
     }
 
     @DeleteMapping

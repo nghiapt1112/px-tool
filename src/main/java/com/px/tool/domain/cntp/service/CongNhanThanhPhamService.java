@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface CongNhanThanhPhamService {
 
-    CongNhanThanhPham taoCongNhanThanhPham(CongNhanThanhPhamPayload congNhanThanhPhamPayload);
-
-    CongNhanThanhPham updateCongNhanThanhPham(CongNhanThanhPham congNhanThanhPham);
+    CongNhanThanhPham saveCongNhanThanhPham(Long userId, CongNhanThanhPhamPayload congNhanThanhPhamPayload);
 
     CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id);
 

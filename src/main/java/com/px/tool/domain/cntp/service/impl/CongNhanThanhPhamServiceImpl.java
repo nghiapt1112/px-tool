@@ -8,6 +8,8 @@ import com.px.tool.domain.cntp.repository.NoiDungThucHienRepository;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,12 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     @Transactional
-    public CongNhanThanhPham taoCongNhanThanhPham(CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
+    public CongNhanThanhPham saveCongNhanThanhPham(Long userId, CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
         if (Objects.isNull(congNhanThanhPhamPayload.getTpId())) {
             throw new RuntimeException("Thanh Pham phai co id");
         }
@@ -44,6 +49,8 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
                 .findById(congNhanThanhPhamPayload.getTpId())
                 .orElse(null);
 
+        User user = userService.findById(userId);
+        congNhanThanhPhamPayload.capNhatChuKy(user);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
         cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
@@ -75,11 +82,6 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
             e.printStackTrace();
             throw new RuntimeException("Co loi xay ra khi clean noi_dung_thuc_hien");
         }
-    }
-
-    @Override
-    public CongNhanThanhPham updateCongNhanThanhPham(CongNhanThanhPham congNhanThanhPham) {
-        return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
     @Override

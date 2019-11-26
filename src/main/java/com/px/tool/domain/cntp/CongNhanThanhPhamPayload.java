@@ -106,4 +106,16 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
             tpkcsDisable = false;
         }
     }
+
+    public void capNhatChuKy(User user) {
+        if (user.isTruongPhongKCS()){
+
+        }
+        if (user.isNguoiLapPhieu()) {
+
+        }
+        if (user.isNhanVienKCS()) {
+
+        }
+    }
 }

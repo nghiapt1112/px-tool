@@ -9,6 +9,7 @@ import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
