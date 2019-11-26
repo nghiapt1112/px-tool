@@ -1,7 +1,7 @@
 package com.px.tool;
 
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.payload.ThongKePayload;
+import com.px.tool.domain.request.payload.PageThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.impl.RequestServiceImpl;
@@ -32,7 +32,7 @@ public class ThongKeTest extends PxApplicationTests{
 
     @Test
     public void thongKe() {
-        ThongKePayload data = requestService.collectDataThongKe(1l);
+        PageThongKePayload data = requestService.collectDataThongKe(1l);
         System.out.println();
     }
 }

@@ -2,8 +2,9 @@ package com.px.tool.domain.request.service.impl;
 
 import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.payload.PageDashBoardCongViecCuaToi;
 import com.px.tool.domain.request.payload.ThongKeDetailPayload;
-import com.px.tool.domain.request.payload.ThongKePayload;
+import com.px.tool.domain.request.payload.PageThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
@@ -45,7 +46,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<DashBoardCongViecCuaToi> timByNguoiNhan(Long userId, com.px.tool.domain.request.payload.PageRequest pageRequest) {
+    public PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, com.px.tool.domain.request.payload.PageRequest pageRequest) {
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         Map<Long, User> userById = userService.userById();
@@ -62,10 +63,15 @@ public class RequestServiceImpl implements RequestService {
         } else {
             requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId), PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
         }
-        return requestsByNguoiGui
+        PageDashBoardCongViecCuaToi pageDashBoardCongViecCuaToi = new PageDashBoardCongViecCuaToi();
+        pageDashBoardCongViecCuaToi.setDetails(requestsByNguoiGui
                 .stream()
                 .map(el -> DashBoardCongViecCuaToi.fromEntity(el, userById))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        pageDashBoardCongViecCuaToi.setTotal(requestsByNguoiGui.getTotalPages());
+        pageDashBoardCongViecCuaToi.setPage(pageRequest.getPage());
+        pageDashBoardCongViecCuaToi.setSize(pageRequest.getSize());
+        return pageDashBoardCongViecCuaToi;
     }
 
     @Override
@@ -79,9 +85,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public ThongKePayload collectDataThongKe(ThongKeRequest request) {
+    public PageThongKePayload collectDataThongKe(ThongKeRequest request) {
         Page<Request> requests = requestRepository.findPaging(request, PageRequest.of(request.getPage(),request.getSize()));
-        ThongKePayload tkPayload = new ThongKePayload();
+        PageThongKePayload tkPayload = new PageThongKePayload();
         tkPayload.setSanPham("");
         tkPayload.setTienDo("0");
         tkPayload.setDetails(requests.stream()

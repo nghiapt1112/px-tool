@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ThongKePage extends AbstractObject {
-    private List<ThongKePayload> details;
+    private List<PageThongKePayload> details;
     private int total;
     private int page;
     private int size;

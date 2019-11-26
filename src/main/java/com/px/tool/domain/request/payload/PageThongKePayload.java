@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ThongKePayload extends AbstractObject {
+public class PageThongKePayload extends AbstractObject {
     private String sanPham;
     private String tienDo;
     private List<ThongKeDetailPayload> details;
