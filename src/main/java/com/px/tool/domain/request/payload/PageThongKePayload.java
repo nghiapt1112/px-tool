@@ -15,4 +15,12 @@ public class PageThongKePayload extends AbstractObject {
     private Integer total;
     private Integer page;
     private Integer size;
+
+    public void setPage(Integer page) {
+        if (page == 0) {
+            this.page = 1;
+        } else {
+            this.page = page;
+        }
+    }
 }

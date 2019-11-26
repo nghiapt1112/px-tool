@@ -14,4 +14,11 @@ public class PageDashBoardCongViecCuaToi extends AbstractObject {
     private Integer page;
     private Integer size;
 
+    public void setPage(Integer page) {
+        if (page == 0) {
+            this.page = 1;
+        } else {
+            this.page = page;
+        }
+    }
 }
