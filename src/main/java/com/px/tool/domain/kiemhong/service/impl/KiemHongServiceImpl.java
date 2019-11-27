@@ -95,15 +95,15 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         }
         for (User user : userService.findByIds(signedIds)) {
             if (payload.getQuanDocXacNhan() && user.getUserId().equals(payload.getQuanDocId())) {
-                payload.setQuanDocFullName(user.getFullName());
+                payload.setQuanDocfullName(user.getFullName());
                 payload.setQuanDocSignImg(user.getSignImg());
             }
             if (payload.getTroLyKTXacNhan() && user.getUserId().equals(payload.getTroLyId())) {
-                payload.setTroLyFullName(user.getFullName());
+                payload.setTroLyfullName(user.getFullName());
                 payload.setTroLyKTSignImg(user.getSignImg());
             }
             if (payload.getToTruongXacNhan() && user.getUserId().equals(payload.getToTruongId())) {
-                payload.setToTruongFullName(user.getFullName());
+                payload.setToTruongfullName(user.getFullName());
                 payload.setToTruongSignImg(user.getSignImg());
             }
         }
