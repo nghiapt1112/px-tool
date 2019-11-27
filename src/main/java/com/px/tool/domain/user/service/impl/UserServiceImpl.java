@@ -81,8 +81,10 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User existed");
         }
         User entity = user.toUserEntity();
-        entity.setPassword(passwordEncoder.encode(user.getPassword()));
-        entity.setAuthorities(Sets.newHashSet(role));
+        if (user.getUserId() == null) {
+            entity.setPassword(passwordEncoder.encode(user.getPassword()));
+            entity.setAuthorities(Sets.newHashSet(role));
+        }
         return userRepository.save(entity);
     }
 
