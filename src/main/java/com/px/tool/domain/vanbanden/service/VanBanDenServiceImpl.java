@@ -7,6 +7,7 @@ import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
+import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
@@ -95,8 +96,8 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         return VanBanDenResponse.fromEntity(vanBanDenRepository.save(entity));
     }
 
-    public VanBanDenResponse findById(Long id) {
-        return VanBanDenResponse
+    public VanBanDenDetail findById(Long id) {
+        return VanBanDenDetail
                 .fromEntity(vanBanDenRepository.findById(id).orElseThrow(() -> new PXException("vanbanden_notFound")))
                 .withFilesName(fileStorageService.listFileNames(RequestType.VAN_BAN_DEN, id));
     }

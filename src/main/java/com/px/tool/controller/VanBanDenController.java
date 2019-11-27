@@ -1,6 +1,7 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
+import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
@@ -49,7 +50,7 @@ public class VanBanDenController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public VanBanDenResponse detail(@PathVariable Long id) {
+    public VanBanDenDetail detail(@PathVariable Long id) {
         return vanBanDenService.findById(id);
     }
 
