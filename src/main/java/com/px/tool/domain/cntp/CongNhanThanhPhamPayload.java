@@ -118,4 +118,16 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
         }
     }
+
+    public Boolean getNguoiGiaoViecXacNhan() {
+        return nguoiGiaoViecXacNhan == null ? false : nguoiGiaoViecXacNhan;
+    }
+
+    public Boolean getNguoiThucHienXacNhan() {
+        return nguoiThucHienXacNhan == null ? false : nguoiThucHienXacNhan;
+    }
+
+    public Boolean getTpkcsXacNhan() {
+        return tpkcsXacNhan == null ? false : tpkcsXacNhan;
+    }
 }

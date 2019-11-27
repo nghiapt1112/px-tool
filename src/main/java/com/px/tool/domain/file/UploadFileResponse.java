@@ -1,4 +1,4 @@
-package com.px.tool.controller;
+package com.px.tool.domain.file;
 
 import lombok.Getter;
 import lombok.Setter;

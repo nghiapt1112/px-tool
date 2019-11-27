@@ -64,9 +64,9 @@ public class KiemHongPayLoad extends AbstractObject {
     private String troLyKTSignImg;
     private String toTruongSignImg;
 
-    private String quanDocfullName;
-    private String troLyfullName;
-    private String toTruongfullName;
+    private String quanDocFullName;
+    private String troLyFullName;
+    private String toTruongFullName;
 
     private Long quanDocId;
     private Long troLyId;

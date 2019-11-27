@@ -179,4 +179,24 @@ public class PhuongAnPayload extends AbstractObject {
             giamDocId = user.getUserId();
         }
     }
+
+    public Boolean getGiamDocXacNhan() {
+        return giamDocXacNhan == null ? false :giamDocXacNhan;
+    }
+
+    public Boolean getTruongPhongKTHKXacNhan() {
+        return truongPhongKTHKXacNhan == null ? false :truongPhongKTHKXacNhan;
+    }
+
+    public Boolean getTruongPhongKeHoachXacNhan() {
+        return truongPhongKeHoachXacNhan == null ? false :truongPhongKeHoachXacNhan;
+    }
+
+    public Boolean getTruongPhongVatTuXacNhan() {
+        return truongPhongVatTuXacNhan == null ? false :truongPhongVatTuXacNhan;
+    }
+
+    public Boolean getNguoiLapXacNhan() {
+        return nguoiLapXacNhan == null ? false :nguoiLapXacNhan;
+    }
 }

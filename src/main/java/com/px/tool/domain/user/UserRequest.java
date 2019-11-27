@@ -1,6 +1,5 @@
 package com.px.tool.domain.user;
 
-import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserRequest extends AbstractObject {
+    private Long userId;
     private String email;
     private String password;
     private Integer level;
@@ -20,6 +20,7 @@ public class UserRequest extends AbstractObject {
 
     public User toUserEntity() {
         User entity = new User();
+        entity.setUserId(userId);
         entity.setEmail(email);
         entity.setSignImg(imgBase64);
         entity.setFullName(fullName);

@@ -118,11 +118,11 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                     .map(el -> {
                         VanBanDen vanBanDen = new VanBanDen();
                         if (requestType == RequestType.KIEM_HONG) {
-                            vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng" + "ngày: " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.DAT_HANG) {
-                            vanBanDen.setNoiDung(vbdKiemHong + "ngày: " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng" + "ngày: " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.PHUONG_AN) {
-                            vanBanDen.setNoiDung(vbdDatHang + "ngày: " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án " + "ngày: " + DateTimeUtils.nowAsString());
                         }
                         vanBanDen.setNoiNhan(el.getUserId());
                         return vanBanDen;

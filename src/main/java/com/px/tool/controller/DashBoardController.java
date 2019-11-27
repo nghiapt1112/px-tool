@@ -1,6 +1,5 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.payload.PageDashBoardCongViecCuaToi;
 import com.px.tool.domain.request.payload.PageRequest;
 import com.px.tool.domain.request.service.RequestService;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/dashboard")

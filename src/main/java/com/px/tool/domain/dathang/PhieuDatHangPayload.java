@@ -129,4 +129,16 @@ public class PhieuDatHangPayload extends AbstractObject {
             tpkthkId = user.getUserId();
         }
     }
+
+    public Boolean getTpkthkXacNhan() {
+        return tpkthkXacNhan == null ? false : tpkthkXacNhan;
+    }
+
+    public Boolean getTpvatTuXacNhan() {
+        return tpvatTuXacNhan == null ? false : tpvatTuXacNhan;
+    }
+
+    public Boolean getNguoiDatHangXacNhan() {
+        return nguoiDatHangXacNhan == null ? false : nguoiDatHangXacNhan;
+    }
 }

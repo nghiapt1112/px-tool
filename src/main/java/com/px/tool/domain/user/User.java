@@ -32,7 +32,7 @@ public class User extends EntityDefault implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long userId;
+    private Long userId;
 
     @Column
     private String email;
