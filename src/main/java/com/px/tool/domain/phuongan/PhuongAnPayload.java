@@ -103,6 +103,7 @@ public class PhuongAnPayload extends AbstractObject {
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
 //        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
+        phuongAnPayload.setNoiNhan(null);
         return phuongAnPayload;
     }
 

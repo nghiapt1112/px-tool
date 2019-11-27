@@ -89,6 +89,7 @@ public class KiemHongPayLoad extends AbstractObject {
         kiemHongResponse.toTruongDisable = true;
         kiemHongResponse.phanXuong = Long.valueOf(kiemHong.getPhanXuong());
         kiemHongResponse.toSX = Long.valueOf(kiemHong.getToSX());
+        kiemHongResponse.setNoiNhan(null);
         return kiemHongResponse;
     }
 

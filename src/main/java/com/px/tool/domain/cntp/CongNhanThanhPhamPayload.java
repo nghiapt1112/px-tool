@@ -62,6 +62,19 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private String yKienTpkcsXacNhan;
     private Set<NoiDungThucHienPayload> noiDungThucHiens = new HashSet<>();
 
+    // chu ky + full name
+    private String nguoiGiaoViecFullName;
+    private String nguoiThucHienFullName;
+    private String tpkcsFullName;
+
+    private String nguoiGiaoViecSignImg;
+    private String nguoiThucHienSignImg;
+    private String tpkcsSignImg;
+
+    private Long nguoiGiaoViecId;
+    private Long nguoiThucHienId;
+    private Long tpkcsId;
+
     public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {
         CongNhanThanhPhamPayload congNhanThanhPhamPayload = new CongNhanThanhPhamPayload();
         BeanUtils.copyProperties(congNhanThanhPham, congNhanThanhPhamPayload);
@@ -108,14 +121,14 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     }
 
     public void capNhatChuKy(User user) {
-        if (user.isTruongPhongKCS()){
-
+        if (user.isTruongPhongKCS() && tpkcsXacNhan) {
+            tpkcsId = user.getUserId();
         }
-        if (user.isNguoiLapPhieu()) {
-
+        if (user.isNguoiLapPhieu() && nguoiThucHienXacNhan) {
+            nguoiThucHienId = user.getUserId();
         }
-        if (user.isNhanVienKCS()) {
-
+        if (user.isNhanVienKCS() && nguoiGiaoViecXacNhan) {
+            nguoiGiaoViecId = user.getUserId();
         }
     }
 

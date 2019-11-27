@@ -251,21 +251,21 @@ public class User extends EntityDefault implements UserDetails {
     }
 
     /**
-     * Người lập phiếu (Người Thực hiện): Tổ trưởng
+     * Người lập phiếu (Người Thực hiện): Tổ trưởng (Phương án sẽ chọn tổ trưởng)
      * Phiếu công nhận được gửi theo N38-N40 bảng chọn của phương án cấp Phân xưởng;
      */
     public boolean isNguoiLapPhieuCNTP() {
-        return false;
+        return isToTruong();
     }
 
     /**
      * Chuyển cho các Nhân viên KCS (account từ 41 đến 50)
      */
     public boolean isNhanVienKCS() {
-        return false;
+        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(10));
     }
 
     public boolean isTruongPhongKCS() {
-        return false;
+        return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(14));
     }
 }

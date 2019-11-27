@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -90,6 +91,36 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(request.getCongNhanThanhPham());
         payload.setRequestId(request.getRequestId());
         payload.filterPermission(userService.findById(userId));
+
+
+        List<Long> signedIds = new ArrayList<>(3);
+        if (payload.getTpkcsXacNhan()) {
+            signedIds.add(payload.getTpkcsId());
+        }
+        if (payload.getNguoiThucHienXacNhan()) {
+            signedIds.add(payload.getNguoiThucHienId());
+        }
+        if (payload.getNguoiGiaoViecXacNhan()) {
+            signedIds.add(payload.getNguoiGiaoViecId());
+        }
+        if (org.springframework.util.CollectionUtils.isEmpty(signedIds)) {
+            return payload;
+        }
+        for (User user : userService.findByIds(signedIds)) {
+            if (user.isTruongPhongKCS() && payload.getTpkcsXacNhan()) {
+                payload.setTpkcsFullName(user.getFullName());
+                payload.setTpkcsSignImg(user.getSignImg());
+            }
+            if (user.isNguoiLapPhieu() && payload.getNguoiThucHienXacNhan()) {
+                payload.setNguoiThucHienFullName(user.getFullName());
+                payload.setNguoiThucHienSignImg(user.getSignImg());
+            }
+            if (user.isNhanVienKCS() && payload.getNguoiGiaoViecXacNhan()) {
+                payload.setNguoiGiaoViecFullName(user.getFullName());
+                payload.setNguoiGiaoViecSignImg(user.getSignImg());
+            }
+        }
+
         return payload;
     }
 

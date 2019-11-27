@@ -72,6 +72,7 @@ public class PhieuDatHangPayload extends AbstractObject {
                         .map(PhieuDatHangDetailPayload::fromEntity)
                         .collect(Collectors.toSet())
         );
+        phieuDatHangPayload.setNoiNhan(null);
         return phieuDatHangPayload;
     }
 
