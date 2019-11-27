@@ -1,5 +1,6 @@
-package com.px.tool.domain.vanbanden;
+package com.px.tool.domain.vanbanden.payload;
 
+import com.px.tool.domain.vanbanden.VanBanDen;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

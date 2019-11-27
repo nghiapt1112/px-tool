@@ -1,7 +1,9 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.vanbanden.VanBanDenRequest;
-import com.px.tool.domain.vanbanden.VanBanDenResponse;
+import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
+import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/vbd")
@@ -24,16 +25,22 @@ public class VanBanDenController extends BaseController {
     private VanBanDenServiceImpl vanBanDenService;
 
     @GetMapping
-    public List<VanBanDenResponse> findSent(HttpServletRequest httpServletRequest,
-                                            @RequestParam(required = false) Long page,
-                                            @RequestParam(required = false) Long size
+    public PageVanBanDenPayload findSent(HttpServletRequest httpServletRequest,
+                                         @RequestParam(required = false, defaultValue = "1") Integer page,
+                                         @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
-        return vanBanDenService.findAll(extractUserInfo(httpServletRequest));
+        return vanBanDenService.findAll(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size))
+                .withPage(page)
+                .withSize(size);
     }
 
     @GetMapping("/receive")
-    public List<VanBanDenResponse> findInBox(HttpServletRequest httpServletRequest) {
-        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest));
+    public PageVanBanDenPayload findInBox(HttpServletRequest httpServletRequest,
+                                          @RequestParam(required = false, defaultValue = "1") Integer page,
+                                          @RequestParam(required = false, defaultValue = "10") Integer size) {
+        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size))
+                .withPage(page)
+                .withSize(size);
     }
 
     @PostMapping

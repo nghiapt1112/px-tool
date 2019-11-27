@@ -6,16 +6,19 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
-import com.px.tool.domain.vanbanden.VanBanDenRequest;
-import com.px.tool.domain.vanbanden.VanBanDenResponse;
+import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
+import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,23 +44,26 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
 
     /**
      * Những văn bản đã gửi.
+     * @return
      */
-    public List<VanBanDenResponse> findAll(Long userId) {
-        List<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId);
+    public PageVanBanDenPayload findAll(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
+        Page<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
         return toResponse(val);
     }
 
     /**
      * Những văn bản cua toi.
+     * @return
      */
-    public List<VanBanDenResponse> findInBox(Long userId) {
-        List<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId);
+    public PageVanBanDenPayload findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
+        Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
         return toResponse(val);
     }
 
-    private List<VanBanDenResponse> toResponse(List<VanBanDen> val) {
-        if (CollectionUtils.isEmpty(val)) {
-            return Collections.emptyList();
+    private PageVanBanDenPayload toResponse(Page<VanBanDen> val) {
+        PageVanBanDenPayload res = new PageVanBanDenPayload();
+        if (val.isEmpty()) {
+            return res;
         }
         Set<Long> ids = new HashSet<>();
         for (VanBanDen vanBanDen : val) {
@@ -67,13 +73,19 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
             noiNhanById.put(noiNhan.getId(), noiNhan.getName());
         }
-        return val.stream()
-                .map(el -> {
-                    VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
-                    payload.setNoiNhan(noiNhanById.get(el.getNoiNhan()));
-                    return payload;
-                })
-                .collect(Collectors.toList());
+
+
+        res.setDetails(
+                val.stream()
+                        .map(el -> {
+                            VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
+                            payload.setNoiNhan(noiNhanById.get(el.getNoiNhan()));
+                            return payload;
+                        })
+                        .collect(Collectors.toList())
+        );
+        res.setTotal(val.getTotalPages());
+        return res;
     }
 
     @Transactional
