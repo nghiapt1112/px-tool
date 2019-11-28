@@ -4,10 +4,12 @@ import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,9 +56,9 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.SL = 0L;
             }
             tk.dangHuHong = detail.getDangHuHong();
-            tk.ngayKiemHong = "detail .get() ngay kiem hong";
+            tk.ngayKiemHong = request.getKiemHong().getNgayThangNamTroLyKT();
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
-            tk.ngayChuyenPhongVatTu = "11/12/1993";
+            tk.ngayChuyenPhongVatTu = request.getKiemHong().getNgayThangNamQuanDoc();
             tk.soPhieuDatHang = "PDH";
             try {
                 pdhDt = pdhDetailById.get(detail.getKhDetailId());
@@ -69,8 +71,8 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.ngayRaPA = request.getPhuongAn().getNgayThangNamNguoiLap();
             tk.ngayChuyenKH = request.getPhuongAn().getNgayThangNamtpVatTu();
             tk.ngayPheDuyet = request.getPhuongAn().getNgayThangNamTPKTHK();
-//            tk.ngayHoanThanh = request.getCongNhanThanhPham().getNguoiThucHienXacNhan(); // TODO: thieu field nay
-            tk.xacNhanHoanThanh = request.getStatus().name();
+            tk.ngayHoanThanh = request.getCongNhanThanhPham().getNgayThangNamNguoiThucHien();
+            tk.xacNhanHoanThanh = request.getCongNhanThanhPham().getNgayThangNamTPKCS();
             tk.requestId = request.getRequestId();
         }
         return tk;

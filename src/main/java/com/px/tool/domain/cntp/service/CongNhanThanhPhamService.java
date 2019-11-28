@@ -11,5 +11,4 @@ public interface CongNhanThanhPhamService {
 
     CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id);
 
-    List<CongNhanThanhPham> timCongNhanThanhPhamTheoPhongBan(Long userId);
 }

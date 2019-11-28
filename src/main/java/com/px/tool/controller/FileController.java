@@ -5,10 +5,14 @@ import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.service.ExcelService;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -60,7 +72,29 @@ public class FileController extends BaseController {
     }
 
     @GetMapping("/print")
-    public void downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, HttpServletResponse response, RequestType requestType) {
-        excelService.exportFile(requestId, requestType, response);
+    public void downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws IOException {
+//        excelService.exportFile(requestId, requestType, response);
+        File file = new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx");
+//        new ByteArrayResource(Files.readAllBytes(path));
+
+
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.xlsx");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+//        return ResponseEntity.ok()
+//                .headers(header)
+//                .contentLength(file.length())
+//                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+//                .body(resource);
+        response.setHeader("Content-disposition", "attachment; filename=test2.xlsx");
+        response.setHeader("Content-type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//        response.setHeader("Content-type", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.getOutputStream().write(Files.readAllBytes(path));
     }
+
 }

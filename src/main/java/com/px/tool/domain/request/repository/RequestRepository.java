@@ -27,6 +27,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     void updateReceiverId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 
 
+//    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE rq.phieuDatHang.phieuDatHangDetails.mucDichSuDung = ?1")
     @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES")
     Page<Request> findPaging(ThongKeRequest thongKeRequest, Pageable pageable);
 }

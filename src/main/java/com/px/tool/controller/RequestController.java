@@ -6,9 +6,11 @@ import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.user.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/req")
 public class RequestController extends BaseController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VanBanDenRepository vanBanDenRepository;
 
     @GetMapping("/noi-nhan")
     public List<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest,
@@ -81,19 +86,14 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/notification")
-    public List<NotificationPayload> getNotification() {
-        return IntStream.rangeClosed(1, 3)
-                .mapToObj(el -> {
+    public List<NotificationPayload> getNotification(HttpServletRequest request) {
+        return vanBanDenRepository.findByNoiNhan(extractUserInfo(request), PageRequest.of(0, 100))
+                .stream()
+                .map(el -> {
                     NotificationPayload payload = new NotificationPayload();
-                    payload.setRequestId(Long.valueOf(el));
-                    payload.setNotiId(Long.valueOf(el));
+                    payload.setRequestId(Long.valueOf(el.getVbdId()));
+                    payload.setNotiId(Long.valueOf(el.getVbdId()));
                     payload.setBody("Bạn đang có 1 thông báo mới. click ");
-                    if (el % 2 == 0) {
-                        payload.setRead(true);
-                    } else {
-                        payload.setRead(false);
-                    }
-                    payload.setTime(DateTimeUtils.nowAsString());
                     return payload;
                 })
                 .collect(Collectors.toList());
@@ -101,7 +101,11 @@ public class RequestController extends BaseController {
 
     @PostMapping("/notification/{id}")
     public void readNoti(@PathVariable Long id) {
-        logger.info("Updating notification to read.");
+        Optional<VanBanDen> vbd = vanBanDenRepository.findById(id);
+        if (vbd.isPresent()) {
+            vbd.get().setRead(true);
+            vanBanDenRepository.save(vbd.get());
+        }
     }
 
 }

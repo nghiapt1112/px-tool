@@ -1,10 +1,13 @@
 package com.px.tool.domain.request.service.impl;
 
-import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
+import com.px.tool.domain.dathang.PhieuDatHangDetail;
+import com.px.tool.domain.mucdich.sudung.MucDichSuDung;
+import com.px.tool.domain.mucdich.sudung.repository.MucDichSuDungRepository;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.payload.PageDashBoardCongViecCuaToi;
-import com.px.tool.domain.request.payload.ThongKeDetailPayload;
 import com.px.tool.domain.request.payload.PageThongKePayload;
+import com.px.tool.domain.request.payload.ThongKeDetailPayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
@@ -12,6 +15,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +45,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MucDichSuDungRepository mucDichSuDungRepository;
 
     @Override
     @Transactional
@@ -86,22 +96,53 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public PageThongKePayload collectDataThongKe(ThongKeRequest request) {
-        Page<Request> requests = requestRepository.findPaging(request, PageRequest.of(request.getPage(),request.getSize()));
+        Map<Long, String> mdsd = mucDichSuDungRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(MucDichSuDung::getMdId, MucDichSuDung::getTen));
+        Page<Request> requests = requestRepository.findPaging(request, PageRequest.of(request.getPage(), request.getSize()));
         PageThongKePayload tkPayload = new PageThongKePayload();
-        tkPayload.setSanPham("");
-        tkPayload.setTienDo("0");
+        tkPayload.setSanPham(mdsd.get(request.getSanPham()));
+        AtomicReference<Integer> hoanThanhCount = new AtomicReference<>(0);
         tkPayload.setDetails(requests.stream()
-                .map(ThongKeDetailPayload::fromRequestEntity)
+                .map(el -> {
+                    if (request.getSanPham() == null) {
+                        return el;
+                    }
+                    Set<PhieuDatHangDetail> vals = new HashSet<>();
+                    for (PhieuDatHangDetail phieuDatHangDetail : el.getPhieuDatHang().getPhieuDatHangDetails()) {
+                        if (phieuDatHangDetail.getMucDichSuDung() != null && phieuDatHangDetail.getMucDichSuDung().equals(request.getSanPham())) {
+                            vals.add(phieuDatHangDetail);
+                        }
+                    }
+                    if (vals.size() == 0) {
+                        return null;
+                    } else {
+                        el.getPhieuDatHang().setPhieuDatHangDetails(vals);
+                        return el;
+                    }
+                })
                 .filter(Objects::nonNull)
+                .map(ThongKeDetailPayload::fromRequestEntity)
+                .peek(el -> {
+                    if (el.getXacNhanHoanThanh() != null) {
+                        hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
+                    }
+                })
                 .collect(Collectors.toList()));
-        tkPayload.setTotal(requests.getTotalPages());
+        tkPayload.setTienDo(getPercentage(hoanThanhCount.get(),tkPayload.getDetails().size()));
+        tkPayload.setTotal(tkPayload.getDetails().size());
         tkPayload.setSize(request.getSize());
         tkPayload.setPage(request.getPage());
         return tkPayload;
     }
 
+    private static String getPercentage(Integer i1, Integer i2) {
+        String val = (((float)i1*100)/i2 + "");
+        return val.length()>5 ? val.substring(0, 6) : val;
+    }
     @Override
     public void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId) {
         requestRepository.updateReceiverId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
     }
+
 }

@@ -33,4 +33,7 @@ public class VanBanDen extends EntityDefault {
     @Column
     public String type;
 
+    @Column
+    private boolean read;
+
 }

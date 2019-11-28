@@ -172,11 +172,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {
-//        CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPham.setTenSanPham(phuongAn.getSanPham());
         congNhanThanhPham.setNoiDung(phuongAn.getNoiDung());
         congNhanThanhPham.setSoPA(phuongAn.getMaSo());
-        congNhanThanhPham.setDonviThucHien("neu chuyen ve px 3 hien px 3"); // TODO : set ten phan xuong vao day
 
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }

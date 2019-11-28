@@ -15,7 +15,7 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
     private String kiMaHieu;
     private String dvt;
     private String sl;
-    private String mucDichSuDung;
+    private Long mucDichSuDung;
     private String phuongPhapKhacPhuc;
     private String soPhieuDatHang;
     private String nguoiThucHien;

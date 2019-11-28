@@ -47,7 +47,12 @@ public final class DateTimeUtils {
     }
 
     public static String toString(Date time) {
-        return toString(time, ISO_PATTERN);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Saigon"));
+        cal.setTime(time);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return String.format("Ngày %s Tháng %s Năm %s", day, month, year);
     }
 
     public static String toString(Date date, String pattern) {

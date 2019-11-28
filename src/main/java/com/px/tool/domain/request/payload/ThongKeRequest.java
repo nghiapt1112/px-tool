@@ -6,5 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ThongKeRequest extends PageRequest {
-    private String sanPham;
+    private Long sanPham;
+
+    public void setSanPham(Long sanPham) {
+        this.sanPham = sanPham.equals(-1L) ? null : sanPham;
+    }
 }

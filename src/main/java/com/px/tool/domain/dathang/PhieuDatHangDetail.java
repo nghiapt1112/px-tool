@@ -41,7 +41,7 @@ public class PhieuDatHangDetail {
     private String sl;
 
     @Column
-    private String mucDichSuDung;
+    private Long mucDichSuDung;
 
     @Column
     private String phuongPhapKhacPhuc;

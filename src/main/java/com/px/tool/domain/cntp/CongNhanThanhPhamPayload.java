@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,9 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private boolean nguoiGiaoViecDisable;
     private boolean nguoiThucHienDisable;
     private boolean tpkcsDisable;
+
+    private String ngayThangNamNguoiThucHien;
+    private String ngayThangNamTPKCS;
 
     private Float dong;
     private Float gioX;

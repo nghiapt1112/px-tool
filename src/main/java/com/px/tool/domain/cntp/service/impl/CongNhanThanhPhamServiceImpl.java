@@ -11,6 +11,7 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,9 +55,19 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         congNhanThanhPhamPayload.capNhatChuKy(user);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
+        capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
         cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
 
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
+    }
+
+    private void capNhatNgayThangNam(CongNhanThanhPham request, CongNhanThanhPham existed) {
+        if(request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
+            request.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsString());
+        }
+        if(request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
+            request.setNgayThangNamTPKCS(DateTimeUtils.nowAsString());
+        }
     }
 
     private void cleanOldDetailData(CongNhanThanhPham requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
@@ -124,8 +135,4 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         return payload;
     }
 
-    @Override
-    public List<CongNhanThanhPham> timCongNhanThanhPhamTheoPhongBan(Long userId) {
-        return Collections.emptyList();
-    }
 }

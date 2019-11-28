@@ -28,12 +28,6 @@ public class CongNhanThanhPhamController extends BaseController {
         return this.congNhanThanhPhamService.timCongNhanThanhPham(extractUserInfo(httpServletRequest), id);
     }
 
-    @GetMapping
-    public List<CongNhanThanhPham> getCongNhanThanhPhamTheoPhongBan(SecurityContextHolderAwareRequestWrapper httpServletRequest) {
-        Long userId = extractUserInfo(httpServletRequest);
-        return this.congNhanThanhPhamService.timCongNhanThanhPhamTheoPhongBan(userId);
-    }
-
     @PostMapping
     public CongNhanThanhPham saveCongNhanThanhPham(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody CongNhanThanhPhamPayload congNhanThanhPhamPayload) {
         Long userId = extractUserInfo(httpServletRequest);
