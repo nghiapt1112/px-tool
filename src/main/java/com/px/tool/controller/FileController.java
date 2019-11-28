@@ -4,9 +4,12 @@ import com.px.tool.domain.RequestType;
 import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.infrastructure.BaseController;
+import com.px.tool.infrastructure.service.ExcelService;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,10 @@ public class FileController extends BaseController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private ExcelService excelService;
+
+
     @PostMapping("/upload")
     public void uploadMultipleFiles(@RequestParam RequestType requestType, @RequestParam MultipartFile[] files, @RequestParam Long requestId) {
         logger.info("Number of request files: {}", files.length);
@@ -57,8 +64,8 @@ public class FileController extends BaseController {
         fileStorageService.delete(id);
     }
 
-//    @GetMapping("/print")
-//    public ResponseEntity<Resource> downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, RequestType requestType) throws MalformedURLException {
-//        return super.toFile(request, new UrlResource(Paths.get("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/nghia.xlsx").toUri()));
-//    }
+    @GetMapping("/print")
+    public ResponseEntity<InputStreamResource> downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, RequestType requestType) {
+        return toFile(request, excelService.exportFile(requestId, requestType));
+    }
 }

@@ -32,7 +32,7 @@ public class ThongKeTest extends PxApplicationTests{
 
     @Test
     public void thongKe() {
-        PageThongKePayload data = requestService.collectDataThongKe(1l);
+        PageThongKePayload data = requestService.collectDataThongKe(null);
         System.out.println();
     }
 }

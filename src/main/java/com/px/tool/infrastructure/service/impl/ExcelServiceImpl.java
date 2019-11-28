@@ -1,5 +1,11 @@
 package com.px.tool.infrastructure.service.impl;
 
+import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
+import com.px.tool.domain.dathang.service.PhieuDatHangService;
+import com.px.tool.domain.kiemhong.service.KiemHongService;
+import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -11,6 +17,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +26,18 @@ import java.io.IOException;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
+    @Autowired
+    private KiemHongService kiemHongService;
+
+    @Autowired
+    private PhieuDatHangService phieuDatHangService;
+
+    @Autowired
+    private PhuongAnService phuongAnService;
+
+    @Autowired
+    private CongNhanThanhPhamService congNhanThanhPhamService;
+
     @Override
     public void exportFile() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -71,11 +90,11 @@ public class ExcelServiceImpl implements ExcelService {
         row9.createCell(0).setCellValue("d3");
         row10.createCell(0).setCellValue("d4");
 
-        sheet.shiftRows(4,5, 1);
-        File currDir = new File(".");
+        sheet.shiftRows(4, 5, 1);
+        File currDir = new File("nghia-file/");
         String path = currDir.getAbsolutePath();
 
-        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
+        String fileLocation = path + "/" + "temp.xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(fileLocation);
         workbook.write(outputStream);
@@ -84,5 +103,24 @@ public class ExcelServiceImpl implements ExcelService {
 
     private void merge(Sheet sheet, int firstRow, int lastRow, int firstCol, int lastCol) {
         sheet.addMergedRegion(new CellRangeAddress(firstRow, lastRow, firstCol, lastCol));
+    }
+
+    @Override
+    public File exportFile(Long requestId, RequestType requestType) {
+        try {
+            if (requestType == RequestType.KIEM_HONG) {
+                return new File("./src/main/resources/templates/1_Kiem_Hong.xls");
+            } else if (requestType == RequestType.DAT_HANG) {
+                return new File("./src/main/resources/templates/2_Dat_Hang.xlsx");
+            } else if (requestType == RequestType.PHUONG_AN) {
+                return new File("./src/main/resources/templates/3_phuong_an.xls");
+            } else if (requestType == RequestType.CONG_NHAN_THANH_PHAM) {
+                return new File("./src/main/resources/templates/4_cntp.xls");
+            }
+            throw new PXException("Không có file để download");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PXException("File not found");
+        }
     }
 }
