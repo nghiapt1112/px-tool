@@ -3,8 +3,10 @@ package com.px.tool.domain.user.repository;
 import com.google.common.collect.ImmutableList;
 import com.px.tool.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,4 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.userId IN ?1")
     List<User> findByIds(Collection<Long> ids);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.fullName = ?1 , u.signImg = ?2 WHERE u.userId = ?3")
+    void updateUserInfo(String fullName, String Imgbase64, Long userId);
 }

@@ -5,12 +5,12 @@ import com.px.tool.infrastructure.model.ErrorResponse;
 import com.px.tool.infrastructure.utils.RequestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 
-import javax.naming.SizeLimitExceededException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,17 +92,18 @@ public abstract class BaseController {
                 .body(resource);
     }
 
-    protected ResponseEntity<InputStreamResource> toFile(HttpServletRequest request, File resource) {
+    protected ResponseEntity<byte[]> toFile(HttpServletRequest request, File resource) {
         try {
-//            String contentType = request.getServletContext().getMimeType(resource.getAbsolutePath());
-//            if (contentType == null) {
-//                contentType = "application/octet-stream";
-//            }
+            String contentType = request.getServletContext().getMimeType(resource.getAbsolutePath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+//                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getName() + "\"")
-                    .body(new InputStreamResource(new FileInputStream(resource)));
+                    .body(IOUtils.toByteArray(new FileInputStream(resource)));
         } catch (Exception ex) {
             throw new PXException("Download file bị lỗi.");
         }

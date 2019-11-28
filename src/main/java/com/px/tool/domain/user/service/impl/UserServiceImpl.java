@@ -14,6 +14,7 @@ import com.px.tool.domain.user.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,8 +79,12 @@ public class UserServiceImpl implements UserService {
                 .findById(Long.valueOf(user.getLevel()))
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("User existed");
+        if (user.getUserId() == null && userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email này đã tồn tại");
+        }
+        if (user.getUserId() != null) {
+            userRepository.updateUserInfo(user.getFullName(), user.getImgBase64(), user.getUserId());
+            return user.toUserEntity();
         }
         User entity = user.toUserEntity();
         if (user.getUserId() == null) {

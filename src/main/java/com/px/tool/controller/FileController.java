@@ -5,13 +5,10 @@ import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.service.ExcelService;
-import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -65,7 +60,7 @@ public class FileController extends BaseController {
     }
 
     @GetMapping("/print")
-    public ResponseEntity<InputStreamResource> downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, RequestType requestType) {
-        return toFile(request, excelService.exportFile(requestId, requestType));
+    public void downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, HttpServletResponse response, RequestType requestType) {
+        excelService.exportFile(requestId, requestType, response);
     }
 }

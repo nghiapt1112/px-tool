@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,7 +50,7 @@ public class PhieuDatHangPayload extends AbstractObject {
     @JsonProperty("yKienTPVatTu")
     private String yKienTPVatTu;
     private Long chuyen; // id cua user dc nhan
-    private Set<PhieuDatHangDetailPayload> phieuDatHangDetails = new HashSet<>();
+    private List<PhieuDatHangDetailPayload> phieuDatHangDetails = new ArrayList<>();
 
     // chuky + ten
     private String nguoiDatHangSignImg;
@@ -70,7 +72,7 @@ public class PhieuDatHangPayload extends AbstractObject {
                 phieuDatHang.getPhieuDatHangDetails()
                         .stream()
                         .map(PhieuDatHangDetailPayload::fromEntity)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toList())
         );
         phieuDatHangPayload.setNoiNhan(null);
         return phieuDatHangPayload;
