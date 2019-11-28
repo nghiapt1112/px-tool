@@ -40,6 +40,9 @@ public class KiemHongDetail extends AbstractObject {
     private String sl;
 
     @Column
+    private String dvt;
+
+    @Column
     private String dangHuHong;
 
     @Column

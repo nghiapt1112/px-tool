@@ -1,6 +1,7 @@
 package com.px.tool.infrastructure.service.impl;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPhamPayload;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
@@ -10,6 +11,7 @@ import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -32,6 +34,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -118,7 +123,6 @@ public class ExcelServiceImpl implements ExcelService {
     public void exportFile(Long requestId, RequestType requestType, HttpServletResponse response) {
         try {
             if (requestType == RequestType.KIEM_HONG) {
-//                return new File("./src/main/resources/templates/1_Kiem_Hong.xls");
                 exportKiemHong(response, kiemHongService.findThongTinKiemHong(1L, requestId));
             } else if (requestType == RequestType.DAT_HANG) {
                 exportPHieuDatHang(response, phieuDatHangService.findById(1L, requestId));
@@ -127,7 +131,7 @@ public class ExcelServiceImpl implements ExcelService {
             } else if (requestType == RequestType.CONG_NHAN_THANH_PHAM) {
                 new File("./src/main/resources/templates/4_cntp.xls");
             }
-            throw new PXException("Không có file để download");
+//            throw new PXException("Không có file để download");
         } catch (Exception e) {
             e.printStackTrace();
             throw new PXException("File not found");
@@ -179,12 +183,16 @@ public class ExcelServiceImpl implements ExcelService {
             workbook.write(out);
             out.close();
 
+            InputStream inputStream = Files.newInputStream(Paths.get("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx"));
+
 //            response.setContentType("application/vnd.ms-excel");
-            response.setContentType("application/octet-stream");
+//            response.setContentType("application/octet-stream");
 //            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            String fileName = "Kiem_Hong" + DateTimeUtils.getFileSuffix() + "";
+
+            String fileName = "Kiem_Hong_" + DateTimeUtils.getFileSuffix() + ".xlsx";
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
-            workbook.write(response.getOutputStream());
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -230,6 +238,57 @@ public class ExcelServiceImpl implements ExcelService {
             }
 
             FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Dat_hang.xlsx");
+            workbook.write(out);
+            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void exportCNTP(HttpServletResponse response, CongNhanThanhPhamPayload payload) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx")));
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            XSSFRow row0 = sheet.getRow(2);
+            XSSFRow row1 = sheet.getRow(3);
+            XSSFRow row2 = sheet.getRow(4);
+            XSSFRow row3 = sheet.getRow(5);
+            XSSFRow row4 = sheet.getRow(6);
+            XSSFRow row5 = sheet.getRow(7);
+
+            XSSFRow row19 = sheet.getRow(19);
+
+            setCellVal(row0, 1, payload.getTenSanPham());
+            setCellVal(row1, 1, payload.getNoiDung());
+            setCellVal(row2, 1, payload.getSoPA());
+            setCellVal(row3, 1, payload.getDonviThucHien());
+            setCellVal(row3, 4, payload.getTo());
+            setCellVal(row4, 1, payload.getDonviDatHang());
+            setCellVal(row4, 3, payload.getSoLuong());
+            setCellVal(row4, 5, payload.getDvt());
+            setCellVal(row5, 1, payload.getSoNghiemThuDuoc());
+            setCellVal(row19, 1, payload.getLaoDongTienLuong().toString());
+            setCellVal(row19, 3, payload.getGioX().toString());
+            setCellVal(row19, 5, payload.getDong().toString());
+//
+
+            int totalLine = 4;
+            if (totalLine > 5) {
+                sheet.copyRows(18, 24, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+
+                for (int i = 18; i < 24 + (totalLine - 6); i++) {
+                    sheet.createRow(i);
+                    sheet.copyRows(12, 12, i - 1, new CellCopyPolicy()); // copy and paste
+                }
+            }
+
+            for (int i = 0; i < totalLine; i++) {
+                XSSFRow crrRow = sheet.getRow(11 + i);
+                setCellVal(crrRow, 0, payload.getNoiDungThucHiens().get(i).getNoiDung());
+                setCellVal(crrRow, 3, payload.getNoiDungThucHiens().get(i).getKetQua());
+                setCellVal(crrRow, 4, payload.getNoiDungThucHiens().get(i).getNghiemThu());
+            }
+            FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_CNTP.xlsx");
             workbook.write(out);
             out.close();
         } catch (Exception ex) {

@@ -154,8 +154,138 @@ public class ExcelServiceTest {
         out.close();
     }
 
+    @Test
+    public void exportCNTP() throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx")));
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        XSSFRow row0 = sheet.getRow(2);
+        XSSFRow row1 = sheet.getRow(3);
+        XSSFRow row2 = sheet.getRow(4);
+        XSSFRow row3 = sheet.getRow(5);
+        XSSFRow row4 = sheet.getRow(6);
+        XSSFRow row5 = sheet.getRow(7);
+
+        XSSFRow row19 = sheet.getRow(19);
+
+        setCellVal(row0, 1, "Ten san phjam");
+        setCellVal(row1, 1, "Noi dung");
+        setCellVal(row2, 1, "So phuong an");
+        setCellVal(row3, 1, "do vi thuc hien");
+        setCellVal(row3, 4, "To lam viec");
+        setCellVal(row4, 1, "dn vi dat hang");
+        setCellVal(row4, 3, "so luong");
+        setCellVal(row4, 5, "DVT");
+        setCellVal(row5, 1, "So nghiem thu dc");
+        setCellVal(row19, 1, "Lao dong tien luong");
+        setCellVal(row19, 3, "gio ");
+        setCellVal(row19, 5, "dong");
+//
+
+        int totalLine = 4;
+        if (totalLine > 5) {
+            sheet.copyRows(18, 24, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+
+            for (int i = 18; i < 24 + (totalLine - 6); i++) {
+                sheet.createRow(i);
+                sheet.copyRows(12, 12, i - 1, new CellCopyPolicy()); // copy and paste
+            }
+        }
+
+        for (int i = 0; i < totalLine; i++) {
+            XSSFRow crrRow = sheet.getRow(11 + i);
+            setCellVal(crrRow, 0, "Nội dung thực hiện");
+            setCellVal(crrRow, 3, "KQ");
+            setCellVal(crrRow, 4, "Nghiệm Thu");
+        }
+        FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_CNTP.xlsx");
+        workbook.write(out);
+        out.close();
+    }
+
+    @Test
+    public void exportPhuongAn() throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/3_phuong_an.xlsx")));
+        XSSFSheet sheet = workbook.getSheetAt(0);
+
+        XSSFRow row1 = sheet.getRow(1);
+        XSSFRow row2 = sheet.getRow(2);
+        XSSFRow row3 = sheet.getRow(3);
+        XSSFRow row4 = sheet.getRow(4);
+        XSSFRow row5 = sheet.getRow(5);
+
+        setCellVal(row1, 13, "To so");
+        setCellVal(row2, 13, "so to");
+        setCellVal(row3, 13, "PDH");
+        setCellVal(row3, 13, "PDH");
+        setCellVal(row3, 6, "san pham");
+        setCellVal(row4, 6, "noi dung");
+        setCellVal(row5, 6, "nguon kinh phi");
+
+//
+
+        int totalLine = 10;
+        int startFix1 = 15;
+        int endFix1 = 35;
+        if (totalLine > 6) {
+            sheet.copyRows(startFix1, endFix1, endFix1 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+
+            for (int i = startFix1; i < endFix1 + (totalLine - 6); i++) {
+                sheet.createRow(i);
+                sheet.copyRows(9, 9, i - 1, new CellCopyPolicy()); // copy and paste
+            }
+        }
+
+        for (int i = 0; i < totalLine; i++) {
+            XSSFRow crrRow = sheet.getRow(9 + i);
+            setCellVal(crrRow, 0, i + 1 + "");
+            setCellVal(crrRow, 1, "Nội dung thực hiện");
+            setCellVal(crrRow, 10, "Bac");
+            setCellVal(crrRow, 11, "DM");
+            setCellVal(crrRow, 12, "Ghi chu");
+        }
+//
+        int soDongBiLech = (totalLine > 5 ? totalLine + 14 : 0);
+        int startFix2 = 29 + soDongBiLech;
+        int endFix2 = 35 + soDongBiLech;
+        int totalLine2 = 15;
+        int row_mau = 20 + soDongBiLech;
+        if (totalLine2 > 9) {
+            sheet.copyRows(startFix2, endFix2, endFix2 + (totalLine2 - 14), new CellCopyPolicy()); // copy and paste
+
+            for (int i = startFix2; i < endFix2 + (totalLine2 - 14); i++) {
+                sheet.createRow(i);
+                sheet.copyRows(row_mau, row_mau, i - 1, new CellCopyPolicy()); // copy and paste
+            }
+        }
+
+        // dang in o dong 35 => 34
+        // expect 49 => 48
+        for (int i = 0; i < totalLine2; i++) {
+            XSSFRow crrRow2 = sheet.getRow(row_mau + i);
+            setCellVal(crrRow2, 0, i + 1 + "");
+            setCellVal(crrRow2, 1, "Ten vat tu");
+            setCellVal(crrRow2, 2, "kky ma hieu");
+            setCellVal(crrRow2, 3, "dvt");
+            setCellVal(crrRow2, 4, "dinh muc 1 sp");
+            setCellVal(crrRow2, 5, "so luong san pham");
+            setCellVal(crrRow2, 6, "tong nhu cau");
+            setCellVal(crrRow2, 7, "don gia");
+            setCellVal(crrRow2, 8, "sl");
+            setCellVal(crrRow2, 9, "thanh tien");
+            setCellVal(crrRow2, 10, "do gia");
+            setCellVal(crrRow2, 11, "so luong");
+            setCellVal(crrRow2, 12, "thanh tien");
+            setCellVal(crrRow2, 13, "ghi chu");
+        }
+
+        FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Phuong_An.xlsx");
+        workbook.write(out);
+        out.close();
+    }
+
     @After
     public void clean() {
+
         this.excelService = null;
     }
 }

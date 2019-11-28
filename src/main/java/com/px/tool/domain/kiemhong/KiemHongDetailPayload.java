@@ -20,6 +20,8 @@ public class KiemHongDetailPayload extends AbstractObject {
 
     private String sl;
 
+    private String dvt;
+
     private String dangHuHong;
 
     private String phuongPhapKhacPhuc;
