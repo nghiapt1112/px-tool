@@ -125,4 +125,8 @@ public class RequestController extends BaseController {
         return userService.findListPhanXuong();
     }
 
+    @GetMapping("/cus-noi-nhan")
+    public List<NoiNhan> getCusNoiNhan() {
+        return userService.findVanBanDenNoiNhan();
+    }
 }
