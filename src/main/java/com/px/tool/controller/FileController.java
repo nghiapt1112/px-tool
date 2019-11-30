@@ -73,18 +73,18 @@ public class FileController extends BaseController {
 
     @GetMapping("/print")
     public void downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws IOException {
-//        excelService.exportFile(requestId, requestType, response);
-        File file = new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx");
+        excelService.exportFile(requestId, requestType, response);
+//        File file = new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx");
 //        new ByteArrayResource(Files.readAllBytes(path));
 
 
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.xlsx");
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
+//        Path path = Paths.get(file.getAbsolutePath());
+//        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+//        HttpHeaders header = new HttpHeaders();
+//        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.xlsx");
+//        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+//        header.add("Pragma", "no-cache");
+//        header.add("Expires", "0");
 
 //        return ResponseEntity.ok()
 //                .headers(header)
@@ -94,7 +94,7 @@ public class FileController extends BaseController {
         response.setHeader("Content-disposition", "attachment; filename=test2.xlsx");
         response.setHeader("Content-type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 //        response.setHeader("Content-type", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.getOutputStream().write(Files.readAllBytes(path));
+//        response.getOutputStream().write(Files.readAllBytes(path));
     }
 
 }

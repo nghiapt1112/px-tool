@@ -165,7 +165,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
      * khi co xac nhan thi cap nhat ngay thang
      */
     private void capNhatNgayThangChuKy(PhieuDatHang phieuDatHang, PhieuDatHang existedPhieuDatHang) {
-        if (phieuDatHang.getNguoiDatHang() != existedPhieuDatHang.getNguoiDatHang()) {
+        if (phieuDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
             phieuDatHang.setNguoiDatHang(DateTimeUtils.nowAsString());
         }
         if (phieuDatHang.getTpvatTuXacNhan() != existedPhieuDatHang.getTpvatTuXacNhan()) {

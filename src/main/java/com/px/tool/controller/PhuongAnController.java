@@ -2,8 +2,12 @@ package com.px.tool.controller;
 
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
+import com.px.tool.domain.phuongan.PhuongAnTaoMoi;
+import com.px.tool.domain.phuongan.RequestTaoPhuongAnMoi;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.infrastructure.BaseController;
+import com.px.tool.infrastructure.exception.PXException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ public class PhuongAnController extends BaseController {
     @Autowired
     private PhuongAnService phuongAnService;
 
+
     @GetMapping("/{id}")
     public PhuongAnPayload getPhuongAnDetail(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
         return phuongAnService.findById(extractUserInfo(httpServletRequest), id);
@@ -39,4 +44,13 @@ public class PhuongAnController extends BaseController {
         return this.phuongAnService.save(extractUserInfo(httpServletRequest), phuongAnPayload);
     }
 
+    @PostMapping("/tao-pa")
+    public PhuongAnTaoMoi taoPhuongAnMoi(@RequestBody RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
+        if (CollectionUtils.isEmpty(requestTaoPhuongAnMoi.getDetailIds())) {
+            throw new PXException("Phải chọn ít nhất một dòng để tạo phương án");
+        }
+        PhuongAnTaoMoi paMoi = new PhuongAnTaoMoi();
+        paMoi.setPaId(123L);
+        return paMoi;
+    }
 }

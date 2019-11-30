@@ -1,5 +1,6 @@
 package com.px.tool.domain.vanbanden;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,6 +36,10 @@ public class VanBanDen extends EntityDefault {
     public String type;
 
     @Column
-    private boolean read;
+    private Boolean read;
+
+    @Column
+    @Enumerated
+    public RequestType requestType;
 
 }

@@ -7,7 +7,8 @@ import lombok.Setter;
 @Setter
 public class ThongKeRequest extends PageRequest {
     private Long sanPham;
-
+    private Long phanXuong;
+    
     public void setSanPham(Long sanPham) {
         this.sanPham = sanPham.equals(-1L) ? null : sanPham;
     }

@@ -50,6 +50,11 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPham existedCongNhanThanhPham = congNhanThanhPhamRepository
                 .findById(congNhanThanhPhamPayload.getTpId())
                 .orElse(null);
+        Long requestId = existedCongNhanThanhPham.getRequest().getRequestId();
+        Long kiemHongReceiverId = existedCongNhanThanhPham.getRequest().getKiemHongReceiverId();
+        Long phieuDatHangReceiverId = existedCongNhanThanhPham.getRequest().getPhieuDatHangReceiverId();
+        Long phuongAnReceiverId= existedCongNhanThanhPham.getRequest().getPhuongAnReceiverId();
+        Long cntpReceiverId = Objects.isNull(congNhanThanhPhamPayload.getNoiNhan()) ? userId : congNhanThanhPhamPayload.getNoiNhan();
 
         User user = userService.findById(userId);
         congNhanThanhPhamPayload.capNhatChuKy(user);
@@ -58,6 +63,7 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
         cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
 
+        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 

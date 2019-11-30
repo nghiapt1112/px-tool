@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface RequestRepository extends JpaRepository<Request, Long> {
+public interface RequestRepository extends JpaRepository<Request, Long>, RequestRepositoryCustom {
     @Query("SELECT rq FROM Request rq WHERE rq.createdBy IN ?1")
     List<Request> findByNguoiGui(Collection<Long> userIds);
 
@@ -26,8 +26,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("UPDATE Request rq SET rq.kiemHongReceiverId =?2, rq.phieuDatHangReceiverId = ?3, rq.phuongAnReceiverId = ?4, rq.cntpReceiverId =?5 WHERE rq.requestId = ?1")
     void updateReceiverId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 
-
-//    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE rq.phieuDatHang.phieuDatHangDetails.mucDichSuDung = ?1")
-    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES")
+    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE rq.deleted <> true OR rq.deleted is null")
     Page<Request> findPaging(ThongKeRequest thongKeRequest, Pageable pageable);
+
 }

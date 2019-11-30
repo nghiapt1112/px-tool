@@ -266,6 +266,6 @@ public class User extends EntityDefault implements UserDetails {
     }
 
     public boolean isTruongPhongKCS() {
-        return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(14));
+        return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(10) || phongBan.getGroup().equals(14));
     }
 }

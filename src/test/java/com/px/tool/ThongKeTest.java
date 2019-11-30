@@ -1,5 +1,6 @@
 package com.px.tool;
 
+import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.PageThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeRequest;
@@ -19,6 +20,13 @@ public class ThongKeTest extends PxApplicationTests{
     @Autowired
     private RequestServiceImpl requestService;
 
+    @Autowired
+    private PhuongAnRepository phuongAnRepository;
+
+    @Test
+    public void thongKePAId() {
+        phuongAnRepository.findDetail(552L);
+    }
     @Test
     public void hi() {
         ThongKeRequest request = new ThongKeRequest();

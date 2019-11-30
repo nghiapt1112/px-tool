@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface RequestRepositoryCustom {
     List<Request> findPaging(ThongKeRequest thongKeRequest);
+
+    Long findPhuongAnId(Long requsetId);
+
 }

@@ -7,12 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -54,6 +51,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private String dvt;
     private String to;
     private String soLuong;
+    private Long  noiNhan;
 
     @JsonProperty("yKienNguoiGiaoViec")
     private String yKienNguoiGiaoViec;
@@ -90,6 +88,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
                         .map(NoiDungThucHienPayload::fromEntity)
                         .collect(Collectors.toList())
         );
+        congNhanThanhPhamPayload.setNoiNhan(null);
         return congNhanThanhPhamPayload;
     }
 
@@ -114,14 +113,18 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     }
 
     public void filterPermission(User user) {
-        nguoiGiaoViecDisable = true;
-        nguoiThucHienDisable = true;
+        nguoiGiaoViecDisable = true; // field nay bo
+        nguoiThucHienDisable = true; // field nay cho len tren, vi no co nhieu nguoi thuc hien
         tpkcsDisable = true;
-        if (user.isNguoiLapPhieu()) {
-            nguoiGiaoViecDisable = false;
-        } else if (user.isNhanVienKCS()) {
-            nguoiThucHienDisable = false;
-        } else if (user.isTruongPhongKCS()) {
+//        if (user.isNguoiLapPhieu()) {
+//            nguoiGiaoViecDisable = false;
+//        } else if (user.isNhanVienKCS()) {
+//            nguoiThucHienDisable = false;
+//        } else if (user.isTruongPhongKCS()) {
+//            tpkcsDisable = false;
+//        }
+
+        if (user.isTruongPhongKCS()) {
             tpkcsDisable = false;
         }
     }

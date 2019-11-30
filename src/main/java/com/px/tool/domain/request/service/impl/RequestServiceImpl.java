@@ -105,7 +105,7 @@ public class RequestServiceImpl implements RequestService {
         AtomicReference<Integer> hoanThanhCount = new AtomicReference<>(0);
         tkPayload.setDetails(requests.stream()
                 .map(el -> {
-                    if (request.getSanPham() == null) {
+                    if (request.getSanPham() == null || request.getSanPham() == 0) {
                         return el;
                     }
                     Set<PhieuDatHangDetail> vals = new HashSet<>();
@@ -123,6 +123,7 @@ public class RequestServiceImpl implements RequestService {
                 })
                 .filter(Objects::nonNull)
                 .map(ThongKeDetailPayload::fromRequestEntity)
+                .flatMap(el -> el.stream())
                 .peek(el -> {
                     if (el.getXacNhanHoanThanh() != null) {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);

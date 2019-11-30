@@ -20,6 +20,7 @@ public class NoiNhanRequestParams extends AbstractObject {
     private Boolean tpVatTu;
     private Boolean tpKeHoach;
     private Boolean tpKTHK;
+    private Boolean giamDoc;
     private Boolean tpKCS;
     private Boolean nguoiThucHien;
     private Boolean nguoiGiaoViec;

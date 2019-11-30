@@ -271,7 +271,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
-        pdh.setSo(requestKiemHong.getSoHieu());
+//        pdh.setSo(requestKiemHong.getSoHieu());
         Map<Long, User> userById = userService.userById();
         pdh.setDonViYeuCau(userById.get(requestKiemHong.getToSX()).getFullName()); // C3 sheet1
         pdh.setPhanXuong(userById.get(requestKiemHong.getPhanXuong()).getFullName()); // C2 sheet1

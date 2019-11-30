@@ -2,6 +2,7 @@ package com.px.tool.domain.phuongan.service.impl;
 
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.cntp.NoiDungThucHien;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.file.FileStorageService;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
@@ -12,7 +13,9 @@ import com.px.tool.domain.phuongan.repository.DinhMucLaoDongRepository;
 import com.px.tool.domain.phuongan.repository.DinhMucVatTuRepository;
 import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.request.NguoiDangXuLy;
 import com.px.tool.domain.request.Request;
+import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -60,6 +64,9 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     @Autowired
     private VanBanDenServiceImpl vanBanDenService;
+
+    @Autowired
+    private RequestRepository requestRepository;
 
     @Override
     public PhuongAnPayload findById(Long userId, Long id) {
@@ -175,7 +182,13 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         congNhanThanhPham.setTenSanPham(phuongAn.getSanPham());
         congNhanThanhPham.setNoiDung(phuongAn.getNoiDung());
         congNhanThanhPham.setSoPA(phuongAn.getMaSo());
-
+        if (!CollectionUtils.isEmpty(phuongAn.getDinhMucLaoDongs())) {
+            Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
+            for (DinhMucLaoDong dinhMucLaoDong : phuongAn.getDinhMucLaoDongs()) {
+                noiDungThucHiens.add(new NoiDungThucHien(dinhMucLaoDong.getNoiDungCongViec()));
+            }
+            congNhanThanhPham.setNoiDungThucHiens(noiDungThucHiens);
+        }
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
@@ -275,4 +288,11 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     public PhuongAn savePhuongAn(PhuongAn phuongAn) {
         return this.phuongAnRepository.save(phuongAn);
     }
+
+    @Override
+    public NguoiDangXuLy findNguoiDangXuLy(Long requestId) {
+        Long phuongAnId = requestRepository.findPhuongAnId(requestId);
+        return phuongAnRepository.findDetail(phuongAnId);
+    }
 }
+

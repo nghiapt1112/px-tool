@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.NotificationPayload;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
@@ -45,6 +46,7 @@ public class RequestController extends BaseController {
                                         @RequestParam(required = false) Boolean tpVatTu,
                                         @RequestParam(required = false) Boolean tpKeHoach,
                                         @RequestParam(required = false) Boolean tpKTHK,
+                                        @RequestParam(required = false) Boolean giamDoc,
                                         //
                                         @RequestParam(required = false) Boolean tpKCS,
                                         @RequestParam(required = false) Boolean nguoiThucHien,
@@ -64,6 +66,7 @@ public class RequestController extends BaseController {
                 .tpVatTu(tpVatTu)
                 .tpKeHoach(tpKeHoach)
                 .tpKTHK(tpKTHK)
+                .giamDoc(giamDoc)
                 .tpKCS(tpKCS)
                 .nguoiThucHien(nguoiThucHien)
                 .nguoiGiaoViec(nguoiGiaoViec)
@@ -87,14 +90,23 @@ public class RequestController extends BaseController {
 
     @GetMapping("/notification")
     public List<NotificationPayload> getNotification(HttpServletRequest request) {
-        return vanBanDenRepository.findByNoiNhan(extractUserInfo(request), PageRequest.of(0, 100))
+        return vanBanDenRepository.findNotification(extractUserInfo(request), PageRequest.of(0, 100))
                 .stream()
                 .map(el -> {
                     NotificationPayload payload = new NotificationPayload();
                     payload.setRequestId(Long.valueOf(el.getVbdId()));
                     payload.setNotiId(Long.valueOf(el.getVbdId()));
-                    payload.setBody("Bạn đang có 1 thông báo mới. click ");
-                    return payload;
+                    if (el.getRequestType() == RequestType.KIEM_HONG) {
+                        payload.setBody("Bạn đang có 1 yêu cầu kiểm hỏng.");
+                    } else if (el.getRequestType() == RequestType.DAT_HANG) {
+                        payload.setBody("Bạn đang có 1 yêu cầu đặt hàng.");
+                    } else if (el.getRequestType() == RequestType.PHUONG_AN) {
+                        payload.setBody("Bạn đang có 1 yêu cầu thông báo.");
+                    } else if (el.getRequestType() == RequestType.CONG_NHAN_THANH_PHAM) {
+                        payload.setBody("Bạn đang có 1 thông yêu cầu CNTP.");
+                    }
+
+                        return payload;
                 })
                 .collect(Collectors.toList());
     }
@@ -106,6 +118,11 @@ public class RequestController extends BaseController {
             vbd.get().setRead(true);
             vanBanDenRepository.save(vbd.get());
         }
+    }
+
+    @GetMapping("/nguoi-thuc-hien")
+    public List<PhanXuongPayload> getNguoiThucHien() {
+        return userService.findListPhanXuong();
     }
 
 }

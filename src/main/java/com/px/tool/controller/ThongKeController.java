@@ -22,6 +22,7 @@ public class ThongKeController extends BaseController {
     @GetMapping
     private PageThongKePayload getDataChoThongKe(HttpServletRequest httpServletRequest,
                                                  @RequestParam(required = false, defaultValue = "-1") Long spId,
+                                                 @RequestParam(required = false, defaultValue = "-1") Long pxId,
                                                  @RequestParam(required = false, defaultValue = "1") Integer page,
                                                  @RequestParam(required = false, defaultValue = "10") Integer size
     ) {

@@ -29,7 +29,7 @@ public abstract class EntityDefault extends AbstractObject {
     private Long updatedBy;
 
     @Column
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     @PreUpdate
     protected void onUpdate() {

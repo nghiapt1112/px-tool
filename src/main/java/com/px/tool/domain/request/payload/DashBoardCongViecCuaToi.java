@@ -54,14 +54,14 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                 if (request.getPhuongAn().getNguoiLapXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Người lập đã ký";
                 }
+                if (request.getPhuongAn().getTruongPhongKTHKXacNhan()) {
+                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
+                }
                 if (request.getPhuongAn().getTruongPhongVatTuXacNhan()) {
                     dashBoardCongViecCuaToi.status = "T.P Vật tư đã ký";
                 }
                 if (request.getPhuongAn().getTruongPhongKeHoachXacNhan()) {
                     dashBoardCongViecCuaToi.status = "T.P Kế Hoạch đã ký";
-                }
-                if (request.getPhuongAn().getTruongPhongKTHKXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
                 }
                 if (request.getPhuongAn().getGiamDocXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";

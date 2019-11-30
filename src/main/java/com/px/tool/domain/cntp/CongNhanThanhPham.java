@@ -74,6 +74,9 @@ public class CongNhanThanhPham extends EntityDefault {
     private String soLuong;
 
     @Column
+    private Long noiNhan;
+
+    @Column
     private String yKienNguoiGiaoViec;
 
     @Column

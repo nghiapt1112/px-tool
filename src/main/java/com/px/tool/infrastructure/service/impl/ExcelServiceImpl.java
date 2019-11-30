@@ -8,35 +8,27 @@ import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.request.payload.PhanXuongPayload;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.stream.Collectors;
+
+import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -51,6 +43,9 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private CongNhanThanhPhamService congNhanThanhPhamService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void exportFile() throws IOException {
@@ -70,9 +65,8 @@ public class ExcelServiceImpl implements ExcelService {
             } else if (requestType == RequestType.PHUONG_AN) {
                 new File("./src/main/resources/templates/3_phuong_an.xls");
             } else if (requestType == RequestType.CONG_NHAN_THANH_PHAM) {
-                new File("./src/main/resources/templates/4_cntp.xls");
+                exportCNTP(response, congNhanThanhPhamService.timCongNhanThanhPham(1L, requestId));
             }
-//            throw new PXException("Không có file để download");
         } catch (Exception e) {
             e.printStackTrace();
             throw new PXException("File not found");
@@ -80,10 +74,8 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     private void exportKiemHong(HttpServletResponse response, KiemHongPayLoad payload) {
-        try (
-                FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/1_Kiem_Hong.xlsx"));
-                FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx");
-                ){
+        try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/1_Kiem_Hong.xlsx"))) {
+
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int totalLine = payload.getKiemHongDetails().size();
@@ -107,7 +99,7 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row1, 4, payload.getNguonVao());
             setCellVal(row1, 6, payload.getSoXX());
             setCellVal(row1, 8, payload.getSoTo());
-            setCellVal(row2, 2, payload.getToSo());
+            setCellVal(row2, 2, payload.getToSX().toString()); // TODO map to san xuat
             setCellVal(row2, 4, payload.getCongDoan());
 
             for (int i = 0; i < totalLine; i++) {
@@ -121,35 +113,24 @@ public class ExcelServiceImpl implements ExcelService {
                 setCellVal(currRow, 7, payload.getKiemHongDetails().get(i).getPhuongPhapKhacPhuc());
                 setCellVal(currRow, 8, payload.getKiemHongDetails().get(i).getNguoiKiemHong());
             }
-            workbook.write(out);
-            out.close();
-
-//            InputStream inputStream = Files.newInputStream(Paths.get("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Kiem_Hong.xlsx"));
-//            response.setContentType("application/vnd.ms-excel");
-//            response.setContentType("application/octet-stream");
-//            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-            String fileName = "Kiem_Hong_" + DateTimeUtils.getFileSuffix() + ".xlsx";
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
-
-
-//
-//            IOUtils.copy(inputStream, response.getOutputStream());
-//            response.flushBuffer();
+            workbook.write(response.getOutputStream());
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        try {
+            response.flushBuffer();
+        } catch (IOException e) {
+        }
     }
 
     private void exportPHieuDatHang(HttpServletResponse httpServletResponse, PhieuDatHangPayload payload) {
-        try {
-            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("./src/main/resources/templates/2_Dat_Hang.xlsx")));
+        try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/2_Dat_Hang.xlsx"))) {
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int totalLine = payload.getPhieuDatHangDetails().size();
             if (totalLine > 5) {
                 sheet.copyRows(13, 16, 16 + (totalLine - 5), new CellCopyPolicy()); // copy and paste
-
                 for (int i = 13; i < 16 + (totalLine - 5); i++) {
                     sheet.createRow(i);
                     sheet.copyRows(7, 7, i - 1, new CellCopyPolicy()); // copy and paste
@@ -174,23 +155,25 @@ public class ExcelServiceImpl implements ExcelService {
                 setCellVal(crrRow, 3, payload.getPhieuDatHangDetails().get(i).getKiMaHieu());
                 setCellVal(crrRow, 4, payload.getPhieuDatHangDetails().get(i).getDvt());
                 setCellVal(crrRow, 5, payload.getPhieuDatHangDetails().get(i).getSl());
-                setCellVal(crrRow, 6, payload.getPhieuDatHangDetails().get(i).getMucDichSuDung().toString());
+                setCellVal(crrRow, 6, payload.getPhieuDatHangDetails().get(i).getMucDicSuDungAsString());
                 setCellVal(crrRow, 7, payload.getPhieuDatHangDetails().get(i).getPhuongPhapKhacPhuc());
                 setCellVal(crrRow, 8, payload.getPhieuDatHangDetails().get(i).getSoPhieuDatHang());
                 setCellVal(crrRow, 9, payload.getPhieuDatHangDetails().get(i).getNguoiThucHien());
             }
-
-            FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Dat_hang.xlsx");
-            workbook.write(out);
-            out.close();
+            workbook.write(httpServletResponse.getOutputStream());
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            try {
+                httpServletResponse.flushBuffer();
+            } catch (IOException e) {
+            }
         }
     }
 
     public void exportCNTP(HttpServletResponse response, CongNhanThanhPhamPayload payload) {
-        try {
-            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx")));
+        try (FileInputStream fis = new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx"))) {
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
             XSSFRow row0 = sheet.getRow(2);
             XSSFRow row1 = sheet.getRow(3);
@@ -231,11 +214,14 @@ public class ExcelServiceImpl implements ExcelService {
                 setCellVal(crrRow, 3, payload.getNoiDungThucHiens().get(i).getKetQua());
                 setCellVal(crrRow, 4, payload.getNoiDungThucHiens().get(i).getNghiemThu());
             }
-            FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_CNTP.xlsx");
-            workbook.write(out);
-            out.close();
+            workbook.write(response.getOutputStream());
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            try {
+                response.flushBuffer();
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -243,4 +229,12 @@ public class ExcelServiceImpl implements ExcelService {
         row.getCell(cell).setCellValue(val);
     }
 
+
+//    private String mappingTosx() {
+//        userRepository.findByGroup(group_17_25)
+//                .stream()
+//                .filter(el -> el.getLevel() == 3)
+//                .map(PhanXuongPayload::fromUserEntity)
+//                .collect(Collectors.toList());
+//    }
 }

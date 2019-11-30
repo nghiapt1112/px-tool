@@ -16,4 +16,5 @@ public interface RequestService {
     PageThongKePayload collectDataThongKe(ThongKeRequest request);
 
     void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
+
 }

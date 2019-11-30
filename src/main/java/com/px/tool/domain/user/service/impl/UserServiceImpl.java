@@ -2,9 +2,11 @@ package com.px.tool.domain.user.service.impl;
 
 import com.google.common.collect.Sets;
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.request.NguoiDangXuLy;
+import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
-import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.NoiNhanRequestParams;
@@ -14,7 +16,6 @@ import com.px.tool.domain.user.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,10 +39,8 @@ import static com.px.tool.domain.user.repository.UserRepository.group_12;
 import static com.px.tool.domain.user.repository.UserRepository.group_14;
 import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
-import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong_phong;
+import static com.px.tool.domain.user.repository.UserRepository.group_KCS;
 import static com.px.tool.domain.user.repository.UserRepository.group_giam_doc;
-import static com.px.tool.domain.user.repository.UserRepository.group_ke_hoach;
-import static com.px.tool.domain.user.repository.UserRepository.group_nv_KCS;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,8 +57,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RequestService requestService;
 
-//    @Autowired
-//    private PhongBanRepository phongBanRepository;
+    @Autowired
+    private PhuongAnService phuongAnService;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -127,7 +126,6 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(requestParams.getRequestId())) {
             pbs = userRepository.findByGroup(group_29_40);
         } else {
-            // TODO: van phai check lai case kiem hong nhe'
             Request existedRequest = requestService.findById(requestParams.getRequestId());
             if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
                 filterTheoKiemHong(requestParams, currentUser, pbs);
@@ -151,19 +149,19 @@ public class UserServiceImpl implements UserService {
 
     private void filterTheoCNTP(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
         Stream<User> pbs = null;
-        if (currentUser.isNguoiLapPhieuCNTP()) {
-            pbs = userRepository.findByGroup(group_29_40)
-                    .stream()
-                    .filter(el -> el.getLevel() == 3);
+        if (currentUser.isQuanDocPhanXuong()) {
+            // chuyen cho cac to truong
+            pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 5);
+        } else if (currentUser.isToTruong()) {
+            // chuyen cho cac nhan vien kcs
+            pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
         } else if (currentUser.isNhanVienKCS()) {
-            pbs = userRepository.findByGroup(group_ke_hoach)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
         } else if (currentUser.isTruongPhongKCS()) {
-            pbs = userRepository.findByGroup(group_nv_KCS)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            // chuyen lai cho px
+            pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 3);
         }
+
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));
         }
@@ -171,33 +169,54 @@ public class UserServiceImpl implements UserService {
 
     private void filterTheoPhuongAn(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
         Stream<User> pbs = null;
+        NguoiDangXuLy nguoiDangXuLy = phuongAnService.findNguoiDangXuLy(requestParams.getRequestId());
         if (currentUser.isNguoiLapPhieu()) {
-            pbs = userRepository.findByGroup(group_29_40)
-                    .stream()
-                    .filter(el -> el.getLevel() == 3);
+            pbs = userRepository.findByGroup(group_29_40).stream().filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d
-            pbs = userRepository.findByGroup(group_12)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            if (requestParams.getTpKTHK()) {
+                pbs = userRepository.findByGroup(group_12).stream().filter(el -> el.getLevel() == 4);
+            } else {
+                // TODO: chuyen ve nguoi lap phieu
+                pbs = toUserStream(nguoiDangXuLy.getNguoiLap());
+            }
         } else if (currentUser.isNhanVienTiepLieu()) {
-            pbs = userRepository.findByGroup(group_12)
-                    .stream()
-                    .filter(el -> el.getLevel() == 3);
-        } else if (currentUser.isTruongPhongVatTu()) { // chuyen 50e
-            pbs = userRepository.findByGroup(group_14)
-                    .stream()
-                    .filter(el -> el.getLevel() == 4);
+            pbs = userRepository.findByGroup(group_12).stream().filter(el -> el.getLevel() == 3);
+        } else if (currentUser.isTruongPhongVatTu()) {
+            if (requestParams.getTpVatTu()) {
+                // nhan vien dinh muc (phong ke hoach)
+                pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 4);
+            } else {
+                // TODO chuyen nhan vien tiep lieu (nhung dang khong luu nen chuyen ve luon nguoi lap)
+                pbs = toUserStream(nguoiDangXuLy.getNguoiLap());
+            }
         } else if (currentUser.isNhanVienDinhMuc()) { // chuyen truong phong ke hoach
-            pbs = userRepository.findByGroup(group_14)
-                    .stream()
-                    .filter(el -> el.getLevel() == 3);
+            pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKeHoach()) {
-            pbs = userRepository.findByGroup(group_giam_doc).stream();
-        } else if (currentUser.getLevel() == 2) {
-            pbs = userRepository.findByGroup(group_cac_truong_phong).stream();
+            if (requestParams.getTpKeHoach()) {
+                pbs = userRepository.findByGroup(group_giam_doc).stream(); // chuyen len giam doc
+            } else {
+                // TODO:chuyen nhan vien dinh muc
+                pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 4).limit(1);
+            }
+        } else if (currentUser.getLevel() == 2) { // chuyen den Nguoi thuc hien (nguoi thuc hien la cac PX)
+            // TODO: neu giam doc khong dong y, chuyen ve TPKTHK/XMDC:
+            if (!requestParams.getGiamDoc()) {
+                pbs = toUserStream(nguoiDangXuLy.getTpKTHK());
+            } else {
+                pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 3);
+            }
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));
+        }
+    }
+
+    Stream<User> toUserStream(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            return Stream.of(userOpt.get());
+        } else {
+            return Stream.empty();
         }
     }
 
@@ -288,4 +307,5 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .collect(Collectors.toMap(User::getUserId, Function.identity()));
     }
+
 }

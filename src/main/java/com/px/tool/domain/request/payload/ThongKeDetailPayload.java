@@ -4,13 +4,13 @@ import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.AbstractObject;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -18,6 +18,7 @@ import java.util.Map;
 @ToString
 public class ThongKeDetailPayload extends AbstractObject {
     public Long tt;
+    public Long detailId;
     public String tenPhuKien;
     public String tenLinhKien;
     public String kyHieu;
@@ -36,7 +37,8 @@ public class ThongKeDetailPayload extends AbstractObject {
     public String xacNhanHoanThanh;
     public Long requestId;
 
-    public static ThongKeDetailPayload fromRequestEntity(Request request) {
+    public static List<ThongKeDetailPayload> fromRequestEntity(Request request) {
+        List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
         ThongKeDetailPayload tk = null;
         Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
         for (PhieuDatHangDetail phieuDatHangDetail : request.getPhieuDatHang().getPhieuDatHangDetails()) {
@@ -59,10 +61,11 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.ngayKiemHong = request.getKiemHong().getNgayThangNamTroLyKT();
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = request.getKiemHong().getNgayThangNamQuanDoc();
-            tk.soPhieuDatHang = "PDH";
+            tk.soPhieuDatHang = "PDH-" + request.getPhieuDatHang().getPdhId();
             try {
                 pdhDt = pdhDetailById.get(detail.getKhDetailId());
                 tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
+                tk.detailId = pdhDt.getPdhDetailId();
             } catch (Exception e) {
 
             }
@@ -74,7 +77,8 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.ngayHoanThanh = request.getCongNhanThanhPham().getNgayThangNamNguoiThucHien();
             tk.xacNhanHoanThanh = request.getCongNhanThanhPham().getNgayThangNamTPKCS();
             tk.requestId = request.getRequestId();
+            tks.add(tk);
         }
-        return tk;
+        return tks;
     }
 }

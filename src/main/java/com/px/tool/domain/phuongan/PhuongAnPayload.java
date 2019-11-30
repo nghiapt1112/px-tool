@@ -91,6 +91,11 @@ public class PhuongAnPayload extends AbstractObject {
     private Long nguoiLapId;
     private Long giamDocId;
 
+    private List<Long> cusReceivers;
+    private String cusNoiDung;
+    private List<Long> nguoiThucHien;
+
+
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
         BeanUtils.copyProperties(phuongAn, phuongAnPayload);

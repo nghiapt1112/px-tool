@@ -3,6 +3,7 @@ package com.px.tool.domain.cntp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "noi_dung_thuc_hien")
 @Getter
 @Setter
+@NoArgsConstructor
 public class NoiDungThucHien extends AbstractObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,4 +41,8 @@ public class NoiDungThucHien extends AbstractObject {
     @ManyToOne
     @JoinColumn(name = "tpId")
     private CongNhanThanhPham congNhanThanhPham;
+
+    public NoiDungThucHien(String noiDung) {
+        this.noiDung = noiDung;
+    }
 }
