@@ -52,7 +52,9 @@ public class RequestController extends BaseController {
                                         @RequestParam(required = false) Boolean nguoiThucHien,
                                         @RequestParam(required = false) Boolean nguoiGiaoViec,
 
-                                        @RequestParam(required = false) Long userId
+                                        @RequestParam(required = false) Long userId,
+                                        @RequestParam(required = false) RequestType type
+
 
     ) {
 
@@ -70,6 +72,7 @@ public class RequestController extends BaseController {
                 .tpKCS(tpKCS)
                 .nguoiThucHien(nguoiThucHien)
                 .nguoiGiaoViec(nguoiGiaoViec)
+                .type(type)
                 .build());
     }
 
@@ -129,4 +132,10 @@ public class RequestController extends BaseController {
     public List<NoiNhan> getCusNoiNhan() {
         return userService.findVanBanDenNoiNhan();
     }
+
+    @GetMapping("/cntp/nguoi-lam")
+    public List<NoiNhan> getNguoiLamCNTP() {
+        return userService.findVanBanDenNoiNhan();
+    }
+
 }
