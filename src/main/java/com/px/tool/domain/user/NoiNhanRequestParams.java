@@ -1,5 +1,6 @@
 package com.px.tool.domain.user;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,5 @@ public class NoiNhanRequestParams extends AbstractObject {
     private Boolean nguoiThucHien;
     private Boolean nguoiGiaoViec;
     private Long userId;
+    private RequestType type;
 }
