@@ -2,6 +2,7 @@ package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
+import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.AbstractObject;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class ThongKeDetailPayload extends AbstractObject {
     public String xacNhanHoanThanh;
     public Long requestId;
 
-    public static List<ThongKeDetailPayload> fromRequestEntity(Request request) {
+    public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
         ThongKeDetailPayload tk = null;
         Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
@@ -62,23 +63,31 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = request.getKiemHong().getNgayThangNamQuanDoc();
             tk.soPhieuDatHang = "PDH-" + request.getPhieuDatHang().getPdhId();
+            tk.detailId = detail.getKhDetailId();
             try {
                 pdhDt = pdhDetailById.get(detail.getKhDetailId());
                 tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
-                tk.detailId = pdhDt.getPdhDetailId();
+
             } catch (Exception e) {
 
             }
             tk.ngayChuyenKT = request.getPhieuDatHang().getNgayThangNamTPVatTu();
-            tk.soPA = "PA";
-            tk.ngayRaPA = request.getPhuongAn().getNgayThangNamNguoiLap();
-            tk.ngayChuyenKH = request.getPhuongAn().getNgayThangNamtpVatTu();
-            tk.ngayPheDuyet = request.getPhuongAn().getNgayThangNamTPKTHK();
-            tk.ngayHoanThanh = request.getCongNhanThanhPham().getNgayThangNamNguoiThucHien();
-            tk.xacNhanHoanThanh = request.getCongNhanThanhPham().getNgayThangNamTPKCS();
-            tk.requestId = request.getRequestId();
+            tk.requestId = 0L;
+            try {
+                tk.requestId = phuongAnById.get(detail.getPaId()).getPaId();
+                tk.soPA = "PA" + phuongAnById.get(detail.getPaId()).getPaId();
+                tk.ngayRaPA = phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap();
+                tk.ngayChuyenKH = phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu();
+                tk.ngayPheDuyet = phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK();
+                tk.ngayHoanThanh = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamNguoiThucHien();
+                tk.xacNhanHoanThanh = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS();
+            } catch (Exception e) {
+
+            }
+
             tks.add(tk);
         }
         return tks;
     }
+
 }

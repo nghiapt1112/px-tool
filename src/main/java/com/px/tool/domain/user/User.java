@@ -198,10 +198,7 @@ public class User extends EntityDefault implements UserDetails {
      * Chuyển cho Trưởng Phòng KTHK (account 8) hoặc Trưởng Phòng Xe máy đặc chủng (account 9).
      */
     public boolean isTroLyPhongKTHK() {
-        return this.getLevel() == 4 && this.phongBan != null && (
-                phongBan.getGroup().equals(8)
-                        || phongBan.getGroup().equals(9)
-        );
+        return isTroLyKT();
     }
 
     /**

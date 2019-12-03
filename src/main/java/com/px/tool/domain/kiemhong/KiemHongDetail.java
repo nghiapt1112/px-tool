@@ -55,4 +55,7 @@ public class KiemHongDetail extends AbstractObject {
     @ManyToOne
     @JoinColumn(name = "khId")
     private KiemHong kiemHong;
+
+    @Column
+    private Long paId;
 }

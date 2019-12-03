@@ -113,12 +113,12 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
         validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
-            existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN);
-            phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
+            existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
+//            phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
             guiVanBanDen();
             // clear back recieverid
-            phuongAnReceiverId = phieuDatHangPayload.getNoiNhan();
-            phieuDatHangReceiverId = null;
+            phuongAnReceiverId = null;
+            phieuDatHangReceiverId = phieuDatHangPayload.getNoiNhan();
             kiemHongReceiverId = null;
             cntpReceiverId = null;
         }
@@ -203,5 +203,10 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     @Override
     public PhieuDatHang save(PhieuDatHang phieuDatHang) {
         return this.phieuDatHangRepository.save(phieuDatHang);
+    }
+
+    @Override
+    public List<PhieuDatHang> findListCongViecCuaTLKT(Long userId) {
+        return phieuDatHangRepository.findListCongViecCuaTLKT(userId);
     }
 }

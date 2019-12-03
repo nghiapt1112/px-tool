@@ -1,6 +1,7 @@
 package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.request.AbstractObject;
@@ -27,7 +28,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
         dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: " + getVal(userById, request.getKiemHong().getPhanXuong()) + "- Tổ sản xuất: " + getVal(userById, request.getKiemHong().getToSX());
         dashBoardCongViecCuaToi.status = "Vừa tạo";
-        try{
+        try {
             if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
                 if (request.getKiemHong().getToTruongXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Tổ trưởng đã ký";
@@ -47,36 +48,36 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                     dashBoardCongViecCuaToi.status = "T.P Vật Tư đã ký";
                 }
                 if (request.getPhieuDatHang().getTpkthkXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
+                    dashBoardCongViecCuaToi.status = "Đặt Hàng thành công";
                 }
             } else if (dashBoardCongViecCuaToi.type == RequestType.PHUONG_AN) {
                 dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
-                if (request.getPhuongAn().getNguoiLapXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "Người lập đã ký";
-                }
-                if (request.getPhuongAn().getTruongPhongKTHKXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
-                }
-                if (request.getPhuongAn().getTruongPhongVatTuXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P Vật tư đã ký";
-                }
-                if (request.getPhuongAn().getTruongPhongKeHoachXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P Kế Hoạch đã ký";
-                }
-                if (request.getPhuongAn().getGiamDocXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";
-                }
+//                if (request.getPhuongAn().getNguoiLapXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "Người lập đã ký";
+//                }
+//                if (request.getPhuongAn().getTruongPhongKTHKXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
+//                }
+//                if (request.getPhuongAn().getTruongPhongVatTuXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "T.P Vật tư đã ký";
+//                }
+//                if (request.getPhuongAn().getTruongPhongKeHoachXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "T.P Kế Hoạch đã ký";
+//                }
+//                if (request.getPhuongAn().getGiamDocXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";
+//                }
             } else if (dashBoardCongViecCuaToi.type == RequestType.CONG_NHAN_THANH_PHAM) {
                 dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";
-                if (request.getCongNhanThanhPham().getNguoiThucHienXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "Người thực hiện đã ký";
-                }
-                if (request.getCongNhanThanhPham().getNguoiGiaoViecXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "Người giao việc đã ký";
-                }
-                if (request.getCongNhanThanhPham().getTpkcsXacNhan()) {
-                    dashBoardCongViecCuaToi.status = "T.P KCS đã ký";
-                }
+//                if (request.getCongNhanThanhPham().getNguoiThucHienXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "Người thực hiện đã ký";
+//                }
+//                if (request.getCongNhanThanhPham().getNguoiGiaoViecXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "Người giao việc đã ký";
+//                }
+//                if (request.getCongNhanThanhPham().getTpkcsXacNhan()) {
+//                    dashBoardCongViecCuaToi.status = "T.P KCS đã ký";
+//                }
             }
         } catch (Exception ex) {
             // DO no thing
@@ -94,5 +95,21 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
             return unameById.get(k) == null ? key.toString() : unameById.get(k).getFullName();
         }
         return key.toString();
+    }
+
+    public static DashBoardCongViecCuaToi fromPhuongAn(PhuongAn el, Map<Long, User> userById) {
+        DashBoardCongViecCuaToi dashBoardCongViecCuaToi = new DashBoardCongViecCuaToi();
+        dashBoardCongViecCuaToi.ma = "Key-" + el.getPaId();
+        dashBoardCongViecCuaToi.requestId = el.getPaId();
+
+        if (el.getCntpReceiverId() == null) {
+            dashBoardCongViecCuaToi.type = RequestType.PHUONG_AN;
+        } else {
+            dashBoardCongViecCuaToi.type = RequestType.CONG_NHAN_THANH_PHAM;
+        }
+
+        dashBoardCongViecCuaToi.status = "Vừa tạo";
+
+        return dashBoardCongViecCuaToi;
     }
 }

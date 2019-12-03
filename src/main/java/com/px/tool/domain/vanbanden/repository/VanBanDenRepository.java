@@ -17,7 +17,7 @@ public interface VanBanDenRepository extends JpaRepository<VanBanDen, Long> {
     @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan =?1")
     Page<VanBanDen> findByNoiNhan(Long noiNhan, PageRequest of);
 
-    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan =?1 and v.read is null or v.read <> 1")
+    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan =?1 and v.read is null or v.read <> true OR v.read = false OR v.read = 0")
     Page<VanBanDen> findNotification(Long noiNhan, PageRequest of);
 
 }

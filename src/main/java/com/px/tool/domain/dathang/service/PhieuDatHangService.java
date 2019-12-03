@@ -14,4 +14,5 @@ public interface PhieuDatHangService {
 
     PhieuDatHang save(PhieuDatHang phieuDatHang);
 
+    List<PhieuDatHang> findListCongViecCuaTLKT(Long userId);
 }

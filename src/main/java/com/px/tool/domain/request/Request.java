@@ -57,15 +57,15 @@ public class Request extends EntityDefault {
     @JoinColumn(name = "pdhId")
     private PhieuDatHang phieuDatHang;
 
-    @JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "paId")
-    private PhuongAn phuongAn;
+//    @JsonManagedReference
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "paId")
+//    private PhuongAn phuongAn;
 
-    @JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tpId")
-    private CongNhanThanhPham congNhanThanhPham;
+//    @JsonManagedReference
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "tpId")
+//    private CongNhanThanhPham congNhanThanhPham;
 
     public RequestType getType() {
         return this.status;

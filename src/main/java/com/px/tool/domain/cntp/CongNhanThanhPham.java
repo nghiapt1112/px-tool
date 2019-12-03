@@ -3,6 +3,7 @@ package com.px.tool.domain.cntp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
@@ -101,6 +102,7 @@ public class CongNhanThanhPham extends EntityDefault {
 
     @JsonBackReference
     @OneToOne(mappedBy = "congNhanThanhPham")
-    private Request request;
+    private PhuongAn phuongAn;
+
 
 }

@@ -16,6 +16,7 @@ import com.px.tool.domain.user.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -111,7 +112,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+                .orElseThrow(() -> new PXException("Không tìm thấy User với Id = " + userId));
     }
 
     @Override
@@ -126,16 +127,19 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(requestParams.getRequestId())) {
             pbs = userRepository.findByGroup(group_29_40);
         } else {
-            Request existedRequest = requestService.findById(requestParams.getRequestId());
-            if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
-                filterTheoKiemHong(requestParams, currentUser, pbs);
-            } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
-                filterTheoDatHang(requestParams, currentUser, pbs);
-            } else if (existedRequest.getStatus() == RequestType.PHUONG_AN) {
+            if (requestParams.getType() == RequestType.PHUONG_AN) {
                 filterTheoPhuongAn(requestParams, currentUser, pbs);
-            } else if (existedRequest.getStatus() == RequestType.CONG_NHAN_THANH_PHAM) {
+            } else if (requestParams.getType() == RequestType.CONG_NHAN_THANH_PHAM) {
                 filterTheoCNTP(requestParams, currentUser, pbs);
+            } else {
+                Request existedRequest = requestService.findById(requestParams.getRequestId());
+                if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
+                    filterTheoKiemHong(requestParams, currentUser, pbs);
+                } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
+                    filterTheoDatHang(requestParams, currentUser, pbs);
+                }
             }
+
         }
         if (Objects.isNull(pbs)) {
             return Collections.emptyList();
@@ -232,14 +236,14 @@ public class UserServiceImpl implements UserService {
                 pbs = userRepository.findByGroup(group_29_40).stream()
                         .filter(el -> el.getLevel() == 4);
             }
-
         } else if (currentUser.isTroLyPhongKTHK()) {
             pbs = userRepository.findByGroup(group_29_40).stream()
                     .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKTHK()) {
-            //TODO: neu truong phong kthk dong y thi tao van ban den
-            pbs = userRepository.findByGroup(group_29_40).stream()
-                    .filter(el -> el.getLevel() == 4);
+            //TODO: neu truong phong kthk dong y thi tao van ban den + PA
+//            pbs = userRepository.findByGroup(group_29_40).stream()
+//                    .filter(el -> el.getLevel() == 4);
+            pbs = Stream.empty();
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));

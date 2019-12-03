@@ -49,8 +49,6 @@ public class PhuongAnController extends BaseController {
         if (CollectionUtils.isEmpty(requestTaoPhuongAnMoi.getDetailIds())) {
             throw new PXException("Phải chọn ít nhất một dòng để tạo phương án");
         }
-        PhuongAnTaoMoi paMoi = new PhuongAnTaoMoi();
-        paMoi.setPaId(123L);
-        return paMoi;
+        return phuongAnService.taoPhuongAnMoi(requestTaoPhuongAnMoi);
     }
 }

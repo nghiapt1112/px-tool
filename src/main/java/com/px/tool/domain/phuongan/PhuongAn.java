@@ -1,8 +1,8 @@
 package com.px.tool.domain.phuongan;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.px.tool.domain.request.Request;
+import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.infrastructure.model.request.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +10,17 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -145,6 +148,22 @@ public class PhuongAn extends EntityDefault {
     @Column
     private Long giamDocId;
 
+    @Column
+    private Long phuongAnReceiverId;
+
+    @Column
+    private Long cntpReceiverId;
+
+    @Column
+    @Enumerated
+    private RequestType status;
+
+    @Column
+    private String cusReceivers;
+
+    @Column
+    private String cusNoiDung;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();
@@ -153,9 +172,10 @@ public class PhuongAn extends EntityDefault {
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucVatTu> dinhMucVatTus = new HashSet<>();
 
-    @JsonBackReference
-    @OneToOne(mappedBy = "phuongAn")
-    private Request request;
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tpId")
+    private CongNhanThanhPham congNhanThanhPham;
 
     public boolean allApproved() {
         return

@@ -131,8 +131,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 Request request = new Request();
                 request.setCreatedBy(currentUserId);
                 request.setKiemHong(kiemHong);
-                request.setCongNhanThanhPham(new CongNhanThanhPham());
-                request.setPhuongAn(new PhuongAn());
+//                request.setCongNhanThanhPham(new CongNhanThanhPham());
+//                request.setPhuongAn(new PhuongAn());
                 request.setPhieuDatHang(new PhieuDatHang());
                 request.setStatus(RequestType.KIEM_HONG);
                 request.setKiemHongReceiverId(Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? currentUserId : kiemHongPayLoad.getNoiNhan());

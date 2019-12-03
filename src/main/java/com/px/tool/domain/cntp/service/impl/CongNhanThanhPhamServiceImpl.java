@@ -11,6 +11,7 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -50,10 +50,10 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPham existedCongNhanThanhPham = congNhanThanhPhamRepository
                 .findById(congNhanThanhPhamPayload.getTpId())
                 .orElse(null);
-        Long requestId = existedCongNhanThanhPham.getRequest().getRequestId();
-        Long kiemHongReceiverId = existedCongNhanThanhPham.getRequest().getKiemHongReceiverId();
-        Long phieuDatHangReceiverId = existedCongNhanThanhPham.getRequest().getPhieuDatHangReceiverId();
-        Long phuongAnReceiverId= existedCongNhanThanhPham.getRequest().getPhuongAnReceiverId();
+//        Long requestId = existedCongNhanThanhPham.getRequest().getRequestId();
+//        Long kiemHongReceiverId = existedCongNhanThanhPham.getRequest().getKiemHongReceiverId();
+//        Long phieuDatHangReceiverId = existedCongNhanThanhPham.getRequest().getPhieuDatHangReceiverId();
+//        Long phuongAnReceiverId = existedCongNhanThanhPham.getRequest().getPhuongAnReceiverId();
         Long cntpReceiverId = Objects.isNull(congNhanThanhPhamPayload.getNoiNhan()) ? userId : congNhanThanhPhamPayload.getNoiNhan();
 
         User user = userService.findById(userId);
@@ -63,15 +63,15 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
         cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
 
-        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
+//        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
     private void capNhatNgayThangNam(CongNhanThanhPham request, CongNhanThanhPham existed) {
-        if(request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
+        if (request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
             request.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsString());
         }
-        if(request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
+        if (request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
             request.setNgayThangNamTPKCS(DateTimeUtils.nowAsString());
         }
     }
@@ -105,7 +105,12 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     @Override
     public CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id) {
         Request request = requestService.findById(id);
-        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(request.getCongNhanThanhPham());
+//        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(request.getCongNhanThanhPham());
+
+        CongNhanThanhPham existedCNTP = congNhanThanhPhamRepository
+                .findById(id)
+                .orElseThrow(() -> new PXException("cntp.not_found"));
+        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(existedCNTP);
         payload.setRequestId(request.getRequestId());
         payload.filterPermission(userService.findById(userId));
 

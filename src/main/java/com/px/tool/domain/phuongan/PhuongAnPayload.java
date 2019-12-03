@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -109,6 +110,16 @@ public class PhuongAnPayload extends AbstractObject {
                 .collect(Collectors.toCollection(LinkedList::new));
 //        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
         phuongAnPayload.setNoiNhan(null);
+
+        try {
+            List<Long> recv = new ArrayList<>();
+            for (String s : phuongAn.getCusReceivers().split(",")) {
+                recv.add(Long.valueOf(s));
+            }
+            phuongAnPayload.setCusReceivers(recv);
+        } catch (Exception e) {
+
+        }
         return phuongAnPayload;
     }
 
@@ -145,6 +156,16 @@ public class PhuongAnPayload extends AbstractObject {
                         })
                         .collect(Collectors.toSet())
         );
+        try {
+            String s = "";
+            for (Long cusReceiver : this.cusReceivers) {
+                s += cusReceiver + ",";
+            }
+            s = s.substring(0, s.length() - 1);
+            phuongAn.setCusReceivers(s);
+        } catch (Exception e) {
+
+        }
         return phuongAn;
     }
 
@@ -187,22 +208,22 @@ public class PhuongAnPayload extends AbstractObject {
     }
 
     public Boolean getGiamDocXacNhan() {
-        return giamDocXacNhan == null ? false :giamDocXacNhan;
+        return giamDocXacNhan == null ? false : giamDocXacNhan;
     }
 
     public Boolean getTruongPhongKTHKXacNhan() {
-        return truongPhongKTHKXacNhan == null ? false :truongPhongKTHKXacNhan;
+        return truongPhongKTHKXacNhan == null ? false : truongPhongKTHKXacNhan;
     }
 
     public Boolean getTruongPhongKeHoachXacNhan() {
-        return truongPhongKeHoachXacNhan == null ? false :truongPhongKeHoachXacNhan;
+        return truongPhongKeHoachXacNhan == null ? false : truongPhongKeHoachXacNhan;
     }
 
     public Boolean getTruongPhongVatTuXacNhan() {
-        return truongPhongVatTuXacNhan == null ? false :truongPhongVatTuXacNhan;
+        return truongPhongVatTuXacNhan == null ? false : truongPhongVatTuXacNhan;
     }
 
     public Boolean getNguoiLapXacNhan() {
-        return nguoiLapXacNhan == null ? false :nguoiLapXacNhan;
+        return nguoiLapXacNhan == null ? false : nguoiLapXacNhan;
     }
 }

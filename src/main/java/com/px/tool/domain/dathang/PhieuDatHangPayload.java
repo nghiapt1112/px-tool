@@ -65,6 +65,9 @@ public class PhieuDatHangPayload extends AbstractObject {
     private Long tpvatTuId;
     private Long tpkthkId;
 
+    // update flow moi
+    private Long trolyKT; // cac tro ly nay thuoc 8,9 level = 4
+
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
         BeanUtils.copyProperties(phieuDatHang, phieuDatHangPayload);
@@ -127,6 +130,7 @@ public class PhieuDatHangPayload extends AbstractObject {
         }
         if (user.isTruongPhongVatTu() && tpvatTuXacNhan) {
             tpvatTuId = user.getUserId();
+            trolyKT = noiNhan;
         }
         if (user.isTruongPhongKTHK() && tpkthkXacNhan) {
             tpkthkId = user.getUserId();
