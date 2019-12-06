@@ -9,15 +9,18 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
-import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.payload.NoiNhanRequestParams;
+import com.px.tool.domain.user.payload.UserPageRequest;
+import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,8 +71,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsers() {
-        return userRepository.findAll();
+    public List<UserPayload> findUsers(Long userId, UserPageRequest request) {
+        Page<User> page = userRepository.findAll(request.toPageRequest());
+        return page.stream()
+                .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
+                .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())));
     }
 
     @Override

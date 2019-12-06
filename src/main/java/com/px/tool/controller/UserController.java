@@ -2,6 +2,7 @@ package com.px.tool.controller;
 
 import com.px.tool.domain.user.payload.PhongBanPayload;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.payload.UserPageRequest;
 import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +33,12 @@ public class UserController extends BaseController {
     private PhongBanRepository phongBanRepository;
 
     @GetMapping
-    public List<User> findUsers() {
-        return userService.findUsers();
+    public List<UserPayload> findUsers(
+            HttpServletRequest request,
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size
+    ) {
+        return userService.findUsers(extractUserInfo(request), new UserPageRequest(page, size));
     }
 
     /**
@@ -70,4 +76,5 @@ public class UserController extends BaseController {
     public void createUser(UserRequest userRequest) {
         userService.taoUser(userRequest);
     }
+
 }

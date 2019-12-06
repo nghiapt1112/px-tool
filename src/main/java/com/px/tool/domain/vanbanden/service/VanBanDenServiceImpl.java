@@ -21,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,24 +44,26 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
 
     /**
      * Những văn bản đã gửi.
+     *
      * @return
      */
     public PageVanBanDenPayload findAll(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
         Page<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
-        return toResponse(val);
+        return toResponse(val, vanBanDenPageRequest);
     }
 
     /**
      * Những văn bản cua toi.
+     *
      * @return
      */
     public PageVanBanDenPayload findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
         Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
-        return toResponse(val);
+        return toResponse(val, vanBanDenPageRequest);
     }
 
-    private PageVanBanDenPayload toResponse(Page<VanBanDen> val) {
-        PageVanBanDenPayload res = new PageVanBanDenPayload();
+    private PageVanBanDenPayload toResponse(Page<VanBanDen> val, VanBanDenPageRequest request) {
+        PageVanBanDenPayload res = new PageVanBanDenPayload(request.getPage(), request.getSize());
         if (val.isEmpty()) {
             return res;
         }
@@ -74,7 +75,6 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
             noiNhanById.put(noiNhan.getId(), noiNhan.getName());
         }
-
 
         res.setDetails(
                 val.stream()
@@ -119,11 +119,11 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                     .map(el -> {
                         VanBanDen vanBanDen = new VanBanDen();
                         if (requestType == RequestType.KIEM_HONG) {
-                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng "+ DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.DAT_HANG) {
                             vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.PHUONG_AN) {
-                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án "+ DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án " + DateTimeUtils.nowAsString());
                         }
                         vanBanDen.setNoiNhan(el.getUserId());
                         vanBanDen.setRequestType(requestType);

@@ -24,4 +24,7 @@ public class PageRequest extends AbstractObject {
             this.page = page - 1;
         }
     }
+    public org.springframework.data.domain.PageRequest toPageRequest() {
+        return org.springframework.data.domain.PageRequest.of(page, size);
+    }
 }

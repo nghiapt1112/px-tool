@@ -30,18 +30,15 @@ public class VanBanDenController extends BaseController {
                                          @RequestParam(required = false, defaultValue = "1") Integer page,
                                          @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
-        return vanBanDenService.findAll(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size))
-                .withPage(page)
-                .withSize(size);
+        return vanBanDenService.findAll(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
+
     }
 
     @GetMapping("/receive")
     public PageVanBanDenPayload findInBox(HttpServletRequest httpServletRequest,
                                           @RequestParam(required = false, defaultValue = "1") Integer page,
                                           @RequestParam(required = false, defaultValue = "10") Integer size) {
-        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size))
-                .withPage(page)
-                .withSize(size);
+        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
     }
 
     @PostMapping

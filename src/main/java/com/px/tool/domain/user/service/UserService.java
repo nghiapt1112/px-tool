@@ -3,8 +3,10 @@ package com.px.tool.domain.user.service;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
-import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.payload.NoiNhanRequestParams;
+import com.px.tool.domain.user.payload.UserPageRequest;
+import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -13,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService extends UserDetailsService {
-    List<User> findUsers();
+    List<UserPayload> findUsers(Long userId, UserPageRequest request);
+
+    void taoUser(UserRequest userRequest);
 
     User create(UserRequest user);
 
@@ -33,7 +37,4 @@ public interface UserService extends UserDetailsService {
 
     Map<Long, User> userById();
 
-    void taoUser(UserRequest userRequest);
-
-    List
 }

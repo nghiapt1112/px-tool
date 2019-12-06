@@ -8,10 +8,8 @@ import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,17 +75,6 @@ public class UserRepositoryTest extends PxApplicationTests {
                     return userRequest;
                 })
                 .forEach(el -> this.userService.create(el));
-    }
-
-    @Test
-    public void findUsers() {
-        boolean wrongData = false;
-        for (User el : userService.findUsers()) {
-            if (el != null && CollectionUtils.isEmpty(el.getAuthorities())) {
-                wrongData = true;
-            }
-        }
-        Assert.assertEquals(false, wrongData);
     }
 
     @Test

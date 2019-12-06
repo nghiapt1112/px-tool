@@ -123,6 +123,8 @@ public class User extends EntityDefault implements UserDetails {
                         return 4;
                     case "LEVEL5":
                         return 5;
+                    default:
+                        return 0;
                 }
             }
         }
