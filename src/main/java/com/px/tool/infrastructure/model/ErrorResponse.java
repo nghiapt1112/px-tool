@@ -1,6 +1,6 @@
 package com.px.tool.infrastructure.model;
 
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

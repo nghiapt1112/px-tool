@@ -3,7 +3,7 @@ package com.px.tool.domain.dathang;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.domain.request.Request;
-import com.px.tool.infrastructure.model.request.EntityDefault;
+import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 

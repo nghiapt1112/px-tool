@@ -1,6 +1,6 @@
 package com.px.tool.domain.cntp;
 
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;

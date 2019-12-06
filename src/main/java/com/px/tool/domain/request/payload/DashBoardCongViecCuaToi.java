@@ -4,7 +4,7 @@ import com.px.tool.domain.RequestType;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;

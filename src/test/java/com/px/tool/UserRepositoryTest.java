@@ -3,7 +3,7 @@ package com.px.tool;
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
-import com.px.tool.domain.user.UserRequest;
+import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;

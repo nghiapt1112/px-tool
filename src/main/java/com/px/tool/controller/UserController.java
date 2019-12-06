@@ -1,12 +1,12 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.user.PhongBanPayload;
+import com.px.tool.domain.user.payload.PhongBanPayload;
 import com.px.tool.domain.user.User;
-import com.px.tool.domain.user.UserPayload;
+import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.repository.PhongBanRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.domain.user.UserRequest;
+import com.px.tool.domain.user.payload.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +35,14 @@ public class UserController extends BaseController {
         return userService.findUsers();
     }
 
+    /**
+     * Update user Info
+     * @param user
+     * @return
+     */
+    @Deprecated
     @PostMapping
-    public User createUser(@RequestBody UserRequest user) {
+    public User save(@RequestBody UserRequest user) {
         return this.userService.create(user);
     }
 
@@ -57,5 +63,11 @@ public class UserController extends BaseController {
     public UserPayload getUserInfo(HttpServletRequest httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
         return UserPayload.fromEntity(this.userService.findById(userId));
+    }
+
+
+    @PostMapping("/tao-user")
+    public void createUser(UserRequest userRequest) {
+        userService.taoUser(userRequest);
     }
 }

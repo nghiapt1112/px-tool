@@ -4,7 +4,7 @@ import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

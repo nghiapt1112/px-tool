@@ -2,13 +2,12 @@ package com.px.tool.domain.dathang;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

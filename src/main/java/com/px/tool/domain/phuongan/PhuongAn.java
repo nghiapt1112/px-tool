@@ -3,7 +3,7 @@ package com.px.tool.domain.phuongan;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
-import com.px.tool.infrastructure.model.request.EntityDefault;
+import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +20,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 

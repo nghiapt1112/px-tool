@@ -1,7 +1,7 @@
-package com.px.tool.domain.user;
+package com.px.tool.domain.user.payload;
 
 import com.px.tool.domain.RequestType;
-import com.px.tool.infrastructure.model.request.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

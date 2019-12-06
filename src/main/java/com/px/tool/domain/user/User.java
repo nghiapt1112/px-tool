@@ -1,6 +1,6 @@
 package com.px.tool.domain.user;
 
-import com.px.tool.infrastructure.model.request.EntityDefault;
+import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

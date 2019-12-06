@@ -5,7 +5,7 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.NotificationPayload;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
-import com.px.tool.domain.user.NoiNhanRequestParams;
+import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;

@@ -9,10 +9,10 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
-import com.px.tool.domain.user.NoiNhanRequestParams;
+import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
-import com.px.tool.domain.user.UserRequest;
+import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
@@ -311,5 +311,26 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .collect(Collectors.toMap(User::getUserId, Function.identity()));
     }
+
+
+    @Override
+    @Transactional
+    public void taoUser(UserRequest user) {
+        Role role = roleRepository
+                .findById(Long.valueOf(user.getLevel()))
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        if (user.getUserId() != null) {
+            userRepository.updateUserInfo(user.getFullName(), user.getImgBase64(), user.getUserId());
+            user.toUserEntity();
+        }
+        User entity = user.toUserEntity();
+        if (user.getUserId() == null) {
+            entity.setPassword(passwordEncoder.encode(user.getPassword()));
+            entity.setAuthorities(Sets.newHashSet(role));
+        }
+        userRepository.save(entity);
+    }
+
 
 }

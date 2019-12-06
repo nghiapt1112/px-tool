@@ -1,4 +1,4 @@
-package com.px.tool.infrastructure.model.request;
+package com.px.tool.infrastructure.model.payload;
 
 import com.px.tool.infrastructure.utils.JsonUtils;
 

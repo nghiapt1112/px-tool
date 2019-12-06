@@ -1,7 +1,7 @@
 package com.px.tool.domain.vanbanden;
 
 import com.px.tool.domain.RequestType;
-import com.px.tool.infrastructure.model.request.EntityDefault;
+import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
