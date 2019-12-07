@@ -3,6 +3,7 @@ package com.px.tool.infrastructure.security;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.AuthServiceImpl;
+import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            PXLogger.info("General request filter.");
             String token = RequestUtils.extractRequestToken(request);
             if (token != null && token.length() > 0 && authService.validateToken(token)) {
                 Long userId = authService.getUserIdFromJWT(token);

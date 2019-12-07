@@ -1,13 +1,17 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.user.payload.PhongBanPayload;
+import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.payload.PhongBanPayload;
+import com.px.tool.domain.user.payload.RolePayLoad;
 import com.px.tool.domain.user.payload.UserPageRequest;
 import com.px.tool.domain.user.payload.UserPayload;
-import com.px.tool.domain.user.repository.PhongBanRepository;
-import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.BaseController;
 import com.px.tool.domain.user.payload.UserRequest;
+import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
+import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.user.service.impl.RoleServiceImpl;
+import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +37,12 @@ public class UserController extends BaseController {
     @Autowired
     private PhongBanRepository phongBanRepository;
 
+    @Autowired
+    private RoleServiceImpl roleService;
+
+    @Autowired
+    private PhongBanServiceImpl phongBanService;
+
     @GetMapping
     public List<UserPayload> findUsers(
             HttpServletRequest request,
@@ -43,6 +54,7 @@ public class UserController extends BaseController {
 
     /**
      * Update user Info
+     *
      * @param user
      * @return
      */
@@ -75,6 +87,20 @@ public class UserController extends BaseController {
     @PostMapping("/tao-user")
     public void createUser(UserRequest userRequest) {
         userService.taoUser(userRequest);
+    }
+
+    @GetMapping("/roles")
+    public List<RolePayLoad> findByAllRole() {
+        return roleService.findAll()
+                .values()
+                .stream()
+                .map(RolePayLoad::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/phongbans")
+    public Collection<PhongBan> findAllPhongBan() {
+        return phongBanService.findAll().values();
     }
 
 }

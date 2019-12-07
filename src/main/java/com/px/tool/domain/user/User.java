@@ -1,5 +1,6 @@
 package com.px.tool.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,16 +48,19 @@ public class User extends EntityDefault implements UserDetails {
     @Column
     private String fullName;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "phongBanId")
     private PhongBan phongBan;
 
+    @JsonManagedReference
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

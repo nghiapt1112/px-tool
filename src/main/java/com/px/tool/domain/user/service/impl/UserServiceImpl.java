@@ -15,7 +15,6 @@ import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.payload.UserPageRequest;
 import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
-import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
@@ -56,13 +55,16 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private RequestService requestService;
 
     @Autowired
     private PhuongAnService phuongAnService;
+
+    @Autowired
+    private RoleServiceImpl roleService;
+
+    @Autowired
+    private PhongBanServiceImpl phongBanService;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -81,9 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User create(UserRequest user) {
-        Role role = roleRepository
-                .findById(Long.valueOf(user.getLevel()))
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+        Role role = roleService.findById(Long.valueOf(user.getLevel()));
 
         if (user.getUserId() == null && userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email này đã tồn tại");
@@ -318,25 +318,17 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toMap(User::getUserId, Function.identity()));
     }
 
-
     @Override
     @Transactional
     public void taoUser(UserRequest user) {
-        Role role = roleRepository
-                .findById(Long.valueOf(user.getLevel()))
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+        Role role = roleService.findById(Long.valueOf(user.getLevel()));
 
-        if (user.getUserId() != null) {
-            userRepository.updateUserInfo(user.getFullName(), user.getImgBase64(), user.getUserId());
-            user.toUserEntity();
-        }
         User entity = user.toUserEntity();
-        if (user.getUserId() == null) {
-            entity.setPassword(passwordEncoder.encode(user.getPassword()));
-            entity.setAuthorities(Sets.newHashSet(role));
-        }
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        entity.setAuthorities(Sets.newHashSet(role));
+        entity.setPhongBan(phongBanService.findById(user.getPhongBanId()));
+
         userRepository.save(entity);
     }
-
 
 }

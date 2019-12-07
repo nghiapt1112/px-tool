@@ -1,5 +1,6 @@
 package com.px.tool.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Role extends AbstractObject implements GrantedAuthority {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "authorities")
+    @JsonBackReference
     private Set<User> users;
 
     public Role() {

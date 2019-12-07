@@ -1,5 +1,6 @@
 package com.px.tool.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class PhongBan extends EntityDefault {
     @Column
     private Integer group;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "phongBan", cascade = CascadeType.ALL)
     private Set<User> users;
 }
