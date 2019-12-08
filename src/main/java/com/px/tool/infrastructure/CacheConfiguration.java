@@ -11,7 +11,8 @@ public class CacheConfiguration {
 
     public static final String CACHE_ROLE = "roles_cache";
     public static final String CACHE_PHONG_BAN = "phong_ban_cache";
-    public static final String CACHE_USER = "users_cache";
+    public static final String CACHE_USER = "users_all_cache";
+    public static final String CACHE_USER_BY_ID = "users_by_id_cache";
     @Autowired
     private CacheManager cacheManager;
 

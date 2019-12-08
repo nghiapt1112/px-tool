@@ -2,7 +2,8 @@ package com.px.tool.domain.kiemhong;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -10,11 +11,12 @@ import org.springframework.beans.BeanUtils;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class KiemHongPayLoad extends AbstractObject {
+public class KiemHongPayLoad extends AbstractPayLoad {
     private Long requestId;
     private Long khId;
     private String tenNhaMay;
@@ -158,6 +160,26 @@ public class KiemHongPayLoad extends AbstractObject {
             troLyId = user.getUserId();
         } else if (user.isToTruong() & toTruongXacNhan) {
             toTruongId = user.getUserId();
+        }
+    }
+
+    @Override
+    public void processSignImgAndFullName(Map<Long, User> userById) {
+        try {
+            if (this.getQuanDocXacNhan()) {
+                this.setQuanDocfullName(userById.get(this.getQuanDocId()).getFullName());
+                this.setQuanDocSignImg(userById.get(this.getQuanDocId()).getSignImg());
+            }
+            if (this.getTroLyKTXacNhan()) {
+                this.setTroLyfullName(userById.get(this.getTroLyId()).getFullName());
+                this.setTroLyKTSignImg(userById.get(this.getTroLyId()).getSignImg());
+            }
+            if (this.getToTruongXacNhan()) {
+                this.setToTruongfullName(userById.get(this.getToTruongId()).getFullName());
+                this.setToTruongSignImg(userById.get(this.getToTruongId()).getSignImg());
+            }
+        } catch (Exception e) {
+            PXLogger.error("[KiemHong] Parse chữ ký và full name bị lỗi.");
         }
     }
 }

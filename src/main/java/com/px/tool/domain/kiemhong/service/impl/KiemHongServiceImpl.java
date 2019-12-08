@@ -77,35 +77,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 .fromEntity(request.getKiemHong())
                 .andRequestId(request.getRequestId())
                 .filterPermission(userService.findById(userId));
-        List<Long> signedIds = new ArrayList<>(3);
-        if (payload.getQuanDocXacNhan()) {
-            signedIds.add(payload.getQuanDocId());
-        }
-        if (payload.getTroLyKTXacNhan()) {
-            signedIds.add(payload.getTroLyId());
-        }
-        if (payload.getToTruongXacNhan()) {
-            signedIds.add(payload.getToTruongId());
-        }
-
-        if (CollectionUtils.isEmpty(signedIds)) {
-            return payload;
-        }
-        for (User user : userService.findByIds(signedIds)) {
-            if (payload.getQuanDocXacNhan() && user.getUserId().equals(payload.getQuanDocId())) {
-                payload.setQuanDocfullName(user.getFullName());
-                payload.setQuanDocSignImg(user.getSignImg());
-            }
-            if (payload.getTroLyKTXacNhan() && user.getUserId().equals(payload.getTroLyId())) {
-                payload.setTroLyfullName(user.getFullName());
-                payload.setTroLyKTSignImg(user.getSignImg());
-            }
-            if (payload.getToTruongXacNhan() && user.getUserId().equals(payload.getToTruongId())) {
-                payload.setToTruongfullName(user.getFullName());
-                payload.setToTruongSignImg(user.getSignImg());
-            }
-        }
-
+        payload.processSignImgAndFullName(userService.userById());
         return payload;
     }
 

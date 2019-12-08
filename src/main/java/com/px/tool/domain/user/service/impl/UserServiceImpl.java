@@ -17,8 +17,10 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.CacheConfiguration;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -72,8 +74,14 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + username));
     }
 
+    @Cacheable(value = CacheConfiguration.CACHE_USER)
     @Override
-    public List<UserPayload> findUsers(Long userId, UserPageRequest request) {
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserPayload> findUsers(UserPageRequest request) {
         Page<User> page = userRepository.findAll(request.toPageRequest());
         return page.stream()
                 .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
@@ -117,8 +125,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new PXException("Không tìm thấy User với Id = " + userId));
+        if (userById().containsKey(userId)) {
+            return userById().get(userId);
+        } else {
+            throw new PXException("Không tìm thấy User với Id = " + userId);
+        }
     }
 
     @Override
@@ -311,9 +322,10 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = CacheConfiguration.CACHE_USER_BY_ID)
     @Override
     public Map<Long, User> userById() {
-        return userRepository.findAll()
+        return this.findAll()
                 .stream()
                 .collect(Collectors.toMap(User::getUserId, Function.identity()));
     }

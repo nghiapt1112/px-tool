@@ -2,7 +2,8 @@ package com.px.tool.domain.phuongan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -12,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PhuongAnPayload extends AbstractObject {
+public class PhuongAnPayload extends AbstractPayLoad {
     private Long paId;
     private Long requestId;
     private String tenNhaMay;
@@ -225,5 +227,34 @@ public class PhuongAnPayload extends AbstractObject {
 
     public Boolean getNguoiLapXacNhan() {
         return nguoiLapXacNhan == null ? false : nguoiLapXacNhan;
+    }
+
+    @Override
+    public void processSignImgAndFullName(Map<Long, User> userById) {
+        try {
+            if (this.getGiamDocXacNhan()) {
+                this.setGiamDocSignImg(userById.get(this.getGiamDocId()).getSignImg());
+                this.setGiamDocFullName(userById.get(this.getGiamDocId()).getFullName());
+            }
+            if (this.getTruongPhongKTHKXacNhan()) {
+                this.setTruongPhongKTHKSignImg(userById.get(this.getTruongPhongKTHKId()).getSignImg());
+                this.setTruongPhongKTHKFullName(userById.get(this.getTruongPhongKTHKId()).getFullName());
+            }
+            if (this.getTruongPhongKeHoachXacNhan()) {
+                this.setTruongPhongKeHoachSignImg(userById.get(this.getTruongPhongKeHoachId()).getSignImg());
+                this.setTruongPhongKeHoachFullName(userById.get(this.getTruongPhongKeHoachId()).getFullName());
+            }
+            if (this.getTruongPhongVatTuXacNhan()) {
+                this.setTruongPhongVatTuSignImg(userById.get(this.getTruongPhongVatTuId()).getSignImg());
+                this.setTruongPhongVatTuFullName(userById.get(this.getTruongPhongVatTuId()).getFullName());
+            }
+            if (this.getNguoiLapXacNhan()) {
+                this.setNguoiLapSignImg(userById.get(this.getNguoiLapId()).getSignImg());
+                this.setNguoiLapFullName(userById.get(this.getNguoiLapId()).getFullName());
+            }
+        } catch (Exception e) {
+            PXLogger.error("[PHUONG_AN] Parse chữ ký và full name bị lỗi.");
+        }
+
     }
 }

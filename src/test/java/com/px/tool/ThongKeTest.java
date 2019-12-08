@@ -2,8 +2,8 @@ package com.px.tool;
 
 import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.payload.PageThongKePayload;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageResponse;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.impl.RequestServiceImpl;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ThongKeTest extends PxApplicationTests{
     }
     @Test
     public void hi() {
-        ThongKeRequest request = new ThongKeRequest();
+        ThongKePageRequest request = new ThongKePageRequest();
         request.setPage(1);
         request.setSize(10);
         Pageable pageRequest = PageRequest.of(1,10);
@@ -40,7 +40,7 @@ public class ThongKeTest extends PxApplicationTests{
 
     @Test
     public void thongKe() {
-        PageThongKePayload data = requestService.collectDataThongKe(null);
+        ThongKePageResponse data = requestService.collectDataThongKe(null);
         System.out.println();
     }
 }

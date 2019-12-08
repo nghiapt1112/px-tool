@@ -2,20 +2,21 @@ package com.px.tool.domain.dathang;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PhieuDatHangPayload extends AbstractObject {
+public class PhieuDatHangPayload extends AbstractPayLoad {
     private Long requestId;
     private Long pdhId;
     private String tenNhaMay;
@@ -103,12 +104,6 @@ public class PhieuDatHangPayload extends AbstractObject {
         return pdhId != null && pdhId <= 0;
     }
 
-    public Set<Long> getDetailIds() {
-        return phieuDatHangDetails.stream()
-                .map(PhieuDatHangDetailPayload::getPdhDetailId)
-                .collect(Collectors.toSet());
-    }
-
     public PhieuDatHangPayload filterPermission(User currentUser) {
         nguoiDatHangDisable = true;
         tpkthkDisable = true;
@@ -146,5 +141,25 @@ public class PhieuDatHangPayload extends AbstractObject {
 
     public Boolean getNguoiDatHangXacNhan() {
         return nguoiDatHangXacNhan == null ? false : nguoiDatHangXacNhan;
+    }
+
+    @Override
+    public void processSignImgAndFullName(Map<Long, User> userById) {
+        try {
+            if (this.getNguoiDatHangXacNhan()) {
+                this.setNguoiDatHangFullName(userById.get(this.getNguoiDatHangId()).getFullName());
+                this.setNguoiDatHangSignImg(userById.get(this.getNguoiDatHangId()).getSignImg());
+            }
+            if (this.getTpkthkXacNhan()) {
+                this.setTpkthkFullName(userById.get(this.getTpkthkId()).getFullName());
+                this.setTpkthkSignImg(userById.get(this.getTpkthkId()).getSignImg());
+            }
+            if (this.getTpvatTuXacNhan()) {
+                this.setTpvatTuFullName(userById.get(this.getTpvatTuId()).getFullName());
+                this.setTpvatTuSignImg(userById.get(this.getTpvatTuId()).getSignImg());
+            }
+        } catch (Exception e) {
+            PXLogger.error("[DAT_HANG] Parse chữ ký và full name bị lỗi.");
+        }
     }
 }

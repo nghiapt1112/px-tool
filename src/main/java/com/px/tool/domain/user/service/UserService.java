@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService extends UserDetailsService {
-    List<UserPayload> findUsers(Long userId, UserPageRequest request);
+    List<User> findAll();
+
+    List<UserPayload> findUsers(UserPageRequest request);
 
     void taoUser(UserRequest userRequest);
 

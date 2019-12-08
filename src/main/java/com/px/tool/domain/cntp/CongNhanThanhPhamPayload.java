@@ -2,19 +2,21 @@ package com.px.tool.domain.cntp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
-import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class CongNhanThanhPhamPayload extends AbstractObject {
+public class CongNhanThanhPhamPayload extends AbstractPayLoad {
     private Long tpId; // thanh pham id
     private Long requestId;
 
@@ -151,5 +153,25 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
 
     public Boolean getTpkcsXacNhan() {
         return tpkcsXacNhan == null ? false : tpkcsXacNhan;
+    }
+
+    @Override
+    public void processSignImgAndFullName(Map<Long, User> userById) {
+        try {
+            if (this.getTpkcsXacNhan()) {
+                this.setTpkcsFullName(userById.get(this.getTpkcsId()).getFullName());
+                this.setTpkcsSignImg(userById.get(this.getTpkcsId()).getSignImg());
+            }
+            if (this.getNguoiThucHienXacNhan()) {
+                this.setNguoiThucHienFullName(userById.get(this.getNguoiThucHienId()).getFullName());
+                this.setNguoiThucHienSignImg(userById.get(this.getNguoiThucHienId()).getSignImg());
+            }
+            if (this.getNguoiGiaoViecXacNhan()) {
+                this.setNguoiGiaoViecFullName(userById.get(this.getNguoiGiaoViecId()).getFullName());
+                this.setNguoiGiaoViecSignImg(userById.get(this.getNguoiGiaoViecId()).getSignImg());
+            }
+        } catch (Exception e) {
+            PXLogger.error("[CNTP] Parse chữ ký và full name bị lỗi.");
+        }
     }
 }

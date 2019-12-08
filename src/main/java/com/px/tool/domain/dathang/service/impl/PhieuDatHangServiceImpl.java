@@ -52,39 +52,12 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     @Override
     public PhieuDatHangPayload findById(Long userId, Long id) {
         Request request = requestService.findById(id);
+
         PhieuDatHangPayload payload = PhieuDatHangPayload
                 .fromEntity(request.getPhieuDatHang())
                 .filterPermission(userService.findById(userId));
-        ;
         payload.setRequestId(request.getRequestId());
-
-        List<Long> signedIds = new ArrayList<>(3);
-        if (payload.getNguoiDatHangXacNhan()) {
-            signedIds.add(payload.getNguoiDatHangId());
-        }
-        if (payload.getTpkthkXacNhan()) {
-            signedIds.add(payload.getTpkthkId());
-        }
-        if (payload.getTpvatTuXacNhan()) {
-            signedIds.add(payload.getTpvatTuId());
-        }
-        if (CollectionUtils.isEmpty(signedIds)) {
-            return payload;
-        }
-        for (User user : userService.findByIds(signedIds)) {
-            if (payload.getNguoiDatHangXacNhan() && user.getUserId().equals(payload.getNguoiDatHangId())) {
-                payload.setNguoiDatHangFullName(user.getFullName());
-                payload.setNguoiDatHangSignImg(user.getSignImg());
-            }
-            if (payload.getTpkthkXacNhan() && user.getUserId().equals(payload.getTpkthkId())) {
-                payload.setTpkthkFullName(user.getFullName());
-                payload.setTpkthkSignImg(user.getSignImg());
-            }
-            if (payload.getTpvatTuXacNhan() && user.getUserId().equals(payload.getTpvatTuId())) {
-                payload.setTpvatTuFullName(user.getFullName());
-                payload.setTpvatTuSignImg(user.getSignImg());
-            }
-        }
+        payload.processSignImgAndFullName(userService.userById());
         return payload;
     }
 
@@ -146,17 +119,14 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             throw new PXException("Phải có người xác nhận");
         }
         if (user.isNhanVienVatTu()) {
-//            throw new PXException("Người giao hàng xác nhận ở người giao hàng");
             requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
             requestPhieuDH.setTpvatTuXacNhan(existedPDH.getTpvatTuXacNhan());
         }
         if (user.isTruongPhongVatTu()) {
-//            throw new PXException("Trưởng phòng vật tư xác nhận ở trưởng phòng vật tư");
             requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
             requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
         }
         if (user.isTruongPhongKTHK()) {
-//            throw new PXException("Trưởng phòng KTHK xác nhận ở trưởng phòng KTHK");
             requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getTpkthkXacNhan());
             requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
         }
