@@ -5,6 +5,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.PhongBanPayload;
 import com.px.tool.domain.user.payload.RolePayLoad;
 import com.px.tool.domain.user.payload.UserPageRequest;
+import com.px.tool.domain.user.payload.UserPageResponse;
 import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.PhongBanRepository;
@@ -44,12 +45,14 @@ public class UserController extends BaseController {
     private PhongBanServiceImpl phongBanService;
 
     @GetMapping
-    public List<UserPayload> findUsers(
+    public UserPageResponse findUsers(
             HttpServletRequest request,
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
-        return userService.findUsers(new UserPageRequest(page, size));
+        UserPageResponse usersPage = new UserPageResponse(page, size);
+        usersPage.setDetails(userService.findUsers(new UserPageRequest(page, size)));
+        return usersPage;
     }
 
     /**

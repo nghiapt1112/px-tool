@@ -1,3 +1,18 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 50727
+ Source Host           : localhost:3306
+ Source Schema         : px_tool4
+
+ Target Server Type    : MySQL
+ Target Server Version : 50727
+ File Encoding         : 65001
+
+ Date: 08/12/2019 22:49:49
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -133,22 +148,22 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
-INSERT INTO `hibernate_sequence` VALUES (342);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
+INSERT INTO `hibernate_sequence` VALUES (350);
 
 -- ----------------------------
 -- Table structure for kiem_hong
@@ -195,9 +210,10 @@ CREATE TABLE `kiem_hong`  (
 -- ----------------------------
 -- Records of kiem_hong
 -- ----------------------------
-INSERT INTO `kiem_hong` VALUES (2, NULL, NULL, b'0', '2019-12-01 04:07:30', NULL, 'Công đoạn:	', b'0', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 'Nguồn vào:	', 51, 17, NULL, 17, b'1', 'Số hiệu:	', '2', 'Số XX:	', NULL, 'Máy bay Iak-52', 56, '1', NULL, 56, b'1', 36, NULL, b'1', NULL, NULL, NULL, NULL);
-INSERT INTO `kiem_hong` VALUES (105, NULL, NULL, b'0', '2019-12-01 06:58:10', NULL, 'Kiểm hỏng', b'0', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 'SCL', 51, 18, NULL, 18, b'1', '8717', '2', NULL, NULL, 'Máy bay L-39', 58, '1', NULL, 58, b'1', 30, NULL, b'1', NULL, 'KHông đồn gý', NULL, NULL);
-INSERT INTO `kiem_hong` VALUES (335, NULL, NULL, b'0', '2019-12-08 10:51:06', NULL, 'Công đoạn:	', b'0', 'Ngày 8 Tháng 11 Năm 2019', 'Ngày 8 Tháng 11 Năm 2019', 'Ngày 8 Tháng 11 Năm 2019', 'Nguồn vào', 51, 17, NULL, 18, b'1', 'Số hiệu:	', 'Số tờ:	', 'Số XX:	', NULL, 'Máy bay L-39', 56, 'Tờ số:	', NULL, 56, b'1', 36, NULL, b'1', NULL, NULL, NULL, NULL);
+INSERT INTO `kiem_hong` VALUES (2, NULL, NULL, b'0', '2019-12-01 04:07:30', NULL, 'Công đoạn:	', b'0', '1575816533864', '1575816533864', '1575816533864', 'Nguồn vào:	', 51, 17, NULL, 17, b'1', 'Số hiệu:	', '2', 'Số XX:	', NULL, 'Máy bay Iak-52', 56, '1', NULL, 56, b'1', 36, NULL, b'1', NULL, NULL, NULL, NULL);
+INSERT INTO `kiem_hong` VALUES (105, NULL, NULL, b'0', '2019-12-01 06:58:10', NULL, 'Kiểm hỏng', b'0', '1575816533864', '1575816533864', '1575816533864', 'SCL', 51, 18, NULL, 18, b'1', '8717', '2', NULL, NULL, 'Máy bay L-39', 58, '1', NULL, 58, b'1', 30, NULL, b'1', NULL, 'KHông đồn gý', NULL, NULL);
+INSERT INTO `kiem_hong` VALUES (335, NULL, NULL, b'0', '2019-12-08 10:51:06', NULL, 'Công đoạn:	', b'0', '1575816533864', '1575816533864', '1575816533864', 'Nguồn vào', 51, 17, NULL, 18, b'1', 'Số hiệu:	', 'Số tờ:	', 'Số XX:	', NULL, 'Máy bay L-39', 56, 'Tờ số:	', NULL, 56, b'1', 36, NULL, b'1', NULL, NULL, NULL, NULL);
+INSERT INTO `kiem_hong` VALUES (343, NULL, NULL, b'0', '2019-12-08 14:48:54', NULL, 'Công đoạn:	', b'0', '1575816533864', '1575816533864', '1575816533864', 'Nguồn vào:	', 51, 17, NULL, 17, b'1', 'Số hiệu:	', NULL, NULL, NULL, 'Máy bay L-39', 56, NULL, NULL, 56, b'1', 36, NULL, b'1', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for kiem_hong_detail
@@ -239,6 +255,7 @@ INSERT INTO `kiem_hong_detail` VALUES (106, 'gãy', 'Cái', '2', 'A', 'vật tư
 INSERT INTO `kiem_hong_detail` VALUES (107, 'dứt', 'Cái', '1', 'B', 'vật tư', '1', 'Ống', 'Càng', NULL, 105, 132);
 INSERT INTO `kiem_hong_detail` VALUES (108, 'gãy', 'Cái', '3', 'C', 'vật tư', '3', 'Ống 32', 'Càng 3', NULL, 105, 132);
 INSERT INTO `kiem_hong_detail` VALUES (336, 'Dạng hư hỏng	', 'Đơn vị tính	', 'Ký hiệu	', 'Người kiểm hỏng', 'Phương pháp khắc phục	', '1', 'Tên linh kiện, chi tiết kiểm hỏng	', 'Tên phụ kiện	', NULL, 335, NULL);
+INSERT INTO `kiem_hong_detail` VALUES (345, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Tên phụ kiện	', NULL, 343, NULL);
 
 -- ----------------------------
 -- Table structure for muc_dic_su_dung
@@ -320,9 +337,10 @@ CREATE TABLE `phieu_dat_hang`  (
 -- ----------------------------
 -- Records of phieu_dat_hang
 -- ----------------------------
-INSERT INTO `phieu_dat_hang` VALUES (14, NULL, NULL, b'0', '2019-12-01 04:18:01', NULL, 'Ngày 1 Tháng 11 Năm 2019', NULL, NULL, 'Tổ sơn', NULL, 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 51, b'1', 'Nguồn vào:	 Máy bay Iak-52 Số hiệu:	 Số XX:	', 37, 'PX1', NULL, NULL, NULL, 8, b'1', 12, b'1', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `phieu_dat_hang` VALUES (109, NULL, NULL, b'0', '2019-12-01 07:08:57', NULL, 'Ngày 1 Tháng 11 Năm 2019', NULL, NULL, 'Tổ thủy lực càng', NULL, 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 51, b'1', 'SCL Máy bay L-39 8717', NULL, 'PX2', '11-Sửa vt', NULL, NULL, 8, b'1', 12, b'1', NULL, NULL, '', 'ss', 30);
-INSERT INTO `phieu_dat_hang` VALUES (337, '2019-12-08 10:48:53', NULL, b'0', '2019-12-08 10:51:06', NULL, NULL, NULL, NULL, 'Tổ sơn', NULL, NULL, NULL, NULL, NULL, 'Nguồn vào Máy bay L-39 Số hiệu:	 Số XX:	', NULL, 'PX1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `phieu_dat_hang` VALUES (14, NULL, NULL, b'0', '2019-12-01 04:18:01', NULL, NULL, NULL, NULL, 'Tổ sơn', '1575816533864', '1575816533864', '1575816533864', 51, b'1', 'Nguồn vào:	 Máy bay Iak-52 Số hiệu:	 Số XX:	', 37, 'PX1', NULL, NULL, NULL, 8, b'1', 12, b'1', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `phieu_dat_hang` VALUES (109, NULL, NULL, b'0', '2019-12-01 07:08:57', NULL, NULL, NULL, NULL, 'Tổ thủy lực càng', '1575816533864', '1575816533864', '1575816533864', 51, b'1', 'SCL Máy bay L-39 8717', NULL, 'PX2', '11-Sửa vt', NULL, NULL, 8, b'1', 12, b'1', NULL, NULL, '', 'ss', 30);
+INSERT INTO `phieu_dat_hang` VALUES (337, '2019-12-08 10:48:53', NULL, b'0', '2019-12-08 10:51:06', NULL, NULL, NULL, NULL, 'Tổ sơn', '1575816533864', '1575816533864', '1575816533864', NULL, NULL, 'Nguồn vào Máy bay L-39 Số hiệu:	 Số XX:	', NULL, 'PX1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `phieu_dat_hang` VALUES (344, '2019-12-08 14:26:12', NULL, b'0', '2019-12-08 14:48:54', NULL, NULL, NULL, NULL, 'Tổ sơn', NULL, NULL, NULL, NULL, NULL, 'Nguồn vào:	 Máy bay L-39 Số hiệu:	 null', NULL, 'PX1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for phieu_dat_hang_detail
@@ -365,6 +383,7 @@ INSERT INTO `phieu_dat_hang_detail` VALUES (129, 'Cái', '3', NULL, 116, NULL, '
 INSERT INTO `phieu_dat_hang_detail` VALUES (130, 'Cái', '2', NULL, 116, NULL, 'vật tư', '2', NULL, NULL, 'Càng 2', 'Ống 2', 109);
 INSERT INTO `phieu_dat_hang_detail` VALUES (131, 'Cái', '1', NULL, 116, 'Dũng', 'vật tư', '1', NULL, NULL, 'Càng', 'Ống', 109);
 INSERT INTO `phieu_dat_hang_detail` VALUES (338, 'Cái', 'Ký hiệu	', 336, NULL, NULL, 'Phương pháp khắc phục	', '1', NULL, NULL, 'Tên phụ kiện	', 'Tên linh kiện, chi tiết kiểm hỏng	', 337);
+INSERT INTO `phieu_dat_hang_detail` VALUES (346, 'Cái', NULL, 345, NULL, NULL, NULL, NULL, NULL, NULL, 'Tên phụ kiện	', NULL, 344);
 
 -- ----------------------------
 -- Table structure for phong_ban
@@ -477,9 +496,9 @@ CREATE TABLE `phuong_an`  (
 -- ----------------------------
 -- Records of phuong_an
 -- ----------------------------
-INSERT INTO `phuong_an` VALUES (101, '2019-12-01 05:02:41', NULL, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `phuong_an` VALUES (102, NULL, NULL, b'0', '2019-12-01 06:34:41', NULL, NULL, NULL, NULL, b'0', 'Mã số:	', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', NULL, NULL, NULL, NULL, NULL, b'0', NULL, NULL, 'Sản phẩm (công việc):	', NULL, NULL, 123.00, NULL, NULL, 0.00, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 37, NULL, NULL, NULL);
-INSERT INTO `phuong_an` VALUES (132, NULL, NULL, b'0', '2019-12-01 08:36:07', NULL, NULL, '109', NULL, b'1', 'C11273', 'Ngày 1 Tháng 11 Năm 2019', NULL, NULL, 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 'Ngày 1 Tháng 11 Năm 2019', 30, b'1', 'VTKT', 'Sửa', 'Sửa ốngS', '2', NULL, NULL, '1', NULL, 0.00, 0.00, NULL, 8, b'1', NULL, 14, b'1', NULL, 12, b'1', NULL, NULL, NULL, NULL, NULL, NULL, 17, NULL, NULL, 'asdasd', '2,3');
+INSERT INTO `phuong_an` VALUES (101, '2019-12-01 05:02:41', NULL, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `phuong_an` VALUES (102, NULL, NULL, b'0', '2019-12-01 06:34:41', NULL, NULL, NULL, NULL, b'0', 'Mã số:	', '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', NULL, b'0', NULL, NULL, 'Sản phẩm (công việc):	', NULL, NULL, 123.00, NULL, NULL, 0.00, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 37, NULL, NULL, NULL);
+INSERT INTO `phuong_an` VALUES (132, NULL, NULL, b'0', '2019-12-01 08:36:07', NULL, NULL, '109', NULL, b'1', 'C11273', '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', '1575816533864', 30, b'1', 'VTKT', 'Sửa', 'Sửa ốngS', '2', NULL, NULL, '1', NULL, 0.00, 0.00, NULL, 8, b'1', NULL, 14, b'1', NULL, 12, b'1', NULL, NULL, NULL, NULL, NULL, NULL, 17, NULL, NULL, 'asdasd', '2,3');
 
 -- ----------------------------
 -- Table structure for request
@@ -512,6 +531,7 @@ CREATE TABLE `request`  (
 INSERT INTO `request` VALUES (1, '2019-12-01 04:06:25', 56, b'0', '2019-12-01 04:07:30', NULL, NULL, NULL, 37, NULL, 1, 2, 14);
 INSERT INTO `request` VALUES (104, '2019-12-01 06:51:40', 58, b'0', '2019-12-01 06:58:10', NULL, NULL, NULL, NULL, NULL, 1, 105, 109);
 INSERT INTO `request` VALUES (334, '2019-12-08 10:48:53', 56, b'0', '2019-12-08 10:51:06', NULL, NULL, NULL, 51, NULL, 1, 335, 337);
+INSERT INTO `request` VALUES (342, '2019-12-08 14:26:12', 56, b'0', '2019-12-08 14:48:54', NULL, NULL, NULL, 51, NULL, 1, 343, 344);
 
 -- ----------------------------
 -- Table structure for role
@@ -813,5 +833,8 @@ INSERT INTO `van_ban_den` VALUES (331, '2019-12-01 09:28:54', 2, b'0', NULL, NUL
 INSERT INTO `van_ban_den` VALUES (339, '2019-12-08 10:51:06', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 8, b'0', 0, NULL);
 INSERT INTO `van_ban_den` VALUES (340, '2019-12-08 10:51:06', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 9, b'0', 0, NULL);
 INSERT INTO `van_ban_den` VALUES (341, '2019-12-08 10:51:06', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 12, b'0', 0, NULL);
+INSERT INTO `van_ban_den` VALUES (347, '2019-12-08 14:48:54', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 8, b'0', 0, NULL);
+INSERT INTO `van_ban_den` VALUES (348, '2019-12-08 14:48:54', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 9, b'0', 0, NULL);
+INSERT INTO `van_ban_den` VALUES (349, '2019-12-08 14:48:54', NULL, b'0', NULL, NULL, 'Bạn đang có một yêu cầu Kiểm Hỏng Ngày 8 Tháng 11 Năm 2019', 12, b'0', 0, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

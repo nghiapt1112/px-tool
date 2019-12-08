@@ -75,7 +75,7 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.requestId = 0L;
             try {
                 tk.requestId = phuongAnById.get(detail.getPaId()).getPaId();
-                tk.soPA = "PA" + phuongAnById.get(detail.getPaId()).getPaId();
+                tk.soPA = "PA-" + phuongAnById.get(detail.getPaId()).getPaId();
                 tk.ngayRaPA = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
                 tk.ngayChuyenKH = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
                 tk.ngayPheDuyet = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());

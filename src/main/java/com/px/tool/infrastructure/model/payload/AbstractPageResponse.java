@@ -29,7 +29,9 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
         this.total = total;
     }
 
-    public abstract <E extends AbstractObject> E build();
+    public <E extends AbstractObject> E build() {
+        return (E) this;
+    }
 
     public void setDetails(List<O> details) {
         this.details = details;
