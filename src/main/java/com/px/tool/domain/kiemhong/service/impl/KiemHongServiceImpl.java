@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -158,8 +159,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
         capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
-        validateXacNhan(user, requestKiemHong, existedKiemHong);
-        cleanKiemHongDetails(requestKiemHong, existedKiemHong);
+//        validateXacNhan(user, requestKiemHong, existedKiemHong);
+        cleanKiemHongDetails(kiemHongPayLoad, existedKiemHong);
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
 
@@ -201,27 +202,27 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(User user, KiemHong requestKiemHong, KiemHong existedKiemHong) {
-//        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
-//            throw new PXException("noi_nhan.must_choose");
+//    private void validateXacNhan(User user, KiemHong requestKiemHong, KiemHong existedKiemHong) {
+////        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
+////            throw new PXException("noi_nhan.must_choose");
+////        }
+////        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
+////            throw new PXException("Phải có người xác nhận");
+////        }
+//        if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+//            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
+//            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
 //        }
-//        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
-//            throw new PXException("Phải có người xác nhận");
+//        if (user.isTroLyKT() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
+//            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
+//            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
 //        }
-        if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
-        }
-        if (user.isTroLyKT() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
-            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
-        }
-        if (user.isQuanDocPhanXuong() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
-            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
-        }
-
-    }
+//        if (user.isQuanDocPhanXuong() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
+//            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
+//            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
+//        }
+//
+//    }
 
     /**
      * khi co xac nhan thi cap nhat ngay thang
@@ -270,29 +271,18 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         return kiemHongRepository.existsById(id);
     }
 
-    public void cleanKiemHongDetails(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+    public void cleanKiemHongDetails(KiemHongPayLoad payload, KiemHong existedKiemHong) {
         try {
-            if (Objects.isNull(existedKiemHong)) {
+            if (Objects.isNull(payload)) {
                 return;
             }
-            Set<Long> requestDetailIds = requestKiemHong.getKiemHongDetails()
-                    .stream()
-                    .map(el -> el.getKhDetailId())
-                    .collect(Collectors.toSet());
-
-            Set<Long> kiemHongDetailIds = existedKiemHong.getKiemHongDetails()
-                    .stream()
-                    .map(KiemHongDetail::getKhDetailId)
-                    .filter(el -> !requestDetailIds.contains(el))
-                    .collect(Collectors.toSet());
-
-            if (CollectionUtils.isEmpty(kiemHongDetailIds)) {
+            Collection<Long> deletedIds = payload.getDeletedIds(existedKiemHong);
+            if (CollectionUtils.isEmpty(deletedIds)) {
                 return;
             }
-            kiemHongDetailRepository.deleteAllByIds(kiemHongDetailIds);
+            kiemHongDetailRepository.deleteAllByIds(deletedIds);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Clean kiemhong detail khong thanh cong.");
+            throw new PXException("kiemhong.xoa_detail");
         }
     }
 }

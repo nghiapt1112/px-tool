@@ -12,6 +12,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 
@@ -84,7 +83,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
         capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
-        validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
+//        validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
 //            phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
@@ -95,7 +94,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             kiemHongReceiverId = null;
             cntpReceiverId = null;
         }
-        cleanOldDetailData(phieuDatHang, existedPhieuDatHang);
+        cleanOldDetailData(phieuDatHangPayload, existedPhieuDatHang);
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         phieuDatHangRepository.save(phieuDatHang);
 
@@ -110,27 +109,28 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(User user, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
+//    private void validateXacNhan(User user, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
+//
+//        if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan()) && !user.isTruongPhongKTHK() && requestPhieuDH.getNoiNhan() == null) {
+//            throw new PXException("noi_nhan.must_choose");
+//        }
+//        if (!requestPhieuDH.getNguoiDatHangXacNhan() && !requestPhieuDH.getTpvatTuXacNhan() && !requestPhieuDH.getTpkthkXacNhan()) {
+//            throw new PXException("Phải có người xác nhận");
+//        }
+//        if (user.isNhanVienVatTu()) {
+//            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
+//            requestPhieuDH.setTpvatTuXacNhan(existedPDH.getTpvatTuXacNhan());
+//        }
+//        if (user.isTruongPhongVatTu()) {
+//            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
+//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
+//        }
+//        if (user.isTruongPhongKTHK()) {
+//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getTpkthkXacNhan());
+//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
+//        }
+//    }
 
-        if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan()) && !user.isTruongPhongKTHK() && requestPhieuDH.getNoiNhan() == null) {
-            throw new PXException("noi_nhan.must_choose");
-        }
-        if (!requestPhieuDH.getNguoiDatHangXacNhan() && !requestPhieuDH.getTpvatTuXacNhan() && !requestPhieuDH.getTpkthkXacNhan()) {
-            throw new PXException("Phải có người xác nhận");
-        }
-        if (user.isNhanVienVatTu()) {
-            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
-            requestPhieuDH.setTpvatTuXacNhan(existedPDH.getTpvatTuXacNhan());
-        }
-        if (user.isTruongPhongVatTu()) {
-            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
-            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
-        }
-        if (user.isTruongPhongKTHK()) {
-            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getTpkthkXacNhan());
-            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
-        }
-    }
 
     /**
      * khi co xac nhan thi cap nhat ngay thang
@@ -147,27 +147,15 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         }
     }
 
-    private void cleanOldDetailData(PhieuDatHang requestPhieuDatHang, PhieuDatHang existedPhieuDatHang) {
+    private void cleanOldDetailData(PhieuDatHangPayload requestPhieuDatHang, PhieuDatHang existedPhieuDatHang) {
         try {
-            logger.info("Dang clean da ta cu cua phieu dat hang");
-            Set<Long> deleteIds = null;
-            if (existedPhieuDatHang != null) {
-                Set<Long> requestIds = requestPhieuDatHang.getPhieuDatHangDetails()
-                        .stream()
-                        .map(el -> el.getPdhDetailId())
-                        .collect(Collectors.toSet());
-                deleteIds = existedPhieuDatHang.getPhieuDatHangDetails()
-                        .stream()
-                        .map(detail -> detail.getPdhDetailId())
-                        .filter(el -> !requestIds.contains(el))
-                        .collect(Collectors.toSet());
-            }
+            PXLogger.info("Dang clean da ta cu cua phieu dat hang");
+            Collection<Long> deleteIds = requestPhieuDatHang.getDeletedIds(existedPhieuDatHang);
             if (!CollectionUtils.isEmpty(deleteIds)) {
                 phieuDatHangDetailRepository.deleteAllByIds(deleteIds);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Loi khi clean phieuDatHang Details");
+            throw new PXException("dathang.clean_error");
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mdsd")
-public class MucDicSuDungController extends BaseController {
+public class MucDichSuDungController extends BaseController {
 
     @Autowired
     private MucDichSuDungRepository mucDichSuDungRepository;

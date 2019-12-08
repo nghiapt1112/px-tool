@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -61,7 +62,7 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
         capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
-        cleanOldDetailData(congNhanThanhPham, existedCongNhanThanhPham);
+        cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
 //        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
@@ -76,28 +77,16 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         }
     }
 
-    private void cleanOldDetailData(CongNhanThanhPham requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
-        if (Objects.isNull(existedCongNhanThanhPham)) {
+    private void cleanOldDetailData(CongNhanThanhPhamPayload requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
+        if (Objects.isNull(requestCNTP)) {
             return;
         }
         try {
-
-            Set<Long> requestIds = requestCNTP.getNoiDungThucHiens()
-                    .stream()
-                    .map(NoiDungThucHien::getNoiDungId)
-                    .collect(Collectors.toSet());
-
-            Set<Long> ids = existedCongNhanThanhPham.getNoiDungThucHiens()
-                    .stream()
-                    .map(NoiDungThucHien::getNoiDungId)
-                    .filter(el -> !requestIds.contains(el))
-                    .collect(Collectors.toSet());
-
-            if (!CollectionUtils.isEmpty(ids)) {
-                noiDungThucHienRepository.deleteAllByIds(ids);
+            Collection<Long> deletedIds = requestCNTP.getDeletedIds(existedCongNhanThanhPham);
+            if (!CollectionUtils.isEmpty(deletedIds)) {
+                noiDungThucHienRepository.deleteAllByIds(deletedIds);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Co loi xay ra khi clean noi_dung_thuc_hien");
         }
     }

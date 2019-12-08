@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -256,5 +257,10 @@ public class PhuongAnPayload extends AbstractPayLoad {
             PXLogger.error("[PHUONG_AN] Parse chữ ký và full name bị lỗi.");
         }
 
+    }
+
+    @Override
+    public Collection<Long> getDeletedIds(Object o) {
+        return null;
     }
 }

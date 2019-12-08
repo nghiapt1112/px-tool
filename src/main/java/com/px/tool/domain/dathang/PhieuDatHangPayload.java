@@ -9,9 +9,12 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -161,5 +164,23 @@ public class PhieuDatHangPayload extends AbstractPayLoad {
         } catch (Exception e) {
             PXLogger.error("[DAT_HANG] Parse chữ ký và full name bị lỗi.");
         }
+    }
+
+    @Override
+    public Collection<Long> getDeletedIds(Object o) {
+        if (Objects.isNull(o)) {
+            return Collections.emptyList();
+        }
+
+        Set<Long> requestIds = this.getPhieuDatHangDetails()
+                .stream()
+                .map(el -> el.getPdhDetailId())
+                .collect(Collectors.toSet());
+
+        return ((PhieuDatHang) o).getPhieuDatHangDetails()
+                .stream()
+                .map(detail -> detail.getPdhDetailId())
+                .filter(el -> !requestIds.contains(el))
+                .collect(Collectors.toSet());
     }
 }

@@ -123,7 +123,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
 
-        validateXacNhan(user, phuongAn, existedPhuongAn);
+//        validateXacNhan(user, phuongAn, existedPhuongAn);
         capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
@@ -181,30 +181,30 @@ public class PhuongAnServiceImpl implements PhuongAnService {
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
      */
-    private void validateXacNhan(User user, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-
-        if (user.isNguoiLapPhieu()) {
-            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-        }
-        if (user.isTruongPhongVatTu()) {
-            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-        }
-        if (user.isTruongPhongKeHoach()) {
-            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-        }
-        if (user.isTruongPhongKTHK()) {
-            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-        }
-
-    }
+//    private void validateXacNhan(User user, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+//
+//        if (user.isNguoiLapPhieu()) {
+//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
+//        }
+//        if (user.isTruongPhongVatTu()) {
+//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
+//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
+//        }
+//        if (user.isTruongPhongKeHoach()) {
+//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
+//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
+//        }
+//        if (user.isTruongPhongKTHK()) {
+//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
+//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
+//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
+//        }
+//
+//    }
 
     /**
      * khi co xac nhan thi cap nhat ngay thang
@@ -232,7 +232,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     private void cleanOldDetailData(PhuongAn requestPhuongAn, PhuongAn existedPhuongAn) {
         try {
-            if (Objects.isNull(existedPhuongAn)) {
+            if (Objects.isNull(requestPhuongAn) || Objects.isNull(existedPhuongAn)) {
                 return;
             }
 
