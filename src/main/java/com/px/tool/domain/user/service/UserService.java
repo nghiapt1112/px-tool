@@ -6,7 +6,7 @@ import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.payload.UserPageRequest;
-import com.px.tool.domain.user.payload.UserPayload;
+import com.px.tool.domain.user.payload.UserPageResponse;
 import com.px.tool.domain.user.payload.UserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 public interface UserService extends UserDetailsService {
     List<User> findAll();
 
-    List<UserPayload> findUsers(UserPageRequest request);
+    UserPageResponse findUsers(UserPageRequest request);
 
     void taoUser(UserRequest userRequest);
 

@@ -22,7 +22,7 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
 
     private AbstractPageResponse() {
         this.details = new ArrayList<>();
-        this.total = 0;
+        this.total = 0L;
     }
 
     public void setTotal(Integer size) {

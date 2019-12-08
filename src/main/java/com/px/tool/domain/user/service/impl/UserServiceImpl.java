@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserPayload> findUsers(UserPageRequest request) {
+    public UserPageResponse findUsers(UserPageRequest request) {
         Page<User> page = userRepository.findAll(request.toPageRequest());
 
         UserPageResponse usersPage = new UserPageResponse(request.getPage(), request.getSize());
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
                 .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())))
         );
-        usersPage.setTotal(page.getTotalElements());
+        usersPage.setTotal((int) page.getTotalElements());
         return usersPage;
     }
 
