@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public abstract class AbstractPageResponse<O> extends AbstractObject {
     protected List<O> details;
-    protected Long total;
+    protected Integer total;
     protected Integer page;
     protected Integer size;
 
@@ -22,10 +22,10 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
 
     private AbstractPageResponse() {
         this.details = new ArrayList<>();
-        this.total = 0L;
+        this.total = 0;
     }
 
-    public void setTotal(Integer size) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 
