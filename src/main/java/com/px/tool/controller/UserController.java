@@ -4,6 +4,7 @@ import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.PhongBanPayload;
 import com.px.tool.domain.user.payload.RolePayLoad;
+import com.px.tool.domain.user.payload.UserDetailResponse;
 import com.px.tool.domain.user.payload.UserPageRequest;
 import com.px.tool.domain.user.payload.UserPageResponse;
 import com.px.tool.domain.user.payload.UserPayload;
@@ -13,6 +14,7 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;
 import com.px.tool.infrastructure.BaseController;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +86,10 @@ public class UserController extends BaseController {
         return UserPayload.fromEntity(this.userService.findById(userId));
     }
 
-
+    @GetMapping("/detail")
+    public UserDetailResponse findById(@RequestParam Long userId) {
+        return UserDetailResponse.fromEntity(userService.findById(userId));
+    }
     @PostMapping("/tao-user")
     public void createUser(UserRequest userRequest) {
         userService.taoUser(userRequest);

@@ -21,6 +21,8 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.CacheConfiguration;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -68,6 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PhongBanServiceImpl phongBanService;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -348,6 +353,10 @@ public class UserServiceImpl implements UserService {
         entity.setPhongBan(phongBanService.findById(user.getPhongBanId()));
 
         userRepository.save(entity);
+
+        cacheManager.getCacheNames().stream()
+                .filter(cacheName -> cacheName.equalsIgnoreCase(CacheConfiguration.CACHE_USER))
+                .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
     }
 
 }
