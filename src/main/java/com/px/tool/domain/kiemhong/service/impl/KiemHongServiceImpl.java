@@ -158,7 +158,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         kiemHongPayLoad.capNhatChuKy(user);
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
-        capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
+        kiemHongPayLoad.capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
+//        capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
 //        validateXacNhan(user, requestKiemHong, existedKiemHong);
         cleanKiemHongDetails(kiemHongPayLoad, existedKiemHong);
         Long requestId = existedKiemHong.getRequest().getRequestId();
@@ -227,19 +228,19 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     /**
      * khi co xac nhan thi cap nhat ngay thang
      */
-    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
-        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
-            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
-        }
-        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
-            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
-        }
-        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
-            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
-        }
-
-
-    }
+//    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+//        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
+//            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
+//        }
+//        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
+//            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
+//        }
+//        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
+//            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
+//        }
+//
+//
+//    }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
 //        pdh.setSo(requestKiemHong.getSoHieu());

@@ -5,6 +5,7 @@ import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -59,9 +60,9 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.SL = 0L;
             }
             tk.dangHuHong = detail.getDangHuHong();
-            tk.ngayKiemHong = request.getKiemHong().getNgayThangNamTroLyKT();
+            tk.ngayKiemHong = DateTimeUtils.dateLongToString(request.getKiemHong().getNgayThangNamTroLyKT());
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
-            tk.ngayChuyenPhongVatTu = request.getKiemHong().getNgayThangNamQuanDoc();
+            tk.ngayChuyenPhongVatTu = DateTimeUtils.dateLongToString(request.getKiemHong().getNgayThangNamQuanDoc());
             tk.soPhieuDatHang = "PDH-" + request.getPhieuDatHang().getPdhId();
             tk.detailId = detail.getKhDetailId();
             try {
@@ -69,20 +70,18 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
 
             } catch (Exception e) {
-
             }
-            tk.ngayChuyenKT = request.getPhieuDatHang().getNgayThangNamTPVatTu();
+            tk.ngayChuyenKT = DateTimeUtils.dateLongToString(request.getPhieuDatHang().getNgayThangNamTPVatTu());
             tk.requestId = 0L;
             try {
                 tk.requestId = phuongAnById.get(detail.getPaId()).getPaId();
                 tk.soPA = "PA" + phuongAnById.get(detail.getPaId()).getPaId();
-                tk.ngayRaPA = phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap();
-                tk.ngayChuyenKH = phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu();
-                tk.ngayPheDuyet = phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK();
-                tk.ngayHoanThanh = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamNguoiThucHien();
-                tk.xacNhanHoanThanh = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS();
+                tk.ngayRaPA = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
+                tk.ngayChuyenKH = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
+                tk.ngayPheDuyet = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
+                tk.ngayHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamNguoiThucHien());
+                tk.xacNhanHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
             } catch (Exception e) {
-
             }
 
             tks.add(tk);

@@ -61,7 +61,7 @@ public class PhuongAn extends EntityDefault {
 
     //end
     @Column
-    private String ngayThangNamTPKTHK;
+    private Long ngayThangNamTPKTHK;
 
     @Column
     private String truongPhongKTHK;
@@ -73,13 +73,13 @@ public class PhuongAn extends EntityDefault {
     private String truongPhongKeHoach;
 
     @Column
-    private String ngayThangNamtpVatTu;
+    private Long ngayThangNamtpVatTu;
 
     @Column
     private String truongPhongVatTu;
 
     @Column
-    private String ngayThangNamNguoiLap;
+    private Long ngayThangNamNguoiLap;
 
     @Column
     private String NguoiLap;
@@ -114,7 +114,7 @@ public class PhuongAn extends EntityDefault {
     private Boolean giamDocXacNhan;
 
     @Column
-    private String ngayThangNamGiamDoc;
+    private Long ngayThangNamGiamDoc;
 
     @Column
     private String yKienNguoiLap;

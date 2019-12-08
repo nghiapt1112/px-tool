@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PhieuDatHangPayload extends AbstractPayLoad {
+public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     private Long requestId;
     private Long pdhId;
     private String tenNhaMay;
@@ -72,16 +73,19 @@ public class PhieuDatHangPayload extends AbstractPayLoad {
     private Long trolyKT; // cac tro ly nay thuoc 8,9 level = 4
 
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
-        PhieuDatHangPayload phieuDatHangPayload = new PhieuDatHangPayload();
-        BeanUtils.copyProperties(phieuDatHang, phieuDatHangPayload);
-        phieuDatHangPayload.setPhieuDatHangDetails(
+        PhieuDatHangPayload payload = new PhieuDatHangPayload();
+        BeanUtils.copyProperties(phieuDatHang, payload);
+        payload.setPhieuDatHangDetails(
                 phieuDatHang.getPhieuDatHangDetails()
                         .stream()
                         .map(PhieuDatHangDetailPayload::fromEntity)
                         .collect(Collectors.toList())
         );
-        phieuDatHangPayload.setNoiNhan(null);
-        return phieuDatHangPayload;
+        payload.setNoiNhan(null);
+        payload.ngayThangNamNguoiDatHang = DateTimeUtils.toString(phieuDatHang.getNgayThangNamNguoiDatHang());
+        payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPKTHK());
+        payload.ngayThangNamTPVatTu = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPVatTu());
+        return payload;
     }
 
     public PhieuDatHang toEntity(PhieuDatHang phieuDatHang) {
@@ -167,7 +171,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad {
     }
 
     @Override
-    public Collection<Long> getDeletedIds(Object o) {
+    public Collection<Long> getDeletedIds(PhieuDatHang o) {
         if (Objects.isNull(o)) {
             return Collections.emptyList();
         }
@@ -177,10 +181,23 @@ public class PhieuDatHangPayload extends AbstractPayLoad {
                 .map(el -> el.getPdhDetailId())
                 .collect(Collectors.toSet());
 
-        return ((PhieuDatHang) o).getPhieuDatHangDetails()
+        return o.getPhieuDatHangDetails()
                 .stream()
                 .map(detail -> detail.getPdhDetailId())
                 .filter(el -> !requestIds.contains(el))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void capNhatNgayThangChuKy(PhieuDatHang requestDatHang, PhieuDatHang existedPhieuDatHang) {
+        if (requestDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
+            requestDatHang.setNgayThangNamNguoiDatHang(DateTimeUtils.nowAsMilliSec());
+        }
+        if (requestDatHang.getTpvatTuXacNhan() != existedPhieuDatHang.getTpvatTuXacNhan()) {
+            requestDatHang.setNgayThangNamTPVatTu(DateTimeUtils.nowAsMilliSec());
+        }
+        if (requestDatHang.getTpkthkXacNhan() != existedPhieuDatHang.getTpkthkXacNhan()) {
+            requestDatHang.setNgayThangNamTPKTHK(DateTimeUtils.nowAsMilliSec());
+        }
     }
 }

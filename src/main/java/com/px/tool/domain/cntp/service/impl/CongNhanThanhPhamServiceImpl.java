@@ -2,28 +2,21 @@ package com.px.tool.domain.cntp.service.impl;
 
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.CongNhanThanhPhamPayload;
-import com.px.tool.domain.cntp.NoiDungThucHien;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.cntp.repository.NoiDungThucHienRepository;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
-import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
@@ -39,8 +32,6 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -61,21 +52,22 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         congNhanThanhPhamPayload.capNhatChuKy(user);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
-        capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
+        congNhanThanhPhamPayload.capNhatNgayThangChuKy(congNhanThanhPham, existedCongNhanThanhPham);
+//        capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
         cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
 //        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
-    private void capNhatNgayThangNam(CongNhanThanhPham request, CongNhanThanhPham existed) {
-        if (request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
-            request.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsString());
-        }
-        if (request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
-            request.setNgayThangNamTPKCS(DateTimeUtils.nowAsString());
-        }
-    }
+//    private void capNhatNgayThangNam(CongNhanThanhPham request, CongNhanThanhPham existed) {
+//        if (request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
+//            request.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsString());
+//        }
+//        if (request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
+//            request.setNgayThangNamTPKCS(DateTimeUtils.nowAsString());
+//        }
+//    }
 
     private void cleanOldDetailData(CongNhanThanhPhamPayload requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
         if (Objects.isNull(requestCNTP)) {

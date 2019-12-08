@@ -51,19 +51,19 @@ public class PhieuDatHang extends EntityDefault {
     private Long noiNhan;
 
     @Column
-    private String ngayThangNamTPKTHK;
+    private Long ngayThangNamTPKTHK;
 
     @Column
     private String TPKTHK;
 
     @Column
-    private String ngayThangNamTPVatTu;
+    private Long ngayThangNamTPVatTu;
 
     @Column
     private String TPVatTu;
 
     @Column
-    private String ngayThangNamNguoiDatHang;
+    private Long ngayThangNamNguoiDatHang;
 
     @Column
     private String NguoiDatHang;

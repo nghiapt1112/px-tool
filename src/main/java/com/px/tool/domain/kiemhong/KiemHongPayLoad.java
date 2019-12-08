@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class KiemHongPayLoad extends AbstractPayLoad {
+public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
     private Long requestId;
     private Long khId;
     private String tenNhaMay;
@@ -79,24 +81,30 @@ public class KiemHongPayLoad extends AbstractPayLoad {
     private Long toTruongId;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
-        KiemHongPayLoad kiemHongResponse = new KiemHongPayLoad();
-        BeanUtils.copyProperties(kiemHong, kiemHongResponse);
-        kiemHongResponse.kiemHongDetails = kiemHong.getKiemHongDetails()
+        KiemHongPayLoad payload = new KiemHongPayLoad();
+        BeanUtils.copyProperties(kiemHong, payload);
+        payload.kiemHongDetails = kiemHong.getKiemHongDetails()
                 .stream()
                 .map(KiemHongDetailPayload::fromEntity)
                 .sorted(Comparator.comparingLong(KiemHongDetailPayload::getKhDetailId))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         if (kiemHong.getRequest() != null) {
-            kiemHongResponse.noiNhan = kiemHong.getRequest().getKiemHongReceiverId();
+            payload.noiNhan = kiemHong.getRequest().getKiemHongReceiverId();
         }
-        kiemHongResponse.quanDocDisable = true;
-        kiemHongResponse.troLyKTDisable = true;
-        kiemHongResponse.toTruongDisable = true;
-        kiemHongResponse.phanXuong = Long.valueOf(kiemHong.getPhanXuong());
-        kiemHongResponse.toSX = Long.valueOf(kiemHong.getToSX());
-        kiemHongResponse.setNoiNhan(null);
-        return kiemHongResponse;
+        payload.quanDocDisable = true;
+        payload.troLyKTDisable = true;
+        payload.toTruongDisable = true;
+
+        payload.phanXuong = Long.valueOf(kiemHong.getPhanXuong());
+        payload.toSX = Long.valueOf(kiemHong.getToSX());
+        payload.setNoiNhan(null);
+
+        payload.ngayThangNamQuanDoc = DateTimeUtils.toString(kiemHong.getNgayThangNamQuanDoc());
+        payload.ngayThangNamToTruong = DateTimeUtils.toString(kiemHong.getNgayThangNamToTruong());
+        payload.ngayThangNamTroLyKT = DateTimeUtils.toString(kiemHong.getNgayThangNamTroLyKT());
+
+        return payload;
     }
 
     public KiemHongPayLoad andRequestId(Long requestId) {
@@ -188,7 +196,7 @@ public class KiemHongPayLoad extends AbstractPayLoad {
     }
 
     @Override
-    public Collection<Long> getDeletedIds(Object o) {
+    public Collection<Long> getDeletedIds(KiemHong o) {
         if (Objects.isNull(o)) {
             return Collections.emptyList();
         }
@@ -198,10 +206,23 @@ public class KiemHongPayLoad extends AbstractPayLoad {
                 .collect(Collectors.toSet());
 
         return
-                ((KiemHong) o).getKiemHongDetails()
+                o.getKiemHongDetails()
                         .stream()
                         .map(KiemHongDetail::getKhDetailId)
                         .filter(el -> !requestDetailIds.contains(el))
                         .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
+            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsMilliSec());
+        }
+        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
+            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsMilliSec());
+        }
+        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
+            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsMilliSec());
+        }
     }
 }

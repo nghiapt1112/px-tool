@@ -122,9 +122,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         CongNhanThanhPham thanhPham = existedPhuongAn.getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
+        phuongAnPayload.capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
 
 //        validateXacNhan(user, phuongAn, existedPhuongAn);
-        capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
+//        capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             taoCNTP(phuongAn, thanhPham);
@@ -212,23 +213,23 @@ public class PhuongAnServiceImpl implements PhuongAnService {
      * @param phuongAn
      * @param existedPhuongAn
      */
-    private void capNhatNgayThangChuKy(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-        if (phuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
-            phuongAn.setNgayThangNamtpVatTu(DateTimeUtils.nowAsString());
-        }
-        if (phuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
-            phuongAn.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
-        }
-        if (phuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
-            phuongAn.setNgayThangNamNguoiLap(DateTimeUtils.nowAsString());
-        }
-        if (phuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
-            phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
-        }
-        if (phuongAn.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
-            phuongAn.setNgayThangNamGiamDoc(DateTimeUtils.nowAsString());
-        }
-    }
+//    private void capNhatNgayThangChuKy(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
+//        if (phuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
+//            phuongAn.setNgayThangNamtpVatTu(DateTimeUtils.nowAsString());
+//        }
+//        if (phuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
+//            phuongAn.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
+//        }
+//        if (phuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
+//            phuongAn.setNgayThangNamNguoiLap(DateTimeUtils.nowAsString());
+//        }
+//        if (phuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
+//            phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
+//        }
+//        if (phuongAn.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
+//            phuongAn.setNgayThangNamGiamDoc(DateTimeUtils.nowAsString());
+//        }
+//    }
 
     private void cleanOldDetailData(PhuongAn requestPhuongAn, PhuongAn existedPhuongAn) {
         try {

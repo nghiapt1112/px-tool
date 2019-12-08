@@ -82,7 +82,8 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         Long requestId = existedPhieuDatHang.getRequest().getRequestId();
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
-        capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
+        phieuDatHangPayload.capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
+//        capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
 //        validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
@@ -135,17 +136,17 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     /**
      * khi co xac nhan thi cap nhat ngay thang
      */
-    private void capNhatNgayThangChuKy(PhieuDatHang phieuDatHang, PhieuDatHang existedPhieuDatHang) {
-        if (phieuDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
-            phieuDatHang.setNguoiDatHang(DateTimeUtils.nowAsString());
-        }
-        if (phieuDatHang.getTpvatTuXacNhan() != existedPhieuDatHang.getTpvatTuXacNhan()) {
-            phieuDatHang.setNgayThangNamTPVatTu(DateTimeUtils.nowAsString());
-        }
-        if (phieuDatHang.getTpkthkXacNhan() != existedPhieuDatHang.getTpkthkXacNhan()) {
-            phieuDatHang.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
-        }
-    }
+//    private void capNhatNgayThangChuKy(PhieuDatHang phieuDatHang, PhieuDatHang existedPhieuDatHang) {
+//        if (phieuDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
+//            phieuDatHang.setNguoiDatHang(DateTimeUtils.nowAsString());
+//        }
+//        if (phieuDatHang.getTpvatTuXacNhan() != existedPhieuDatHang.getTpvatTuXacNhan()) {
+//            phieuDatHang.setNgayThangNamTPVatTu(DateTimeUtils.nowAsString());
+//        }
+//        if (phieuDatHang.getTpkthkXacNhan() != existedPhieuDatHang.getTpkthkXacNhan()) {
+//            phieuDatHang.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
+//        }
+//    }
 
     private void cleanOldDetailData(PhieuDatHangPayload requestPhieuDatHang, PhieuDatHang existedPhieuDatHang) {
         try {

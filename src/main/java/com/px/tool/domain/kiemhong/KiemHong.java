@@ -66,7 +66,7 @@ public class KiemHong extends EntityDefault {
     private Long noiNhan;
 
     @Column
-    private String ngayThangNamQuanDoc;
+    private Long ngayThangNamQuanDoc;
 
     @Column(name = "quan_doc_xac_nhan")
     private Boolean quanDocXacNhan;
@@ -75,7 +75,7 @@ public class KiemHong extends EntityDefault {
     private String quanDoc;
 
     @Column
-    private String ngayThangNamTroLyKT;
+    private Long ngayThangNamTroLyKT;
 
     @Column(name = "tro_lykt_xac_nhan")
     private Boolean troLyKTXacNhan;
@@ -84,7 +84,7 @@ public class KiemHong extends EntityDefault {
     private String troLyKT;
 
     @Column
-    private String ngayThangNamToTruong;
+    private Long ngayThangNamToTruong;
 
     @Column(name = "to_truong_xac_nhan")
     private Boolean toTruongXacNhan;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PhuongAnPayload extends AbstractPayLoad {
+public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private Long paId;
     private Long requestId;
     private String tenNhaMay;
@@ -101,29 +102,36 @@ public class PhuongAnPayload extends AbstractPayLoad {
 
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
-        PhuongAnPayload phuongAnPayload = new PhuongAnPayload();
-        BeanUtils.copyProperties(phuongAn, phuongAnPayload);
-        phuongAnPayload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
+        PhuongAnPayload payload = new PhuongAnPayload();
+        BeanUtils.copyProperties(phuongAn, payload);
+        payload.dinhMucLaoDongs = phuongAn.getDinhMucLaoDongs().stream()
                 .map(DinhMucLaoDongPayload::fromEntity)
                 .sorted(Comparator.comparingLong(DinhMucLaoDongPayload::getDmId))
                 .collect(Collectors.toCollection(LinkedList::new));
-        phuongAnPayload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
+        payload.dinhMucVatTus = phuongAn.getDinhMucVatTus().stream()
                 .map(DinhMucVatTuPayload::fromEntity)
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
 //        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
-        phuongAnPayload.setNoiNhan(null);
+        payload.setNoiNhan(null);
 
         try {
             List<Long> recv = new ArrayList<>();
             for (String s : phuongAn.getCusReceivers().split(",")) {
                 recv.add(Long.valueOf(s));
             }
-            phuongAnPayload.setCusReceivers(recv);
+            payload.setCusReceivers(recv);
         } catch (Exception e) {
 
         }
-        return phuongAnPayload;
+//        payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getngaythangnam);
+//        payload.ngayThangNamNguoiLap = "";
+//        payload.ngayThangNamPheDuyet = "";
+//        payload.ngayThangNamTPKEHOACH = "";
+//        payload.ngayThangNamTPKTHK = "";
+//        payload.ngayThangNamtpVatTu = "";
+
+        return payload;
     }
 
     public PhuongAnPayload withFiles(List<String> files) {
@@ -260,7 +268,26 @@ public class PhuongAnPayload extends AbstractPayLoad {
     }
 
     @Override
-    public Collection<Long> getDeletedIds(Object o) {
+    public Collection<Long> getDeletedIds(PhuongAn o) {
         return null;
+    }
+
+    @Override
+    public void capNhatNgayThangChuKy(PhuongAn pa, PhuongAn existedPhuongAn) {
+        if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
+            pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());
+        }
+        if (pa.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
+            pa.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
+        }
+        if (pa.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
+            pa.setNgayThangNamNguoiLap(DateTimeUtils.nowAsMilliSec());
+        }
+        if (pa.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
+            pa.setNgayThangNamTPKTHK(DateTimeUtils.nowAsMilliSec());
+        }
+        if (pa.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
+            pa.setNgayThangNamGiamDoc(DateTimeUtils.nowAsMilliSec());
+        }
     }
 }

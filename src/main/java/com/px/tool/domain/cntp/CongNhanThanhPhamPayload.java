@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class CongNhanThanhPhamPayload extends AbstractPayLoad {
+public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham> {
     private Long tpId; // thanh pham id
     private Long requestId;
 
@@ -179,7 +180,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad {
     }
 
     @Override
-    public Collection<Long> getDeletedIds(Object o) {
+    public Collection<Long> getDeletedIds(CongNhanThanhPham o) {
         if (Objects.isNull(o)) {
             return Collections.emptyList();
         }
@@ -188,10 +189,21 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad {
                 .map(el -> el.getNoiDungId())
                 .collect(Collectors.toSet());
 
-        return ((CongNhanThanhPham) o).getNoiDungThucHiens()
+        return o.getNoiDungThucHiens()
                 .stream()
                 .map(el -> el.getNoiDungId())
                 .filter(el -> !requestIds.contains(el))
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public void capNhatNgayThangChuKy(CongNhanThanhPham cntp, CongNhanThanhPham existed) {
+        if (cntp.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
+            cntp.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsMilliSec());
+        }
+        if (cntp.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
+            cntp.setNgayThangNamTPKCS(DateTimeUtils.nowAsMilliSec());
+        }
+    }
+
 }

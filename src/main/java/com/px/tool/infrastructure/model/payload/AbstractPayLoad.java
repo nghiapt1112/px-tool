@@ -5,8 +5,10 @@ import com.px.tool.domain.user.User;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class AbstractPayLoad extends AbstractObject {
+public abstract class AbstractPayLoad<E extends EntityDefault> extends AbstractObject {
     public abstract void processSignImgAndFullName(Map<Long, User> userById);
 
-    public abstract Collection<Long> getDeletedIds(Object o);
+    public abstract Collection<Long> getDeletedIds(E o);
+
+    public abstract void capNhatNgayThangChuKy(E request, E existed);
 }
