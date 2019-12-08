@@ -50,9 +50,7 @@ public class UserController extends BaseController {
             @RequestParam(required = false, defaultValue = "1") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
-        UserPageResponse usersPage = new UserPageResponse(page, size);
-        usersPage.setDetails(userService.findUsers(new UserPageRequest(page, size)));
-        return usersPage;
+        return userService.findUsers(new UserPageRequest(page, size));
     }
 
     /**

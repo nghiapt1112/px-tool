@@ -13,6 +13,7 @@ import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.payload.UserPageRequest;
+import com.px.tool.domain.user.payload.UserPageResponse;
 import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.UserRepository;
@@ -83,9 +84,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserPayload> findUsers(UserPageRequest request) {
         Page<User> page = userRepository.findAll(request.toPageRequest());
-        return page.stream()
+
+        UserPageResponse usersPage = new UserPageResponse(request.getPage(), request.getSize());
+
+        usersPage.setDetails(page.stream()
                 .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
-                .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())));
+                .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())))
+        );
+        usersPage.setTotal(page.getTotalElements());
+        return usersPage;
     }
 
     @Override

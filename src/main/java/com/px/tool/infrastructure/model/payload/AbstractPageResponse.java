@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public abstract class AbstractPageResponse<O> extends AbstractObject {
     protected List<O> details;
-    protected Integer total;
+    protected Long total;
     protected Integer page;
     protected Integer size;
 
