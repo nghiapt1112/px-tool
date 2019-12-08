@@ -1,7 +1,7 @@
 package com.px.tool.domain.request.repository.impl;
 
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
 import com.px.tool.domain.request.repository.RequestRepositoryCustom;
 
 import javax.persistence.EntityManager;
@@ -15,7 +15,7 @@ public class RequestRepositoryCustomImpl implements RequestRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Request> findPaging(ThongKeRequest thongKeRequest) {
+    public List<Request> findPaging(ThongKePageRequest thongKeRequest) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT rq FROM Request rq FETCH ALL PROPERTIES ");
         return this.entityManager.createQuery(query.toString()).getResultList();

@@ -6,7 +6,6 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.repository.PhieuDatHangDetailRepository;
 import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
-import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
@@ -55,14 +54,15 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         Request request = requestService.findById(id);
         PhieuDatHangPayload payload = PhieuDatHangPayload
                 .fromEntity(request.getPhieuDatHang())
-                .filterPermission(userService.findById(userId));;
+                .filterPermission(userService.findById(userId));
+        ;
         payload.setRequestId(request.getRequestId());
 
         List<Long> signedIds = new ArrayList<>(3);
         if (payload.getNguoiDatHangXacNhan()) {
             signedIds.add(payload.getNguoiDatHangId());
         }
-        if(payload.getTpkthkXacNhan()) {
+        if (payload.getTpkthkXacNhan()) {
             signedIds.add(payload.getTpkthkId());
         }
         if (payload.getTpvatTuXacNhan()) {
@@ -76,7 +76,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
                 payload.setNguoiDatHangFullName(user.getFullName());
                 payload.setNguoiDatHangSignImg(user.getSignImg());
             }
-            if(payload.getTpkthkXacNhan() && user.getUserId().equals(payload.getTpkthkId())) {
+            if (payload.getTpkthkXacNhan() && user.getUserId().equals(payload.getTpkthkId())) {
                 payload.setTpkthkFullName(user.getFullName());
                 payload.setTpkthkSignImg(user.getSignImg());
             }
@@ -132,6 +132,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     private void guiVanBanDen() {
         vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.DAT_HANG);
     }
+
     /**
      * Phai dung permission khi xac nhan
      * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen

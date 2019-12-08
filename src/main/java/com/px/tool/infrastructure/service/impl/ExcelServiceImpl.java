@@ -8,7 +8,6 @@ import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
-import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
@@ -26,9 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.stream.Collectors;
-
-import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {

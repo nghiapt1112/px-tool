@@ -4,7 +4,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class RequestUtils {
+public class CommonUtils {
 
     public static String extractRequestToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -12,5 +12,10 @@ public class RequestUtils {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    public static String getPercentage(Integer i1, Integer i2) {
+        String val = (((float) i1 * 100) / i2 + "");
+        return val.length() > 5 ? val.substring(0, 6) : val;
     }
 }

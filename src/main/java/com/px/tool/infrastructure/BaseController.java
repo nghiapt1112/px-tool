@@ -2,7 +2,7 @@ package com.px.tool.infrastructure;
 
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.model.ErrorResponse;
-import com.px.tool.infrastructure.utils.RequestUtils;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.io.IOUtils;
@@ -63,7 +63,7 @@ public abstract class BaseController {
     }
 
     public Long extractUserInfo(HttpServletRequest httpServletRequest) {
-        String token = RequestUtils.extractRequestToken(httpServletRequest);
+        String token = CommonUtils.extractRequestToken(httpServletRequest);
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

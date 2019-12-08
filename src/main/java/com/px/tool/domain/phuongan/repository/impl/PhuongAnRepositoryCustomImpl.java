@@ -5,7 +5,6 @@ import com.px.tool.domain.request.NguoiDangXuLy;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.math.BigInteger;
 
 public class PhuongAnRepositoryCustomImpl implements PhuongAnRepositoryCustom {
 
@@ -14,12 +13,12 @@ public class PhuongAnRepositoryCustomImpl implements PhuongAnRepositoryCustom {
 
     @Override
     public NguoiDangXuLy findDetail(Long phuongAnId) {
-       Object[] objects = (Object[]) entityManager.createNativeQuery("SELECT pa.giam_doc_id,pa.nguoi_lap_id, pa.truong_phongkthkid, pa.truong_phong_ke_hoach_id,pa.truong_phong_vat_tu_id " +
+        Object[] objects = (Object[]) entityManager.createNativeQuery("SELECT pa.giam_doc_id,pa.nguoi_lap_id, pa.truong_phongkthkid, pa.truong_phong_ke_hoach_id,pa.truong_phong_vat_tu_id " +
                 "FROM phuong_an pa " +
                 "WHERE " +
-               "pa.pa_id = ?1")
-               .setParameter(1, phuongAnId)
-               .getSingleResult();
+                "pa.pa_id = ?1")
+                .setParameter(1, phuongAnId)
+                .getSingleResult();
         NguoiDangXuLy nguoiDangXuLy = new NguoiDangXuLy();
         nguoiDangXuLy.setGiamDoc(objects[0]);
         nguoiDangXuLy.setNguoiLap(objects[1]);

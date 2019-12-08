@@ -1,21 +1,26 @@
 package com.px.tool.infrastructure.model.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractPage<O> extends AbstractObject {
+@Getter
+@Setter
+public abstract class AbstractPageResponse<O> extends AbstractObject {
     protected List<O> details;
     protected Integer total;
     protected Integer page;
     protected Integer size;
 
-    public AbstractPage(Integer page, Integer size) {
+    public AbstractPageResponse(Integer page, Integer size) {
         super();
         this.page = page;
         this.size = size;
     }
 
-    public AbstractPage() {
+    private AbstractPageResponse() {
         this.details = new ArrayList<>();
         this.total = 0;
     }
@@ -24,7 +29,7 @@ public abstract class AbstractPage<O> extends AbstractObject {
         this.total = total;
     }
 
-    public abstract <E extends AbstractObject>  E build();
+    public abstract <E extends AbstractObject> E build();
 
     public void setDetails(List<O> details) {
         this.details = details;

@@ -2,9 +2,9 @@ package com.px.tool.domain.request.service;
 
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.PageDashBoardCongViecCuaToi;
-import com.px.tool.domain.request.payload.PageRequest;
-import com.px.tool.domain.request.payload.PageThongKePayload;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
+import com.px.tool.domain.request.payload.ThongKePageResponse;
+import com.px.tool.infrastructure.model.payload.PageRequest;
 
 public interface RequestService {
     Request save(Request request);
@@ -13,7 +13,7 @@ public interface RequestService {
 
     PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, PageRequest pageRequest);
 
-    PageThongKePayload collectDataThongKe(ThongKeRequest request);
+    ThongKePageResponse collectDataThongKe(ThongKePageRequest request);
 
     void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 

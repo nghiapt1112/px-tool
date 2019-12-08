@@ -10,15 +10,16 @@ import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
 import com.px.tool.domain.request.payload.PageDashBoardCongViecCuaToi;
-import com.px.tool.domain.request.payload.PageThongKePayload;
 import com.px.tool.domain.request.payload.ThongKeDetailPayload;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
+import com.px.tool.domain.request.payload.ThongKePageResponse;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,6 @@ public class RequestServiceImpl implements RequestService {
     @Autowired
     private PhuongAnService phuongAnService;
 
-    private static String getPercentage(Integer i1, Integer i2) {
-        String val = (((float) i1 * 100) / i2 + "");
-        return val.length() > 5 ? val.substring(0, 6) : val;
-    }
-
     @Override
     @Transactional
     public Request save(Request request) {
@@ -71,7 +67,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, com.px.tool.domain.request.payload.PageRequest pageRequest) {
+    public PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, com.px.tool.infrastructure.model.payload.PageRequest pageRequest) {
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         Map<Long, User> userById = userService.userById();
@@ -120,7 +116,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public PageThongKePayload collectDataThongKe(ThongKeRequest request) {
+    public ThongKePageResponse collectDataThongKe(ThongKePageRequest request) {
         Map<Long, String> mdsd = mucDichSuDungRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(MucDichSuDung::getMdId, MucDichSuDung::getTen));
@@ -136,7 +132,7 @@ public class RequestServiceImpl implements RequestService {
         }
         Map<Long, PhuongAn> phuongAnById = phuongAnService.groupById(paIds);
 
-        PageThongKePayload tkPayload = new PageThongKePayload();
+        ThongKePageResponse tkPayload = new ThongKePageResponse(request.getPage(), request.getSize());
         tkPayload.setSanPham(mdsd.get(request.getSanPham()));
         AtomicReference<Integer> hoanThanhCount = new AtomicReference<>(0);
         tkPayload.setDetails(requests.stream()
@@ -166,10 +162,8 @@ public class RequestServiceImpl implements RequestService {
                     }
                 })
                 .collect(Collectors.toList()));
-        tkPayload.setTienDo(getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
+        tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
         tkPayload.setTotal(tkPayload.getDetails().size());
-        tkPayload.setSize(request.getSize());
-        tkPayload.setPage(request.getPage());
         return tkPayload;
     }
 

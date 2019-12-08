@@ -6,9 +6,9 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
-import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
 import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenPageResponse;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
@@ -47,7 +47,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
      *
      * @return
      */
-    public PageVanBanDenPayload findAll(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
+    public VanBanDenPageResponse findAll(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
         Page<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
         return toResponse(val, vanBanDenPageRequest);
     }
@@ -57,13 +57,13 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
      *
      * @return
      */
-    public PageVanBanDenPayload findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
+    public VanBanDenPageResponse findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
         Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
         return toResponse(val, vanBanDenPageRequest);
     }
 
-    private PageVanBanDenPayload toResponse(Page<VanBanDen> val, VanBanDenPageRequest request) {
-        PageVanBanDenPayload res = new PageVanBanDenPayload(request.getPage(), request.getSize());
+    private VanBanDenPageResponse toResponse(Page<VanBanDen> val, VanBanDenPageRequest request) {
+        VanBanDenPageResponse res = new VanBanDenPageResponse(request.getPage(), request.getSize());
         if (val.isEmpty()) {
             return res;
         }

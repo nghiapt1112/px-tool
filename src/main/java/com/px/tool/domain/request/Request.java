@@ -40,7 +40,7 @@ public class Request extends EntityDefault {
 
     @Column
     private Long phuongAnReceiverId;
-    
+
     @Column
     private Long cntpReceiverId;
 

@@ -109,7 +109,7 @@ public class RequestController extends BaseController {
                         payload.setBody("Bạn đang có 1 thông yêu cầu CNTP.");
                     }
 
-                        return payload;
+                    return payload;
                 })
                 .collect(Collectors.toList());
     }

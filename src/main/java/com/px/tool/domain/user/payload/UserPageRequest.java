@@ -1,6 +1,6 @@
 package com.px.tool.domain.user.payload;
 
-import com.px.tool.domain.request.payload.PageRequest;
+import com.px.tool.infrastructure.model.payload.PageRequest;
 import lombok.Getter;
 import lombok.Setter;
 

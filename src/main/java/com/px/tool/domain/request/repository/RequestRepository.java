@@ -1,7 +1,7 @@
 package com.px.tool.domain.request.repository;
 
 import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +27,6 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
     void updateReceiverId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 
     @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE rq.deleted <> true OR rq.deleted is null")
-    Page<Request> findPaging(ThongKeRequest thongKeRequest, Pageable pageable);
+    Page<Request> findPaging(ThongKePageRequest thongKeRequest, Pageable pageable);
 
 }

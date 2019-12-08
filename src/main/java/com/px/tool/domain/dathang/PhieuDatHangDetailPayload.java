@@ -35,7 +35,7 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
         return phieuDatHangDetail;
     }
 
-    public String getMucDicSuDungAsString(){
+    public String getMucDicSuDungAsString() {
         return mucDichSuDung == null ? "0" : mucDichSuDung.toString();
     }
 }

@@ -51,7 +51,7 @@ public class CongNhanThanhPhamPayload extends AbstractObject {
     private String dvt;
     private String to;
     private String soLuong;
-    private Long  noiNhan;
+    private Long noiNhan;
 
     @JsonProperty("yKienNguoiGiaoViec")
     private String yKienNguoiGiaoViec;

@@ -10,7 +10,7 @@ public class PXLogger {
         logger.info(message, params);
     }
 
-    public static  void error(String message, Object... params) {
+    public static void error(String message, Object... params) {
         logger.info(message, params);
     }
 }

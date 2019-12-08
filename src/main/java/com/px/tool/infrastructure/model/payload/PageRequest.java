@@ -1,6 +1,5 @@
-package com.px.tool.domain.request.payload;
+package com.px.tool.infrastructure.model.payload;
 
-import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +23,7 @@ public class PageRequest extends AbstractObject {
             this.page = page - 1;
         }
     }
+
     public org.springframework.data.domain.PageRequest toPageRequest() {
         return org.springframework.data.domain.PageRequest.of(page, size);
     }

@@ -69,8 +69,4 @@ public class KiemHongController extends BaseController {
         return kiemHongService.findThongTinKiemHongCuaPhongBan(userId);
     }
 
-    @GetMapping
-    public void get() {
-
-    }
 }

@@ -1,8 +1,8 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.vanbanden.payload.PageVanBanDenPayload;
 import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
+import com.px.tool.domain.vanbanden.payload.VanBanDenPageResponse;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
@@ -26,18 +26,18 @@ public class VanBanDenController extends BaseController {
     private VanBanDenServiceImpl vanBanDenService;
 
     @GetMapping
-    public PageVanBanDenPayload findSent(HttpServletRequest httpServletRequest,
-                                         @RequestParam(required = false, defaultValue = "1") Integer page,
-                                         @RequestParam(required = false, defaultValue = "10") Integer size
+    public VanBanDenPageResponse findSent(HttpServletRequest httpServletRequest,
+                                          @RequestParam(required = false, defaultValue = "1") Integer page,
+                                          @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         return vanBanDenService.findAll(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
 
     }
 
     @GetMapping("/receive")
-    public PageVanBanDenPayload findInBox(HttpServletRequest httpServletRequest,
-                                          @RequestParam(required = false, defaultValue = "1") Integer page,
-                                          @RequestParam(required = false, defaultValue = "10") Integer size) {
+    public VanBanDenPageResponse findInBox(HttpServletRequest httpServletRequest,
+                                           @RequestParam(required = false, defaultValue = "1") Integer page,
+                                           @RequestParam(required = false, defaultValue = "10") Integer size) {
         return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
     }
 

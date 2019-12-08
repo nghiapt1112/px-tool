@@ -1,7 +1,7 @@
 package com.px.tool.controller;
 
-import com.px.tool.domain.request.payload.PageThongKePayload;
-import com.px.tool.domain.request.payload.ThongKeRequest;
+import com.px.tool.domain.request.payload.ThongKePageRequest;
+import com.px.tool.domain.request.payload.ThongKePageResponse;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class ThongKeController extends BaseController {
     private RequestService requestService;
 
     @GetMapping
-    private PageThongKePayload getDataChoThongKe(HttpServletRequest httpServletRequest,
-                                                 @RequestParam(required = false, defaultValue = "-1") Long spId,
-                                                 @RequestParam(required = false, defaultValue = "-1") Long pxId,
-                                                 @RequestParam(required = false, defaultValue = "1") Integer page,
-                                                 @RequestParam(required = false, defaultValue = "10") Integer size
+    private ThongKePageResponse getDataChoThongKe(HttpServletRequest httpServletRequest,
+                                                  @RequestParam(required = false, defaultValue = "-1") Long spId,
+                                                  @RequestParam(required = false, defaultValue = "-1") Long pxId,
+                                                  @RequestParam(required = false, defaultValue = "1") Integer page,
+                                                  @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         Long userId = extractUserInfo(httpServletRequest);
-        ThongKeRequest thongKeRequest = new ThongKeRequest();
+        ThongKePageRequest thongKeRequest = new ThongKePageRequest();
         thongKeRequest.setSanPham(spId);
         thongKeRequest.setPage(page);
         thongKeRequest.setSize(size);

@@ -29,17 +29,15 @@ public class VanBanDen extends EntityDefault {
     public Long noiNhan;
 
     @Column
-    @Type(type="text")
+    @Type(type = "text")
     public String noiDung;
 
     @Column
     public String type;
-
-    @Column
-    private Boolean read;
-
     @Column
     @Enumerated
     public RequestType requestType;
+    @Column
+    private Boolean read;
 
 }
