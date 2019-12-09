@@ -96,7 +96,6 @@ public class UserServiceImpl implements UserService {
                 .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
                 .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())))
         );
-        usersPage.setTotal((int) page.getTotalElements());
         return usersPage;
     }
 

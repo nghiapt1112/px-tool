@@ -107,7 +107,6 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         } else {
             dashBoardCongViecCuaToi.type = RequestType.CONG_NHAN_THANH_PHAM;
         }
-
         dashBoardCongViecCuaToi.status = "Vừa tạo";
 
         return dashBoardCongViecCuaToi;

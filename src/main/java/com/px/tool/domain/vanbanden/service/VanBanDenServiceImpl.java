@@ -85,7 +85,6 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                         })
                         .collect(Collectors.toList())
         );
-        res.setTotal(val.getTotalPages());
         return res;
     }
 
@@ -119,11 +118,11 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                     .map(el -> {
                         VanBanDen vanBanDen = new VanBanDen();
                         if (requestType == RequestType.KIEM_HONG) {
-                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng, " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.DAT_HANG) {
-                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng, " + DateTimeUtils.nowAsString());
                         } else if (requestType == RequestType.PHUONG_AN) {
-                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án " + DateTimeUtils.nowAsString());
+                            vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án, " + DateTimeUtils.nowAsString());
                         }
                         vanBanDen.setNoiNhan(el.getUserId());
                         vanBanDen.setRequestType(requestType);

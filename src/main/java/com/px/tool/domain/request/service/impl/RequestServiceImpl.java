@@ -18,7 +18,6 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,37 +69,24 @@ public class RequestServiceImpl implements RequestService {
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         Map<Long, User> userById = userService.userById();
-        Page<Request> requestsByNguoiGui = null;
-        if (currentUser.getLevel() == 3) { // truong hop la to truong
-            List<User> members = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()));
-            if (CollectionUtils.isEmpty(members)) {
-                throw new PXException("member.not_found");
-            }
-            requestsByNguoiGui = requestRepository.findByNguoiNhan(
-                    members.stream().map(User::getUserId).collect(Collectors.toSet()), // list toan bo danh sach cua 1 team
-                    PageRequest.of(pageRequest.getPage(), pageRequest.getSize())
-            );
-        } else {
-            requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId), PageRequest.of(pageRequest.getPage(), pageRequest.getSize()));
-        }
+        Page<Request> requestsByNguoiGui = requestRepository.findByNguoiNhan(Arrays.asList(userId), pageRequest.toPageRequest());
 
-        PageDashBoardCongViecCuaToi pageDashBoardCongViecCuaToi = new PageDashBoardCongViecCuaToi();
+        PageDashBoardCongViecCuaToi pageDashBoardCongViecCuaToi = new PageDashBoardCongViecCuaToi(pageRequest.getPage(), pageRequest.getSize());
         pageDashBoardCongViecCuaToi.setDetails(requestsByNguoiGui
                 .stream()
                 .map(el -> DashBoardCongViecCuaToi.fromEntity(el, userById))
                 .collect(Collectors.toList()));
-        List<PhuongAn> pas = phuongAnService.findByUserId(userId);
-        pas.stream()
+
+
+        phuongAnService.findByUserId(userId)
+                .stream()
                 .map(el -> DashBoardCongViecCuaToi.fromPhuongAn(el, userById))
-                .collect(Collectors.toList());
+                .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
+
         if (currentUser.isTroLyKT()) {
             phieuDatHangService.findListCongViecCuaTLKT(userId);
         }
 
-
-        pageDashBoardCongViecCuaToi.setTotal(requestsByNguoiGui.getTotalPages());
-        pageDashBoardCongViecCuaToi.setPage(pageRequest.getPage());
-        pageDashBoardCongViecCuaToi.setSize(pageRequest.getSize());
         return pageDashBoardCongViecCuaToi;
     }
 
@@ -163,7 +148,6 @@ public class RequestServiceImpl implements RequestService {
                 })
                 .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
-        tkPayload.setTotal(tkPayload.getDetails().size());
         return tkPayload;
     }
 

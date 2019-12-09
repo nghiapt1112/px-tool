@@ -10,9 +10,9 @@ import java.util.List;
 @Setter
 public abstract class AbstractPageResponse<O> extends AbstractObject {
     protected List<O> details;
-    protected Integer total;
     protected Integer page;
     protected Integer size;
+    private Integer total;
 
     public AbstractPageResponse(Integer page, Integer size) {
         super();
@@ -25,15 +25,20 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
         this.total = 0;
     }
 
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setPage(Integer page) {
+        if (page == 0) {
+            this.page = 1;
+        } else {
+            this.page = page;
+        }
     }
 
-    public <E extends AbstractObject> E build() {
-        return (E) this;
+    public Integer getTotal() {
+        try {
+            return this.details.size() / size;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
-    public void setDetails(List<O> details) {
-        this.details = details;
-    }
 }

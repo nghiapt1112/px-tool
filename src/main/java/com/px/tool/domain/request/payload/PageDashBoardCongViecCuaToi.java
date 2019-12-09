@@ -1,18 +1,15 @@
 package com.px.tool.domain.request.payload;
 
-import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.model.payload.AbstractPageResponse;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class PageDashBoardCongViecCuaToi extends AbstractObject {
-    private List<DashBoardCongViecCuaToi> details;
-    private Integer total;
-    private Integer page;
-    private Integer size;
+public class PageDashBoardCongViecCuaToi extends AbstractPageResponse<DashBoardCongViecCuaToi> {
+    public PageDashBoardCongViecCuaToi(Integer page, Integer size) {
+        super(page, size);
+    }
 
     public void setPage(Integer page) {
         if (page == 0) {
