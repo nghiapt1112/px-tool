@@ -82,8 +82,8 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/phan-xuong")
-    public List<PhanXuongPayload> getPhanXuong() {
-        return userService.findListPhanXuong();
+    public List<PhanXuongPayload> getPhanXuong(HttpServletRequest request) {
+        return userService.findListPhanXuong(extractUserInfo(request));
     }
 
     @GetMapping("/to-sx")
@@ -125,7 +125,7 @@ public class RequestController extends BaseController {
 
     @GetMapping("/nguoi-thuc-hien")
     public List<PhanXuongPayload> getNguoiThucHien() {
-        return userService.findListPhanXuong();
+        return userService.findNguoiThucHien();
     }
 
     @GetMapping("/cus-noi-nhan")

@@ -159,8 +159,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         KiemHong requestKiemHong = new KiemHong();
         kiemHongPayLoad.toEntity(requestKiemHong);
         kiemHongPayLoad.capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
-//        capNhatNgayThangChuKy(requestKiemHong, existedKiemHong);
-//        validateXacNhan(user, requestKiemHong, existedKiemHong);
+        kiemHongPayLoad.validateXacNhan(user, requestKiemHong, existedKiemHong);
+
         cleanKiemHongDetails(kiemHongPayLoad, existedKiemHong);
         Long requestId = existedKiemHong.getRequest().getRequestId();
         PhieuDatHang pdh = existedKiemHong.getRequest().getPhieuDatHang();
@@ -198,49 +198,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private void guiVanBanDen() {
         vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.KIEM_HONG);
     }
-
-    /**
-     * Phai dung permission khi xac nhan
-     * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
-     */
-//    private void validateXacNhan(User user, KiemHong requestKiemHong, KiemHong existedKiemHong) {
-////        if ((requestKiemHong.getTroLyKTXacNhan() || requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() == null) {
-////            throw new PXException("noi_nhan.must_choose");
-////        }
-////        if ((!requestKiemHong.getTroLyKTXacNhan() && !requestKiemHong.getQuanDocXacNhan() && !requestKiemHong.getToTruongXacNhan()) && requestKiemHong.getNoiNhan() != null) {
-////            throw new PXException("Phải có người xác nhận");
-////        }
-//        if (user.isToTruong() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-//            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-//            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
-//        }
-//        if (user.isTroLyKT() && (requestKiemHong.getQuanDocXacNhan() || requestKiemHong.getToTruongXacNhan())) {
-//            requestKiemHong.setQuanDocXacNhan(existedKiemHong.getQuanDocXacNhan());
-//            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
-//        }
-//        if (user.isQuanDocPhanXuong() && (requestKiemHong.getToTruongXacNhan() || requestKiemHong.getTroLyKTXacNhan())) {
-//            requestKiemHong.setToTruongXacNhan(existedKiemHong.getToTruongXacNhan());
-//            requestKiemHong.setTroLyKTXacNhan(existedKiemHong.getTroLyKTXacNhan());
-//        }
-//
-//    }
-
-    /**
-     * khi co xac nhan thi cap nhat ngay thang
-     */
-//    private void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
-//        if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
-//            requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsString());
-//        }
-//        if (requestKiemHong.getQuanDocXacNhan() != existedKiemHong.getQuanDocXacNhan()) {
-//            requestKiemHong.setNgayThangNamQuanDoc(DateTimeUtils.nowAsString());
-//        }
-//        if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
-//            requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsString());
-//        }
-//
-//
-//    }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
 //        pdh.setSo(requestKiemHong.getSoHieu());

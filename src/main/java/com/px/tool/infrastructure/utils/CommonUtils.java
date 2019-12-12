@@ -3,6 +3,7 @@ package com.px.tool.infrastructure.utils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 public class CommonUtils {
 
@@ -18,4 +19,13 @@ public class CommonUtils {
         String val = (((float) i1 * 100) / i2 + "");
         return val.length() > 5 ? val.substring(0, 6) : val;
     }
+
+    public static String toString(Collection<Long> numbers) {
+        StringBuilder s = new StringBuilder();
+        for (Long cusReceiver : numbers) {
+            s.append(cusReceiver).append(",");
+        }
+        return s.substring(0, s.length() - 1);
+    }
+
 }

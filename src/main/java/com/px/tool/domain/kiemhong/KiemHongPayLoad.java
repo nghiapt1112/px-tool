@@ -2,6 +2,7 @@ package com.px.tool.domain.kiemhong;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
@@ -12,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +79,10 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
     private Long quanDocId;
     private Long troLyId;
     private Long toTruongId;
+
+    private List<Long> cusReceivers;
+    private String cusNoiDung;
+    private List<Long> nguoiThucHien;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad payload = new KiemHongPayLoad();
@@ -223,6 +227,21 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         }
         if (requestKiemHong.getTroLyKTXacNhan() != existedKiemHong.getTroLyKTXacNhan()) {
             requestKiemHong.setNgayThangNamTroLyKT(DateTimeUtils.nowAsMilliSec());
+        }
+    }
+
+    @Override
+    public void validateXacNhan(User user, KiemHong request, KiemHong existed) {
+        /**
+         * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen.
+         * To truong review thi phai dien day du thong tin trong detail, ngoai tru "phuong phap khac phuc".
+         */
+        if (user.isToTruong()) {
+            for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
+                if (kiemHongDetail.isInvalidData()) {
+                    throw new PXException("kiemhong.data_invalid");
+                }
+            }
         }
     }
 }

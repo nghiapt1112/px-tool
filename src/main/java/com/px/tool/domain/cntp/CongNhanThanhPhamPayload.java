@@ -206,4 +206,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         }
     }
 
+    @Override
+    public void validateXacNhan(User user, CongNhanThanhPham request, CongNhanThanhPham existed) {
+
+    }
 }

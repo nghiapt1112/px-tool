@@ -4,6 +4,7 @@ import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
 @Getter
 @Setter
@@ -41,5 +42,11 @@ public class KiemHongDetailPayload extends AbstractObject {
         KiemHongDetail kiemHongDetail = new KiemHongDetail();
         BeanUtils.copyProperties(this, kiemHongDetail);
         return kiemHongDetail;
+    }
+
+    public boolean isInvalidData() {
+        return StringUtils.isEmpty(tenPhuKien) || StringUtils.isEmpty(kyHieu)
+                || StringUtils.isEmpty(sl) || StringUtils.isEmpty(dvt)
+                || StringUtils.isEmpty(dangHuHong) || StringUtils.isEmpty(nguoiKiemHong);
     }
 }

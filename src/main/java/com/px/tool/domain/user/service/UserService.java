@@ -33,7 +33,9 @@ public interface UserService extends UserDetailsService {
 
     List<NoiNhan> findVanBanDenNoiNhan();
 
-    List<PhanXuongPayload> findListPhanXuong();
+    List<PhanXuongPayload> findListPhanXuong(Long userId);
+
+    List<PhanXuongPayload> findNguoiThucHien();
 
     List<ToSXPayload> findListToSanXuat(Long pxId);
 

@@ -1,7 +1,9 @@
 package com.px.tool.infrastructure.model.payload;
 
+import com.px.tool.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -34,11 +36,20 @@ public abstract class EntityDefault extends AbstractObject {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = nowAsDate();
+        try {
+            this.updatedBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
+        } catch (Exception e) {
+        }
     }
 
     @PrePersist
     protected void onSave() {
         this.createdAt = nowAsDate();
         this.createdAt = nowAsDate();
+        try {
+            this.createdBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
+            this.updatedBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
+        } catch (Exception e) {
+        }
     }
 }

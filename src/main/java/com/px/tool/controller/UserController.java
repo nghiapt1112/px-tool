@@ -14,7 +14,6 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;
 import com.px.tool.infrastructure.BaseController;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

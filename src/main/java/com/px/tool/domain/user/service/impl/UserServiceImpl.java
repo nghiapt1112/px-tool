@@ -18,11 +18,9 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.CacheConfiguration;
+import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -72,7 +70,7 @@ public class UserServiceImpl implements UserService {
     private PhongBanServiceImpl phongBanService;
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheService cacheService;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -80,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + username));
     }
 
-    @Cacheable(value = CacheConfiguration.CACHE_USER)
+    @Cacheable(value = CacheService.CACHE_USER)
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -316,7 +314,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PhanXuongPayload> findListPhanXuong() {
+    public List<PhanXuongPayload> findListPhanXuong(Long userId) {
+        try {
+            return userRepository.findByGroup(Arrays.asList(findById(userId).getPhongBan().getPhongBanId()))
+                    .stream()
+                    .filter(el -> el.getLevel() == 3)
+                    .map(PhanXuongPayload::fromUserEntity)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            return PhanXuongPayload.emptyList;
+        }
+    }
+
+    @Override
+    public List<PhanXuongPayload> findNguoiThucHien() {
         return userRepository.findByGroup(group_17_25)
                 .stream()
                 .filter(el -> el.getLevel() == 3)
@@ -333,7 +344,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = CacheConfiguration.CACHE_USER_BY_ID)
+    @Cacheable(value = CacheService.CACHE_USER_BY_ID)
     @Override
     public Map<Long, User> userById() {
         return this.findAll()
@@ -352,10 +363,7 @@ public class UserServiceImpl implements UserService {
         entity.setPhongBan(phongBanService.findById(user.getPhongBanId()));
 
         userRepository.save(entity);
-
-        cacheManager.getCacheNames().stream()
-                .filter(cacheName -> cacheName.equalsIgnoreCase(CacheConfiguration.CACHE_USER))
-                .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
+        cacheService.clearCache(CacheService.CACHE_USER);
     }
 
 }

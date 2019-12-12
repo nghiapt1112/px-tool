@@ -13,7 +13,6 @@ public class VanBanDenPageResponse extends AbstractPageResponse<VanBanDenRespons
         super(page, size);
     }
 
-    @Override
     public VanBanDenPageResponse build() {
         return this;
     }

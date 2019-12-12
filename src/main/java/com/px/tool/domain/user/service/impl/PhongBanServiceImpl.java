@@ -2,7 +2,7 @@ package com.px.tool.domain.user.service.impl;
 
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.repository.PhongBanRepository;
-import com.px.tool.infrastructure.CacheConfiguration;
+import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,7 +17,7 @@ public class PhongBanServiceImpl {
     @Autowired
     private PhongBanRepository phongBanRepository;
 
-    @Cacheable(value = CacheConfiguration.CACHE_PHONG_BAN)
+    @Cacheable(value = CacheService.CACHE_PHONG_BAN)
     public Map<Long, PhongBan> findAll() {
         return phongBanRepository.findAll()
                 .stream()

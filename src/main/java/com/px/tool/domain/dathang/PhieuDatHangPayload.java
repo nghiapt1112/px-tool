@@ -72,6 +72,10 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     // update flow moi
     private Long trolyKT; // cac tro ly nay thuoc 8,9 level = 4
 
+    private List<Long> cusReceivers;
+    private String cusNoiDung;
+    private List<Long> nguoiThucHien;
+
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload payload = new PhieuDatHangPayload();
         BeanUtils.copyProperties(phieuDatHang, payload);
@@ -199,5 +203,10 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         if (requestDatHang.getTpkthkXacNhan() != existedPhieuDatHang.getTpkthkXacNhan()) {
             requestDatHang.setNgayThangNamTPKTHK(DateTimeUtils.nowAsMilliSec());
         }
+    }
+
+    @Override
+    public void validateXacNhan(User user, PhieuDatHang request, PhieuDatHang existed) {
+
     }
 }

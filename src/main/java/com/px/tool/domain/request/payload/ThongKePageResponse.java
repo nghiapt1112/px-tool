@@ -22,7 +22,6 @@ public class ThongKePageResponse extends AbstractPageResponse<ThongKeDetailPaylo
         }
     }
 
-    @Override
     public ThongKePageResponse build() {
         return this;
     }

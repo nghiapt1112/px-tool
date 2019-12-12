@@ -2,7 +2,7 @@ package com.px.tool.domain.user.service.impl;
 
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.repository.RoleRepository;
-import com.px.tool.infrastructure.CacheConfiguration;
+import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class RoleServiceImpl {
     private RoleRepository roleRepository;
 
     //    @Cacheable(value = "reservationsCache", key = "#userName")
-    @Cacheable(value = CacheConfiguration.CACHE_ROLE)
+    @Cacheable(value = CacheService.CACHE_ROLE)
     public Map<Long, Role> findAll() {
         PXLogger.info("Finding log...");
         return roleRepository.findAll()

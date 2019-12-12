@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -168,12 +169,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                         .collect(Collectors.toSet())
         );
         try {
-            String s = "";
-            for (Long cusReceiver : this.cusReceivers) {
-                s += cusReceiver + ",";
-            }
-            s = s.substring(0, s.length() - 1);
-            phuongAn.setCusReceivers(s);
+            phuongAn.setCusReceivers(CommonUtils.toString(this.cusReceivers));
         } catch (Exception e) {
 
         }
@@ -289,5 +285,10 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         if (pa.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
             pa.setNgayThangNamGiamDoc(DateTimeUtils.nowAsMilliSec());
         }
+    }
+
+    @Override
+    public void validateXacNhan(User user, PhuongAn request, PhuongAn existed) {
+
     }
 }
