@@ -2,6 +2,7 @@ package com.px.tool.domain.phuongan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import com.px.tool.infrastructure.utils.CommonUtils;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -117,27 +117,13 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         payload.setNoiNhan(null);
 
         try {
-            List<Long> recv = new ArrayList<>();
-            for (String s : phuongAn.getCusReceivers().split(",")) {
-                recv.add(Long.valueOf(s));
-            }
-            payload.setCusReceivers(recv);
+            payload.setCusReceivers(CommonUtils.toCollection(phuongAn.getCusReceivers()));
+            payload.setNguoiThucHien(CommonUtils.toCollection(phuongAn.getNguoiThucHien()));
         } catch (Exception e) {
 
         }
-//        payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getngaythangnam);
-//        payload.ngayThangNamNguoiLap = "";
-//        payload.ngayThangNamPheDuyet = "";
-//        payload.ngayThangNamTPKEHOACH = "";
-//        payload.ngayThangNamTPKTHK = "";
-//        payload.ngayThangNamtpVatTu = "";
 
         return payload;
-    }
-
-    public PhuongAnPayload withFiles(List<String> files) {
-        this.files = files;
-        return this;
     }
 
     public PhuongAn toEntity(PhuongAn phuongAn) {
@@ -170,10 +156,16 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         );
         try {
             phuongAn.setCusReceivers(CommonUtils.toString(this.cusReceivers));
+            phuongAn.setNguoiThucHien(CommonUtils.toString(this.nguoiThucHien));
         } catch (Exception e) {
 
         }
         return phuongAn;
+    }
+
+    public PhuongAnPayload withFiles(List<String> files) {
+        this.files = files;
+        return this;
     }
 
     public PhuongAnPayload filterPermission(User user) {
@@ -268,6 +260,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         return null;
     }
 
+    // TODO: nghiapt-> chuyen sang kieu long cho field ngaythangnam
     @Override
     public void capNhatNgayThangChuKy(PhuongAn pa, PhuongAn existedPhuongAn) {
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
@@ -289,6 +282,25 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
 
     @Override
     public void validateXacNhan(User user, PhuongAn request, PhuongAn existed) {
-
+        if (Objects.nonNull(this.noiNhan)) {
+            if (user.isNguoiLapPhieu()) {
+                if (Objects.isNull(cusNoiDung) || Objects.isNull(cusReceivers) || Objects.isNull(nguoiThucHien)) {
+                    throw new PXException("phuongan.vanbanden");
+                }
+                for (DinhMucLaoDongPayload dinhMucLaoDong : dinhMucLaoDongs) {
+                    if (dinhMucLaoDong.isInvalidData()) {
+                        throw new PXException("phuongan.dmLaoDong");
+                    }
+                }
+            }
+            if (user.isNhanVienVatTu() || user.isTruongPhongVatTu()) {
+                for (DinhMucVatTuPayload mucVatTus : this.dinhMucVatTus) {
+                    if (mucVatTus.isInvalidData()) {
+                        throw new PXException("phuongan.dinhmucvattu");
+                    }
+                }
+            }
+            // TODO: NghiaPT  nơi nhận mà có data thì "xác nhận " của userhiện tại phải == true
+        }
     }
 }

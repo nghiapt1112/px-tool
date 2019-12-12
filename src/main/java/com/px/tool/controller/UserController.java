@@ -107,5 +107,4 @@ public class UserController extends BaseController {
     public Collection<PhongBan> findAllPhongBan() {
         return phongBanService.findAll().values();
     }
-
 }

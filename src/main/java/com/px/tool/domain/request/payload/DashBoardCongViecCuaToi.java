@@ -101,13 +101,30 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         DashBoardCongViecCuaToi dashBoardCongViecCuaToi = new DashBoardCongViecCuaToi();
         dashBoardCongViecCuaToi.ma = "Key-" + el.getPaId();
         dashBoardCongViecCuaToi.requestId = el.getPaId();
-
+        dashBoardCongViecCuaToi.status = "Vừa tạo";
         if (el.getCntpReceiverId() == null) {
             dashBoardCongViecCuaToi.type = RequestType.PHUONG_AN;
+            dashBoardCongViecCuaToi.setNoiDung(el.getNoiDung());
+            if (el.getNguoiLapXacNhan()) {
+                dashBoardCongViecCuaToi.status = "Người lập phiếu đã ký";
+            }
+            if (el.getTruongPhongKTHKXacNhan()) {
+                dashBoardCongViecCuaToi.status = "Trưởng phòng đã ký";
+            }
+            if (el.getTruongPhongVatTuXacNhan()) {
+                dashBoardCongViecCuaToi.status = "Phòng vật tư phiếu đã ký";
+            }
+            if (el.getTruongPhongKeHoachXacNhan()) {
+                dashBoardCongViecCuaToi.status = " Phòng kế hoạch đã ký";
+            }
+            if (el.getGiamDocXacNhan()) {
+                dashBoardCongViecCuaToi.status = " Giám đốc đã ký";
+            }
         } else {
             dashBoardCongViecCuaToi.type = RequestType.CONG_NHAN_THANH_PHAM;
+
         }
-        dashBoardCongViecCuaToi.status = "Vừa tạo";
+
 
         return dashBoardCongViecCuaToi;
     }

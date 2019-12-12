@@ -16,8 +16,6 @@ public interface PhuongAnService {
 
     PhuongAn save(Long userId, PhuongAnPayload phuongAnPayload);
 
-    PhuongAn savePhuongAn(PhuongAn phuongAn);
-
     NguoiDangXuLy findNguoiDangXuLy(Long requsetId);
 
     PhuongAnTaoMoi taoPhuongAnMoi(RequestTaoPhuongAnMoi requestTaoPhuongAnMoi);

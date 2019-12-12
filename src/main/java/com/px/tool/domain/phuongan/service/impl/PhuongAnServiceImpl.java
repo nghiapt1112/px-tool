@@ -123,9 +123,8 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         PhuongAn phuongAn = new PhuongAn();
         phuongAnPayload.toEntity(phuongAn);
         phuongAnPayload.capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
+        phuongAnPayload.validateXacNhan(user, phuongAn, existedPhuongAn);
 
-//        validateXacNhan(user, phuongAn, existedPhuongAn);
-//        capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         if (phuongAn.allApproved()) {
             existedPhuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             taoCNTP(phuongAn, thanhPham);
@@ -165,6 +164,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {
+        if (congNhanThanhPham == null) {
+            congNhanThanhPham = new CongNhanThanhPham();
+            congNhanThanhPham.setPhuongAn(phuongAn);
+        }
         congNhanThanhPham.setTenSanPham(phuongAn.getSanPham());
         congNhanThanhPham.setNoiDung(phuongAn.getNoiDung());
         congNhanThanhPham.setSoPA(phuongAn.getMaSo());
@@ -268,11 +271,6 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             e.printStackTrace();
             throw new RuntimeException("Co loi xay ra trong qua trinh clean DinhMucVatTu, DinhMucLaoDong");
         }
-    }
-
-    @Override
-    public PhuongAn savePhuongAn(PhuongAn phuongAn) {
-        return this.phuongAnRepository.save(phuongAn);
     }
 
     @Override

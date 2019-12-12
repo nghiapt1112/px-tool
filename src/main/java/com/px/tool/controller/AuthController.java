@@ -57,13 +57,4 @@ public class AuthController extends BaseController {
         return authService.generateToken(authService.loadUserById(userId));
     }
 
-    /**
-     * Revoke/delete/remove/ token
-     */
-    @PostMapping("/token/revoke")
-    public Boolean revokeToken(@RequestParam String token) {
-        //TODO: remove token
-        return true;
-    }
-
 }

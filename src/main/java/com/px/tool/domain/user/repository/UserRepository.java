@@ -34,7 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.userId IN ?1")
     List<User> findByIds(Collection<Long> ids);
 
-
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.fullName = ?1 , u.signImg = ?2 WHERE u.userId = ?3")

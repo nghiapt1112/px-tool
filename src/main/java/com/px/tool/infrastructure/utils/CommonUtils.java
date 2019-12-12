@@ -3,7 +3,10 @@ package com.px.tool.infrastructure.utils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class CommonUtils {
 
@@ -21,11 +24,27 @@ public class CommonUtils {
     }
 
     public static String toString(Collection<Long> numbers) {
-        StringBuilder s = new StringBuilder();
-        for (Long cusReceiver : numbers) {
-            s.append(cusReceiver).append(",");
+        try {
+            StringBuilder s = new StringBuilder();
+            for (Long cusReceiver : numbers) {
+                s.append(cusReceiver).append(",");
+            }
+            return s.substring(0, s.length() - 1);
+        } catch (Exception e) {
+            return "";
         }
-        return s.substring(0, s.length() - 1);
+    }
+
+    public static List<Long> toCollection(String numberChain) {
+        try {
+            List<Long> val = new ArrayList<>();
+            for (String s : numberChain.split(",")) {
+                val.add(Long.valueOf(s));
+            }
+            return val;
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
 }

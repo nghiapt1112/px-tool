@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,7 +75,6 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
 
     private List<Long> cusReceivers;
     private String cusNoiDung;
-    private List<Long> nguoiThucHien;
 
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload payload = new PhieuDatHangPayload();
@@ -89,6 +89,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         payload.ngayThangNamNguoiDatHang = DateTimeUtils.toString(phieuDatHang.getNgayThangNamNguoiDatHang());
         payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPKTHK());
         payload.ngayThangNamTPVatTu = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPVatTu());
+        payload.setCusReceivers(CommonUtils.toCollection(phieuDatHang.getCusReceivers()));
         return payload;
     }
 
@@ -108,6 +109,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
                         })
                         .collect(Collectors.toSet())
         );
+        phieuDatHang.setCusReceivers(CommonUtils.toString(this.getCusReceivers()));
         return phieuDatHang;
     }
 

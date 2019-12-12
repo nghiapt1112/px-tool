@@ -84,7 +84,7 @@ public class RequestServiceImpl implements RequestService {
                 .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
 
         if (currentUser.isTroLyKT()) {
-            phieuDatHangService.findListCongViecCuaTLKT(userId);
+            phieuDatHangService.findListCongViecCuaTLKT(userId); // NOTE: nghiapt check lai code cho nay la nhu nao!
         }
 
         return pageDashBoardCongViecCuaToi;

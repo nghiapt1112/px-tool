@@ -5,6 +5,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,7 +83,6 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
 
     private List<Long> cusReceivers;
     private String cusNoiDung;
-    private List<Long> nguoiThucHien;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad payload = new KiemHongPayLoad();
@@ -108,6 +108,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         payload.ngayThangNamToTruong = DateTimeUtils.toString(kiemHong.getNgayThangNamToTruong());
         payload.ngayThangNamTroLyKT = DateTimeUtils.toString(kiemHong.getNgayThangNamTroLyKT());
 
+        payload.setCusReceivers(CommonUtils.toCollection(kiemHong.getCusReceivers()));
         return payload;
     }
 
@@ -132,6 +133,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
                             return entity;
                         })
                         .collect(Collectors.toSet()));
+        kiemHong.setCusReceivers(CommonUtils.toString(this.getCusReceivers()));
         return kiemHong;
     }
 
@@ -235,12 +237,33 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         /**
          * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen.
          * To truong review thi phai dien day du thong tin trong detail, ngoai tru "phuong phap khac phuc".
+         *  => khi chuyển đi thì detail phải đc điền.
          */
-        if (user.isToTruong()) {
+        // clear y kien:
+        if (user.isToTruong() && toTruongXacNhan) {
+            this.yKienToTruong = null;
+            request.setYKienToTruong(null);
+        }
+        if (user.isTroLyKT() && troLyKTXacNhan) {
+            yKienTroLyKT = null;
+            request.setYKienTroLyKT(null);
+        }
+        if (user.isQuanDocPhanXuong() && quanDocXacNhan) {
+            yKienQuanDoc = null;
+            request.setYKienQuanDoc(null);
+        }
+        if (!Objects.isNull(this.noiNhan)) {
             for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
                 if (kiemHongDetail.isInvalidData()) {
                     throw new PXException("kiemhong.data_invalid");
                 }
+            }
+            if (user.isToTruong() && !this.toTruongXacNhan && Objects.isNull(yKienToTruong)) {
+                throw new PXException("kiemhong.totruong_xacnhan");
+            } else if (user.isTroLyKT() && !this.troLyKTXacNhan && Objects.isNull(yKienTroLyKT)) {
+                throw new PXException("kiemhong.trolyKT_xacnhan");
+            } else if (user.isQuanDocPhanXuong() && !this.quanDocXacNhan && Objects.isNull(this.yKienQuanDoc)) {
+                throw new PXException("kiemhong.quandoc_xacnhan");
             }
         }
     }

@@ -8,9 +8,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+//@EnableCaching
 @SpringBootApplication
 @PropertySource(value = {"classpath:messages.properties"}, encoding = "UTF-8")
-@EnableCaching
 public class PxApplication {
 
     public static void main(String[] args) {

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class DinhMucVatTuPayload extends AbstractObject {
@@ -61,4 +63,10 @@ public class DinhMucVatTuPayload extends AbstractObject {
         return dinhMucVatTu;
     }
 
+    public boolean isInvalidData() {
+        return Objects.isNull(tenVatTuKyThuat) || Objects.isNull(kyMaKyHieu) || Objects.isNull(dvt) ||
+                Objects.isNull(dm1SP) || Objects.isNull(soLuongSanPham) || Objects.isNull(tongNhuCau) ||
+                Objects.isNull(khoDonGia) || Objects.isNull(khoSoLuong) || Objects.isNull(khoThanhTien)  ||
+                Objects.isNull(mnDonGia) || Objects.isNull(mnSoLuong) || Objects.isNull(mnThanhTien);
+    }
 }

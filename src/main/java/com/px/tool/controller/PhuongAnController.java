@@ -40,7 +40,6 @@ public class PhuongAnController extends BaseController {
 
     @PostMapping
     public PhuongAn createPhuongAn(HttpServletRequest httpServletRequest, @RequestBody PhuongAnPayload phuongAnPayload) {
-        logger.info("Tao Phuong An, \ndata: {}", phuongAnPayload);
         return this.phuongAnService.save(extractUserInfo(httpServletRequest), phuongAnPayload);
     }
 

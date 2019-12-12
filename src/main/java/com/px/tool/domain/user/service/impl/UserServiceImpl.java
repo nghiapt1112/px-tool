@@ -20,8 +20,8 @@ import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.logger.PXLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,10 +77,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + username));
     }
 
-    @Cacheable(value = CacheService.CACHE_USER)
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        PXLogger.info("Fetching all users");
+        return cacheService.getUsers_cache();
     }
 
     @Override
@@ -217,7 +216,7 @@ public class UserServiceImpl implements UserService {
                 pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 4);
             } else {
                 // TODO chuyen nhan vien tiep lieu (nhung dang khong luu nen chuyen ve luon nguoi lap)
-                pbs = toUserStream(nguoiDangXuLy.getNguoiLap());
+                pbs = toUserStream(nguoiDangXuLy.getTpKTHK());
             }
         } else if (currentUser.isNhanVienDinhMuc()) { // chuyen truong phong ke hoach
             pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 3);
@@ -256,8 +255,9 @@ public class UserServiceImpl implements UserService {
             pbs = userRepository.findByGroup(group_12).stream();
         } else if (currentUser.isTruongPhongVatTu()) {
             if (!requestParams.getTpVatTu()) {
-                pbs = userRepository.findByGroup(group_12).stream()
-                        .filter(el -> el.getLevel() == 4);
+//                pbs = userRepository.findByGroup(group_12).stream()
+//                        .filter(el -> el.getLevel() == 4);
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getNguoiDatHangId()));
             } else {
                 pbs = userRepository.findByGroup(group_29_40).stream()
                         .filter(el -> el.getLevel() == 4);
@@ -269,7 +269,11 @@ public class UserServiceImpl implements UserService {
             //TODO: neu truong phong kthk dong y thi tao van ban den + PA
 //            pbs = userRepository.findByGroup(group_29_40).stream()
 //                    .filter(el -> el.getLevel() == 4);
-            pbs = Stream.empty();
+            if (!requestParams.getTpKTHK()) {
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getTpvatTuId()));
+            } else {
+                pbs = Stream.empty();
+            }
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));
@@ -283,18 +287,21 @@ public class UserServiceImpl implements UserService {
                     .stream()
                     .filter(el -> el.getLevel() == 4);
         } else if (currentUser.isTroLyKT()) {
-            pbs = userRepository.findByGroup(group_17_25)
-                    .stream()
-                    .filter(el -> el.getLevel() == 3);
+            if (requestParams.getTroLyKT()) {
+//                pbs = userRepository.findByGroup(group_17_25)
+//                        .stream()
+//                        .filter(el -> el.getLevel() == 3);
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getPhanXuong()));
+            } else {
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getToTruongId()));
+            }
         } else if (currentUser.isQuanDocPhanXuong()) {
             if (requestParams.getQuanDoc()) {
                 pbs = userRepository.findByGroup(group_12)
                         .stream()
                         .filter(el -> el.getLevel() == 4);
             } else {
-                pbs = userRepository.findByGroup(group_29_40)
-                        .stream()
-                        .filter(el -> el.getLevel() == 4);
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getTroLyId()));
             }
         }
         if (pbs != null) {
@@ -304,13 +311,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<NoiNhan> findVanBanDenNoiNhan() {
-        List<User> users = userRepository.findAll();
-        if (users != null) {
-            return users.stream()
-                    .map(NoiNhan::fromUserEntity)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return cacheService.getUsers_cache()
+                .stream()
+                .map(NoiNhan::fromUserEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -344,12 +348,9 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = CacheService.CACHE_USER_BY_ID)
     @Override
     public Map<Long, User> userById() {
-        return this.findAll()
-                .stream()
-                .collect(Collectors.toMap(User::getUserId, Function.identity()));
+        return cacheService.getUserById_cache();
     }
 
     @Override

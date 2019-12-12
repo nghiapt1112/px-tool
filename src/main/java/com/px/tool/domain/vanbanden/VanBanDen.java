@@ -34,10 +34,18 @@ public class VanBanDen extends EntityDefault {
 
     @Column
     public String type;
+
     @Column
     @Enumerated
     public RequestType requestType;
+
     @Column
     private Boolean read;
 
+    @Column
+    private Long folder;
+
+    public Long getFolder() {
+        return folder == null ? 0 : folder;
+    }
 }

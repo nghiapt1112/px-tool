@@ -102,6 +102,11 @@ public class PhieuDatHang extends EntityDefault {
 
     // update flow moi
     private Long trolyKT; // cac tro ly nay thuoc 8,9 level = 4
+    // gui van ban den
+    @Column
+    private String cusReceivers;
+    @Column
+    private String cusNoiDung;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "phieuDatHang", cascade = CascadeType.ALL)

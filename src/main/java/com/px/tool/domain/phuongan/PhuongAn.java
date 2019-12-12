@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -162,6 +163,9 @@ public class PhuongAn extends EntityDefault {
 
     @Column
     private String cusNoiDung;
+
+    @Column
+    private String nguoiThucHien;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)

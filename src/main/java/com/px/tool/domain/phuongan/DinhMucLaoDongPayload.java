@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class DinhMucLaoDongPayload extends AbstractObject {
@@ -33,5 +35,9 @@ public class DinhMucLaoDongPayload extends AbstractObject {
 //        }
         BeanUtils.copyProperties(this, dinhMucLaoDong);
         return dinhMucLaoDong;
+    }
+
+    public boolean isInvalidData() {
+        return Objects.isNull(noiDungCongViec) || Objects.isNull(bacCV);
     }
 }

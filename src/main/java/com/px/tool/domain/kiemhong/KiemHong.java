@@ -115,6 +115,12 @@ public class KiemHong extends EntityDefault {
     @Column
     private Long toTruongId;
 
+    // gui van ban den
+    @Column
+    private String cusReceivers;
+    @Column
+    private String cusNoiDung;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "kiemHong", cascade = CascadeType.ALL)
     private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();

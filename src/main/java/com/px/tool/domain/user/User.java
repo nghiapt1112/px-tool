@@ -1,6 +1,7 @@
 package com.px.tool.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
@@ -59,6 +62,11 @@ public class User extends EntityDefault implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "phongBanId")
     private PhongBan phongBan;
+
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "folderId")
+    private Folder folder;
 
     @JsonManagedReference
     @Override
