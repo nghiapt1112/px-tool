@@ -19,6 +19,7 @@ import com.px.tool.domain.user.service.impl.RoleServiceImpl;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -131,9 +132,9 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/list-thu-muc")
-    public List<FolderPayload> getDanhSachThuMuc() {
+    public List<FolderPayload> getDanhSachThuMuc(HttpServletRequest request) {
         return folderRepository
-                .findAll()
+                .findAll(extractUserInfo(request))
                 .stream()
                 .filter(Objects::nonNull)
                 .map(FolderPayload::fromEntity)
