@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Collection;
@@ -64,9 +65,8 @@ public class User extends EntityDefault implements UserDetails {
     private PhongBan phongBan;
 
     @JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "folderId")
-    private Folder folder;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Folder> folders = new HashSet<>();
 
     @JsonManagedReference
     @Override
