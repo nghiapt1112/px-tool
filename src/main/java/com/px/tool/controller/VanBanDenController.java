@@ -42,6 +42,7 @@ public class VanBanDenController extends BaseController {
                                            @RequestParam(required = false, defaultValue = "10") Integer size,
                                            @RequestParam(required = false) Long date,
                                            @RequestParam(required = false) String soVb,
+                                           @RequestParam(required = false, defaultValue = "1") Long folder,
                                            @RequestParam(required = false) RequestType loaiVb) {
 
         return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
