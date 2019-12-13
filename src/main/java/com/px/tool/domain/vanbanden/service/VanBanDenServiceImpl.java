@@ -7,6 +7,7 @@ import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
+import com.px.tool.domain.vanbanden.payload.VanBanDenMoveFolder;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageResponse;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
@@ -134,5 +135,10 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         } catch (Exception e) {
             logger.error("[Kiem hong] Can't save Van Ban Den");
         }
+    }
+
+    @Transactional
+    public void moveToFolder(VanBanDenMoveFolder moveFolder) {
+        vanBanDenRepository.moveFolder(moveFolder.getVbdId(), moveFolder.getFolderId());
     }
 }

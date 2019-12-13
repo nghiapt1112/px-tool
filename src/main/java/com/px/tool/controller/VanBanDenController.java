@@ -2,6 +2,7 @@ package com.px.tool.controller;
 
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
+import com.px.tool.domain.vanbanden.payload.VanBanDenMoveFolder;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageResponse;
 import com.px.tool.domain.vanbanden.payload.VanBanDenRequest;
@@ -41,7 +42,7 @@ public class VanBanDenController extends BaseController {
                                            @RequestParam(required = false, defaultValue = "10") Integer size,
                                            @RequestParam(required = false) Long date,
                                            @RequestParam(required = false) String soVb,
-                                           @RequestParam(required = false) RequestType loaiVb ) {
+                                           @RequestParam(required = false) RequestType loaiVb) {
 
         return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
     }
@@ -61,4 +62,8 @@ public class VanBanDenController extends BaseController {
         vanBanDenService.deleteById(id);
     }
 
+    @PostMapping("/move-vbd")
+    public void moveVanBDToFolder(@RequestBody VanBanDenMoveFolder moveFolder) {
+        vanBanDenService.moveToFolder(moveFolder);
+    }
 }
