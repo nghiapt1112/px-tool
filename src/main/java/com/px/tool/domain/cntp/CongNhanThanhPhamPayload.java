@@ -94,6 +94,11 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                         .map(NoiDungThucHienPayload::fromEntity)
                         .collect(Collectors.toList())
         );
+        try {
+            congNhanThanhPhamPayload.soPA = "PA-"+congNhanThanhPham.getPhuongAn().getPaId();
+        } catch (Exception e) {
+            congNhanThanhPhamPayload.soPA = "[Trống]";
+        }
         congNhanThanhPhamPayload.setNoiNhan(null);
         return congNhanThanhPhamPayload;
     }
