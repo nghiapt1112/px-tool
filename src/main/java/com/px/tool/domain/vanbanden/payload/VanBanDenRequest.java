@@ -13,6 +13,7 @@ import java.util.List;
 public class VanBanDenRequest {
     private Long vbdId;
     private Long noiNhan;
+    private String soPa;
     private String noiDung;
     private List<String> files;
 

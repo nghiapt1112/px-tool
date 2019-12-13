@@ -12,6 +12,7 @@ public class VanBanDenDetail {
     private Long vbdId;
     private Long noiNhan;
     private String noiDung;
+    private String soPa;
     private List<String> files;
 
     public static VanBanDenDetail fromEntity(VanBanDen vanBanDen) {
@@ -19,6 +20,7 @@ public class VanBanDenDetail {
         payload.vbdId = vanBanDen.getVbdId();
         payload.noiNhan = vanBanDen.getNoiNhan();
         payload.noiDung = vanBanDen.getNoiDung();
+        payload.soPa = vanBanDen.getSoPa();
         return payload;
     }
 

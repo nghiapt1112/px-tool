@@ -29,6 +29,9 @@ public class VanBanDen extends EntityDefault {
     public Long noiNhan;
 
     @Column
+    private String soPa;
+
+    @Column
     @Type(type = "text")
     public String noiDung;
 
@@ -47,5 +50,9 @@ public class VanBanDen extends EntityDefault {
 
     public Long getFolder() {
         return folder == null ? 0 : folder;
+    }
+
+    public String getSoPa() {
+        return soPa == null ? "" : soPa;
     }
 }
