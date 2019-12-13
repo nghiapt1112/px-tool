@@ -59,7 +59,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
      * @return
      */
     public VanBanDenPageResponse findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
-        Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
+        Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, vanBanDenPageRequest.toPageRequest());
         return toResponse(val, vanBanDenPageRequest);
     }
 
