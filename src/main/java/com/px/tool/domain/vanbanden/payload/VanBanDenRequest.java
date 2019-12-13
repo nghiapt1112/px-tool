@@ -16,6 +16,7 @@ public class VanBanDenRequest {
     private String soPa;
     private String noiDung;
     private List<String> files;
+    private List<Long> cusReceivers;
 
     public static VanBanDenRequest fromEntity(VanBanDen vanBanDen) {
         VanBanDenRequest payload = new VanBanDenRequest();
