@@ -42,32 +42,16 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPham existedCongNhanThanhPham = congNhanThanhPhamRepository
                 .findById(congNhanThanhPhamPayload.getTpId())
                 .orElse(null);
-//        Long requestId = existedCongNhanThanhPham.getRequest().getRequestId();
-//        Long kiemHongReceiverId = existedCongNhanThanhPham.getRequest().getKiemHongReceiverId();
-//        Long phieuDatHangReceiverId = existedCongNhanThanhPham.getRequest().getPhieuDatHangReceiverId();
-//        Long phuongAnReceiverId = existedCongNhanThanhPham.getRequest().getPhuongAnReceiverId();
-        Long cntpReceiverId = Objects.isNull(congNhanThanhPhamPayload.getNoiNhan()) ? userId : congNhanThanhPhamPayload.getNoiNhan();
 
         User user = userService.findById(userId);
         congNhanThanhPhamPayload.capNhatChuKy(user);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
         congNhanThanhPhamPayload.capNhatNgayThangChuKy(congNhanThanhPham, existedCongNhanThanhPham);
-//        capNhatNgayThangNam(congNhanThanhPham, existedCongNhanThanhPham);
         cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
-//        requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
-
-//    private void capNhatNgayThangNam(CongNhanThanhPham request, CongNhanThanhPham existed) {
-//        if (request.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
-//            request.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsString());
-//        }
-//        if (request.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
-//            request.setNgayThangNamTPKCS(DateTimeUtils.nowAsString());
-//        }
-//    }
 
     private void cleanOldDetailData(CongNhanThanhPhamPayload requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {
         if (Objects.isNull(requestCNTP)) {
@@ -86,8 +70,6 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
     @Override
     public CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id) {
         Request request = requestService.findById(id);
-//        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(request.getCongNhanThanhPham());
-
         CongNhanThanhPham existedCNTP = congNhanThanhPhamRepository
                 .findById(id)
                 .orElseThrow(() -> new PXException("cntp.not_found"));
@@ -95,9 +77,9 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         payload.setRequestId(request.getRequestId());
         payload.filterPermission(userService.findById(userId));
 
-
         payload.processSignImgAndFullName(userService.userById());
         return payload;
     }
+
 
 }

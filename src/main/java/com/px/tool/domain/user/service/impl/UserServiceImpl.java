@@ -197,10 +197,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private void filterTheoPhuongAn(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
-        Stream<User> pbs = null;
+        Stream<User> pbs = Stream.empty();
         NguoiDangXuLy nguoiDangXuLy = phuongAnService.findNguoiDangXuLy(requestParams.getRequestId());
         if (currentUser.isNguoiLapPhieu()) {
-            pbs = userRepository.findByGroup(group_29_40).stream().filter(el -> el.getLevel() == 3);
+            if (requestParams.getNguoiLap()) {
+                pbs = userRepository.findByGroup(group_29_40).stream().filter(el -> el.getLevel() == 3);
+            }
         } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d
             if (requestParams.getTpKTHK()) {
                 pbs = userRepository.findByGroup(group_12).stream().filter(el -> el.getLevel() == 4);
@@ -231,9 +233,7 @@ public class UserServiceImpl implements UserService {
             // TODO: neu giam doc khong dong y, chuyen ve TPKTHK/XMDC:
             if (!requestParams.getGiamDoc()) {
                 pbs = toUserStream(nguoiDangXuLy.getTpKTHK());
-            } else {
-                pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 3);
-            }
+            } // NOTE: KHi hoàn thành phương án thì sử dụng data ở mục: các đơn vị thực hiện. Đến đây thì tạo p.a success
         }
         if (pbs != null) {
             users.addAll(pbs.collect(Collectors.toList()));

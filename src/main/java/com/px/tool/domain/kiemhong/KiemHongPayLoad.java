@@ -221,6 +221,10 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
 
     @Override
     public void capNhatNgayThangChuKy(KiemHong requestKiemHong, KiemHong existedKiemHong) {
+        requestKiemHong.setNgayThangNamToTruong(existedKiemHong.getNgayThangNamToTruong());
+        requestKiemHong.setNgayThangNamTroLyKT(existedKiemHong.getNgayThangNamTroLyKT());
+        requestKiemHong.setNgayThangNamQuanDoc(existedKiemHong.getNgayThangNamQuanDoc());
+
         if (requestKiemHong.getToTruongXacNhan() != existedKiemHong.getToTruongXacNhan()) {
             requestKiemHong.setNgayThangNamToTruong(DateTimeUtils.nowAsMilliSec());
         }

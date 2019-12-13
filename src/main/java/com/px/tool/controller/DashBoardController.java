@@ -24,6 +24,6 @@ public class DashBoardController extends BaseController {
                                                              @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         Long userId = extractUserInfo(httpServletRequest);
-        return requestService.timByNguoiNhan(userId, new PageRequest(page, size));
+        return requestService.timVanBanCanGiaiQuyet(userId, new PageRequest(page, size));
     }
 }

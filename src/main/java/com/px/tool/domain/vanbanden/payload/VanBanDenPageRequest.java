@@ -1,6 +1,5 @@
 package com.px.tool.domain.vanbanden.payload;
 
-import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.infrastructure.model.payload.PageRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,5 @@ public class VanBanDenPageRequest extends PageRequest {
     @Override
     public org.springframework.data.domain.PageRequest toPageRequest() {
         return org.springframework.data.domain.PageRequest.of(page, size, Sort.by("createdAt").descending());
-
-
     }
 }

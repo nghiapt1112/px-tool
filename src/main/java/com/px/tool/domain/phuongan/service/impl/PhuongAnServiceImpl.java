@@ -25,7 +25,6 @@ import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -163,7 +161,8 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         vanBanDenService.guiVanBanDen(group_cac_truong_phong, RequestType.PHUONG_AN);
     }
 
-    private void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {
+    @Transactional
+    public void taoCNTP(PhuongAn phuongAn, CongNhanThanhPham congNhanThanhPham) {
         if (congNhanThanhPham == null) {
             congNhanThanhPham = new CongNhanThanhPham();
             congNhanThanhPham.setPhuongAn(phuongAn);
@@ -279,8 +278,8 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     @Override
-    public PhuongAnTaoMoi taoPhuongAnMoi(RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
-        PhuongAn phuongAn = taoPhuongAnMoi();
+    public PhuongAnTaoMoi taoPhuongAnMoi(Long userid, RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
+        PhuongAn phuongAn = taoPhuongAnMoi(userid);
         CongNhanThanhPham cntp = congNhanThanhPhamRepository.save(new CongNhanThanhPham());
         kiemHongDetailRepository.taoPhuongAn(phuongAn.getPaId(), requestTaoPhuongAnMoi.getDetailIds());
         PhuongAnTaoMoi paMoi = new PhuongAnTaoMoi();
@@ -291,8 +290,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     @Transactional
-    public PhuongAn taoPhuongAnMoi() {
-        return phuongAnRepository.save(new PhuongAn());
+    public PhuongAn taoPhuongAnMoi(Long userid) {
+        PhuongAn pa = new PhuongAn();
+        pa.setNguoiLapId(userid);
+        return phuongAnRepository.save(pa);
     }
 
     @Override

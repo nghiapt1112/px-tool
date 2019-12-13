@@ -18,7 +18,7 @@ public interface PhuongAnService {
 
     NguoiDangXuLy findNguoiDangXuLy(Long requsetId);
 
-    PhuongAnTaoMoi taoPhuongAnMoi(RequestTaoPhuongAnMoi requestTaoPhuongAnMoi);
+    PhuongAnTaoMoi taoPhuongAnMoi(Long userid, RequestTaoPhuongAnMoi requestTaoPhuongAnMoi);
 
     Map<Long, PhuongAn> groupById(List<Long> paIds);
 

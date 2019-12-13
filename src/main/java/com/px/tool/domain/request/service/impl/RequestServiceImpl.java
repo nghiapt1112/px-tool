@@ -1,7 +1,7 @@
 package com.px.tool.domain.request.service.impl;
 
+import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
-import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.mucdich.sudung.MucDichSuDung;
 import com.px.tool.domain.mucdich.sudung.repository.MucDichSuDungRepository;
@@ -53,7 +53,7 @@ public class RequestServiceImpl implements RequestService {
     private MucDichSuDungRepository mucDichSuDungRepository;
 
     @Autowired
-    private PhieuDatHangService phieuDatHangService;
+    private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
     @Autowired
     private PhuongAnService phuongAnService;
@@ -65,7 +65,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, com.px.tool.infrastructure.model.payload.PageRequest pageRequest) {
+    public PageDashBoardCongViecCuaToi timVanBanCanGiaiQuyet(Long userId, com.px.tool.infrastructure.model.payload.PageRequest pageRequest) {
         logger.info("Finding cong viec can xu ly with userId: {}", userId);
         User currentUser = userService.findById(userId);
         Map<Long, User> userById = userService.userById();
@@ -83,10 +83,11 @@ public class RequestServiceImpl implements RequestService {
                 .map(el -> DashBoardCongViecCuaToi.fromPhuongAn(el, userById))
                 .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
 
-        if (currentUser.isTroLyKT()) {
-            phieuDatHangService.findListCongViecCuaTLKT(userId); // NOTE: nghiapt check lai code cho nay la nhu nao!
-        }
-
+        // NOTE: truong hop la CNTP
+        congNhanThanhPhamRepository.findAll(userId)
+                .stream()
+                .map(el -> DashBoardCongViecCuaToi.fromCNTP(el, userById))
+                .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
         return pageDashBoardCongViecCuaToi;
     }
 

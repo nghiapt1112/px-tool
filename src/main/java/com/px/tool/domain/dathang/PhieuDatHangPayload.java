@@ -196,6 +196,10 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
 
     @Override
     public void capNhatNgayThangChuKy(PhieuDatHang requestDatHang, PhieuDatHang existedPhieuDatHang) {
+        requestDatHang.setNgayThangNamNguoiDatHang(existedPhieuDatHang.getNgayThangNamNguoiDatHang());
+        requestDatHang.setNgayThangNamTPVatTu(existedPhieuDatHang.getNgayThangNamTPVatTu());
+        requestDatHang.setNgayThangNamTPKTHK(existedPhieuDatHang.getNgayThangNamTPKTHK());
+
         if (requestDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
             requestDatHang.setNgayThangNamNguoiDatHang(DateTimeUtils.nowAsMilliSec());
         }

@@ -95,6 +95,9 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column
     private Long ngayThangNamTPKCS;
 
+    @Column
+    private String phanXuongThucHien;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
@@ -102,6 +105,5 @@ public class CongNhanThanhPham extends EntityDefault {
     @JsonBackReference
     @OneToOne(mappedBy = "congNhanThanhPham")
     private PhuongAn phuongAn;
-
 
 }

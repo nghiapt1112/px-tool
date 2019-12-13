@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,7 +65,6 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String tpkcsSignImg;
     private String ykientpkcs;
 
-
     // danh sach 5 to truong:
     private Boolean toTruong1XacNhan;
     private Boolean toTruong1Disable;
@@ -118,6 +118,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
             congNhanThanhPhamPayload.soPA = "[Trống]";
         }
         congNhanThanhPhamPayload.setNoiNhan(null);
+        congNhanThanhPhamPayload.setCusToTruongIds(Collections.emptyList());
+//        congNhanThanhPhamPayload.setCusToTruongIds(CommonUtils.toCollection(congNhanThanhPham.getPhanXuongThucHien()));
         return congNhanThanhPhamPayload;
     }
 
@@ -138,6 +140,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                         })
                         .collect(Collectors.toSet())
         );
+        congNhanThanhPham.setPhanXuongThucHien(CommonUtils.toString(cusToTruongIds));
         return congNhanThanhPham;
     }
 
@@ -221,6 +224,9 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
 
     @Override
     public void capNhatNgayThangChuKy(CongNhanThanhPham cntp, CongNhanThanhPham existed) {
+        cntp.setNgayThangNamTPKCS(DateTimeUtils.nowAsMilliSec());
+        cntp.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsMilliSec());
+
         if (cntp.getNguoiThucHienXacNhan() && !existed.getNguoiThucHienXacNhan()) {
             cntp.setNgayThangNamNguoiThucHien(DateTimeUtils.nowAsMilliSec());
         }

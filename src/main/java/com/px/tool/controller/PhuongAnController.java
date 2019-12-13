@@ -5,6 +5,7 @@ import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.PhuongAnTaoMoi;
 import com.px.tool.domain.phuongan.RequestTaoPhuongAnMoi;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.exception.PXException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,6 +27,8 @@ public class PhuongAnController extends BaseController {
     @Autowired
     private PhuongAnService phuongAnService;
 
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{id}")
     public PhuongAnPayload getPhuongAnDetail(SecurityContextHolderAwareRequestWrapper httpServletRequest, @PathVariable Long id) {
@@ -44,10 +47,14 @@ public class PhuongAnController extends BaseController {
     }
 
     @PostMapping("/tao-pa")
-    public PhuongAnTaoMoi taoPhuongAnMoi(@RequestBody RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
+    public PhuongAnTaoMoi taoPhuongAnMoi(HttpServletRequest request, @RequestBody RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
+        Long userid = extractUserInfo(request);
+        if (!userService.userById().get(userid).isTroLyKT()) {
+            throw new PXException("phuongan.TLKT_permission");
+        }
         if (CollectionUtils.isEmpty(requestTaoPhuongAnMoi.getDetailIds())) {
             throw new PXException("Phải chọn ít nhất một dòng để tạo phương án");
         }
-        return phuongAnService.taoPhuongAnMoi(requestTaoPhuongAnMoi);
+        return phuongAnService.taoPhuongAnMoi(userid, requestTaoPhuongAnMoi);
     }
 }

@@ -9,6 +9,7 @@ import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
@@ -119,6 +120,12 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         try {
             payload.setCusReceivers(CommonUtils.toCollection(phuongAn.getCusReceivers()));
             payload.setNguoiThucHien(CommonUtils.toCollection(phuongAn.getNguoiThucHien()));
+            payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());
+            payload.ngayThangNamtpVatTu = DateTimeUtils.toString(phuongAn.getNgayThangNamtpVatTu());
+            payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKTHK());
+            payload.ngayThangNamTPKEHOACH = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKEHOACH());
+            payload.ngayThangNamPheDuyet = DateTimeUtils.toString(phuongAn.getNgayThangNamPheDuyet());
+            payload.ngayThangNamNguoiLap = DateTimeUtils.toString(phuongAn.getNgayThangNamNguoiLap());
         } catch (Exception e) {
 
         }
@@ -263,11 +270,17 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     // TODO: nghiapt-> chuyen sang kieu long cho field ngaythangnam
     @Override
     public void capNhatNgayThangChuKy(PhuongAn pa, PhuongAn existedPhuongAn) {
+        pa.setNgayThangNamtpVatTu(existedPhuongAn.getNgayThangNamtpVatTu());
+        pa.setNgayThangNamTPKEHOACH(existedPhuongAn.getNgayThangNamTPKEHOACH());
+        pa.setNgayThangNamNguoiLap(existedPhuongAn.getNgayThangNamNguoiLap());
+        pa.setNgayThangNamTPKTHK(existedPhuongAn.getNgayThangNamTPKTHK());
+        pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
+
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());
         }
         if (pa.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
-            pa.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
+            pa.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsMilliSec());
         }
         if (pa.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
             pa.setNgayThangNamNguoiLap(DateTimeUtils.nowAsMilliSec());
@@ -301,6 +314,9 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 }
             }
             // TODO: NghiaPT  nơi nhận mà có data thì "xác nhận " của userhiện tại phải == true
+        }
+        if (request.allApproved() && CollectionUtils.isEmpty(this.nguoiThucHien)) {
+            throw new PXException("phuongan.nguoithuchien_missing");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
@@ -128,4 +129,17 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
         return dashBoardCongViecCuaToi;
     }
+
+    public static DashBoardCongViecCuaToi fromCNTP(CongNhanThanhPham el, Map<Long, User> userById) {
+        DashBoardCongViecCuaToi dashboard = new DashBoardCongViecCuaToi();
+        dashboard.ma = "Key-" + el.getTpId();
+        dashboard.requestId = el.getTpId();
+        dashboard.status = "Vừa tạo";
+        dashboard.noiDung = el.getNoiDung();
+        dashboard.setType(RequestType.CONG_NHAN_THANH_PHAM);
+        return dashboard;
+    }
 }
+
+
+

@@ -215,7 +215,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             detail.setTenPhuKien(kiemHongDetail.getTenPhuKien());
             detail.setTenVatTuKyThuat(kiemHongDetail.getTenLinhKien());
             detail.setKiMaHieu(kiemHongDetail.getKyHieu());
-            detail.setDvt("Cái");
+            detail.setDvt(kiemHongDetail.getDvt());
             detail.setSl(kiemHongDetail.getSl());
             detail.setPhuongPhapKhacPhuc(kiemHongDetail.getPhuongPhapKhacPhuc());
             detail.setPhieuDatHang(savedPdh);

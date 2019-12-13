@@ -11,7 +11,7 @@ public interface RequestService {
 
     Request findById(Long id);
 
-    PageDashBoardCongViecCuaToi timByNguoiNhan(Long userId, PageRequest pageRequest);
+    PageDashBoardCongViecCuaToi timVanBanCanGiaiQuyet(Long userId, PageRequest pageRequest);
 
     ThongKePageResponse collectDataThongKe(ThongKePageRequest request);
 
