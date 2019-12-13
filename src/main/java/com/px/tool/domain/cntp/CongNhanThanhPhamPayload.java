@@ -38,18 +38,6 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String donviDatHang;
 
     private String soNghiemThuDuoc;
-
-    private Boolean nguoiGiaoViecXacNhan;
-    private Boolean nguoiThucHienXacNhan;
-    private Boolean tpkcsXacNhan;
-
-    private boolean nguoiGiaoViecDisable;
-    private boolean nguoiThucHienDisable;
-    private boolean tpkcsDisable;
-
-    private String ngayThangNamNguoiThucHien;
-    private String ngayThangNamTPKCS;
-
     private Float dong;
     private Float gioX;
     private Float laoDongTienLuong;
@@ -59,31 +47,61 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String soLuong;
     private Long noiNhan;
 
-    @JsonProperty("yKienNguoiGiaoViec")
-    private String yKienNguoiGiaoViec;
-
-    @JsonProperty("yKienNguoiThucHien")
-    private String yKienNguoiThucHien;
-
-    @JsonProperty("yKienTPKCS")
-    private String yKienTPKCS;
-
-    @JsonProperty("yKienTpkcsXacNhan")
-    private String yKienTpkcsXacNhan;
     private List<NoiDungThucHienPayload> noiDungThucHiens = new ArrayList<>();
 
     // chu ky + full name
-    private String nguoiGiaoViecFullName;
-    private String nguoiThucHienFullName;
-    private String tpkcsFullName;
+    private Boolean quanDocXacNhan;
+    private Boolean quanDocDisable;
+    private Long quanDocId;
+    private String quanDocFullName;
+    private String quanDocSignImg;
+    private String ykienQuanDoc;
 
-    private String nguoiGiaoViecSignImg;
-    private String nguoiThucHienSignImg;
-    private String tpkcsSignImg;
-
-    private Long nguoiGiaoViecId;
-    private Long nguoiThucHienId;
+    private Boolean tpkcsXacNhan;
+    private Boolean tpkcsDisable;
     private Long tpkcsId;
+    private String tpkcsFullName;
+    private String tpkcsSignImg;
+    private String ykientpkcs;
+
+
+    // danh sach 5 to truong:
+    private Boolean toTruong1XacNhan;
+    private Boolean toTruong1Disable;
+    private Long toTruong1Id;
+    private String toTruong1SignImg;
+    private String toTruong1fullName;
+    private String ykienToTruong1;
+
+    private Boolean toTruong2XacNhan;
+    private Boolean toTruong2Disable;
+    private Long toTruong2Id;
+    private String toTruong2SignImg;
+    private String toTruong2fullName;
+    private String ykienToTruong2;
+
+    private Boolean toTruong3XacNhan;
+    private Boolean toTruong3Disable;
+    private Long toTruong3Id;
+    private String toTruong3SignImg;
+    private String toTruong3fullName;
+    private String ykienToTruong3;
+
+    private Boolean toTruong4XacNhan;
+    private Boolean toTruong4Disable;
+    private Long toTruong4Id;
+    private String toTruong4SignImg;
+    private String toTruong4fullName;
+    private String ykienToTruong4;
+
+    private Boolean toTruong5XacNhan;
+    private Boolean toTruong5Disable;
+    private Long toTruong5Id;
+    private String toTruong5SignImg;
+    private String toTruong5fullName;
+    private String ykienToTruong5;
+
+    private List<Long> cusToTruongIds;
 
     public static CongNhanThanhPhamPayload fromEntity(CongNhanThanhPham congNhanThanhPham) {
         CongNhanThanhPhamPayload congNhanThanhPhamPayload = new CongNhanThanhPhamPayload();
@@ -124,8 +142,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     }
 
     public void filterPermission(User user) {
-        nguoiGiaoViecDisable = true; // field nay bo
-        nguoiThucHienDisable = true; // field nay cho len tren, vi no co nhieu nguoi thuc hien
+//        nguoiGiaoViecDisable = true; // field nay bo
+//        nguoiThucHienDisable = true; // field nay cho len tren, vi no co nhieu nguoi thuc hien
         tpkcsDisable = true;
 //        if (user.isNguoiLapPhieu()) {
 //            nguoiGiaoViecDisable = false;
@@ -144,21 +162,21 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         if (user.isTruongPhongKCS() && tpkcsXacNhan) {
             tpkcsId = user.getUserId();
         }
-        if (user.isNguoiLapPhieu() && nguoiThucHienXacNhan) {
-            nguoiThucHienId = user.getUserId();
-        }
-        if (user.isNhanVienKCS() && nguoiGiaoViecXacNhan) {
-            nguoiGiaoViecId = user.getUserId();
-        }
+//        if (user.isNguoiLapPhieu() && nguoiThucHienXacNhan) {
+//            nguoiThucHienId = user.getUserId();
+//        }
+//        if (user.isNhanVienKCS() && nguoiGiaoViecXacNhan) {
+//            nguoiGiaoViecId = user.getUserId();
+//        }
     }
 
-    public Boolean getNguoiGiaoViecXacNhan() {
-        return nguoiGiaoViecXacNhan == null ? false : nguoiGiaoViecXacNhan;
-    }
-
-    public Boolean getNguoiThucHienXacNhan() {
-        return nguoiThucHienXacNhan == null ? false : nguoiThucHienXacNhan;
-    }
+//    public Boolean getNguoiGiaoViecXacNhan() {
+//        return nguoiGiaoViecXacNhan == null ? false : nguoiGiaoViecXacNhan;
+//    }
+//
+//    public Boolean getNguoiThucHienXacNhan() {
+//        return nguoiThucHienXacNhan == null ? false : nguoiThucHienXacNhan;
+//    }
 
     public Boolean getTpkcsXacNhan() {
         return tpkcsXacNhan == null ? false : tpkcsXacNhan;
@@ -171,14 +189,14 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                 this.setTpkcsFullName(userById.get(this.getTpkcsId()).getFullName());
                 this.setTpkcsSignImg(userById.get(this.getTpkcsId()).getSignImg());
             }
-            if (this.getNguoiThucHienXacNhan()) {
-                this.setNguoiThucHienFullName(userById.get(this.getNguoiThucHienId()).getFullName());
-                this.setNguoiThucHienSignImg(userById.get(this.getNguoiThucHienId()).getSignImg());
-            }
-            if (this.getNguoiGiaoViecXacNhan()) {
-                this.setNguoiGiaoViecFullName(userById.get(this.getNguoiGiaoViecId()).getFullName());
-                this.setNguoiGiaoViecSignImg(userById.get(this.getNguoiGiaoViecId()).getSignImg());
-            }
+//            if (this.getNguoiThucHienXacNhan()) {
+//                this.setNguoiThucHienFullName(userById.get(this.getNguoiThucHienId()).getFullName());
+//                this.setNguoiThucHienSignImg(userById.get(this.getNguoiThucHienId()).getSignImg());
+//            }
+//            if (this.getNguoiGiaoViecXacNhan()) {
+//                this.setNguoiGiaoViecFullName(userById.get(this.getNguoiGiaoViecId()).getFullName());
+//                this.setNguoiGiaoViecSignImg(userById.get(this.getNguoiGiaoViecId()).getSignImg());
+//            }
         } catch (Exception e) {
             PXLogger.error("[CNTP] Parse chữ ký và full name bị lỗi.");
         }
