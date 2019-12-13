@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.vanbanden.payload.VanBanDenDetail;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageRequest;
 import com.px.tool.domain.vanbanden.payload.VanBanDenPageResponse;
@@ -37,7 +38,11 @@ public class VanBanDenController extends BaseController {
     @GetMapping("/receive")
     public VanBanDenPageResponse findInBox(HttpServletRequest httpServletRequest,
                                            @RequestParam(required = false, defaultValue = "1") Integer page,
-                                           @RequestParam(required = false, defaultValue = "10") Integer size) {
+                                           @RequestParam(required = false, defaultValue = "10") Integer size,
+                                           @RequestParam(required = false) Long date,
+                                           @RequestParam(required = false) String soVb,
+                                           @RequestParam(required = false) RequestType loaiVb ) {
+
         return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
     }
 
