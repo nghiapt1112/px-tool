@@ -6,8 +6,8 @@ import com.px.tool.domain.request.payload.ThongKePageRequest;
 import java.util.List;
 
 public interface RequestRepositoryCustom {
-    List<Request> findPaging(ThongKePageRequest thongKeRequest);
-
-    Long findPhuongAnId(Long requsetId);
+//    List<Request> findPaging(ThongKePageRequest thongKeRequest);
+//
+//    Long findPhuongAnId(Long requsetId);
 
 }

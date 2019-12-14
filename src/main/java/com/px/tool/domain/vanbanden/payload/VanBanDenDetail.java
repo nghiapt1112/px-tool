@@ -18,7 +18,8 @@ public class VanBanDenDetail {
     public static VanBanDenDetail fromEntity(VanBanDen vanBanDen) {
         VanBanDenDetail payload = new VanBanDenDetail();
         payload.vbdId = vanBanDen.getVbdId();
-        payload.noiNhan = vanBanDen.getNoiNhan();
+//        payload.noiNhan = vanBanDen.getNoiNhan();
+        payload.noiNhan = -1111L;
         payload.noiDung = vanBanDen.getNoiDung();
         payload.soPa = vanBanDen.getSoPa();
         return payload;

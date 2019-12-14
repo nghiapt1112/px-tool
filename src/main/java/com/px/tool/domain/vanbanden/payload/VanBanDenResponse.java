@@ -13,16 +13,27 @@ public class VanBanDenResponse {
     private String noiNhan;
     private String noiDung;
     private String soPa;
+    private String cusReceivers;
+
     private Long folder;
     private List<String> files;
 
     public static VanBanDenResponse fromEntity(VanBanDen vanBanDen) {
         VanBanDenResponse payload = new VanBanDenResponse();
         payload.vbdId = vanBanDen.getVbdId();
-        payload.noiNhan = vanBanDen.getNoiNhan().toString();
+        payload.noiNhan = "noi nhan";
+        payload.cusReceivers = "cusReceivers";
         payload.noiDung = vanBanDen.getNoiDung();
         payload.folder = vanBanDen.getFolder();
         payload.soPa = vanBanDen.getSoPa();
+        return payload;
+    }
+
+    public static VanBanDenResponse fromRequest(VanBanDenRequest request) {
+        VanBanDenResponse payload = new VanBanDenResponse();
+        payload.vbdId = request.getVbdId();
+        payload.noiDung = request.getNoiDung();
+        payload.soPa = request.getSoPa();
         return payload;
     }
 

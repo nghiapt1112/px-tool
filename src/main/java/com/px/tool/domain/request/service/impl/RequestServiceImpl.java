@@ -47,9 +47,6 @@ public class RequestServiceImpl implements RequestService {
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private MucDichSuDungRepository mucDichSuDungRepository;
 
     @Autowired

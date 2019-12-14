@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,11 @@ public interface VanBanDenRepository extends JpaRepository<VanBanDen, Long> {
     @Query("SELECT v FROM VanBanDen v WHERE v.createdBy =?1")
     Page<VanBanDen> findByCreatedBy(Long createdBy, Pageable pageable);
 
-    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan =?1")
-    Page<VanBanDen> findByNoiNhan(Long noiNhan, PageRequest of);
+    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan LIKE %:userId% ")
+    Page<VanBanDen> findByNoiNhan(@Param("userId") Long userId, Pageable pageable);
 
-    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan =?1 and v.read is null or v.read <> true OR v.read = false OR v.read = 0")
-    Page<VanBanDen> findNotification(Long noiNhan, PageRequest of);
+    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan LIKE %:userId% and v.read is null or v.read <> true OR v.read = false OR v.read = 0")
+    Page<VanBanDen> findNotification(@Param("userId") Long userId, Pageable pageable);
 
     @Modifying
     @Transactional

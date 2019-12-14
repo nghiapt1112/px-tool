@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class CommonUtils {
 
@@ -47,4 +48,17 @@ public class CommonUtils {
         }
     }
 
+    public static String toString(Collection<Long> numbers, Map<Long, String> map) {
+        try {
+            StringBuilder s = new StringBuilder();
+            for (Long el : numbers) {
+                if (map.containsKey(el)) {
+                    s.append(map.get(el)).append(",");
+                }
+            }
+            return s.substring(0, s.length() - 1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

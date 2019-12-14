@@ -15,6 +15,7 @@ import com.px.tool.domain.vanbanden.payload.VanBanDenResponse;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,10 +70,6 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         if (val.isEmpty()) {
             return res;
         }
-        Set<Long> ids = new HashSet<>();
-        for (VanBanDen vanBanDen : val) {
-            ids.add(vanBanDen.getNoiNhan());
-        }
         Map<Long, String> noiNhanById = new HashMap<>();
         for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
             noiNhanById.put(noiNhan.getId(), noiNhan.getName());
@@ -81,7 +79,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                 val.stream()
                         .map(el -> {
                             VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
-                            payload.setNoiNhan(noiNhanById.get(el.getNoiNhan()));
+                            payload.setNoiNhan(CommonUtils.toString(CommonUtils.toCollection(el.getNoiNhan()), noiNhanById));
                             return payload;
                         })
                         .collect(Collectors.toList())
@@ -125,7 +123,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                         } else if (requestType == RequestType.PHUONG_AN) {
                             vanBanDen.setNoiDung("Bạn đang có một yêu cầu Phương Án, " + DateTimeUtils.nowAsString());
                         }
-                        vanBanDen.setNoiNhan(el.getUserId());
+                        vanBanDen.setNoiNhan(el.getUserId().toString());
                         vanBanDen.setRequestType(requestType);
                         vanBanDen.setRead(false);
                         return vanBanDen;

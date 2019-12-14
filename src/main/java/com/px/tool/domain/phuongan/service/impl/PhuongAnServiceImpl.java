@@ -17,8 +17,6 @@ import com.px.tool.domain.phuongan.repository.DinhMucVatTuRepository;
 import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.request.NguoiDangXuLy;
-import com.px.tool.domain.request.repository.RequestRepository;
-import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
@@ -26,8 +24,6 @@ import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,13 +41,9 @@ import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong
 
 @Service
 public class PhuongAnServiceImpl implements PhuongAnService {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PhuongAnRepository phuongAnRepository;
-
-    @Autowired
-    private RequestService requestService;
 
     @Autowired
     private DinhMucVatTuRepository dinhMucVatTuRepository;
@@ -70,9 +62,6 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     @Autowired
     private VanBanDenServiceImpl vanBanDenService;
-
-    @Autowired
-    private RequestRepository requestRepository;
 
     @Autowired
     private KiemHongDetailRepository kiemHongDetailRepository;
@@ -138,6 +127,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         return phuongAnRepository.save(phuongAn);
     }
 
+    // TODO: gui van ban den theo list
     private void guiVanBanDen(PhuongAnPayload phuongAnPayload) {
         try {
             List<VanBanDen> contents = phuongAnPayload.getCusReceivers().stream()
@@ -145,7 +135,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
                         VanBanDen vanBanDen = new VanBanDen();
                         vanBanDen.setNoiDung(phuongAnPayload.getNoiDung());
 
-                        vanBanDen.setNoiNhan(el);
+                        vanBanDen.setNoiNhan(el.toString());
                         vanBanDen.setRequestType(RequestType.PHUONG_AN);
                         vanBanDen.setRead(false);
                         return vanBanDen;
@@ -179,59 +169,6 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         }
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
-
-    /**
-     * Phai dung permission khi xac nhan
-     * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
-     */
-//    private void validateXacNhan(User user, PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-//
-//        if (user.isNguoiLapPhieu()) {
-//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-//        }
-//        if (user.isTruongPhongVatTu()) {
-//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-//        }
-//        if (user.isTruongPhongKeHoach()) {
-//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-//            phuongAn.setTruongPhongKTHKXacNhan(existedPhuongAn.getTruongPhongKTHKXacNhan());
-//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-//        }
-//        if (user.isTruongPhongKTHK()) {
-//            phuongAn.setTruongPhongVatTuXacNhan(existedPhuongAn.getTruongPhongVatTuXacNhan());
-//            phuongAn.setTruongPhongKeHoachXacNhan(existedPhuongAn.getTruongPhongKeHoachXacNhan());
-//            phuongAn.setNguoiLapXacNhan(existedPhuongAn.getNguoiLapXacNhan());
-//        }
-//
-//    }
-
-    /**
-     * khi co xac nhan thi cap nhat ngay thang
-     *
-     * @param phuongAn
-     * @param existedPhuongAn
-     */
-//    private void capNhatNgayThangChuKy(PhuongAn phuongAn, PhuongAn existedPhuongAn) {
-//        if (phuongAn.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
-//            phuongAn.setNgayThangNamtpVatTu(DateTimeUtils.nowAsString());
-//        }
-//        if (phuongAn.getTruongPhongKeHoachXacNhan() != existedPhuongAn.getTruongPhongKeHoachXacNhan()) {
-//            phuongAn.setNgayThangNamTPKEHOACH(DateTimeUtils.nowAsString());
-//        }
-//        if (phuongAn.getNguoiLapXacNhan() != existedPhuongAn.getNguoiLapXacNhan()) {
-//            phuongAn.setNgayThangNamNguoiLap(DateTimeUtils.nowAsString());
-//        }
-//        if (phuongAn.getTruongPhongKTHKXacNhan() != existedPhuongAn.getTruongPhongKTHKXacNhan()) {
-//            phuongAn.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
-//        }
-//        if (phuongAn.getGiamDocXacNhan() != existedPhuongAn.getGiamDocXacNhan()) {
-//            phuongAn.setNgayThangNamGiamDoc(DateTimeUtils.nowAsString());
-//        }
-//    }
 
     private void cleanOldDetailData(PhuongAn requestPhuongAn, PhuongAn existedPhuongAn) {
         try {

@@ -39,7 +39,7 @@ public class VanBanDenController extends BaseController {
     @GetMapping("/receive")
     public VanBanDenPageResponse findInBox(HttpServletRequest httpServletRequest,
                                            @RequestParam(required = false, defaultValue = "1") Integer page,
-                                           @RequestParam(required = false, defaultValue = "10") Integer size,
+                                           @RequestParam(required = false, defaultValue = "100") Integer size,
                                            @RequestParam(required = false) Long date,
                                            @RequestParam(required = false) String soVb,
                                            @RequestParam(required = false, defaultValue = "1") Long folder,

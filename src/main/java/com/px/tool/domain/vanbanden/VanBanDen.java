@@ -26,7 +26,7 @@ public class VanBanDen extends EntityDefault {
     public Long vbdId;
 
     @Column
-    public Long noiNhan;
+    public String noiNhan;
 
     @Column
     private String soPa;
