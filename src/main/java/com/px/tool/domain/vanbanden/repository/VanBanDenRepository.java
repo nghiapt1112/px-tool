@@ -12,13 +12,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface VanBanDenRepository extends JpaRepository<VanBanDen, Long> {
+public interface VanBanDenRepository extends JpaRepository<VanBanDen, Long>, VanBanDenRepositoryCustom {
 
     @Query("SELECT v FROM VanBanDen v WHERE v.createdBy =?1")
     Page<VanBanDen> findByCreatedBy(Long createdBy, Pageable pageable);
-
-    @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan LIKE %:userId% ")
-    Page<VanBanDen> findByNoiNhan(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT v FROM VanBanDen v WHERE v.noiNhan LIKE %:userId% and v.read is null or v.read <> true OR v.read = false OR v.read = 0")
     Page<VanBanDen> findNotification(@Param("userId") Long userId, Pageable pageable);

@@ -41,11 +41,15 @@ public class VanBanDenController extends BaseController {
                                            @RequestParam(required = false, defaultValue = "1") Integer page,
                                            @RequestParam(required = false, defaultValue = "100") Integer size,
                                            @RequestParam(required = false) Long date,
-                                           @RequestParam(required = false) String soVb,
-                                           @RequestParam(required = false, defaultValue = "1") Long folder,
+                                           @RequestParam(required = false) String soVB,
+                                           @RequestParam(required = false) Long folderId,
                                            @RequestParam(required = false) RequestType loaiVb) {
-
-        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), new VanBanDenPageRequest(page, size));
+        VanBanDenPageRequest vbdRequest = new VanBanDenPageRequest(page, size);
+        vbdRequest.setDate(date);
+        vbdRequest.setSoVb(soVB);
+        vbdRequest.setFolder(folderId);
+        vbdRequest.setLoaiVb(loaiVb);
+        return vanBanDenService.findInBox(extractUserInfo(httpServletRequest), vbdRequest);
     }
 
     @PostMapping

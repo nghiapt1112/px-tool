@@ -23,12 +23,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,8 +58,8 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
      * @return
      */
     public VanBanDenPageResponse findInBox(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
-        Page<VanBanDen> val = vanBanDenRepository.findByNoiNhan(userId, vanBanDenPageRequest.toPageRequest());
-        return toResponse(val, vanBanDenPageRequest);
+        vanBanDenPageRequest.setUserId(userId);
+        return vanBanDenRepository.findByNoiNhan(vanBanDenPageRequest, noiNhanById());
     }
 
     private VanBanDenPageResponse toResponse(Page<VanBanDen> val, VanBanDenPageRequest request) {

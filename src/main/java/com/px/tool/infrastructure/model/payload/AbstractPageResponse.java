@@ -12,7 +12,7 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
     protected List<O> details;
     protected Integer page;
     protected Integer size;
-    private Integer total;
+    private Long total;
 
     public AbstractPageResponse(Integer page, Integer size) {
         super();
@@ -22,7 +22,7 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
 
     private AbstractPageResponse() {
         this.details = new ArrayList<>();
-        this.total = 0;
+        this.total = 0L;
     }
 
     public void setPage(Integer page) {
@@ -33,11 +33,11 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
         }
     }
 
-    public Integer getTotal() {
+    public Long getTotal() {
         try {
-            return this.details.size() / size;
+            return total / size;
         } catch (Exception e) {
-            return 0;
+            return 0L;
         }
     }
 
