@@ -124,7 +124,7 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/nguoi-thuc-hien")
-    public List<PhanXuongPayload> getNguoiThucHien() {
+    public List<PhanXuongPayload> getNguoiThucHien(@RequestParam RequestType requestType) {
         return userService.findNguoiThucHien();
     }
 
