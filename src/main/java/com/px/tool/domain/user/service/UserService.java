@@ -41,4 +41,7 @@ public interface UserService extends UserDetailsService {
 
     Map<Long, User> userById();
 
+    List<NoiNhan> findNhanVienKCS();
+
+    User findTPKCS();
 }

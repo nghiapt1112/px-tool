@@ -164,7 +164,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             }
             congNhanThanhPham.setNoiDungThucHiens(noiDungThucHiens);
         }
-        congNhanThanhPham.setPhanXuongThucHien(phuongAn.getNguoiThucHien());
+        congNhanThanhPham.setQuanDocId(phuongAn.getNguoiThucHien());
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
@@ -228,6 +228,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Transactional
     public PhuongAn taoPhuongAnMoi(Long userid) {
         PhuongAn pa = new PhuongAn();
+        pa.setStep(0L);
         pa.setNguoiLapId(userid);
         return phuongAnRepository.save(pa);
     }

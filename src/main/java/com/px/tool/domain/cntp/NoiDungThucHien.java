@@ -35,7 +35,10 @@ public class NoiDungThucHien extends AbstractObject {
     private String nguoiLam;
 
     @Column
-    private String nghiemThu;
+    private Long nghiemThu;
+
+    @Column
+    private boolean xacNhan;
 
     @JsonBackReference
     @ManyToOne

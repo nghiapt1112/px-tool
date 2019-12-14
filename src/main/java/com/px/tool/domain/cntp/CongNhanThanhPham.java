@@ -47,15 +47,6 @@ public class CongNhanThanhPham extends EntityDefault {
     private String soNghiemThuDuoc;
 
     @Column
-    private Boolean nguoiGiaoViecXacNhan;
-
-    @Column
-    private Boolean nguoiThucHienXacNhan;
-
-    @Column
-    private Boolean tpkcsXacNhan;
-
-    @Column
     private Float dong;
 
     @Column
@@ -76,27 +67,60 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column
     private Long noiNhan;
 
+    // chu ky + full name
     @Column
-    private String yKienNguoiGiaoViec;
-
+    private Boolean quanDocXacNhan;
     @Column
-    private String yKienNguoiThucHien;
-
+    private Long quanDocId;
     @Column
-    private String yKienTPKCS;
-
+    private Long ngayThangNamQuanDoc;
     @Column
-    private String yKienTpkcsXacNhan;
-
+    private String ykienQuanDoc;
 
     @Column
-    private Long ngayThangNamNguoiThucHien;
-
+    private Boolean tpkcsXacNhan;
+    @Column
+    private Long tpkcsId;
     @Column
     private Long ngayThangNamTPKCS;
+    @Column
+    private String ykientpkcs;
+
+    // danh sach 5 to truong:
+    @Column
+    private Boolean toTruong1XacNhan;
+    @Column
+    private Long toTruong1Id;
+    @Column
+    private String ykienToTruong1;
 
     @Column
-    private String phanXuongThucHien;
+    private Boolean toTruong2XacNhan;
+    @Column
+    private Long toTruong2Id;
+    @Column
+    private String ykienToTruong2;
+
+    @Column
+    private Boolean toTruong3XacNhan;
+    @Column
+    private Long toTruong3Id;
+    @Column
+    private String ykienToTruong3;
+
+    @Column
+    private Boolean toTruong4XacNhan;
+    @Column
+    private Long toTruong4Id;
+    @Column
+    private String ykienToTruong4;
+
+    @Column
+    private Boolean toTruong5XacNhan;
+    @Column
+    private Long toTruong5Id;
+    @Column
+    private String ykienToTruong5;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)

@@ -208,7 +208,7 @@ public class ExcelServiceImpl implements ExcelService {
                 XSSFRow crrRow = sheet.getRow(11 + i);
                 setCellVal(crrRow, 0, payload.getNoiDungThucHiens().get(i).getNoiDung());
                 setCellVal(crrRow, 3, payload.getNoiDungThucHiens().get(i).getKetQua());
-                setCellVal(crrRow, 4, payload.getNoiDungThucHiens().get(i).getNghiemThu());
+                setCellVal(crrRow, 4, String.valueOf(payload.getNoiDungThucHiens().get(i).getNghiemThu())); // TODO: mapping nguoi nghiem thu
             }
             workbook.write(response.getOutputStream());
         } catch (Exception ex) {
@@ -225,12 +225,4 @@ public class ExcelServiceImpl implements ExcelService {
         row.getCell(cell).setCellValue(val);
     }
 
-
-//    private String mappingTosx() {
-//        userRepository.findByGroup(group_17_25)
-//                .stream()
-//                .filter(el -> el.getLevel() == 3)
-//                .map(PhanXuongPayload::fromUserEntity)
-//                .collect(Collectors.toList());
-//    }
 }

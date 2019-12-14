@@ -1,5 +1,6 @@
 package com.px.tool.infrastructure.utils;
 
+import com.px.tool.domain.user.User;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CommonUtils {
 
@@ -44,7 +46,8 @@ public class CommonUtils {
             }
             return val;
         } catch (Exception e) {
-            return Collections.emptyList();
+//            return Collections.emptyList();
+            return null;
         }
     }
 
@@ -60,5 +63,27 @@ public class CommonUtils {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static <E> void collectionAdd(Collection<E> collection, E... list) {
+        for (E e : list) {
+            if (e != null) {
+                collection.add(e);
+            }
+        }
+    }
+
+    public static String assignVal(User user, String defaultVal) {
+        if (Objects.isNull(user)) {
+            return defaultVal;
+        }
+        return user.getFullName();
+    }
+
+    public static <E extends Object> E getVal(List<E> longs, int index) {
+        if (index + 1 > longs.size()) {
+            return null;
+        }
+        return longs.get(index);
     }
 }

@@ -79,7 +79,7 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.ngayRaPA = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
                 tk.ngayChuyenKH = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
                 tk.ngayPheDuyet = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
-                tk.ngayHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamNguoiThucHien());
+//                tk.ngayHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamNguoiThucHien());
                 tk.xacNhanHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
             } catch (Exception e) {
             }

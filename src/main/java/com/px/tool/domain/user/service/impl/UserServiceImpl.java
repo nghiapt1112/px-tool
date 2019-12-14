@@ -2,6 +2,8 @@ package com.px.tool.domain.user.service.impl;
 
 import com.google.common.collect.Sets;
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.request.NguoiDangXuLy;
 import com.px.tool.domain.request.Request;
@@ -67,6 +69,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PhongBanServiceImpl phongBanService;
+
+    @Autowired
+    private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
     @Autowired
     private CacheService cacheService;
@@ -178,6 +183,10 @@ public class UserServiceImpl implements UserService {
 
     private void filterTheoCNTP(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
         Stream<User> pbs = null;
+        CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamRepository
+                .findById(requestParams.getRequestId())
+                .orElseThrow(() -> new PXException("cntp.not_found"));
+
         if (currentUser.isQuanDocPhanXuong()) {
             // chuyen cho cac to truong
             pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 5);
@@ -188,7 +197,7 @@ public class UserServiceImpl implements UserService {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
         } else if (currentUser.isTruongPhongKCS()) {
             // chuyen lai cho px
-            pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 3);
+            pbs = userRepository.findByGroup(Arrays.asList(congNhanThanhPham.getQuanDocId())).stream();
         }
 
         if (pbs != null) {
@@ -367,4 +376,19 @@ public class UserServiceImpl implements UserService {
         cacheService.clearCache(CacheService.CACHE_USER);
     }
 
+    @Override
+    public List<NoiNhan> findNhanVienKCS() {
+        return userRepository.findByGroup(group_KCS).stream()
+                .filter(el -> el.getLevel() == 4)
+                .map(NoiNhan::fromUserEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public User findTPKCS() {
+        return findAll().stream()
+                .filter(el -> el.isTruongPhongKCS())
+                .findFirst()
+                .orElse(null);
+    }
 }

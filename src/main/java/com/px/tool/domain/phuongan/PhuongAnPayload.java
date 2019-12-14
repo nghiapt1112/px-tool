@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -122,7 +123,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
 
         try {
             payload.setCusReceivers(CommonUtils.toCollection(phuongAn.getCusReceivers()));
-            payload.setNguoiThucHien(CommonUtils.toCollection(phuongAn.getNguoiThucHien()));
+            payload.setNguoiThucHien(Arrays.asList(phuongAn.getNguoiThucHien()));
             payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());
             payload.ngayThangNamtpVatTu = DateTimeUtils.toString(phuongAn.getNgayThangNamtpVatTu());
             payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKTHK());
@@ -166,7 +167,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         );
         try {
             phuongAn.setCusReceivers(CommonUtils.toString(this.cusReceivers));
-            phuongAn.setNguoiThucHien(CommonUtils.toString(this.nguoiThucHien));
+            phuongAn.setNguoiThucHien(this.nguoiThucHien.get(0));
         } catch (Exception e) {
 
         }

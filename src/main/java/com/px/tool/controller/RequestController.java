@@ -129,13 +129,13 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/cus-noi-nhan")
-    public List<NoiNhan> getCusNoiNhan() {
+    public List<NoiNhan> getCusNoiNhan(@RequestParam RequestType requestType) {
         return userService.findVanBanDenNoiNhan();
     }
 
     @GetMapping("/cntp/nguoi-lam")
     public List<NoiNhan> getNguoiLamCNTP() {
-        return userService.findVanBanDenNoiNhan();
+        return userService.findNhanVienKCS();
     }
 
 }

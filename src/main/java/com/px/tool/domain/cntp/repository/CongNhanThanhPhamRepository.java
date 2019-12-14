@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CongNhanThanhPhamRepository extends JpaRepository<CongNhanThanhPham, Long> {
-    @Query("SELECT c FROM CongNhanThanhPham  c WHERE c.phanXuongThucHien LIKE %:userId%")
+    @Query("SELECT c FROM CongNhanThanhPham  c WHERE c.quanDocId = ?1 OR c.tpkcsId = ?1 OR c.toTruong1Id = ?1 OR c.toTruong2Id = ?1 OR c.toTruong3Id =?1 OR c.toTruong4Id = ?1 OR c.toTruong5Id = ?1")
 //    @Query("SELECT c FROM cong_nhan_thanh_pham  c WHERE c.phan_xuong_thuc_hien LIKE ")
-    List<CongNhanThanhPham> findAll(@Param("userId") Long userId);
+    List<CongNhanThanhPham> findAll(Long userId);
 }

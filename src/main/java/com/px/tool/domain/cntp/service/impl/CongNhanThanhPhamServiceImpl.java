@@ -5,7 +5,6 @@ import com.px.tool.domain.cntp.CongNhanThanhPhamPayload;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.cntp.repository.NoiDungThucHienRepository;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
-import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
@@ -15,8 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+
+import static com.px.tool.infrastructure.utils.CommonUtils.collectionAdd;
 
 @Service
 public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
@@ -48,6 +51,12 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
         congNhanThanhPhamPayload.capNhatNgayThangChuKy(congNhanThanhPham, existedCongNhanThanhPham);
+        congNhanThanhPhamPayload.validateXacNhan(user, congNhanThanhPham, existedCongNhanThanhPham);
+        // NOTE: tu dong chuyen den TP.KCS
+//        if (congNhanThanhPhamPayload.allNhanVienKCSAssinged()) {
+//            congNhanThanhPham.setTpkcsId(userService.findTPKCS().getUserId());
+//        }
+
         cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
@@ -74,8 +83,16 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
                 .findById(id)
                 .orElseThrow(() -> new PXException("cntp.not_found"));
         CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(existedCNTP);
+        User currentUser = userService.findById(userId);
+
+        if (currentUser.isQuanDocPhanXuong()) {
+            List<Long> cusIds = new ArrayList<>(5);
+            collectionAdd(cusIds, payload.getToTruong1Id(), payload.getToTruong2Id(), payload.getToTruong3Id(), payload.getToTruong4Id(), payload.getToTruong5Id());
+            payload.setCusToTruongIds(cusIds);
+        }
+
         payload.setRequestId(existedCNTP.getTpId());
-        payload.filterPermission(userService.findById(userId));
+        payload.filterPermission(currentUser);
 
         payload.processSignImgAndFullName(userService.userById());
         return payload;
