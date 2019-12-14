@@ -1,25 +1,28 @@
 package com.px.tool.domain.vanbanden.payload;
 
 import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 public class VanBanDenDetail {
     private Long vbdId;
-    private Long noiNhan;
+    private String noiNhan;
     private String noiDung;
     private String soPa;
+    private List<Long> cusReceivers;
     private List<String> files;
 
-    public static VanBanDenDetail fromEntity(VanBanDen vanBanDen) {
+    public static VanBanDenDetail fromEntity(VanBanDen vanBanDen, Map<Long, String> noiNhanById) {
         VanBanDenDetail payload = new VanBanDenDetail();
         payload.vbdId = vanBanDen.getVbdId();
-//        payload.noiNhan = vanBanDen.getNoiNhan();
-        payload.noiNhan = -1111L;
+        payload.cusReceivers = CommonUtils.toCollection(vanBanDen.getNoiNhan());
+        payload.noiNhan = CommonUtils.toString(payload.cusReceivers, noiNhanById);
         payload.noiDung = vanBanDen.getNoiDung();
         payload.soPa = vanBanDen.getSoPa();
         return payload;

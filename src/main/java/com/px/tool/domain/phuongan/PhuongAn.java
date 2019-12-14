@@ -167,6 +167,9 @@ public class PhuongAn extends EntityDefault {
     @Column
     private String nguoiThucHien;
 
+    @Column
+    private Long step; // 0: van dang xu ly, 1: success_phuong_an
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();

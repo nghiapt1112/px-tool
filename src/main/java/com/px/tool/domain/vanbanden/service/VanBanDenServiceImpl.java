@@ -70,21 +70,24 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
         if (val.isEmpty()) {
             return res;
         }
-        Map<Long, String> noiNhanById = new HashMap<>();
-        for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
-            noiNhanById.put(noiNhan.getId(), noiNhan.getName());
-        }
-
         res.setDetails(
                 val.stream()
                         .map(el -> {
                             VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
-                            payload.setNoiNhan(CommonUtils.toString(CommonUtils.toCollection(el.getNoiNhan()), noiNhanById));
+                            payload.setNoiNhan(CommonUtils.toString(CommonUtils.toCollection(el.getNoiNhan()), noiNhanById()));
                             return payload;
                         })
                         .collect(Collectors.toList())
         );
         return res;
+    }
+
+    private Map<Long, String> noiNhanById() {
+        Map<Long, String> noiNhanById = new HashMap<>();
+        for (NoiNhan noiNhan : userService.findVanBanDenNoiNhan()) {
+            noiNhanById.put(noiNhan.getId(), noiNhan.getName());
+        }
+        return noiNhanById;
     }
 
     @Transactional
@@ -96,7 +99,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
 
     public VanBanDenDetail findById(Long id) {
         return VanBanDenDetail
-                .fromEntity(vanBanDenRepository.findById(id).orElseThrow(() -> new PXException("vanbanden_notFound")))
+                .fromEntity(vanBanDenRepository.findById(id).orElseThrow(() -> new PXException("vanbanden_notFound")), noiNhanById())
                 .withFilesName(fileStorageService.listFileNames(RequestType.VAN_BAN_DEN, id));
     }
 

@@ -69,12 +69,12 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
 
     @Override
     public CongNhanThanhPhamPayload timCongNhanThanhPham(Long userId, Long id) {
-        Request request = requestService.findById(id);
+//        Request request = requestService.findById(id);
         CongNhanThanhPham existedCNTP = congNhanThanhPhamRepository
                 .findById(id)
                 .orElseThrow(() -> new PXException("cntp.not_found"));
         CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(existedCNTP);
-        payload.setRequestId(request.getRequestId());
+        payload.setRequestId(existedCNTP.getTpId());
         payload.filterPermission(userService.findById(userId));
 
         payload.processSignImgAndFullName(userService.userById());

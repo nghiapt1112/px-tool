@@ -102,6 +102,8 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private String cusNoiDung;
     private List<Long> nguoiThucHien;
 
+    private boolean disableAll; // 0: van dang xu ly, 1: success_phuong_an
+
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
         PhuongAnPayload payload = new PhuongAnPayload();
@@ -115,6 +117,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
 //        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
+        payload.disableAll = phuongAn.getStep() == 1 ? true : false;
         payload.setNoiNhan(null);
 
         try {
