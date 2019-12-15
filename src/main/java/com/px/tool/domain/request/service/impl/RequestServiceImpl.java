@@ -85,6 +85,11 @@ public class RequestServiceImpl implements RequestService {
                 .stream()
                 .map(el -> DashBoardCongViecCuaToi.fromCNTP(el, userById))
                 .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
+        congNhanThanhPhamRepository.findAllTheoNhanVienKCS(userId)
+                .stream()
+                .map(el -> DashBoardCongViecCuaToi.fromCNTP(el, userById))
+                .forEach(el -> pageDashBoardCongViecCuaToi.getDetails().add(el));
+
         return pageDashBoardCongViecCuaToi;
     }
 
