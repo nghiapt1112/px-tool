@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -89,6 +91,8 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
             List<Long> cusIds = new ArrayList<>(5);
             collectionAdd(cusIds, payload.getToTruong1Id(), payload.getToTruong2Id(), payload.getToTruong3Id(), payload.getToTruong4Id(), payload.getToTruong5Id());
             payload.setCusToTruongIds(cusIds);
+        } else if (currentUser.isToTruong() && payload.noiDungThucHienFilled()) {
+            payload.setCusToTruongIds(payload.getTpkcsId() != null ? Arrays.asList(payload.getTpkcsId()) : Collections.emptyList());
         }
 
         payload.setRequestId(existedCNTP.getTpId());

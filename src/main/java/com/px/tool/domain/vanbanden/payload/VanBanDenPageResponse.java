@@ -25,6 +25,9 @@ public class VanBanDenPageResponse extends AbstractPageResponse<VanBanDenRespons
         this.details = details.stream()
                 .map(el -> {
                     VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
+                    if (payload.getNoiDung().length() > 150) {
+                        payload.setNoiDung(payload.getNoiDung().substring(0, 150));
+                    }
                     payload.setNoiNhan(CommonUtils.toString(toCollection(el.getNoiNhan()), noiNhanById));
                     return payload;
                 })

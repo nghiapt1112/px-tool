@@ -35,7 +35,7 @@ public abstract class AbstractPageResponse<O> extends AbstractObject {
 
     public Long getTotal() {
         try {
-            return total / size;
+            return size == 0 ? 1 : (long) Math.ceil((double) total / (double) size);
         } catch (Exception e) {
             return 0L;
         }

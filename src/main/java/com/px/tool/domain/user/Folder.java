@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "folder")
 public class Folder {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long folderId;
 
     @Column

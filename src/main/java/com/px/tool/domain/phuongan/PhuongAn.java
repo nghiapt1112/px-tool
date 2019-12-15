@@ -183,6 +183,10 @@ public class PhuongAn extends EntityDefault {
     @JoinColumn(name = "tpId")
     private CongNhanThanhPham congNhanThanhPham;
 
+    public Long getStep() {
+        return step == null ? 0 : step;
+    }
+
     public boolean allApproved() {
         return
                 Objects.nonNull(truongPhongKTHKXacNhan) && truongPhongKTHKXacNhan &&

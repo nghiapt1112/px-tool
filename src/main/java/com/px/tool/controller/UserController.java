@@ -19,7 +19,6 @@ import com.px.tool.domain.user.service.impl.RoleServiceImpl;
 import com.px.tool.infrastructure.BaseController;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/users")
@@ -58,12 +59,13 @@ public class UserController extends BaseController {
     public UserPageResponse findUsers(
             HttpServletRequest request,
             @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer size
+            @RequestParam(required = false) Integer size
     ) {
-        return userService.findUsers(new UserPageRequest(page, size));
+        return userService.findUsers(new UserPageRequest(page, 50));
     }
 
     /**
+     *
      * Update user Info
      *
      * @param user
@@ -139,6 +141,21 @@ public class UserController extends BaseController {
                 .filter(Objects::nonNull)
                 .map(FolderPayload::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/generate-folder")
+    public void createFolders(@RequestParam Long userId) {
+        if (!userService.userById().containsKey(userId)) {
+            throw new PXException("user.not_found");
+        }
+        AtomicLong count = new AtomicLong(1);
+        userService.userById().keySet().forEach(
+                key -> {
+                    IntStream.rangeClosed(1, 15)
+                            .forEach(el -> folderRepository.insertFolder(count.getAndIncrement(), "Thư mục " + el, key));
+                }
+        );
+
     }
 
 }

@@ -7,6 +7,7 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
+import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.infrastructure.exception.PXException;
@@ -59,7 +60,7 @@ public class ExcelServiceImpl implements ExcelService {
             } else if (requestType == RequestType.DAT_HANG) {
                 exportPHieuDatHang(response, phieuDatHangService.findById(1L, requestId));
             } else if (requestType == RequestType.PHUONG_AN) {
-                new File("./src/main/resources/templates/3_phuong_an.xls");
+                exportPhuongAn(response, phuongAnService.findById(1L, requestId));
             } else if (requestType == RequestType.CONG_NHAN_THANH_PHAM) {
                 exportCNTP(response, congNhanThanhPhamService.timCongNhanThanhPham(1L, requestId));
             }
@@ -168,7 +169,7 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     public void exportCNTP(HttpServletResponse response, CongNhanThanhPhamPayload payload) {
-        try (FileInputStream fis = new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx"))) {
+        try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/4_cntp.xlsx"))) {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
             XSSFRow row0 = sheet.getRow(2);
@@ -209,6 +210,91 @@ public class ExcelServiceImpl implements ExcelService {
                 setCellVal(crrRow, 0, payload.getNoiDungThucHiens().get(i).getNoiDung());
                 setCellVal(crrRow, 3, payload.getNoiDungThucHiens().get(i).getKetQua());
                 setCellVal(crrRow, 4, String.valueOf(payload.getNoiDungThucHiens().get(i).getNghiemThu())); // TODO: mapping nguoi nghiem thu
+            }
+            workbook.write(response.getOutputStream());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                response.flushBuffer();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    public void exportPhuongAn(HttpServletResponse response, PhuongAnPayload payload) {
+        try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/3_phuong_an.xlsx"))) {
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            XSSFRow row1 = sheet.getRow(1);
+            XSSFRow row2 = sheet.getRow(2);
+            XSSFRow row3 = sheet.getRow(3);
+            XSSFRow row4 = sheet.getRow(4);
+            XSSFRow row5 = sheet.getRow(5);
+
+            setCellVal(row1, 13, payload.getToSo());
+            setCellVal(row2, 13, payload.getSoTo());
+            setCellVal(row3, 13, payload.getPDH());
+            setCellVal(row3, 6, payload.getSanPham());
+            setCellVal(row4, 6, payload.getNoiDung());
+            setCellVal(row5, 6, payload.getNguonKinhPhi());
+
+//
+
+            int totalLine = payload.getDinhMucLaoDongs().size();
+            int startFix1 = 15;
+            int endFix1 = 35;
+            if (totalLine > 6) {
+                sheet.copyRows(startFix1, endFix1, endFix1 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+
+                for (int i = startFix1; i < endFix1 + (totalLine - 6); i++) {
+                    sheet.createRow(i);
+                    sheet.copyRows(9, 9, i - 1, new CellCopyPolicy()); // copy and paste
+                }
+            }
+
+            for (int i = 0; i < payload.getDinhMucLaoDongs().size(); i++) {
+                XSSFRow crrRow = sheet.getRow(9 + i);
+                setCellVal(crrRow, 0, i + 1 + "");
+                setCellVal(crrRow, 1, payload.getDinhMucLaoDongs().get(i).getNoiDungCongViec());
+                setCellVal(crrRow, 10, payload.getDinhMucLaoDongs().get(i).getBacCV());
+                setCellVal(crrRow, 11, payload.getDinhMucLaoDongs().get(i).getDm());
+                setCellVal(crrRow, 12, payload.getDinhMucLaoDongs().get(i).getGhiChu());
+            }
+//
+            int soDongBiLech = (totalLine > 5 ? totalLine + 14 : 0);
+            int startFix2 = 29 + soDongBiLech;
+            int endFix2 = 35 + soDongBiLech;
+            int totalLine2 = payload.getDinhMucVatTus().size();
+            int row_mau = 20 + soDongBiLech;
+            if (totalLine2 > 9) {
+                sheet.copyRows(startFix2, endFix2, endFix2 + (totalLine2 - 14), new CellCopyPolicy()); // copy and paste
+
+                for (int i = startFix2; i < endFix2 + (totalLine2 - 14); i++) {
+                    sheet.createRow(i);
+                    sheet.copyRows(row_mau, row_mau, i - 1, new CellCopyPolicy()); // copy and paste
+                }
+            }
+
+            // dang in o dong 35 => 34
+            // expect 49 => 48
+            for (int i = 0; i < payload.getDinhMucVatTus().size(); i++) {
+                XSSFRow crrRow2 = sheet.getRow(row_mau + i);
+                setCellVal(crrRow2, 0, i + 1 + "");
+                setCellVal(crrRow2, 1, payload.getDinhMucVatTus().get(i).getTenVatTuKyThuat());
+                setCellVal(crrRow2, 2, payload.getDinhMucVatTus().get(i).getKyMaKyHieu());
+                setCellVal(crrRow2, 3, payload.getDinhMucVatTus().get(i).getDvt());
+                setCellVal(crrRow2, 4, payload.getDinhMucVatTus().get(i).getDm1SP());
+                setCellVal(crrRow2, 5, payload.getDinhMucVatTus().get(i).getSoLuongSanPham());
+                setCellVal(crrRow2, 6, payload.getDinhMucVatTus().get(i).getTongNhuCau());
+                setCellVal(crrRow2, 7, payload.getDinhMucVatTus().get(i).getKhoDonGia());
+                setCellVal(crrRow2, 8, payload.getDinhMucVatTus().get(i).getKhoSoLuong());
+                setCellVal(crrRow2, 9, payload.getDinhMucVatTus().get(i).getKhoThanhTien());
+                setCellVal(crrRow2, 10, payload.getDinhMucVatTus().get(i).getMnDonGia());
+                setCellVal(crrRow2, 11, payload.getDinhMucVatTus().get(i).getMnSoLuong());
+                setCellVal(crrRow2, 12, payload.getDinhMucVatTus().get(i).getMnThanhTien());
+                setCellVal(crrRow2, 13, payload.getDinhMucVatTus().get(i).getGhiChu());
             }
             workbook.write(response.getOutputStream());
         } catch (Exception ex) {

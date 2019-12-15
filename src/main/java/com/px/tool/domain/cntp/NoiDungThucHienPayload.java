@@ -34,7 +34,6 @@ public class NoiDungThucHienPayload extends AbstractObject {
 
     public NoiDungThucHien toEntity() {
         NoiDungThucHien noiDungThucHien = new NoiDungThucHien();
-        noiDungId = null;
         if (xacNhan == null) {
             xacNhan = false;
         }

@@ -2,7 +2,6 @@ package com.px.tool.domain.cntp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
@@ -10,11 +9,13 @@ import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -116,7 +117,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                 congNhanThanhPham.getNoiDungThucHiens()
                         .stream()
                         .map(NoiDungThucHienPayload::fromEntity)
-                        .collect(Collectors.toList())
+                        .sorted(Comparator.comparing(NoiDungThucHienPayload::getNoiDungId))
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(congNhanThanhPham.getNoiDungThucHiens().size())))
         );
         try {
             congNhanThanhPhamPayload.soPA = "PA-" + congNhanThanhPham.getPhuongAn().getPaId();
@@ -125,6 +127,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         }
         congNhanThanhPhamPayload.setCusToTruongIds(Collections.emptyList());
         congNhanThanhPhamPayload.setNoiNhan(null);
+
         return congNhanThanhPhamPayload;
     }
 
@@ -224,11 +227,11 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                 this.setTpkcsFullName(userById.get(this.getTpkcsId()).getFullName());
                 this.setTpkcsSignImg(userById.get(this.getTpkcsId()).getSignImg());
             }
-            toTruong1fullName = assignVal(userById.get(toTruong1Id), "Tổ trưởng 1");
-            toTruong2fullName = assignVal(userById.get(toTruong2Id), "Tổ trưởng 2");
-            toTruong3fullName = assignVal(userById.get(toTruong3Id), "Tổ trưởng 3");
-            toTruong4fullName = assignVal(userById.get(toTruong4Id), "Tổ trưởng 4");
-            toTruong5fullName = assignVal(userById.get(toTruong5Id), "Tổ trưởng 5");
+            toTruong1fullName = assignVal(userById.get(toTruong1Id), "");
+            toTruong2fullName = assignVal(userById.get(toTruong2Id), "");
+            toTruong3fullName = assignVal(userById.get(toTruong3Id), "");
+            toTruong4fullName = assignVal(userById.get(toTruong4Id), "");
+            toTruong5fullName = assignVal(userById.get(toTruong5Id), "");
 
 
             if (quanDocXacNhan) {
@@ -302,9 +305,11 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                 throw new PXException("cntp.kcs_max1");
             }
             tpkcsId = getVal(cusToTruongIds, 0);
-            for (NoiDungThucHienPayload noiDungThucHien : noiDungThucHiens) {
-                if (noiDungThucHien.isInvalidData()) {
-                    throw new PXException("cntp.noi_dung_thuc_hien");
+            if (CollectionUtils.isNotEmpty(cusToTruongIds)) {
+                for (NoiDungThucHienPayload noiDungThucHien : noiDungThucHiens) {
+                    if (noiDungThucHien.isInvalidData()) {
+                        throw new PXException("cntp.noi_dung_thuc_hien");
+                    }
                 }
             }
         } else if (user.isTruongPhongKCS()) {
@@ -333,4 +338,12 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         return true;
     }
 
+    public boolean noiDungThucHienFilled() {
+        for (NoiDungThucHienPayload noiDungThucHien : noiDungThucHiens) {
+            if (noiDungThucHien.isInvalidData()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -199,6 +199,8 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         requestDatHang.setNgayThangNamNguoiDatHang(existedPhieuDatHang.getNgayThangNamNguoiDatHang());
         requestDatHang.setNgayThangNamTPVatTu(existedPhieuDatHang.getNgayThangNamTPVatTu());
         requestDatHang.setNgayThangNamTPKTHK(existedPhieuDatHang.getNgayThangNamTPKTHK());
+        // cac field khac
+        requestDatHang.setNguoiDatHangId(existedPhieuDatHang.getNguoiDatHangId());
 
         if (requestDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
             requestDatHang.setNgayThangNamNguoiDatHang(DateTimeUtils.nowAsMilliSec());

@@ -24,6 +24,7 @@ import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    @Lazy
     private RequestService requestService;
 
     @Autowired
@@ -98,6 +100,7 @@ public class UserServiceImpl implements UserService {
                 .map(UserPayload::fromEntityNoImg) // each user -> userPayload to view on paging/sorting
                 .collect(Collectors.toCollection(() -> new ArrayList<>((int) page.getTotalElements())))
         );
+        usersPage.setTotal(page.getTotalElements());
         return usersPage;
     }
 
@@ -189,7 +192,7 @@ public class UserServiceImpl implements UserService {
 
         if (currentUser.isQuanDocPhanXuong()) {
             // chuyen cho cac to truong
-            pbs = userRepository.findByGroup(group_17_25).stream().filter(el -> el.getLevel() == 5);
+            pbs = userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5);
         } else if (currentUser.isToTruong()) {
             // chuyen cho cac nhan vien kcs
             pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
@@ -197,7 +200,7 @@ public class UserServiceImpl implements UserService {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
         } else if (currentUser.isTruongPhongKCS()) {
             // chuyen lai cho px
-            pbs = userRepository.findByGroup(Arrays.asList(congNhanThanhPham.getQuanDocId())).stream();
+            pbs = userRepository.findByGroup(Arrays.asList(congNhanThanhPham.getQuanDocId())).stream().filter(el -> el.getLevel() == 3);
         }
 
         if (pbs != null) {
@@ -324,6 +327,33 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(NoiNhan::fromUserEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NoiNhan> findVanBanDenNoiNhan(RequestType requestType) {
+        if (requestType == RequestType.DAT_HANG) {
+            return cacheService.getUsers_cache()
+                    .stream()
+                    .filter(el ->
+                            el.isQuanDocPhanXuong() // PX
+                                    || el.isTruongPhongVatTu() // Vat.Tu
+                                    || el.getPhongBan().getGroup().equals(8) // KTHK
+                                    || el.getPhongBan().getGroup().equals(9) // XMDC
+                    )
+                    .map(NoiNhan::fromUserEntity)
+                    .collect(Collectors.toList());
+        } else if (requestType == RequestType.PHUONG_AN) {
+            return cacheService.getUsers_cache()
+                    .stream()
+                    .filter(el -> // all users thuoc cap 2, cap 3
+                            el.getLevel() == 2
+                                    || el.getLevel() == 3)
+                    .map(NoiNhan::fromUserEntity)
+                    .collect(Collectors.toList());
+
+        } else {
+            return findVanBanDenNoiNhan();
+        }
     }
 
     @Override

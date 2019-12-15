@@ -33,6 +33,6 @@ public class MucDichSuDungController extends BaseController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        mucDichSuDungRepository.deleteById(id);
+        mucDichSuDungRepository.delete(id);
     }
 }

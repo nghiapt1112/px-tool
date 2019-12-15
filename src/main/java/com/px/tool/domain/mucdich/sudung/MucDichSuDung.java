@@ -21,4 +21,7 @@ public class MucDichSuDung {
 
     @Column
     private String ten;
+
+    @Column
+    private boolean delete = false;
 }

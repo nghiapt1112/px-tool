@@ -6,7 +6,6 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,7 +29,9 @@ public class CommonUtils {
         try {
             StringBuilder s = new StringBuilder();
             for (Long cusReceiver : numbers) {
-                s.append(cusReceiver).append(",");
+                if (cusReceiver != null) {
+                    s.append(cusReceiver).append(",");
+                }
             }
             return s.substring(0, s.length() - 1);
         } catch (Exception e) {
@@ -39,16 +40,18 @@ public class CommonUtils {
     }
 
     public static List<Long> toCollection(String numberChain) {
-        try {
-            List<Long> val = new ArrayList<>();
-            for (String s : numberChain.split(",")) {
-                val.add(Long.valueOf(s));
-            }
-            return val;
-        } catch (Exception e) {
-//            return Collections.emptyList();
+        if (StringUtils.isEmpty(numberChain)) {
             return null;
         }
+        List<Long> val = new ArrayList<>();
+        for (String s : numberChain.split(",")) {
+            try {
+                val.add(Long.valueOf(s));
+            } catch (Exception e) {
+            }
+        }
+        return val;
+
     }
 
     public static String toString(Collection<Long> numbers, Map<Long, String> map) {

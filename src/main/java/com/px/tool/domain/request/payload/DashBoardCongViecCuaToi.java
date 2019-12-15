@@ -2,6 +2,7 @@ package com.px.tool.domain.request.payload;
 
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
+import com.px.tool.domain.cntp.NoiDungThucHien;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -41,7 +43,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                     dashBoardCongViecCuaToi.status = "Quản đốc đã ký";
                 }
             } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
-                dashBoardCongViecCuaToi.status = "Quản đốc đã ký";
+                dashBoardCongViecCuaToi.status = "Vừa tạo";
                 if (request.getPhieuDatHang().getNguoiDatHangXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Người đặt hàng đã ký";
                 }
@@ -51,34 +53,6 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                 if (request.getPhieuDatHang().getTpkthkXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Đặt Hàng thành công";
                 }
-            } else if (dashBoardCongViecCuaToi.type == RequestType.PHUONG_AN) {
-                dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
-//                if (request.getPhuongAn().getNguoiLapXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "Người lập đã ký";
-//                }
-//                if (request.getPhuongAn().getTruongPhongKTHKXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "T.P KTHK đã ký";
-//                }
-//                if (request.getPhuongAn().getTruongPhongVatTuXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "T.P Vật tư đã ký";
-//                }
-//                if (request.getPhuongAn().getTruongPhongKeHoachXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "T.P Kế Hoạch đã ký";
-//                }
-//                if (request.getPhuongAn().getGiamDocXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";
-//                }
-            } else if (dashBoardCongViecCuaToi.type == RequestType.CONG_NHAN_THANH_PHAM) {
-                dashBoardCongViecCuaToi.status = "Giám Đốc đã ký";
-//                if (request.getCongNhanThanhPham().getNguoiThucHienXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "Người thực hiện đã ký";
-//                }
-//                if (request.getCongNhanThanhPham().getNguoiGiaoViecXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "Người giao việc đã ký";
-//                }
-//                if (request.getCongNhanThanhPham().getTpkcsXacNhan()) {
-//                    dashBoardCongViecCuaToi.status = "T.P KCS đã ký";
-//                }
             }
         } catch (Exception ex) {
             // DO no thing
@@ -134,9 +108,39 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         DashBoardCongViecCuaToi dashboard = new DashBoardCongViecCuaToi();
         dashboard.ma = "Key-" + el.getTpId();
         dashboard.requestId = el.getTpId();
-        dashboard.status = "Vừa tạo";
+        dashboard.status = "Đang xử lý ... ";
         dashboard.noiDung = el.getNoiDung();
         dashboard.setType(RequestType.CONG_NHAN_THANH_PHAM);
+
+        if (!CollectionUtils.isEmpty(el.getNoiDungThucHiens())) {
+            int count = 0;
+            int tongKcs = 0;
+            boolean dataValid = true;
+            for (NoiDungThucHien noiDungThucHien : el.getNoiDungThucHiens()) {
+                if (Objects.isNull(noiDungThucHien.getNghiemThu())) {
+                    dataValid = false;
+                }
+                if (Objects.nonNull(noiDungThucHien.getNghiemThu())) {
+                    tongKcs++;
+                }
+                if (noiDungThucHien.isXacNhan()) {
+                    count++;
+                }
+            }
+            if (tongKcs < el.getNoiDungThucHiens().size()) {
+                dashboard.status = "Chưa giao hết việc cho n.Viên KCS";
+            }
+            if (dataValid) {
+                dashboard.status = String.format(" %s/%s nhân viên KCS đã ký", count, el.getNoiDungThucHiens().size());
+            }
+
+        }
+        if (el.getTpkcsXacNhan()) {
+            dashboard.status = "TP.KCS đã ký";
+        }
+        if (el.getQuanDocXacNhan()) {
+            dashboard.status = "Hoàn Thành";
+        }
         return dashboard;
     }
 }

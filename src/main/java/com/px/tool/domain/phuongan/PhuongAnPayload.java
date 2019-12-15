@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -121,15 +122,17 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         payload.disableAll = phuongAn.getStep() == 1 ? true : false;
         payload.setNoiNhan(null);
 
+        payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());
+        payload.ngayThangNamtpVatTu = DateTimeUtils.toString(phuongAn.getNgayThangNamtpVatTu());
+        payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKTHK());
+        payload.ngayThangNamTPKEHOACH = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKEHOACH());
+        payload.ngayThangNamPheDuyet = DateTimeUtils.toString(phuongAn.getNgayThangNamPheDuyet());
+        payload.ngayThangNamNguoiLap = DateTimeUtils.toString(phuongAn.getNgayThangNamNguoiLap());
+
         try {
             payload.setCusReceivers(CommonUtils.toCollection(phuongAn.getCusReceivers()));
-            payload.setNguoiThucHien(Arrays.asList(phuongAn.getNguoiThucHien()));
-            payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());
-            payload.ngayThangNamtpVatTu = DateTimeUtils.toString(phuongAn.getNgayThangNamtpVatTu());
-            payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKTHK());
-            payload.ngayThangNamTPKEHOACH = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKEHOACH());
-            payload.ngayThangNamPheDuyet = DateTimeUtils.toString(phuongAn.getNgayThangNamPheDuyet());
-            payload.ngayThangNamNguoiLap = DateTimeUtils.toString(phuongAn.getNgayThangNamNguoiLap());
+            payload.setNguoiThucHien(phuongAn.getNguoiThucHien() == null ? Collections.emptyList() : Arrays.asList(phuongAn.getNguoiThucHien()));
+
         } catch (Exception e) {
 
         }
