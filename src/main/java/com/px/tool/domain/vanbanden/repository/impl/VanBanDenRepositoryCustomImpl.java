@@ -20,7 +20,7 @@ public class VanBanDenRepositoryCustomImpl implements VanBanDenRepositoryCustom 
     @Override
     public VanBanDenPageResponse findByNoiNhan(VanBanDenPageRequest request, Map<Long, String> noiNhanById) {
         StringBuilder query = new StringBuilder();
-        query.append(" WHERE v.noiNhan LIKE :userId ");
+        query.append(" WHERE v.noiNhan LIKE :userId AND (v.deleted is null or v.deleted <> true OR v.deleted = false OR v.deleted = 0)");
         Map<String, Object> params = new HashMap<>();
         params.put("userId", "%" + request.getUserId() + "%");
         if (Objects.nonNull(request.getDate())) {

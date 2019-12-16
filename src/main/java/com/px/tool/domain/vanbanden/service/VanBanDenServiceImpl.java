@@ -1,7 +1,9 @@
 package com.px.tool.domain.vanbanden.service;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
+import com.px.tool.domain.file.repository.FileStorageRepository;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -103,7 +106,8 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Transactional
     public void deleteById(Long id) {
         try {
-            vanBanDenRepository.deleteById(id);
+            vanBanDenRepository.delete(id);
+            fileStorageService.deleteByRequestId(id);
         } catch (Exception e) {
             throw new PXException("vanbanden_deleteFailed");
         }

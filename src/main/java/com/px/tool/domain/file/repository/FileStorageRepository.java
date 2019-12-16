@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,5 @@ public interface FileStorageRepository extends JpaRepository<FileStorage, Long> 
     @Query("SELECT f FROM FileStorage f WHERE f.requestId = :id AND f.requestType = :rtype")
     Optional<List<FileStorage>> findFiles(@Param("id") Long id, @Param("rtype") RequestType requestType);
 
+    Optional<FileStorage> findByRequestId(Long requestId);
 }

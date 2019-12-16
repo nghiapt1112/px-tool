@@ -3,6 +3,7 @@ package com.px.tool.domain.file;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.file.repository.FileStorageRepository;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.logger.PXLogger;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,7 @@ public class FileStorageService {
                 .concat(FilenameUtils.getExtension(orgFileName));
 
         try {
+            Files.createDirectories(Paths.get("./nghia-file/" + requestType.name()).toAbsolutePath().normalize());
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
@@ -66,10 +68,7 @@ public class FileStorageService {
         fileInfo.setFileUUId(fileName);
         fileInfo.setRequestType(requestType);
         fileInfo.setRequestId(requestId);
-        Optional<FileStorage> existedFile = fileStorageRepository.findByFileName(orgFileName);
-        if (!existedFile.isPresent()) {
-            this.fileStorageRepository.save(fileInfo);
-        }
+        this.fileStorageRepository.save(fileInfo);
         return fileName;
     }
 
@@ -107,5 +106,19 @@ public class FileStorageService {
         }
         logger.info("\nTotal files in {}: {}\n", requestType, fileNames.size());
         return fileNames;
+    }
+
+    @Transactional
+    public void deleteByRequestId(Long requestId) {
+        Optional<FileStorage> fileInfo = fileStorageRepository.findByRequestId(requestId);
+        if (fileInfo.isPresent()) {
+            String fileName = fileInfo.get().getFileName();
+            try {
+                Files.delete(Paths.get("./nghia-file/" + fileName));
+                fileStorageRepository.deleteById(fileInfo.get().getFileId());
+            } catch (IOException e) {
+                PXLogger.error("Clean file failed, path: {}", fileName);
+            }
+        }
     }
 }

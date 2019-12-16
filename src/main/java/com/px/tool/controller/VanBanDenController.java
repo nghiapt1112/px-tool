@@ -62,13 +62,13 @@ public class VanBanDenController extends BaseController {
         return vanBanDenService.findById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        vanBanDenService.deleteById(id);
-    }
-
     @PostMapping("/move-vbd")
     public void moveVanBDToFolder(@RequestBody VanBanDenMoveFolder moveFolder) {
         vanBanDenService.moveToFolder(moveFolder);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteVanBanDen(@PathVariable Long id) {
+        vanBanDenService.deleteById(id);
     }
 }
