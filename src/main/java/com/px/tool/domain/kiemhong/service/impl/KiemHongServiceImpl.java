@@ -15,9 +15,12 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +59,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private UserService userService;
 
     @Autowired
-    private VanBanDenServiceImpl vanBanDenService;
+    private VanBanDenRepository vanBanDenRepository;
 
     @Override
     public List<KiemHongPayLoad> findThongTinKiemHongCuaPhongBan(Long userId) {
@@ -183,7 +186,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             cntpReceiverId = null;
 
             createPhieuDatHang(requestKiemHong, pdh);
-            guiVanBanDen();
+            guiVanBanDen(kiemHongPayLoad);
         }
 
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
@@ -195,8 +198,19 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     /**
      * Phiếu kiểm hỏng sẽ được chuyển đến account 8,9,12 và phân xưởng lập kiểm hỏng trong VĂN BẢN ĐẾN
      */
-    private void guiVanBanDen() {
-        vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.KIEM_HONG);
+    @Transactional
+    public void guiVanBanDen(KiemHongPayLoad payload) {
+        try {
+            VanBanDen vanBanDen = new VanBanDen();
+            vanBanDen.setNoiDung(payload.getCusNoiDung());
+            vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
+            vanBanDen.setRequestType(RequestType.PHUONG_AN);
+            vanBanDen.setRead(false);
+            vanBanDen.setSoPa("số: " + payload.getKhId());
+            vanBanDenRepository.save(vanBanDen);
+        } catch (Exception e) {
+            throw new PXException("[Kiểm Hỏng]: Có lỗi khi gửi văn bản đến.");
+        }
     }
 
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {

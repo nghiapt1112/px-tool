@@ -331,14 +331,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<NoiNhan> findVanBanDenNoiNhan(RequestType requestType) {
-        if (requestType == RequestType.DAT_HANG) {
+        if (requestType == RequestType.KIEM_HONG) {
             return cacheService.getUsers_cache()
                     .stream()
                     .filter(el ->
-                            el.isQuanDocPhanXuong() // PX
-                                    || el.isTruongPhongVatTu() // Vat.Tu
-                                    || el.getPhongBan().getGroup().equals(8) // KTHK
-                                    || el.getPhongBan().getGroup().equals(9) // XMDC
+                            !el.isAdmin() && (
+                                    el.isQuanDocPhanXuong() // PX
+                                            || el.isTruongPhongVatTu() // Vat.Tu
+                                            || el.getPhongBan().getGroup().equals(8) // KTHK
+                                            || el.getPhongBan().getGroup().equals(9) // XMDC
+                                            || el.getPhongBan().getGroup().equals(9)) // XMDC
+                    )
+                    .map(NoiNhan::fromUserEntity)
+                    .collect(Collectors.toList());
+        } else if (requestType == RequestType.DAT_HANG) {
+            return cacheService.getUsers_cache()
+                    .stream()
+                    .filter(el ->
+                            !el.isAdmin() && (
+                                    el.isQuanDocPhanXuong() // PX
+                                            || el.isTruongPhongVatTu() // Vat.Tu
+                                            || el.getPhongBan().getGroup().equals(8) // KTHK
+                                            || el.getPhongBan().getGroup().equals(9)) // XMDC
+
                     )
                     .map(NoiNhan::fromUserEntity)
                     .collect(Collectors.toList());
@@ -346,8 +361,7 @@ public class UserServiceImpl implements UserService {
             return cacheService.getUsers_cache()
                     .stream()
                     .filter(el -> // all users thuoc cap 2, cap 3
-                            el.getLevel() == 2
-                                    || el.getLevel() == 3)
+                            !el.isAdmin() && (el.getLevel() == 2 || el.getLevel() == 3))
                     .map(NoiNhan::fromUserEntity)
                     .collect(Collectors.toList());
 

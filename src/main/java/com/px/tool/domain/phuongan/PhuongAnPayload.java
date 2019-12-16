@@ -105,6 +105,9 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private List<Long> nguoiThucHien;
 
     private boolean disableAll; // 0: van dang xu ly, 1: success_phuong_an
+    private boolean dmVatTuDisable = false;
+    private boolean dmLaoDOngDisable = false;
+
 
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
@@ -199,6 +202,12 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         } else if (user.getLevel() == 2) {
             giamDocDisable = false;
         }
+        if (user.isNhanVienTiepLieu()) {
+            dmVatTuDisable = true;
+        }
+        if (user.isNhanVienDinhMuc()) {
+            dmLaoDOngDisable = true;
+        }
         return this;
     }
 
@@ -282,6 +291,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setNgayThangNamNguoiLap(existedPhuongAn.getNgayThangNamNguoiLap());
         pa.setNgayThangNamTPKTHK(existedPhuongAn.getNgayThangNamTPKTHK());
         pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
+        pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());

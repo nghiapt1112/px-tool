@@ -10,11 +10,13 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +25,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
-import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 
 @Service
 public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDatHangService {
@@ -41,7 +41,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     private UserService userService;
 
     @Autowired
-    private VanBanDenServiceImpl vanBanDenService;
+    private VanBanDenRepository vanBanDenRepository;
 
     @Override
     public List<PhieuDatHang> findByPhongBan(Long userId) {
@@ -83,12 +83,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
         phieuDatHangPayload.capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
-//        capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
-//        validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
-//            phieuDatHang.setRequest(existedPhieuDatHang.getRequest());
-            guiVanBanDen();
+            guiVanBanDen(phieuDatHangPayload);
             // clear back recieverid
             phuongAnReceiverId = null;
             phieuDatHangReceiverId = phieuDatHangPayload.getNoiNhan();
@@ -102,51 +99,21 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         return phieuDatHang;
     }
 
-    private void guiVanBanDen() {
-        vanBanDenService.guiVanBanDen(group_12_PLUS, RequestType.DAT_HANG);
+    @Transactional
+    public void guiVanBanDen(PhieuDatHangPayload payload) {
+        try {
+            VanBanDen vanBanDen = new VanBanDen();
+            vanBanDen.setNoiDung(payload.getCusNoiDung());
+            vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
+            vanBanDen.setRequestType(RequestType.PHUONG_AN);
+            vanBanDen.setRead(false);
+            vanBanDen.setSoPa("số: " + payload.getPdhId());
+            vanBanDenRepository.save(vanBanDen);
+        } catch (Exception e) {
+            throw new PXException("[Đặt Hàng]: Có lỗi khi gửi văn bản đến.");
+        }
     }
 
-    /**
-     * Phai dung permission khi xac nhan
-     * Khi Chuyen thi phai co xac nhan, xac nhan thi phai co chuyen
-     */
-//    private void validateXacNhan(User user, PhieuDatHang requestPhieuDH, PhieuDatHang existedPDH) {
-//
-//        if ((requestPhieuDH.getNguoiDatHangXacNhan() || requestPhieuDH.getTpvatTuXacNhan()) && !user.isTruongPhongKTHK() && requestPhieuDH.getNoiNhan() == null) {
-//            throw new PXException("noi_nhan.must_choose");
-//        }
-//        if (!requestPhieuDH.getNguoiDatHangXacNhan() && !requestPhieuDH.getTpvatTuXacNhan() && !requestPhieuDH.getTpkthkXacNhan()) {
-//            throw new PXException("Phải có người xác nhận");
-//        }
-//        if (user.isNhanVienVatTu()) {
-//            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
-//            requestPhieuDH.setTpvatTuXacNhan(existedPDH.getTpvatTuXacNhan());
-//        }
-//        if (user.isTruongPhongVatTu()) {
-//            requestPhieuDH.setTpkthkXacNhan(existedPDH.getTpkthkXacNhan());
-//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
-//        }
-//        if (user.isTruongPhongKTHK()) {
-//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getTpkthkXacNhan());
-//            requestPhieuDH.setNguoiDatHangXacNhan(existedPDH.getNguoiDatHangXacNhan());
-//        }
-//    }
-
-
-    /**
-     * khi co xac nhan thi cap nhat ngay thang
-     */
-//    private void capNhatNgayThangChuKy(PhieuDatHang phieuDatHang, PhieuDatHang existedPhieuDatHang) {
-//        if (phieuDatHang.getNguoiDatHangXacNhan() != existedPhieuDatHang.getNguoiDatHangXacNhan()) {
-//            phieuDatHang.setNguoiDatHang(DateTimeUtils.nowAsString());
-//        }
-//        if (phieuDatHang.getTpvatTuXacNhan() != existedPhieuDatHang.getTpvatTuXacNhan()) {
-//            phieuDatHang.setNgayThangNamTPVatTu(DateTimeUtils.nowAsString());
-//        }
-//        if (phieuDatHang.getTpkthkXacNhan() != existedPhieuDatHang.getTpkthkXacNhan()) {
-//            phieuDatHang.setNgayThangNamTPKTHK(DateTimeUtils.nowAsString());
-//        }
-//    }
 
     private void cleanOldDetailData(PhieuDatHangPayload requestPhieuDatHang, PhieuDatHang existedPhieuDatHang) {
         try {

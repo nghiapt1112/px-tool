@@ -130,11 +130,11 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         return phuongAnRepository.save(phuongAn);
     }
 
-    // TODO: gui van ban den theo list
-    private void guiVanBanDen(PhuongAnPayload phuongAnPayload) {
+    @Transactional
+    public void guiVanBanDen(PhuongAnPayload phuongAnPayload) {
         try {
             VanBanDen vanBanDen = new VanBanDen();
-            vanBanDen.setNoiDung(phuongAnPayload.getNoiDung());
+            vanBanDen.setNoiDung(phuongAnPayload.getCusNoiDung());
             vanBanDen.setNoiNhan(CommonUtils.toString(phuongAnPayload.getCusReceivers()));
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);
