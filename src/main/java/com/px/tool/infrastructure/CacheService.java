@@ -66,17 +66,21 @@ public class CacheService {
     public void clearCache(short key) {
         switch (key) {
             case CACHE_ROLE:
+                this.roleById_cache.clear();
                 this.roleById_cache = roleRepository.findAll().stream()
                         .collect(Collectors.toMap(el -> el.getRoleId(), Function.identity()));
                 break;
             case CACHE_PHONG_BAN:
+                this.phongBanById_cache.clear();
                 this.phongBanById_cache = phongBanRepository.findAll().stream()
                         .collect(Collectors.toMap(el -> el.getPhongBanId(), Function.identity()));
                 break;
             case CACHE_USER:
+                this.users_cache.clear();
                 this.users_cache = userRepository.findAll();
                 break;
             case CACHE_USER_BY_ID:
+                this.userById_cache.clear();
                 this.userById_cache = this.users_cache.stream()
                         .collect(Collectors.toMap(el -> el.getUserId(), Function.identity()));
                 break;

@@ -417,7 +417,6 @@ public class UserServiceImpl implements UserService {
         entity.setPhongBan(phongBanService.findById(user.getPhongBanId()));
 
         userRepository.save(entity);
-        cacheService.clearCache(CacheService.CACHE_USER);
     }
 
     @Override
