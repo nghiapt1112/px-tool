@@ -7,6 +7,7 @@ plugins {
 group = 'com.px.tool'
 version = 'RC'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 configurations {
     developmentOnly
@@ -24,7 +25,7 @@ repositories {
 
 dependencies {
     implementation (
-//            'org.flywaydb:flyway-core',
+            'org.flywaydb:flyway-core',
             'org.springframework.boot:spring-boot-starter-data-jpa',
             'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
@@ -45,9 +46,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 
     bootRun {
         systemProperties = System.properties
