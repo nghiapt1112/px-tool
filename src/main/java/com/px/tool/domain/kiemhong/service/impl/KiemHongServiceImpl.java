@@ -142,17 +142,11 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         if (!user.isToTruong()) {
             throw new PXException("Chỉ tổ trưởng mới có quyền lập phiếu");
         }
-        if (kiemHongPayLoad.getToTruongXacNhan() || kiemHongPayLoad.getQuanDocXacNhan() || kiemHongPayLoad.getTroLyKTXacNhan()) {
-            throw new PXException("Xác nhận dành cho tổ trưởng.");
-        }
     }
 
     @Override
     @Transactional
     public KiemHongPayLoad capNhatKiemHong(Long userId, KiemHongPayLoad kiemHongPayLoad) {
-        if (CollectionUtils.isEmpty(kiemHongPayLoad.getKiemHongDetails())) {
-            throw new PXException("Thông tin chi tiết phải được điền.");
-        }
         KiemHong existedKiemHong = kiemHongRepository
                 .findById(kiemHongPayLoad.getKhId())
                 .orElseThrow(() -> new PXException("Không tìm thấy kiểm hỏng"));

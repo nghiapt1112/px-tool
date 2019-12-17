@@ -29,7 +29,7 @@ public class VanBanDenRequest {
         VanBanDen vanBanDen = new VanBanDen();
         vanBanDen.setVbdId(this.vbdId);
         vanBanDen.setNoiDung(this.noiDung);
-        vanBanDen.setSoPa(this.soPa);
+        vanBanDen.setSoPa(this.soPa == null ? "Tự động" : soPa);
         vanBanDen.setNoiNhan(CommonUtils.toString(this.cusReceivers));
         return vanBanDen;
     }

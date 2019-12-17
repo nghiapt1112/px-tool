@@ -17,6 +17,6 @@ public interface FolderRepository extends JpaRepository<Folder, Long>, FolderRep
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO folder (folder_id, name, user_id) VALUES (?1, ?2, ?3)", nativeQuery = true)
-    void insertFolder(Long folderId, String name, Long userId);
+    @Query(value = "INSERT INTO folder (name, user_id) VALUES (?1, ?2)", nativeQuery = true)
+    void insertFolder(String name, Long userId);
 }

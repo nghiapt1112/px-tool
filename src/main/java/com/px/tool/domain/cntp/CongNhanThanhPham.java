@@ -130,4 +130,31 @@ public class CongNhanThanhPham extends EntityDefault {
     @OneToOne(mappedBy = "congNhanThanhPham")
     private PhuongAn phuongAn;
 
+    public Boolean getQuanDocXacNhan() {
+        return quanDocXacNhan  == null ? false : quanDocXacNhan;
+    }
+
+    public Boolean getTpkcsXacNhan() {
+        return tpkcsXacNhan  == null ? false : tpkcsXacNhan;
+    }
+
+    public Boolean getToTruong1XacNhan() {
+        return toTruong1XacNhan  == null ? false : toTruong1XacNhan;
+    }
+
+    public Boolean getToTruong2XacNhan() {
+        return toTruong2XacNhan  == null ? false : toTruong2XacNhan;
+    }
+
+    public Boolean getToTruong3XacNhan() {
+        return toTruong3XacNhan  == null ? false : toTruong3XacNhan;
+    }
+
+    public Boolean getToTruong4XacNhan() {
+        return toTruong4XacNhan  == null ? false : toTruong4XacNhan;
+    }
+
+    public Boolean getToTruong5XacNhan() {
+        return toTruong5XacNhan  == null ? false : toTruong5XacNhan;
+    }
 }

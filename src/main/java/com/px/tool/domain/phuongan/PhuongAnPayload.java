@@ -202,7 +202,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         } else if (user.getLevel() == 2) {
             giamDocDisable = false;
         }
-        if (user.isNhanVienTiepLieu()) {
+        if (user.isNhanVienTiepLieu() || user.isTruongPhongVatTu()) {
             dmVatTuDisable = true;
         }
         if (user.isNhanVienDinhMuc()) {
@@ -292,6 +292,11 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setNgayThangNamTPKTHK(existedPhuongAn.getNgayThangNamTPKTHK());
         pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
         pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
+//        pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
+//        pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
+//        pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
+//        pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
+//        pa.setGiamDocId(existedPhuongAn.getGiamDocId());
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());
@@ -317,6 +322,9 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 if (Objects.isNull(cusNoiDung) || Objects.isNull(cusReceivers) || Objects.isNull(nguoiThucHien)) {
                     throw new PXException("phuongan.vanbanden");
                 }
+                if (CollectionUtils.isEmpty(dinhMucLaoDongs)) {
+                    throw new PXException("phuongan.dmLaoDong");
+                }
                 for (DinhMucLaoDongPayload dinhMucLaoDong : dinhMucLaoDongs) {
                     if (dinhMucLaoDong.isInvalidData()) {
                         throw new PXException("phuongan.dmLaoDong");
@@ -324,6 +332,9 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 }
             }
             if (user.isNhanVienVatTu() || user.isTruongPhongVatTu()) {
+                if (CollectionUtils.isEmpty(dinhMucVatTus)) {
+                    throw new PXException("phuongan.dinhmucvattu");
+                }
                 for (DinhMucVatTuPayload mucVatTus : this.dinhMucVatTus) {
                     if (mucVatTus.isInvalidData()) {
                         throw new PXException("phuongan.dinhmucvattu");

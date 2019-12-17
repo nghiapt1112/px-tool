@@ -11,6 +11,7 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
 import com.px.tool.domain.request.service.RequestService;
+import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.Role;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.NoiNhanRequestParams;
@@ -30,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -185,7 +187,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void filterTheoCNTP(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
-        Stream<User> pbs = null;
+        Stream<User> pbs = Stream.empty();
         CongNhanThanhPham congNhanThanhPham = congNhanThanhPhamRepository
                 .findById(requestParams.getRequestId())
                 .orElseThrow(() -> new PXException("cntp.not_found"));
@@ -262,7 +264,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void filterTheoDatHang(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
-        Stream<User> pbs = null;
+        Stream<User> pbs = Stream.empty();
         if (currentUser.isNhanVienVatTu()) {
             pbs = userRepository.findByGroup(group_12).stream();
         } else if (currentUser.isTruongPhongVatTu()) {
@@ -293,7 +295,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void filterTheoKiemHong(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
-        Stream<User> pbs = null;
+        Stream<User> pbs = Stream.empty();
         if (currentUser.isToTruong()) {
             pbs = userRepository.findByGroup(group_29_40)
                     .stream()
@@ -410,12 +412,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void taoUser(UserRequest user) {
         Role role = roleService.findById(Long.valueOf(user.getLevel()));
-
+        PhongBan phongBan = phongBanService.findById(user.getPhongBanId() == null ? 1 : user.getPhongBanId());
         User entity = user.toUserEntity();
-        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         entity.setAuthorities(Sets.newHashSet(role));
-        entity.setPhongBan(phongBanService.findById(user.getPhongBanId()));
+        entity.setPhongBan(phongBan);
 
+        if (user.getUserId() != null) {
+            entity = userRepository.findById(user.getUserId()).get();
+            entity.setEmail(user.getEmail());
+            entity.setFullName(user.getFullName());
+            entity.setSignImg(user.getImgBase64());
+            entity.setAuthorities(Sets.newHashSet(role));
+            entity.setPhongBan(phongBan);
+        }
         userRepository.save(entity);
     }
 

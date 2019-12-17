@@ -69,7 +69,6 @@ public class UserController extends BaseController {
     }
 
     /**
-     *
      * Update user Info
      *
      * @param user
@@ -108,7 +107,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/tao-user")
-    public void createUser(UserRequest userRequest) {
+    public void createUser(@RequestBody UserRequest userRequest) {
         userService.taoUser(userRequest);
         cacheService.clearCache(CacheService.CACHE_USER);
     }
@@ -155,14 +154,8 @@ public class UserController extends BaseController {
         if (!userService.userById().containsKey(userId)) {
             throw new PXException("user.not_found");
         }
-        AtomicLong count = new AtomicLong(1);
-        userService.userById().keySet().forEach(
-                key -> {
-                    IntStream.rangeClosed(1, 15)
-                            .forEach(el -> folderRepository.insertFolder(count.getAndIncrement(), "Thư mục " + el, key));
-                }
-        );
-
+        IntStream.rangeClosed(1, 15)
+                .forEach(el -> folderRepository.insertFolder("Thư mục " + el, userId));
     }
 
 }

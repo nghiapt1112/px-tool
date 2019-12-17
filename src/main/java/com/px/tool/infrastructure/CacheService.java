@@ -76,10 +76,9 @@ public class CacheService {
                         .collect(Collectors.toMap(el -> el.getPhongBanId(), Function.identity()));
                 break;
             case CACHE_USER:
+            case CACHE_USER_BY_ID:
                 this.users_cache.clear();
                 this.users_cache = userRepository.findAll();
-                break;
-            case CACHE_USER_BY_ID:
                 this.userById_cache.clear();
                 this.userById_cache = this.users_cache.stream()
                         .collect(Collectors.toMap(el -> el.getUserId(), Function.identity()));
