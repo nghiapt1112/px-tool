@@ -4,6 +4,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.impl.AuthServiceImpl;
 import com.px.tool.infrastructure.BaseController;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.model.payload.LoginRequest;
 import com.px.tool.infrastructure.model.payload.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,12 @@ public class AuthController extends BaseController {
 
     @PostMapping("/login")
     public TokenInfo authenticateUser(@RequestBody LoginRequest loginRequest) {
-        userRepository
+        User user = userRepository
                 .findByEmail(loginRequest.getUserName())
                 .orElseThrow(() -> new RuntimeException("User username not found"));
-
+        if (user.getDeleted()) {
+            throw new PXException("User đã bị xóa");
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authService.generateToken((User) authentication.getPrincipal());

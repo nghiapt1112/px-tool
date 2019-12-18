@@ -3,6 +3,7 @@ package com.px.tool.infrastructure.security;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.AuthServiceImpl;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +34,9 @@ public class CustomAuthRequestFilter extends OncePerRequestFilter {
             if (token != null && token.length() > 0 && authService.validateToken(token)) {
                 Long userId = authService.getUserIdFromJWT(token);
                 User userDetails = userService.findById(userId);
-
+                if (userDetails.getDeleted()) {
+                    throw new PXException("User đã bị xóa");
+                }
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

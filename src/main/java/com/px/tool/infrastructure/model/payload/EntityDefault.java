@@ -52,4 +52,8 @@ public abstract class EntityDefault extends AbstractObject {
         } catch (Exception e) {
         }
     }
+
+    public Boolean getDeleted() {
+        return deleted == null ? false : deleted;
+    }
 }
