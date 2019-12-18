@@ -18,15 +18,24 @@ public class UserPayload extends AbstractObject {
     private String phanXuong;
     private String level;
 
+    private UserType type;
+
     public static UserPayload fromEntity(User user) {
         UserPayload payload = new UserPayload();
         payload.userId = user.getUserId();
         payload.email = user.getEmail();
         payload.signImg = user.getSignImg();
         payload.fullName = user.getFullName();
+        payload.level = String.valueOf(user.getLevel());
+        if (user.getUserId().equals(1)) {
+            payload.type = UserType.ADMIN;
+        } else if (user.getUserId().equals(27)) {
+            payload.type = UserType.VAN_THU_BAO_MAT;
+        } else {
+            payload.type = UserType.GENERAL;
+        }
         try {
             payload.setPhanXuong(user.getPhongBan().getName());
-            payload.level = String.valueOf(user.getLevel());
         } catch (Exception e) {
         }
         return payload;

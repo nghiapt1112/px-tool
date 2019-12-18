@@ -1,9 +1,7 @@
 package com.px.tool.domain.vanbanden.service;
 
 import com.px.tool.domain.RequestType;
-import com.px.tool.domain.file.FileStorage;
 import com.px.tool.domain.file.FileStorageService;
-import com.px.tool.domain.file.repository.FileStorageRepository;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
@@ -30,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.px.tool.infrastructure.utils.CommonUtils.toCollection;
 
 @Service
 public class VanBanDenServiceImpl extends BaseServiceImpl {
@@ -74,7 +74,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
                 val.stream()
                         .map(el -> {
                             VanBanDenResponse payload = VanBanDenResponse.fromEntity(el);
-                            payload.setNoiNhan(CommonUtils.toString(CommonUtils.toCollection(el.getNoiNhan()), noiNhanById()));
+                            payload.setNoiNhan(CommonUtils.toString(toCollection(el.getNoiNhan()), noiNhanById()));
                             return payload;
                         })
                         .collect(Collectors.toList())
@@ -142,5 +142,26 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
     @Transactional
     public void moveToFolder(VanBanDenMoveFolder moveFolder) {
         vanBanDenRepository.moveFolder(moveFolder.getVbdId(), moveFolder.getFolderId());
+    }
+
+    @Transactional
+    public void hide(Long userId, Long id) {
+        Optional<VanBanDen> vbd = vanBanDenRepository.findById(id);
+        if (vbd.isPresent()) {
+            try {
+                vbd.get().setNoiNhan(
+                        CommonUtils.toString(
+                                toCollection(vbd.get().getNoiNhan())
+                                        .stream()
+                                        .filter(el -> !el.equals(userId))
+                                        .collect(Collectors.toList())
+                        )
+                );
+                vanBanDenRepository.save(vbd.get());
+            } catch (Exception e) {
+                throw new PXException("vanbanden.hide_error");
+            }
+
+        }
     }
 }

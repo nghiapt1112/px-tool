@@ -71,4 +71,9 @@ public class VanBanDenController extends BaseController {
     public void deleteVanBanDen(@PathVariable Long id) {
         vanBanDenService.deleteById(id);
     }
+
+    @PostMapping("/hide/{id}")
+    public void hideVanBanDen(HttpServletRequest httpServletRequest, @PathVariable Long id) {
+        vanBanDenService.hide(extractUserInfo(httpServletRequest), id);
+    }
 }
