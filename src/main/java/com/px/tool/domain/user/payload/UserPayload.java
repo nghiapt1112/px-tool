@@ -27,9 +27,9 @@ public class UserPayload extends AbstractObject {
         payload.signImg = user.getSignImg();
         payload.fullName = user.getFullName();
         payload.level = String.valueOf(user.getLevel());
-        if (user.getUserId().equals(1)) {
+        if (user.getUserId().equals(1L)) {
             payload.type = UserType.ADMIN;
-        } else if (user.getUserId().equals(27)) {
+        } else if (user.getUserId().equals(27L)) {
             payload.type = UserType.VAN_THU_BAO_MAT;
         } else {
             payload.type = UserType.GENERAL;
