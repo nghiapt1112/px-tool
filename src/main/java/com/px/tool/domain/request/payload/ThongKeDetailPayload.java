@@ -64,7 +64,7 @@ public class ThongKeDetailPayload extends AbstractObject {
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = DateTimeUtils.dateLongToString(request.getKiemHong().getNgayThangNamQuanDoc());
             tk.soPhieuDatHang = "PDH-" + request.getPhieuDatHang().getPdhId();
-            tk.detailId = detail.getKhDetailId();
+            tk.detailId = request.getRequestId();
             try {
                 pdhDt = pdhDetailById.get(detail.getKhDetailId());
                 tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();

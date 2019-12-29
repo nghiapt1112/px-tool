@@ -9,13 +9,10 @@ import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
-import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -40,17 +37,6 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private CongNhanThanhPhamService congNhanThanhPhamService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Override
-    public void exportFile() throws IOException {
-    }
-
-    private void merge(Sheet sheet, int firstRow, int lastRow, int firstCol, int lastCol) {
-        sheet.addMergedRegion(new CellRangeAddress(firstRow, lastRow, firstCol, lastCol));
-    }
 
     @Override
     public void exportFile(Long requestId, RequestType requestType, HttpServletResponse response) {
@@ -195,11 +181,11 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row19, 5, payload.getDong().toString());
 //
 
-            int totalLine = 4;
+            int totalLine = payload.getNoiDungThucHiens().size();
             if (totalLine > 5) {
-                sheet.copyRows(18, 24, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+                sheet.copyRows(18, 29, 29 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
 
-                for (int i = 18; i < 24 + (totalLine - 6); i++) {
+                for (int i = 18; i < 29 + (totalLine - 6); i++) {
                     sheet.createRow(i);
                     sheet.copyRows(12, 12, i - 1, new CellCopyPolicy()); // copy and paste
                 }

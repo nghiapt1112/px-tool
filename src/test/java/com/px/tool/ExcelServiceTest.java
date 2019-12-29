@@ -156,7 +156,7 @@ public class ExcelServiceTest {
 
     @Test
     public void exportCNTP() throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/4_cntp.xlsx")));
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("./src/main/resources/templates/4_cntp.xlsx")));
         XSSFSheet sheet = workbook.getSheetAt(0);
         XSSFRow row0 = sheet.getRow(2);
         XSSFRow row1 = sheet.getRow(3);
@@ -181,7 +181,7 @@ public class ExcelServiceTest {
         setCellVal(row19, 5, "dong");
 //
 
-        int totalLine = 4;
+        int totalLine = 40;
         if (totalLine > 5) {
             sheet.copyRows(18, 24, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
 
@@ -204,7 +204,7 @@ public class ExcelServiceTest {
 
     @Test
     public void exportPhuongAn() throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/3_phuong_an.xlsx")));
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("./src/main/resources/templates/3_phuong_an.xlsx")));
         XSSFSheet sheet = workbook.getSheetAt(0);
 
         XSSFRow row1 = sheet.getRow(1);

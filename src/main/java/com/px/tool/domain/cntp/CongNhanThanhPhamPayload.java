@@ -346,4 +346,16 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         }
         return true;
     }
+
+    public Float getLaoDongTienLuong() {
+        return laoDongTienLuong == null ? Float.NaN : laoDongTienLuong;
+    }
+
+    public Float getDong() {
+        return dong == null ? Float.NaN : dong;
+    }
+
+    public Float getGioX() {
+        return gioX == null ? Float.NaN : gioX;
+    }
 }

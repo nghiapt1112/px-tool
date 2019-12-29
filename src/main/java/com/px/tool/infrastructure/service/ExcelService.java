@@ -6,7 +6,5 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface ExcelService {
-    void exportFile() throws IOException;
-
     void exportFile(Long requestId, RequestType requestType, HttpServletResponse response);
 }

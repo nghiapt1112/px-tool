@@ -269,22 +269,20 @@ public class UserServiceImpl implements UserService {
             pbs = userRepository.findByGroup(group_12).stream();
         } else if (currentUser.isTruongPhongVatTu()) {
             if (!requestParams.getTpVatTu()) {
-//                pbs = userRepository.findByGroup(group_12).stream()
-//                        .filter(el -> el.getLevel() == 4);
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getNguoiDatHangId()));
             } else {
-                pbs = userRepository.findByGroup(group_29_40).stream()
-                        .filter(el -> el.getLevel() == 4);
+                // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getTroLyId()));
             }
-        } else if (currentUser.isTroLyPhongKTHK()) {
-            pbs = userRepository.findByGroup(group_29_40).stream()
+        } else if (currentUser.isTroLyKT()) {
+            pbs = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()))
+                    .stream()
                     .filter(el -> el.getLevel() == 3);
         } else if (currentUser.isTruongPhongKTHK()) {
             //TODO: neu truong phong kthk dong y thi tao van ban den + PA
-//            pbs = userRepository.findByGroup(group_29_40).stream()
-//                    .filter(el -> el.getLevel() == 4);
             if (!requestParams.getTpKTHK()) {
-                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getTpvatTuId()));
+                // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
+                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getTroLyId()));
             } else {
                 pbs = Stream.empty();
             }
@@ -302,9 +300,6 @@ public class UserServiceImpl implements UserService {
                     .filter(el -> el.getLevel() == 4);
         } else if (currentUser.isTroLyKT()) {
             if (requestParams.getTroLyKT()) {
-//                pbs = userRepository.findByGroup(group_17_25)
-//                        .stream()
-//                        .filter(el -> el.getLevel() == 3);
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getPhanXuong()));
             } else {
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getToTruongId()));
