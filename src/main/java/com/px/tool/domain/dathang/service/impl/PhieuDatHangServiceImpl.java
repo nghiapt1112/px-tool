@@ -83,6 +83,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
         phieuDatHangPayload.capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
+        phieuDatHangPayload.validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
             existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
             guiVanBanDen(phieuDatHangPayload);

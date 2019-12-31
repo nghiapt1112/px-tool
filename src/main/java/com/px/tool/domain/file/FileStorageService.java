@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,16 +69,23 @@ public class FileStorageService {
         fileInfo.setFileUUId(fileName);
         fileInfo.setRequestType(requestType);
         fileInfo.setRequestId(requestId);
-        this.fileStorageRepository.save(fileInfo);
+        List<FileStorage> existedFile = fileStorageRepository.findByFileName(orgFileName);
+        if (!CollectionUtils.isEmpty(existedFile)) {
+            this.fileStorageRepository.save(fileInfo);
+        } else {
+            throw new PXException("file_existed");
+        }
         return fileName;
     }
 
     public Resource loadFileAsResource(String fileName) {
         try {
-            FileStorage fileInfo = fileStorageRepository.findByFileName(fileName)
-                    .orElseThrow(() -> new PXException("File not found"));
+            List<FileStorage> fileInfo = fileStorageRepository.findByFileName(fileName);
+            if (CollectionUtils.isEmpty(fileInfo)) {
+                throw new PXException("file_not_existed");
+            }
 
-            Path filePath = this.fileStorageLocation.resolve(fileInfo.getFileUUId()).normalize();
+            Path filePath = this.fileStorageLocation.resolve(fileInfo.get(0).getFileUUId()).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface FileStorageRepository extends JpaRepository<FileStorage, Long> {
-    Optional<FileStorage> findByFileName(String fileName);
+    List<FileStorage> findByFileName(String fileName);
 
     @Query("SELECT f FROM FileStorage f WHERE f.requestId = :id AND f.requestType = :rtype")
     Optional<List<FileStorage>> findFiles(@Param("id") Long id, @Param("rtype") RequestType requestType);

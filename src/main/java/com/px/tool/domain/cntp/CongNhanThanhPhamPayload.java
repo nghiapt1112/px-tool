@@ -63,6 +63,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String quanDocFullName;
     private String quanDocSignImg;
     private String ykienQuanDoc;
+    private String ngayThangNamQuanDoc;
 
     private Boolean tpkcsXacNhan;
     private Boolean tpkcsDisable = true;
@@ -70,6 +71,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String tpkcsFullName;
     private String tpkcsSignImg;
     private String ykientpkcs;
+    private String ngayThangNamTPKCS;
 
     // danh sach 5 to truong:
     private Boolean toTruong1XacNhan;
@@ -127,7 +129,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         }
         congNhanThanhPhamPayload.setCusToTruongIds(Collections.emptyList());
         congNhanThanhPhamPayload.setNoiNhan(null);
-
+        congNhanThanhPhamPayload.setNgayThangNamQuanDoc(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamQuanDoc()));
+        congNhanThanhPhamPayload.setNgayThangNamTPKCS(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamTPKCS()));
         return congNhanThanhPhamPayload;
     }
 
@@ -280,6 +283,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     public void capNhatNgayThangChuKy(CongNhanThanhPham cntp, CongNhanThanhPham existed) {
         cntp.setNgayThangNamTPKCS(existed.getNgayThangNamTPKCS());
         cntp.setNgayThangNamQuanDoc(existed.getNgayThangNamQuanDoc());
+        cntp.setQuanDocId(existed.getQuanDocId());
+        cntp.setTpkcsId(existed.getTpkcsId());
 
         if (cntp.getQuanDocXacNhan() && !existed.getQuanDocXacNhan()) {
             cntp.setNgayThangNamQuanDoc(DateTimeUtils.nowAsMilliSec());
@@ -324,8 +329,6 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         request.setToTruong3Id(toTruong3Id);
         request.setToTruong4Id(toTruong4Id);
         request.setToTruong5Id(toTruong5Id);
-        request.setTpkcsId(tpkcsId);
-        request.setQuanDocId(quanDocId);
     }
 
     @JsonIgnore

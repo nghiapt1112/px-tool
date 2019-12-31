@@ -138,7 +138,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         if (el.getTpkcsXacNhan()) {
             dashboard.status = "TP.KCS đã ký";
         }
-        if (el.getQuanDocXacNhan()) {
+        if (el.getQuanDocXacNhan() && el.getTpkcsXacNhan()) {
             dashboard.status = "Hoàn Thành";
         }
         return dashboard;

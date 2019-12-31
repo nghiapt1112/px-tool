@@ -217,9 +217,9 @@ public class UserServiceImpl implements UserService {
             if (requestParams.getNguoiLap()) {
                 pbs = userRepository.findByGroup(group_29_40).stream().filter(el -> el.getLevel() == 3);
             }
-        } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d
+        } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d : NV_TIEP_LIEU
             if (requestParams.getTpKTHK()) {
-                pbs = userRepository.findByGroup(group_12).stream().filter(el -> el.getLevel() == 4);
+                pbs = userRepository.findByGroup(Arrays.asList(54L)).stream().filter(el -> el.getLevel() == 4);
             } else {
                 // TODO: chuyen ve nguoi lap phieu
                 pbs = toUserStream(nguoiDangXuLy.getNguoiLap());

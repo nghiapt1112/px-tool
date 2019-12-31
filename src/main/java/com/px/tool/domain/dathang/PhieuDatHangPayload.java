@@ -2,6 +2,7 @@ package com.px.tool.domain.dathang;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
 import com.px.tool.infrastructure.utils.CommonUtils;
@@ -9,6 +10,8 @@ import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -218,6 +221,8 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
 
     @Override
     public void validateXacNhan(User user, PhieuDatHang request, PhieuDatHang existed) {
-
+        if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers) || StringUtils.isEmpty(cusNoiDung))) {
+            throw new PXException("dathang.noi_nhan.empty");
+        }
     }
 }
