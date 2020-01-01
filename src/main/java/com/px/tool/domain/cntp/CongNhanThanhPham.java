@@ -68,14 +68,14 @@ public class CongNhanThanhPham extends EntityDefault {
     private Long noiNhan;
 
     // chu ky + full name
-    @Column
-    private Boolean quanDocXacNhan;
-    @Column
-    private Long quanDocId;
-    @Column
-    private Long ngayThangNamQuanDoc;
-    @Column
-    private String ykienQuanDoc;
+//    @Column
+//    private Boolean quanDocXacNhan;
+//    @Column
+//    private Long quanDocId;
+//    @Column
+//    private Long ngayThangNamQuanDoc;
+//    @Column
+//    private String ykienQuanDoc;
 
     @Column
     private Boolean tpkcsXacNhan;
@@ -130,9 +130,9 @@ public class CongNhanThanhPham extends EntityDefault {
     @OneToOne(mappedBy = "congNhanThanhPham")
     private PhuongAn phuongAn;
 
-    public Boolean getQuanDocXacNhan() {
-        return quanDocXacNhan  == null ? false : quanDocXacNhan;
-    }
+//    public Boolean getQuanDocXacNhan() {
+//        return quanDocXacNhan  == null ? false : quanDocXacNhan;
+//    }
 
     public Boolean getTpkcsXacNhan() {
         return tpkcsXacNhan  == null ? false : tpkcsXacNhan;

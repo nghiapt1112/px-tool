@@ -282,13 +282,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     @Override
     public void capNhatNgayThangChuKy(CongNhanThanhPham cntp, CongNhanThanhPham existed) {
         cntp.setNgayThangNamTPKCS(existed.getNgayThangNamTPKCS());
-        cntp.setNgayThangNamQuanDoc(existed.getNgayThangNamQuanDoc());
-        cntp.setQuanDocId(existed.getQuanDocId());
         cntp.setTpkcsId(existed.getTpkcsId());
 
-        if (cntp.getQuanDocXacNhan() && !existed.getQuanDocXacNhan()) {
-            cntp.setNgayThangNamQuanDoc(DateTimeUtils.nowAsMilliSec());
-        }
         if (cntp.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
             cntp.setNgayThangNamTPKCS(DateTimeUtils.nowAsMilliSec());
         }

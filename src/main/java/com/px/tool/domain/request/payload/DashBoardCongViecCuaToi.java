@@ -52,6 +52,8 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                 }
                 if (request.getPhieuDatHang().getTpkthkXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Đặt Hàng thành công";
+//                     NOTE: [update] đặt hàng thành công thì không hiển thị ở đây nữa.
+//                    return null;
                 }
             }
         } catch (Exception ex) {
@@ -138,9 +140,9 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         if (el.getTpkcsXacNhan()) {
             dashboard.status = "TP.KCS đã ký";
         }
-        if (el.getQuanDocXacNhan() && el.getTpkcsXacNhan()) {
-            dashboard.status = "Hoàn Thành";
-        }
+//        if (el.getQuanDocXacNhan() && el.getTpkcsXacNhan()) {
+//            dashboard.status = "Hoàn Thành";
+//        }
         return dashboard;
     }
 }

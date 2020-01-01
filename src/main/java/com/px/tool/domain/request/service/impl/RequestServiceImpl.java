@@ -72,6 +72,7 @@ public class RequestServiceImpl implements RequestService {
         pageDashBoardCongViecCuaToi.setDetails(requestsByNguoiGui
                 .stream()
                 .map(el -> DashBoardCongViecCuaToi.fromEntity(el, userById))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
 
 

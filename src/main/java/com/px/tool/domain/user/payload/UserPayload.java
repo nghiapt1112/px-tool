@@ -14,7 +14,7 @@ public class UserPayload extends AbstractObject {
     private String email;
     private String signImg;
     private String fullName;
-    // external fields for [admin]-list-users
+    // external fields for [admin-page]-list-users
     private String phanXuong;
     private String level;
 
@@ -31,6 +31,14 @@ public class UserPayload extends AbstractObject {
             payload.type = UserType.ADMIN;
         } else if (user.getUserId().equals(27L)) {
             payload.type = UserType.VAN_THU_BAO_MAT;
+        } else if (user.isNhanVienVatTu()) {
+            payload.type = UserType.NV_VAT_TU;
+        } else if (user.isTruongPhongVatTu()) {
+            payload.type = UserType.TP_VAT_TU;
+        } else if (user.isNhanVienDinhMuc()) {
+            payload.type = UserType.NV_DINH_MUC;
+        } else if (user.isTroLyKT()) {
+            payload.type = UserType.TL_KY_THUAT;
         } else {
             payload.type = UserType.GENERAL;
         }
