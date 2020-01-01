@@ -164,7 +164,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             }
             congNhanThanhPham.setNoiDungThucHiens(noiDungThucHiens);
         }
-        congNhanThanhPham.setQuanDocId(phuongAn.getNguoiThucHien());
+        congNhanThanhPham.setQuanDocIds(phuongAn.getNguoiThucHien());
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 

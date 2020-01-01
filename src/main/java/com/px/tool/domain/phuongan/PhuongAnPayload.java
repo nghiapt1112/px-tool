@@ -134,8 +134,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
 
         try {
             payload.setCusReceivers(CommonUtils.toCollection(phuongAn.getCusReceivers()));
-            payload.setNguoiThucHien(phuongAn.getNguoiThucHien() == null ? Collections.emptyList() : Arrays.asList(phuongAn.getNguoiThucHien()));
-
+            payload.setNguoiThucHien(phuongAn.getNguoiThucHien() == null ? Collections.emptyList() : CommonUtils.toCollection(phuongAn.getNguoiThucHien()));
         } catch (Exception e) {
 
         }
@@ -173,7 +172,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         );
         try {
             phuongAn.setCusReceivers(CommonUtils.toString(this.cusReceivers));
-            phuongAn.setNguoiThucHien(this.nguoiThucHien.get(0));
+            phuongAn.setNguoiThucHien(CommonUtils.toString(this.nguoiThucHien));
         } catch (Exception e) {
 
         }

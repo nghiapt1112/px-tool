@@ -76,6 +76,9 @@ public class CongNhanThanhPham extends EntityDefault {
 //    private Long ngayThangNamQuanDoc;
 //    @Column
 //    private String ykienQuanDoc;
+    // NOTE: update=> quan_doc (don_vi_thuc_hien) la 1 list.
+    @Column
+    private String quanDocIds;
 
     @Column
     private Boolean tpkcsXacNhan;

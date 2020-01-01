@@ -129,7 +129,6 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         }
         congNhanThanhPhamPayload.setCusToTruongIds(Collections.emptyList());
         congNhanThanhPhamPayload.setNoiNhan(null);
-        congNhanThanhPhamPayload.setNgayThangNamQuanDoc(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamQuanDoc()));
         congNhanThanhPhamPayload.setNgayThangNamTPKCS(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamTPKCS()));
         return congNhanThanhPhamPayload;
     }
@@ -283,6 +282,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     public void capNhatNgayThangChuKy(CongNhanThanhPham cntp, CongNhanThanhPham existed) {
         cntp.setNgayThangNamTPKCS(existed.getNgayThangNamTPKCS());
         cntp.setTpkcsId(existed.getTpkcsId());
+        cntp.setQuanDocIds(existed.getQuanDocIds());
 
         if (cntp.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
             cntp.setNgayThangNamTPKCS(DateTimeUtils.nowAsMilliSec());

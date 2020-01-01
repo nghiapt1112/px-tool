@@ -165,7 +165,7 @@ public class PhuongAn extends EntityDefault {
     private String cusNoiDung;
 
     @Column
-    private Long nguoiThucHien;
+    private String nguoiThucHien; // NOTE: cac don vi thuc hien
 
     @Column
     private Long step; // 0: van dang xu ly, 1: success_phuong_an

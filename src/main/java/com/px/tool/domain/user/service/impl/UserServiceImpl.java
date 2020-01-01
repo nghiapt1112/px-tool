@@ -24,6 +24,8 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.utils.CollectionUtils;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -51,6 +53,7 @@ import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
 import static com.px.tool.domain.user.repository.UserRepository.group_29_40;
 import static com.px.tool.domain.user.repository.UserRepository.group_KCS;
 import static com.px.tool.domain.user.repository.UserRepository.group_giam_doc;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectionAdd;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -194,7 +197,17 @@ public class UserServiceImpl implements UserService {
 
         if (currentUser.isQuanDocPhanXuong()) {
             // chuyen cho cac to truong
-            pbs = userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5);
+            List<Long> cusIds = new ArrayList<>(5);
+            collectionAdd(cusIds, congNhanThanhPham.getToTruong1Id(), congNhanThanhPham.getToTruong2Id(), congNhanThanhPham.getToTruong3Id(), congNhanThanhPham.getToTruong4Id(), congNhanThanhPham.getToTruong5Id());
+            if (CollectionUtils.isEmpty(cusIds)) {
+                pbs = userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5);
+            } else {
+                pbs = Stream.of(
+                        userRepository.findByIds(cusIds).stream(),
+                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5)
+                )
+                        .flatMap(el -> el);
+            }
         } else if (currentUser.isToTruong()) {
             // chuyen cho cac nhan vien kcs
             pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
@@ -202,7 +215,7 @@ public class UserServiceImpl implements UserService {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
         } else if (currentUser.isTruongPhongKCS()) {
             // chuyen lai cho px
-            pbs = userRepository.findByGroup(Arrays.asList(congNhanThanhPham.getQuanDocId())).stream().filter(el -> el.getLevel() == 3);
+            pbs = userRepository.findByGroup(CommonUtils.toCollection(congNhanThanhPham.getQuanDocIds())).stream().filter(el -> el.getLevel() == 3);
         }
 
         if (pbs != null) {
