@@ -318,7 +318,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     public void validateXacNhan(User user, PhuongAn request, PhuongAn existed) {
         if (Objects.nonNull(this.noiNhan)) {
             if (user.isNguoiLapPhieu()) {
-                if (Objects.isNull(cusNoiDung) || Objects.isNull(cusReceivers) || Objects.isNull(nguoiThucHien)) {
+                if (Objects.isNull(cusReceivers) || Objects.isNull(nguoiThucHien)) {
                     throw new PXException("phuongan.vanbanden");
                 }
                 if (CollectionUtils.isEmpty(dinhMucLaoDongs)) {

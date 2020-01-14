@@ -221,7 +221,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
 
     @Override
     public void validateXacNhan(User user, PhieuDatHang request, PhieuDatHang existed) {
-        if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers) || StringUtils.isEmpty(cusNoiDung))) {
+        if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers))) {
             throw new PXException("dathang.noi_nhan.empty");
         }
     }
