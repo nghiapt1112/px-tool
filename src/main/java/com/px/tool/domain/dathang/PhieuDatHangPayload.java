@@ -1,6 +1,11 @@
 package com.px.tool.domain.dathang;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.px.tool.domain.RequestStatus;
+import com.px.tool.domain.RequestType;
+import com.px.tool.domain.kiemhong.KiemHong;
+import com.px.tool.domain.kiemhong.KiemHongDetail;
+import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
@@ -11,7 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -224,5 +228,50 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers))) {
             throw new PXException("dathang.noi_nhan.empty");
         }
+    }
+
+    public Request toRequestEntity() {
+        Request request = new Request();
+        request.setStatus(RequestType.DAT_HANG);
+        // TODO: kiem tra xem co miss field gi khong
+        return request;
+    }
+
+    public KiemHong toKiemHongEntity() {
+        KiemHong kiemHong = new KiemHong();
+//        kiemHong.setKhId();
+        kiemHong.setTenNhaMay(tenNhaMay);
+//        kiemHong.setPhanXuong(phanXuong);
+//        kiemHong.setToSX();
+//        kiemHong.setTenVKTBKT();
+//        kiemHong.setNguonVao();
+//        kiemHong.setCongDoan();
+//        kiemHong.setSoHieu();
+//        kiemHong.setSoXX();
+//        kiemHong.setToSo();
+//        kiemHong.setSoTo();
+        kiemHong.setNoiNhan(noiNhan);
+//        kiemHong.setNgayThangNamQuanDoc();
+//        kiemHong.setQuanDocXacNhan();
+//        kiemHong.setQuanDocXacNhan();
+//        kiemHong.setNgayThangNamTroLyKT();
+//        kiemHong.setTroLyKTXacNhan();
+//        kiemHong.setToTruong();
+//        kiemHong.setGiamDocXacNhan();
+//        kiemHong.setYKienGiamDoc();
+//        kiemHong.setYKienQuanDoc();
+//        kiemHong.setYKienToTruong();
+//        kiemHong.setYKienTroLyKT();
+//        kiemHong.setQuanDocId();
+//        kiemHong.setTroLyId();
+//        kiemHong.setToTruongId();
+//        kiemHong.setCusReceivers(cusReceivers);
+        kiemHong.setCusNoiDung(noiDung);
+//        kiemHong.setKiemHongDetails();
+        List<KiemHongDetail> kiemHongDetails = new ArrayList<>();
+        for (PhieuDatHangDetailPayload phieuDatHangDetail : this.phieuDatHangDetails) {
+            kiemHongDetails.add(phieuDatHangDetail.toKiemHongDetailEntity());
+        }
+        return kiemHong;
     }
 }

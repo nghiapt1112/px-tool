@@ -6,13 +6,13 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.repository.PhieuDatHangDetailRepository;
 import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
+import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
-import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
@@ -64,6 +64,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     @Transactional
     public PhieuDatHang save(Long userId, PhieuDatHangPayload phieuDatHangPayload) {
         if (phieuDatHangPayload.notIncludeId()) {
+            // TODO: new update truong hop khong co id thi van cho tao phieu dat hang, => copy sang kiem hong
+            //
+            createData(phieuDatHangPayload);
             throw new RuntimeException("Phieu dat hang phai co id");
         }
         PhieuDatHang existedPhieuDatHang = phieuDatHangRepository
@@ -98,6 +101,14 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         phieuDatHangRepository.save(phieuDatHang);
 
         return phieuDatHang;
+    }
+
+    /**
+     * tao phieu request va kiem hong de sycn data
+     */
+    private void createData(PhieuDatHangPayload phieuDatHangPayload) {
+        Request request = phieuDatHangPayload.toRequestEntity();
+        KiemHong kiemHong = phieuDatHangPayload.toKiemHongEntity();
     }
 
     @Transactional
