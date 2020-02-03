@@ -37,11 +37,11 @@ public interface UserService extends UserDetailsService {
     List<NoiNhan> findVanBanDenNoiNhan(RequestType requestType);
 
 
-    List<PhanXuongPayload> findListPhanXuong(Long userId);
+    List<PhanXuongPayload> findListPhanXuong(Long userId, Long requestId);
 
     List<PhanXuongPayload> findNguoiThucHien();
 
-    List<ToSXPayload> findListToSanXuat(Long pxId);
+    List<ToSXPayload> findListToSanXuat(Long userId, Long pxId, Long tsxId);
 
     Map<Long, User> userById();
 

@@ -82,13 +82,13 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/phan-xuong")
-    public List<PhanXuongPayload> getPhanXuong(HttpServletRequest request) {
-        return userService.findListPhanXuong(extractUserInfo(request));
+    public List<PhanXuongPayload> getPhanXuong(HttpServletRequest request, @RequestParam(required = false) Long requestId) {
+        return userService.findListPhanXuong(extractUserInfo(request), requestId);
     }
 
     @GetMapping("/to-sx")
-    public List<ToSXPayload> getToSanXuat(@RequestParam Long pxId) {
-        return userService.findListToSanXuat(pxId);
+    public List<ToSXPayload> getToSanXuat(HttpServletRequest httpServletRequest, @RequestParam(required = false) Long pxId, @RequestParam(required = false) Long tsxId) {
+        return userService.findListToSanXuat(extractUserInfo(httpServletRequest), pxId, tsxId);
     }
 
     @GetMapping("/notification")

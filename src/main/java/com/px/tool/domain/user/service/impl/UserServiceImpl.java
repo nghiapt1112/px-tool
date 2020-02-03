@@ -381,7 +381,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<PhanXuongPayload> findListPhanXuong(Long userId) {
+    public List<PhanXuongPayload> findListPhanXuong(Long userId, Long requestId) {
+        if (Objects.nonNull(requestId)) {
+            try {
+                Request request = requestService.findById(requestId);
+                return Arrays.asList(PhanXuongPayload.fromUserEntity(userRepository.findById(request.getKiemHong().getPhanXuong()).get()));
+            } catch (Exception e) {
+                return PhanXuongPayload.emptyList;
+            }
+        }
         try {
             return userRepository.findByGroup(Arrays.asList(findById(userId).getPhongBan().getPhongBanId()))
                     .stream()
@@ -403,10 +411,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ToSXPayload> findListToSanXuat(Long pxId) {
+    public List<ToSXPayload> findListToSanXuat(Long userId, Long pxId, Long tsxId) {
+        if (Objects.nonNull(tsxId)) {
+            try {
+                return Arrays.asList(ToSXPayload.fromUserEntity(userRepository.findById(tsxId).get()));
+            } catch (Exception e) {
+                Collections.emptyList();
+            }
+        }
         return userRepository.findByGroup(Arrays.asList(pxId))
                 .stream()
-                .filter(el -> el.getLevel() == 5)
+                .filter(el -> el.getLevel() == 5 && el.getUserId().equals(userId))
                 .map(ToSXPayload::fromUserEntity)
                 .collect(Collectors.toList());
     }
