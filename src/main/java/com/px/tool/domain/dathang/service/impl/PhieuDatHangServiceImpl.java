@@ -107,7 +107,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
      * tao phieu request va kiem hong de sycn data
      */
     private void createData(PhieuDatHangPayload phieuDatHangPayload) {
-        Request request = phieuDatHangPayload.toRequestEntity();
+        Request request = requestService.save(phieuDatHangPayload.toRequestEntity());
         KiemHong kiemHong = phieuDatHangPayload.toKiemHongEntity();
     }
 
