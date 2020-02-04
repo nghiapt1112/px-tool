@@ -9,6 +9,8 @@ import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
+import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -37,6 +41,9 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private CongNhanThanhPhamService congNhanThanhPhamService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void exportFile(Long requestId, RequestType requestType, HttpServletResponse response) {
@@ -57,6 +64,7 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     private void exportKiemHong(HttpServletResponse response, KiemHongPayLoad payload) {
+        Map<Long, User> userById = userService.userById();
         try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/1_Kiem_Hong.xlsx"))) {
 
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -78,11 +86,11 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row0, 4, payload.getTenVKTBKT());
             setCellVal(row0, 6, payload.getSoHieu());
             setCellVal(row0, 8, payload.getToSo());
-            setCellVal(row1, 2, payload.getPhanXuong().toString()); // TODO map phuong xuong ra name
+            setCellVal(row1, 2, fillUserInfo(payload.getPhanXuong(), userById));
             setCellVal(row1, 4, payload.getNguonVao());
             setCellVal(row1, 6, payload.getSoXX());
             setCellVal(row1, 8, payload.getSoTo());
-            setCellVal(row2, 2, payload.getToSX().toString()); // TODO map to san xuat
+            setCellVal(row2, 2, fillUserInfo(payload.getToSX(), userById));
             setCellVal(row2, 4, payload.getCongDoan());
 
             for (int i = 0; i < totalLine; i++) {
@@ -155,6 +163,7 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     public void exportCNTP(HttpServletResponse response, CongNhanThanhPhamPayload payload) {
+        Map<Long, User> userById = userService.userById();
         try (FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/4_cntp.xlsx"))) {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -195,7 +204,7 @@ public class ExcelServiceImpl implements ExcelService {
                 XSSFRow crrRow = sheet.getRow(11 + i);
                 setCellVal(crrRow, 0, payload.getNoiDungThucHiens().get(i).getNoiDung());
                 setCellVal(crrRow, 3, payload.getNoiDungThucHiens().get(i).getKetQua());
-                setCellVal(crrRow, 4, String.valueOf(payload.getNoiDungThucHiens().get(i).getNghiemThu())); // TODO: mapping nguoi nghiem thu
+                setCellVal(crrRow, 4, fillUserInfo(payload.getNoiDungThucHiens().get(i).getNghiemThu(), userById));
             }
             workbook.write(response.getOutputStream());
         } catch (Exception ex) {
@@ -297,4 +306,10 @@ public class ExcelServiceImpl implements ExcelService {
         row.getCell(cell).setCellValue(val);
     }
 
+    private String fillUserInfo(Long userId, Map<Long, User> userById) {
+        if (Objects.isNull(userId) || !userById.containsKey(userId)) {
+            return "";
+        }
+        return userById.get(userId).getFullName();
+    }
 }

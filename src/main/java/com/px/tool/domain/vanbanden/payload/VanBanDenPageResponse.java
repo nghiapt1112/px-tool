@@ -28,7 +28,9 @@ public class VanBanDenPageResponse extends AbstractPageResponse<VanBanDenRespons
                     if (payload.getNoiDung().length() > 150) {
                         payload.setNoiDung(payload.getNoiDung().substring(0, 150));
                     }
-                    payload.setNoiNhan(CommonUtils.toString(toCollection(el.getNoiNhan()), noiNhanById));
+                    try {
+                        payload.setNoiNhan(CommonUtils.toString(toCollection(el.getNoiNhan()), noiNhanById));
+                    } catch (Exception e) {}
                     return payload;
                 })
                 .collect(Collectors.toList());

@@ -17,10 +17,12 @@ import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.CommonUtils;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -115,7 +117,11 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     public void guiVanBanDen(PhieuDatHangPayload payload) {
         try {
             VanBanDen vanBanDen = new VanBanDen();
-            vanBanDen.setNoiDung(payload.getCusNoiDung());
+            if (StringUtils.isEmpty(payload.getCusNoiDung())) {
+                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng, " + DateTimeUtils.nowAsString());
+            } else {
+                vanBanDen.setNoiDung(payload.getCusNoiDung());
+            }
             vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);

@@ -10,6 +10,7 @@ import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -270,5 +271,9 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
                 throw new PXException("kiemhong.quandoc_xacnhan");
             }
         }
+    }
+
+    public String getCusNoiDung() {
+        return StringUtils.isEmpty(cusNoiDung) ? "" : cusNoiDung;
     }
 }

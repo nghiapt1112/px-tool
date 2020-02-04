@@ -3,6 +3,7 @@ package com.px.tool.domain.vanbanden.payload;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class VanBanDenResponse {
     public VanBanDenResponse withFilesName(List<String> listFile) {
         this.files = listFile;
         return this;
+    }
+
+    public String getNoiDung() {
+        return StringUtils.isEmpty(noiDung) ? "" : noiDung;
     }
 }
 

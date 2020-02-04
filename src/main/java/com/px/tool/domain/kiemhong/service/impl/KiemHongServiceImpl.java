@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -99,7 +100,6 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
                 kiemHong.setGiamDocXacNhan(false);
                 kiemHong.setQuanDocXacNhan(false);
-                kiemHong.setToTruongXacNhan(false);
                 kiemHong.setTroLyKTXacNhan(false);
 
                 Request request = new Request();
@@ -168,9 +168,9 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();
 
         if (requestKiemHong.allApproved()) {
-            if (Objects.isNull(kiemHongPayLoad.getNoiNhan())) {
-                throw new PXException("noi_nhan.must_choose");
-            }
+//            if (Objects.isNull(kiemHongPayLoad.getNoiNhan())) {
+//                throw new PXException("noi_nhan.must_choose");
+//            }
             existedKiemHong.getRequest().setStatus(RequestType.DAT_HANG);
             requestKiemHong.setRequest(existedKiemHong.getRequest());
             // clear back recieverid
@@ -196,7 +196,11 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     public void guiVanBanDen(KiemHongPayLoad payload) {
         try {
             VanBanDen vanBanDen = new VanBanDen();
-            vanBanDen.setNoiDung(payload.getCusNoiDung());
+            if (StringUtils.isEmpty(payload.getCusNoiDung())) {
+                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng, " + DateTimeUtils.nowAsString());
+            } else {
+                vanBanDen.setNoiDung(payload.getCusNoiDung());
+            }
             vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);

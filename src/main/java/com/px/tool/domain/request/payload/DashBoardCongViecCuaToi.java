@@ -63,13 +63,13 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         return dashBoardCongViecCuaToi;
     }
 
-    private static String getVal(Map<Long, User> unameById, Long key) {
-        if (CollectionUtils.isEmpty(unameById)) {
+    private static String getVal(Map<Long, User> userById, Long key) {
+        if (CollectionUtils.isEmpty(userById)) {
             return key.toString();
         }
         Long k = Long.valueOf(key);
-        if (unameById.containsKey(k)) {
-            return unameById.get(k) == null ? key.toString() : unameById.get(k).getFullName();
+        if (userById.containsKey(k)) {
+            return userById.get(k) == null ? key.toString() : userById.get(k).getFullName();
         }
         return key.toString();
     }
