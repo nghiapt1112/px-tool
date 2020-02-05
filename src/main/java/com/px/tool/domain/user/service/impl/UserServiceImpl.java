@@ -232,7 +232,7 @@ public class UserServiceImpl implements UserService {
             }
         } else if (currentUser.isTruongPhongKTHK()) {   // chuyen 50d : NV_TIEP_LIEU
             if (requestParams.getTpKTHK()) {
-                pbs = userRepository.findByGroup(Arrays.asList(54L)).stream().filter(el -> el.getLevel() == 4);
+                pbs = userRepository.findByIds(Arrays.asList(54L)).stream().filter(el -> el.getLevel() == 4);
             } else {
                 // TODO: chuyen ve nguoi lap phieu
                 pbs = toUserStream(nguoiDangXuLy.getNguoiLap());
