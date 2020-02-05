@@ -6,6 +6,7 @@ import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +21,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -194,5 +194,9 @@ public class PhuongAn extends EntityDefault {
                         Objects.nonNull(truongPhongVatTuXacNhan) && truongPhongVatTuXacNhan &&
                         Objects.nonNull(nguoiLapXacNhan) && nguoiLapXacNhan &&
                         Objects.nonNull(giamDocXacNhan) && giamDocXacNhan;
+    }
+
+    public String getMaSo() {
+        return StringUtils.isEmpty(maSo) ? "PA:" + paId : maSo;
     }
 }

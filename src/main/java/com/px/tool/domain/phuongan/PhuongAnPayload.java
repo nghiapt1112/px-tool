@@ -346,4 +346,5 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
             throw new PXException("phuongan.nguoithuchien_missing");
         }
     }
+
 }

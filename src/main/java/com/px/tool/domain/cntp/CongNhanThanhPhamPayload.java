@@ -356,4 +356,5 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     public Float getGioX() {
         return gioX == null ? Float.NaN : gioX;
     }
+
 }

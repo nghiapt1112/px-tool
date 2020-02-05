@@ -29,7 +29,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         dashBoardCongViecCuaToi.requestId = request.getRequestId();
         dashBoardCongViecCuaToi.type = request.getType();
 
-        dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: " + getVal(userById, request.getKiemHong().getPhanXuong()) + "- Tổ sản xuất: " + getVal(userById, request.getKiemHong().getToSX());
+        dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: " + getVal(userById, request.getKiemHong().getPhanXuong()) + " - Tổ sản xuất: " + getVal(userById, request.getKiemHong().getToSX());
         dashBoardCongViecCuaToi.status = "Vừa tạo";
         try {
             if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
@@ -69,7 +69,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         }
         Long k = Long.valueOf(key);
         if (userById.containsKey(k)) {
-            return userById.get(k) == null ? key.toString() : userById.get(k).getFullName();
+            return userById.get(k) == null ? key.toString() : userById.get(k).getAlias();
         }
         return key.toString();
     }

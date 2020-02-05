@@ -1,7 +1,7 @@
 app:
   jwtExpirationInMs: 604800000
   jwtSecret: JWTSuperSecretKey
-server.port: 8081
+server.port: 38081
 
 spring:
   output:

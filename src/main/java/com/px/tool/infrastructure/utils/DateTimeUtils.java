@@ -7,10 +7,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public final class DateTimeUtils {
-
-    private static final String DATE_TIME_PATTERN = "dd/MM/yyyy";
-
-    private static final SimpleDateFormat fm_date_time = new SimpleDateFormat(DATE_TIME_PATTERN);
+    private static final SimpleDateFormat fm_date_time = new SimpleDateFormat("dd/MM/yyyy");
 
     public static long nowAsMilliSec() {
         return System.currentTimeMillis();

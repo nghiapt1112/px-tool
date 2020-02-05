@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.px.tool.infrastructure.utils.DateTimeUtils.dateLongToString;
+
 @Getter
 @Setter
 @ToString
@@ -42,10 +44,10 @@ public class ThongKeDetailPayload extends AbstractObject {
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
         ThongKeDetailPayload tk = null;
-        Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
-        for (PhieuDatHangDetail phieuDatHangDetail : request.getPhieuDatHang().getPhieuDatHangDetails()) {
-            pdhDetailById.put(phieuDatHangDetail.getKiemHongDetailId(), phieuDatHangDetail);
-        }
+//        Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
+//        for (PhieuDatHangDetail phieuDatHangDetail : request.getPhieuDatHang().getPhieuDatHangDetails()) {
+//            pdhDetailById.put(phieuDatHangDetail.getKiemHongDetailId(), phieuDatHangDetail);
+//        }
 
         PhieuDatHangDetail pdhDt = null;
         for (KiemHongDetail detail : request.getKiemHong().getKiemHongDetails()) {
@@ -60,27 +62,25 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.SL = 0L;
             }
             tk.dangHuHong = detail.getDangHuHong();
-            tk.ngayKiemHong = DateTimeUtils.dateLongToString(request.getKiemHong().getNgayThangNamTroLyKT());
+            tk.ngayKiemHong = dateLongToString(request.getKiemHong().getNgayThangNamTroLyKT());
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
-            tk.ngayChuyenPhongVatTu = DateTimeUtils.dateLongToString(request.getKiemHong().getNgayThangNamQuanDoc());
-            tk.soPhieuDatHang = "PDH-" + request.getPhieuDatHang().getPdhId();
+            tk.ngayChuyenPhongVatTu = dateLongToString(request.getKiemHong().getNgayThangNamQuanDoc());
             tk.detailId = request.getRequestId();
             try {
-                pdhDt = pdhDetailById.get(detail.getKhDetailId());
-                tk.soPhieuDatHang = pdhDt.getSoPhieuDatHang();
+                tk.soPhieuDatHang = request.getPhieuDatHang().getSo();
 
             } catch (Exception e) {
             }
-            tk.ngayChuyenKT = DateTimeUtils.dateLongToString(request.getPhieuDatHang().getNgayThangNamTPVatTu());
+            tk.ngayChuyenKT = dateLongToString(request.getPhieuDatHang().getNgayThangNamTPVatTu());
             tk.requestId = 0L;
             try {
                 tk.requestId = phuongAnById.get(detail.getPaId()).getPaId();
-                tk.soPA = "PA-" + phuongAnById.get(detail.getPaId()).getPaId();
-                tk.ngayRaPA = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
-                tk.ngayChuyenKH = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
-                tk.ngayPheDuyet = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
-                tk.ngayHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
-                tk.xacNhanHoanThanh = DateTimeUtils.dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
+                tk.soPA = phuongAnById.get(detail.getPaId()).getMaSo();
+                tk.ngayRaPA = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
+                tk.ngayChuyenKH = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
+                tk.ngayPheDuyet = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
+                tk.ngayHoanThanh = dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
+                tk.xacNhanHoanThanh = dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
             } catch (Exception e) {
             }
 

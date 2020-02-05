@@ -16,7 +16,7 @@ public class NoiNhan extends AbstractObject {
     public static NoiNhan fromUserEntity(User phongBan) {
         NoiNhan noiNhan = new NoiNhan();
         noiNhan.id = phongBan.getUserId();
-        noiNhan.name = phongBan.getFullName();
+        noiNhan.name = phongBan.getAlias();
         return noiNhan;
     }
 

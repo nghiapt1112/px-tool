@@ -14,21 +14,19 @@ import com.px.tool.domain.kiemhong.service.KiemHongService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
-import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.CommonUtils;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +36,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
+import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsString;
 
 @Service
 public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongService {
@@ -58,6 +57,9 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private VanBanDenRepository vanBanDenRepository;
@@ -180,7 +182,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             cntpReceiverId = null;
 
             createPhieuDatHang(requestKiemHong, pdh);
-            guiVanBanDen(kiemHongPayLoad);
+            guiVanBanDen(existedKiemHong, kiemHongPayLoad);
         }
 
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
@@ -190,21 +192,34 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     }
 
     /**
-     * Phiếu kiểm hỏng sẽ được chuyển đến account 8,9,12 và phân xưởng lập kiểm hỏng trong VĂN BẢN ĐẾN
+     * update 05/02
+     * Phiếu Kiểm hỏng sẽ được chuyển đến các phòng (Phòng  KTHK, Phòng xe máy đặc chủng, Phòng vật tư - account 8,9,12) và
+     * PX đã lập kiểm hỏng, Trợ lý KT đã lập kiểm hỏng, Tổ SX đã lập kiểm hỏng
      */
     @Transactional
-    public void guiVanBanDen(KiemHongPayLoad payload) {
+    public void guiVanBanDen(KiemHong existedKiemHong, KiemHongPayLoad payload) {
         try {
+            List<User> users = userRepository
+                    .findByGroup(group_12_PLUS)
+                    .stream()
+                    .filter(el -> el.getLevel() == 3)
+                    .collect(Collectors.toList());
+            Set<Long> ids = users.stream().map(User::getUserId).collect(Collectors.toSet());
+            ids.addAll(payload.getCusReceivers());
+            ids.add(existedKiemHong.getQuanDocId());
+            ids.add(existedKiemHong.getTroLyId());
+            ids.add(existedKiemHong.getToTruongId());
+
             VanBanDen vanBanDen = new VanBanDen();
             if (StringUtils.isEmpty(payload.getCusNoiDung())) {
-                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng, " + DateTimeUtils.nowAsString());
+                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng, " + nowAsString());
             } else {
                 vanBanDen.setNoiDung(payload.getCusNoiDung());
             }
-            vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
-            vanBanDen.setRequestType(RequestType.PHUONG_AN);
+            vanBanDen.setNoiNhan(CommonUtils.toString(ids));
+            vanBanDen.setRequestType(RequestType.KIEM_HONG);
             vanBanDen.setRead(false);
-            vanBanDen.setSoPa("số: " + payload.getKhId());
+            vanBanDen.setSoPa("" + payload.getKhId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
             throw new PXException("[Kiểm Hỏng]: Có lỗi khi gửi văn bản đến.");
@@ -214,8 +229,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
     private void createPhieuDatHang(KiemHong requestKiemHong, PhieuDatHang pdh) {
 //        pdh.setSo(requestKiemHong.getSoHieu());
         Map<Long, User> userById = userService.userById();
-        pdh.setDonViYeuCau(userById.get(requestKiemHong.getToSX()).getFullName()); // C3 sheet1
-        pdh.setPhanXuong(userById.get(requestKiemHong.getPhanXuong()).getFullName()); // C2 sheet1
+        pdh.setDonViYeuCau(userById.get(requestKiemHong.getToSX()).getAlias()); // C3 sheet1
+        pdh.setPhanXuong(userById.get(requestKiemHong.getPhanXuong()).getAlias()); // C2 sheet1
         pdh.setNoiDung(requestKiemHong.getTenVKTBKT() + requestKiemHong.getSoHieu()); // E2 sheet1 + E1 sheet1
         PhieuDatHang savedPdh = phieuDatHangRepository.save(pdh);
 

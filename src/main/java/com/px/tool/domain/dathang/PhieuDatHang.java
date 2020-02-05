@@ -6,6 +6,7 @@ import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -134,5 +135,9 @@ public class PhieuDatHang extends EntityDefault {
 
     public Boolean getNguoiDatHangXacNhan() {
         return nguoiDatHangXacNhan == null ? false : nguoiDatHangXacNhan;
+    }
+
+    public String getSo() {
+        return StringUtils.isEmpty(so) ? "PDH-" + request.getPhieuDatHang().getPdhId() : so;
     }
 }

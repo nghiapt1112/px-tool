@@ -52,6 +52,9 @@ public class User extends EntityDefault implements UserDetails {
     @Column
     private String fullName;
 
+    @Column
+    private String alias;
+
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -278,5 +281,9 @@ public class User extends EntityDefault implements UserDetails {
 
     public boolean isTruongPhongKCS() {
         return this.getLevel() == 3 && this.phongBan != null && (phongBan.getGroup().equals(10) || phongBan.getGroup().equals(14));
+    }
+
+    public String getAlias() {
+        return StringUtils.isEmpty(alias) ? getFullName() : alias;
     }
 }

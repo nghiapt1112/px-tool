@@ -21,7 +21,7 @@ public class PhanXuongPayload {
     public static PhanXuongPayload fromUserEntity(User user) {
         PhanXuongPayload payload = new PhanXuongPayload();
         payload.id = user.getPhongBan().getPhongBanId();
-        payload.name = user.getFullName();
+        payload.name = user.getAlias();
         return payload;
     }
 

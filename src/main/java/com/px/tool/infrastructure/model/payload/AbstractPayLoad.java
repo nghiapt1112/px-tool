@@ -13,4 +13,5 @@ public abstract class AbstractPayLoad<E extends EntityDefault> extends AbstractO
     public abstract void capNhatNgayThangChuKy(E request, E existed);
 
     public abstract void validateXacNhan(User user, E request, E existed);
+
 }

@@ -274,4 +274,5 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         }
         return kiemHong;
     }
+
 }

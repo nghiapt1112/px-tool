@@ -15,7 +15,7 @@ public class ToSXPayload {
     public static ToSXPayload fromUserEntity(User user) {
         ToSXPayload payload = new ToSXPayload();
         payload.id = user.getUserId();
-        payload.name = user.getFullName();
+        payload.name = user.getAlias();
         return payload;
     }
 }

@@ -310,6 +310,6 @@ public class ExcelServiceImpl implements ExcelService {
         if (Objects.isNull(userId) || !userById.containsKey(userId)) {
             return "";
         }
-        return userById.get(userId).getFullName();
+        return userById.get(userId).getAlias()  ;
     }
 }

@@ -22,6 +22,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 @Getter
 @Setter
 public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
@@ -244,19 +246,30 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
          * To truong review thi phai dien day du thong tin trong detail, ngoai tru "phuong phap khac phuc".
          *  => khi chuyển đi thì detail phải đc điền.
          */
+
         // clear y kien:
         if (user.isToTruong() && toTruongXacNhan) {
             this.yKienToTruong = null;
             request.setYKienToTruong(null);
+            if (isEmpty(this.phanXuong) || isEmpty(soHieu)) {
+                throw new PXException("kiemhong.missingRequiredFields");
+            }
         }
         if (user.isTroLyKT() && troLyKTXacNhan) {
             yKienTroLyKT = null;
             request.setYKienTroLyKT(null);
+            for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
+                if (StringUtils.isEmpty(kiemHongDetail.getPhuongPhapKhacPhuc())) {
+                    throw new PXException("kiemhong.ppkp");
+                }
+            }
         }
         if (user.isQuanDocPhanXuong() && quanDocXacNhan) {
             yKienQuanDoc = null;
             request.setYKienQuanDoc(null);
         }
+
+
         if (!Objects.isNull(this.noiNhan)) {
             for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
                 if (kiemHongDetail.isInvalidData()) {
@@ -273,7 +286,12 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         }
     }
 
+
     public String getCusNoiDung() {
         return StringUtils.isEmpty(cusNoiDung) ? "" : cusNoiDung;
+    }
+
+    public List<Long> getCusReceivers() {
+        return cusReceivers == null ? Collections.emptyList() : cusReceivers;
     }
 }
