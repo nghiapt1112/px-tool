@@ -1,3 +1,6 @@
+ALTER TABLE `user` ADD
+    `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
 UPDATE `user` AS u SET u.alias = 'Giám Đốc' WHERE u.email='GIAM_DOC';
 UPDATE `user` AS u SET u.alias = 'Chính Ủy' WHERE u.email='CHINH_UY';
 UPDATE `user` AS u SET u.alias = 'PGD. Kỹ thuật hàng không' WHERE u.email='PGDKTHK';
