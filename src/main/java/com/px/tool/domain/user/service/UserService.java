@@ -22,7 +22,7 @@ public interface UserService extends UserDetailsService {
 
     void taoUser(UserRequest userRequest);
 
-    User create(UserRequest user);
+    int updateProfile(UserRequest user);
 
     Long delete(Long id);
 
@@ -34,7 +34,7 @@ public interface UserService extends UserDetailsService {
 
     List<NoiNhan> findVanBanDenNoiNhan();
 
-    List<NoiNhan> findVanBanDenNoiNhan(RequestType requestType);
+    List<NoiNhan> findVanBanDenNoiNhan(Long currentUserId, RequestType requestType);
 
 
     List<PhanXuongPayload> findListPhanXuong(Long userId, Long requestId);

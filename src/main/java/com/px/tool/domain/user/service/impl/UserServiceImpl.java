@@ -111,22 +111,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(UserRequest user) {
-        Role role = roleService.findById(Long.valueOf(user.getLevel()));
-
-        if (user.getUserId() == null && userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email này đã tồn tại");
-        }
-        if (user.getUserId() != null) {
-            userRepository.updateUserInfo(user.getFullName(), user.getImgBase64(), user.getUserId());
-            return user.toUserEntity();
-        }
-        User entity = user.toUserEntity();
-        if (user.getUserId() == null) {
-            entity.setPassword(passwordEncoder.encode(user.getPassword()));
-            entity.setAuthorities(Sets.newHashSet(role));
-        }
-        return userRepository.save(entity);
+    public int updateProfile(UserRequest user) {
+        userRepository.updateImage(user.getImgBase64(), user.getFullName(), user.getUserId());
+        return 1;
     }
 
     @Override
@@ -340,17 +327,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<NoiNhan> findVanBanDenNoiNhan(RequestType requestType) {
+    public List<NoiNhan> findVanBanDenNoiNhan(Long currentUserId, RequestType requestType) {
+        User user = userById().get(currentUserId);
+        if (Objects.isNull(user)) {
+            return Collections.emptyList();
+        }
         if (requestType == RequestType.KIEM_HONG) {
             return cacheService.getUsers_cache()
                     .stream()
                     .filter(el ->
-                            !el.isAdmin() && (
-                                    el.isQuanDocPhanXuong() // PX
-                                            || el.isTruongPhongVatTu() // Vat.Tu
-                                            || el.getPhongBan().getGroup().equals(8) // KTHK
-                                            || el.getPhongBan().getGroup().equals(9) // XMDC
-                                            || el.getPhongBan().getGroup().equals(9)) // XMDC
+                                    !el.isAdmin() && (
+//                                    el.isQuanDocPhanXuong() // PX
+                                            el.getPhongBan().getPhongBanId().equals(user.getPhongBan().getPhongBanId()) // PX + to trong PX
+                                                    || el.isTruongPhongVatTu() // Vat.Tu
+                                                    || el.getPhongBan().getGroup().equals(8) // KTHK
+                                                    || el.getPhongBan().getGroup().equals(9)) // XMDC
                     )
                     .map(NoiNhan::fromUserEntity)
                     .collect(Collectors.toList());

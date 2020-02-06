@@ -2,7 +2,6 @@ package com.px.tool.controller;
 
 import com.px.tool.domain.user.Folder;
 import com.px.tool.domain.user.PhongBan;
-import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.payload.FolderPayload;
 import com.px.tool.domain.user.payload.PhongBanPayload;
 import com.px.tool.domain.user.payload.RolePayLoad;
@@ -33,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -71,15 +69,13 @@ public class UserController extends BaseController {
     /**
      * Update user Info
      *
-     * @param user
-     * @return
      */
     @Deprecated
     @PostMapping
-    public User save(@RequestBody UserRequest user) {
-        User val = this.userService.create(user);
+    public int save(@RequestBody UserRequest user) {
+        this.userService.updateProfile(user);
         cacheService.clearCache(CacheService.CACHE_USER);
-        return val;
+        return 1;
     }
 
     @DeleteMapping("/{id}")

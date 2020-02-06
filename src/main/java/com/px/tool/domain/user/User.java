@@ -20,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -27,6 +28,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -286,4 +288,12 @@ public class User extends EntityDefault implements UserDetails {
     public String getAlias() {
         return StringUtils.isEmpty(alias) ? getFullName() : alias;
     }
+
+//    public String getSignImg() {
+//        return Objects.isNull(signImg) ? "" : new String(signImg);
+//    }
+//
+//    public void setSignImg(String base64){
+//        this.signImg = base64.getBytes();
+//    }
 }

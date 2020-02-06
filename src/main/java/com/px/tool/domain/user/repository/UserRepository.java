@@ -5,6 +5,7 @@ import com.px.tool.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,4 +39,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query("UPDATE User u SET u.fullName = ?1 , u.signImg = ?2 WHERE u.userId = ?3")
     void updateUserInfo(String fullName, String Imgbase64, Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.signImg = :image , u.fullName = :fullName WHERE u.userId = :id")
+    void updateImage(@Param("image") String image, @Param("fullName") String fullName, @Param("id") Long id);
 }
