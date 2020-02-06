@@ -187,11 +187,16 @@ public class UserServiceImpl implements UserService {
             List<Long> cusIds = new ArrayList<>(5);
             collectionAdd(cusIds, congNhanThanhPham.getToTruong1Id(), congNhanThanhPham.getToTruong2Id(), congNhanThanhPham.getToTruong3Id(), congNhanThanhPham.getToTruong4Id(), congNhanThanhPham.getToTruong5Id());
             if (CollectionUtils.isEmpty(cusIds)) {
-                pbs = userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5);
+                pbs = Stream.of(
+                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5), // to truong cua to hien tai
+                        userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3)
+                ).flatMap(e -> e);
             } else {
                 pbs = Stream.of(
+                        // to truong da setup + to truong to hien tai + KCS
                         userRepository.findByIds(cusIds).stream(),
-                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5)
+                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5),
+                        userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3)
                 )
                         .flatMap(el -> el);
             }
@@ -282,7 +287,12 @@ public class UserServiceImpl implements UserService {
             //TODO: neu truong phong kthk dong y thi tao van ban den + PA
             if (!requestParams.getTpKTHK()) {
                 // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
-                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getTroLyId()));
+                Request request = requestService.findById(requestParams.getRequestId());
+
+                pbs = Stream.of(
+                        userById().get(request.getKiemHong().getTroLyId()),
+                        userById().get(request.getPhieuDatHang().getTpvatTuId()))
+                        .filter(Objects::nonNull);
             } else {
                 pbs = Stream.empty();
             }

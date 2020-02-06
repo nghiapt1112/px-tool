@@ -1,17 +1,16 @@
 package com.px.tool.domain.request.payload;
 
+import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.infrastructure.model.payload.AbstractObject;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,14 +78,25 @@ public class ThongKeDetailPayload extends AbstractObject {
                 tk.ngayRaPA = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
                 tk.ngayChuyenKH = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
                 tk.ngayPheDuyet = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
-                tk.ngayHoanThanh = dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
-                tk.xacNhanHoanThanh = dateLongToString(phuongAnById.get(detail.getPaId()).getCongNhanThanhPham().getNgayThangNamTPKCS());
+                CongNhanThanhPham cntp = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham();
+                tk.ngayHoanThanh = dateLongToString(getBiggest(cntp.getNgayThangNamToTruong1(), cntp.getNgayThangNamToTruong2(), cntp.getNgayThangNamToTruong3(), cntp.getNgayThangNamToTruong4(), cntp.getNgayThangNamToTruong5()));
+                tk.xacNhanHoanThanh = dateLongToString(cntp.getNgayThangNamTPKCS());
             } catch (Exception e) {
             }
 
             tks.add(tk);
         }
         return tks;
+    }
+
+    static long getBiggest(Long... dates) {
+        long biggest = -1;
+        for (Long date : dates) {
+            if (date != null && biggest < date) {
+                biggest = date;
+            }
+        }
+        return biggest;
     }
 
 }

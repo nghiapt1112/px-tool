@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static com.px.tool.infrastructure.utils.CommonUtils.assignVal;
 import static com.px.tool.infrastructure.utils.CommonUtils.getVal;
+import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 
 @Getter
 @Setter
@@ -285,7 +286,22 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         cntp.setQuanDocIds(existed.getQuanDocIds());
 
         if (cntp.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
-            cntp.setNgayThangNamTPKCS(DateTimeUtils.nowAsMilliSec());
+            cntp.setNgayThangNamTPKCS(nowAsMilliSec());
+        }
+        if (Objects.nonNull(toTruong1Id) && cntp.getToTruong1XacNhan() && (cntp.getToTruong1XacNhan() != existed.getToTruong1XacNhan())) {
+            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+        }
+        if (Objects.nonNull(toTruong2Id) && cntp.getToTruong2XacNhan() && (cntp.getToTruong2XacNhan() != existed.getToTruong2XacNhan())) {
+            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+        }
+        if (Objects.nonNull(toTruong3Id) && cntp.getToTruong3XacNhan() && (cntp.getToTruong3XacNhan() != existed.getToTruong3XacNhan())) {
+            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+        }
+        if (Objects.nonNull(toTruong4Id) && cntp.getToTruong4XacNhan() && (cntp.getToTruong4XacNhan() != existed.getToTruong4XacNhan())) {
+            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+        }
+        if (Objects.nonNull(toTruong5Id) && cntp.getToTruong5XacNhan() && (cntp.getToTruong5XacNhan() != existed.getToTruong5XacNhan())) {
+            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
         }
     }
 
