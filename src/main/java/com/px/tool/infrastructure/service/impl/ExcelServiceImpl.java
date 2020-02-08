@@ -13,6 +13,7 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -81,7 +82,7 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFRow row0 = sheet.getRow(0);
             XSSFRow row1 = sheet.getRow(1);
             XSSFRow row2 = sheet.getRow(2);
-
+            XSSFRow row24 = sheet.getRow(24);
 
             setCellVal(row0, 4, payload.getTenVKTBKT());
             setCellVal(row0, 6, payload.getSoHieu());
@@ -92,6 +93,10 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row1, 8, payload.getSoTo());
             setCellVal(row2, 2, fillUserInfo(payload.getToSX(), userById));
             setCellVal(row2, 4, payload.getCongDoan());
+
+            setCellVal(row24, 3, payload.getNgayThangNamQuanDoc());
+            setCellVal(row24, 6, payload.getNgayThangNamTroLyKT());
+            setCellVal(row24, 8, payload.getNgayThangNamToTruong());
 
             for (int i = 0; i < totalLine; i++) {
                 XSSFRow currRow = sheet.getRow(5 + i);
@@ -120,6 +125,11 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
             int totalLine = payload.getPhieuDatHangDetails().size();
+            XSSFRow row13 = sheet.getRow(13);
+            setCellVal(row13, 2, payload.getNgayThangNamTPKTHK());
+            setCellVal(row13, 6, payload.getNgayThangNamTPVatTu());
+            setCellVal(row13, 8, payload.getNgayThangNamNguoiDatHang());
+
             if (totalLine > 5) {
                 sheet.copyRows(13, 16, 16 + (totalLine - 5), new CellCopyPolicy()); // copy and paste
                 for (int i = 13; i < 16 + (totalLine - 5); i++) {
@@ -175,6 +185,9 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFRow row5 = sheet.getRow(7);
 
             XSSFRow row19 = sheet.getRow(19);
+            XSSFRow row21 = sheet.getRow(21);
+            XSSFRow row25 = sheet.getRow(25);
+            XSSFRow row26 = sheet.getRow(26);
 
             setCellVal(row0, 1, payload.getTenSanPham());
             setCellVal(row1, 1, payload.getNoiDung());
@@ -188,6 +201,21 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row19, 1, payload.getLaoDongTienLuong().toString());
             setCellVal(row19, 3, payload.getGioX().toString());
             setCellVal(row19, 5, payload.getDong().toString());
+
+            setCellVal(row21, 1, "quan doc");
+            setCellVal(row21, 4, "tpkcs");
+
+            setCellVal(row25, 0, "ngay_totruong1");
+            setCellVal(row25, 1, "ngay_totruong2");
+            setCellVal(row25, 2, "ngay_totruong3");
+            setCellVal(row25, 3, "ngay_totruong4");
+            setCellVal(row25, 4, "ngay_totruong5");
+
+            setCellVal(row26, 0, "ten_totruong1");
+            setCellVal(row26, 1, "ten_totruong2");
+            setCellVal(row26, 2, "ten_totruong3");
+            setCellVal(row26, 3, "ten_totruong4");
+            setCellVal(row26, 4, "ten_totruong5");
 //
 
             int totalLine = payload.getNoiDungThucHiens().size();
@@ -227,6 +255,7 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFRow row3 = sheet.getRow(3);
             XSSFRow row4 = sheet.getRow(4);
             XSSFRow row5 = sheet.getRow(5);
+            XSSFRow row32 = sheet.getRow(32);
 
             setCellVal(row1, 13, payload.getToSo());
             setCellVal(row2, 13, payload.getSoTo());
@@ -234,6 +263,12 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row3, 6, payload.getSanPham());
             setCellVal(row4, 6, payload.getNoiDung());
             setCellVal(row5, 6, payload.getNguonKinhPhi());
+
+            setCellVal(row3, 0, payload.getNgayThangNamGiamDoc());
+            setCellVal(row32, 1, payload.getNgayThangNamTPKTHK());
+            setCellVal(row32, 3, payload.getNgayThangNamTPKEHOACH());
+            setCellVal(row32, 8, payload.getNgayThangNamtpVatTu());
+            setCellVal(row32, 12, payload.getNgayThangNamNguoiLap());
 
 //
 

@@ -117,6 +117,11 @@ public class ExcelServiceTest {
         XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/2_Dat_Hang.xlsx")));
         XSSFSheet sheet = workbook.getSheetAt(0);
         int totalLine = 40;
+        XSSFRow row13 = sheet.getRow(13);
+        setCellVal(row13, 2, "kye1");
+        setCellVal(row13, 6, "kye2");
+        setCellVal(row13, 8, "kye3");
+
         if (totalLine > 5) {
             sheet.copyRows(13, 16, 16 + (totalLine - 5), new CellCopyPolicy()); // copy and paste
 
@@ -130,11 +135,13 @@ public class ExcelServiceTest {
         XSSFRow row1 = sheet.getRow(2);
         XSSFRow row2 = sheet.getRow(3);
 
+
         setCellVal(row0, 6, "Số");
         setCellVal(row1, 6, "Đơn vị yêu cầu ");
         setCellVal(row1, 8, "Phân Xưởng");
 
         setCellVal(row2, 6, "Nội Dung");
+
 
         for (int i = 0; i < totalLine; i++) {
             XSSFRow crrRow = sheet.getRow(6 + i);
@@ -166,6 +173,9 @@ public class ExcelServiceTest {
         XSSFRow row5 = sheet.getRow(7);
 
         XSSFRow row19 = sheet.getRow(19);
+        XSSFRow row21 = sheet.getRow(21);
+        XSSFRow row25 = sheet.getRow(25);
+        XSSFRow row26 = sheet.getRow(26);
 
         setCellVal(row0, 1, "Ten san phjam");
         setCellVal(row1, 1, "Noi dung");
@@ -179,11 +189,28 @@ public class ExcelServiceTest {
         setCellVal(row19, 1, "Lao dong tien luong");
         setCellVal(row19, 3, "gio ");
         setCellVal(row19, 5, "dong");
+
+        setCellVal(row21, 1, "quan doc");
+        setCellVal(row21, 4, "tpkcs");
+
+        setCellVal(row25, 0, "ngay_totruong1");
+        setCellVal(row25, 1, "ngay_totruong2");
+        setCellVal(row25, 2, "ngay_totruong3");
+        setCellVal(row25, 3, "ngay_totruong4");
+        setCellVal(row25, 4, "ngay_totruong5");
+
+        setCellVal(row26, 0, "totruong1");
+        setCellVal(row26, 1, "totruong2");
+        setCellVal(row26, 2, "totruong3");
+        setCellVal(row26, 3, "totruong4");
+        setCellVal(row26, 4, "totruong5");
+
+
 //
 
         int totalLine = 40;
         if (totalLine > 5) {
-            sheet.copyRows(18, 24, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+            sheet.copyRows(18, 28, 24 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
 
             for (int i = 18; i < 24 + (totalLine - 6); i++) {
                 sheet.createRow(i);
@@ -212,6 +239,7 @@ public class ExcelServiceTest {
         XSSFRow row3 = sheet.getRow(3);
         XSSFRow row4 = sheet.getRow(4);
         XSSFRow row5 = sheet.getRow(5);
+        XSSFRow row32 = sheet.getRow(32);
 
         setCellVal(row1, 13, "To so");
         setCellVal(row2, 13, "so to");
@@ -220,6 +248,12 @@ public class ExcelServiceTest {
         setCellVal(row3, 6, "san pham");
         setCellVal(row4, 6, "noi dung");
         setCellVal(row5, 6, "nguon kinh phi");
+//
+
+        setCellVal(row32, 1, "TP. KTHK");
+        setCellVal(row32, 3, "TP.KẾ HOẠCH");
+        setCellVal(row32, 8, "TP. VẬT TƯ");
+        setCellVal(row32, 12, "NGƯỜI LẬP");
 
 //
 
@@ -238,7 +272,7 @@ public class ExcelServiceTest {
         for (int i = 0; i < totalLine; i++) {
             XSSFRow crrRow = sheet.getRow(9 + i);
             setCellVal(crrRow, 0, i + 1 + "");
-            setCellVal(crrRow, 1, "Nội dung thực hiện");
+            setCellVal(crrRow, 1, "Nội dung thực hiện" + i);
             setCellVal(crrRow, 10, "Bac");
             setCellVal(crrRow, 11, "DM");
             setCellVal(crrRow, 12, "Ghi chu");
@@ -277,6 +311,7 @@ public class ExcelServiceTest {
             setCellVal(crrRow2, 12, "thanh tien");
             setCellVal(crrRow2, 13, "ghi chu");
         }
+        sheet.shiftRows(13,18,-1);
 
         FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Phuong_An.xlsx");
         workbook.write(out);
