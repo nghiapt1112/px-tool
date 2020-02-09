@@ -255,20 +255,30 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
                 throw new PXException("kiemhong.missingRequiredFields");
             }
         }
-        if (user.isTroLyKT() && troLyKTXacNhan) {
-            yKienTroLyKT = null;
-            request.setYKienTroLyKT(null);
-            for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
-                if (StringUtils.isEmpty(kiemHongDetail.getPhuongPhapKhacPhuc())) {
-                    throw new PXException("kiemhong.ppkp");
+        if (user.isTroLyKT()) {
+            if (troLyKTXacNhan){
+                yKienTroLyKT = null;
+                request.setYKienTroLyKT(null);
+                for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
+                    if (StringUtils.isEmpty(kiemHongDetail.getPhuongPhapKhacPhuc())) {
+                        throw new PXException("kiemhong.ppkp");
+                    }
                 }
             }
-        }
-        if (user.isQuanDocPhanXuong() && quanDocXacNhan) {
-            yKienQuanDoc = null;
-            request.setYKienQuanDoc(null);
-        }
+            if (!troLyKTXacNhan && StringUtils.isEmpty(yKienTroLyKT) && Objects.nonNull(noiNhan)) {
+                throw new PXException("kiemhong.trolyKT_xacnhan.ykien");
+            }
 
+        }
+        if (user.isQuanDocPhanXuong()) {
+            if (quanDocXacNhan){
+                yKienQuanDoc = null;
+                request.setYKienQuanDoc(null);
+            }
+            if (!quanDocXacNhan && StringUtils.isEmpty(yKienQuanDoc) && Objects.nonNull(noiNhan)) {
+                throw new PXException("kiemhong.quandoc_xacnhan.ykien");
+            }
+        }
 
         if (!Objects.isNull(this.noiNhan)) {
             for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {

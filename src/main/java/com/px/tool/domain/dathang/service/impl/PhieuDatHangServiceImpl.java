@@ -126,6 +126,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);
             vanBanDen.setSoPa("số: " + payload.getPdhId());
+            vanBanDen.setRequestId(payload.getRequestId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
             throw new PXException("[Đặt Hàng]: Có lỗi khi gửi văn bản đến.");

@@ -81,6 +81,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong1SignImg;
     private String toTruong1fullName;
     private String ykienToTruong1;
+    private String ngayThangNamToTruong1;
 
     private Boolean toTruong2XacNhan;
     private Boolean toTruong2Disable = true;
@@ -88,6 +89,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong2SignImg;
     private String toTruong2fullName;
     private String ykienToTruong2;
+    private String ngayThangNamToTruong2;
 
     private Boolean toTruong3XacNhan;
     private Boolean toTruong3Disable = true;
@@ -95,6 +97,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong3SignImg;
     private String toTruong3fullName;
     private String ykienToTruong3;
+    private String ngayThangNamToTruong3;
 
     private Boolean toTruong4XacNhan;
     private Boolean toTruong4Disable = true;
@@ -102,6 +105,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong4SignImg;
     private String toTruong4fullName;
     private String ykienToTruong4;
+    private String ngayThangNamToTruong4;
 
     private Boolean toTruong5XacNhan;
     private Boolean toTruong5Disable = true;
@@ -109,6 +113,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong5SignImg;
     private String toTruong5fullName;
     private String ykienToTruong5;
+    private String ngayThangNamToTruong5;
 
     private List<Long> cusToTruongIds;
     private boolean nghiemThuDisable = true;
@@ -131,6 +136,12 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         congNhanThanhPhamPayload.setCusToTruongIds(Collections.emptyList());
         congNhanThanhPhamPayload.setNoiNhan(null);
         congNhanThanhPhamPayload.setNgayThangNamTPKCS(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamTPKCS()));
+//        congNhanThanhPhamPayload.setNgayThangNamQuanDoc(DateTimeUtils.toString(congNhanThanhPham.getngay)); // Quan doc khong ky, nen khong co ngay thang nam.
+        congNhanThanhPhamPayload.setNgayThangNamToTruong1(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong1()));
+        congNhanThanhPhamPayload.setNgayThangNamToTruong2(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong2()));
+        congNhanThanhPhamPayload.setNgayThangNamToTruong3(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong3()));
+        congNhanThanhPhamPayload.setNgayThangNamToTruong4(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong4()));
+        congNhanThanhPhamPayload.setNgayThangNamToTruong5(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong5()));
         return congNhanThanhPhamPayload;
     }
 

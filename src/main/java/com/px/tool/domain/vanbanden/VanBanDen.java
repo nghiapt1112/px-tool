@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -21,38 +22,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "van_ban_den")
 public class VanBanDen extends EntityDefault {
+    // @formatter:off
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long vbdId;
 
-    @Column
-    public String noiNhan;
+    @Column public String noiNhan;
+    @Column private String soPa;
+    @Column @Type(type = "text") public String noiDung;
+    @Column public String type;
+    @Column @Enumerated public RequestType requestType;
+    @Column private Boolean read;
+    @Column private Long folder;
+    @Column private Long requestId; // save kh_id, dh_id, paId
 
-    @Column
-    private String soPa;
-
-    @Column
-    @Type(type = "text")
-    public String noiDung;
-
-    @Column
-    public String type;
-
-    @Column
-    @Enumerated
-    public RequestType requestType;
-
-    @Column
-    private Boolean read;
-
-    @Column
-    private Long folder;
-
+    // @formatter:on
     public Long getFolder() {
         return folder == null ? 0 : folder;
     }
 
     public String getSoPa() {
         return soPa == null ? "" : soPa;
+    }
+
+    public Long getRequestId() {
+        return Objects.isNull(requestId) ? -1L : requestId;
     }
 }

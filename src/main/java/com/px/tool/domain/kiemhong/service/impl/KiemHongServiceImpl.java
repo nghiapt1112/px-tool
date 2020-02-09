@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
+import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsString;
 
 @Service
@@ -103,6 +104,9 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 kiemHong.setGiamDocXacNhan(false);
                 kiemHong.setQuanDocXacNhan(false);
                 kiemHong.setTroLyKTXacNhan(false);
+                if(kiemHong.getToTruongXacNhan()) {
+                    kiemHong.setNgayThangNamToTruong(nowAsMilliSec());
+                }
 
                 Request request = new Request();
                 request.setCreatedBy(currentUserId);
@@ -219,6 +223,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             vanBanDen.setNoiNhan(CommonUtils.toString(ids));
             vanBanDen.setRequestType(RequestType.KIEM_HONG);
             vanBanDen.setRead(false);
+            vanBanDen.setRequestId(existedKiemHong.getRequest().getRequestId());
             vanBanDen.setSoPa("" + payload.getKhId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {

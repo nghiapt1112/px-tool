@@ -202,20 +202,30 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row19, 3, payload.getGioX().toString());
             setCellVal(row19, 5, payload.getDong().toString());
 
-            setCellVal(row21, 1, "quan doc");
-            setCellVal(row21, 4, "tpkcs");
+            setCellVal(row21, 1, payload.getNgayThangNamQuanDoc());
+            setCellVal(row21, 4, payload.getNgayThangNamTPKCS());
 
-            setCellVal(row25, 0, "ngay_totruong1");
-            setCellVal(row25, 1, "ngay_totruong2");
-            setCellVal(row25, 2, "ngay_totruong3");
-            setCellVal(row25, 3, "ngay_totruong4");
-            setCellVal(row25, 4, "ngay_totruong5");
+            if(Objects.nonNull(payload.getToTruong1Id())) {
+                setCellVal(row25, 0, payload.getNgayThangNamToTruong1());
+                setCellVal(row26, 0, payload.getToTruong1fullName()); // TODO: id /name/chuc vu
+            }
+            if(Objects.nonNull(payload.getToTruong2Id())) {
+                setCellVal(row25, 0, payload.getNgayThangNamToTruong2());
+                setCellVal(row26, 0, payload.getToTruong2fullName());
+            }
+            if(Objects.nonNull(payload.getToTruong3Id())) {
+                setCellVal(row25, 0, payload.getNgayThangNamToTruong3());
+                setCellVal(row26, 0, payload.getToTruong3fullName());
+            }
+            if(Objects.nonNull(payload.getToTruong4Id())) {
+                setCellVal(row25, 0, payload.getNgayThangNamToTruong4());
+                setCellVal(row26, 0, payload.getToTruong4fullName());
+            }
+            if(Objects.nonNull(payload.getToTruong5Id())) {
+                setCellVal(row25, 0, payload.getNgayThangNamToTruong5());
+                setCellVal(row26, 0, payload.getToTruong5fullName());
+            }
 
-            setCellVal(row26, 0, "ten_totruong1");
-            setCellVal(row26, 1, "ten_totruong2");
-            setCellVal(row26, 2, "ten_totruong3");
-            setCellVal(row26, 3, "ten_totruong4");
-            setCellVal(row26, 4, "ten_totruong5");
 //
 
             int totalLine = payload.getNoiDungThucHiens().size();

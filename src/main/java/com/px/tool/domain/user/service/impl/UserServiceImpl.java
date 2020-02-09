@@ -271,7 +271,11 @@ public class UserServiceImpl implements UserService {
     private void filterTheoDatHang(NoiNhanRequestParams requestParams, User currentUser, List<User> users) {
         Stream<User> pbs = Stream.empty();
         if (currentUser.isNhanVienVatTu()) {
-            pbs = userRepository.findByGroup(group_12).stream();
+            if (!requestParams.getNguoiDatHang()) {
+                pbs = Stream.empty();
+            } else {
+                pbs = userRepository.findByGroup(group_12).stream();
+            }
         } else if (currentUser.isTruongPhongVatTu()) {
             if (!requestParams.getTpVatTu()) {
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getNguoiDatHangId()));

@@ -1,5 +1,6 @@
 package com.px.tool.domain.vanbanden.payload;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import lombok.Getter;
@@ -17,6 +18,8 @@ public class VanBanDenDetail {
     private String soPa;
     private List<Long> cusReceivers;
     private List<String> files;
+    private Long requestId;
+    private RequestType requestType;
 
     public static VanBanDenDetail fromEntity(VanBanDen vanBanDen, Map<Long, String> noiNhanById) {
         VanBanDenDetail payload = new VanBanDenDetail();
@@ -25,6 +28,8 @@ public class VanBanDenDetail {
         payload.noiNhan = CommonUtils.toString(payload.cusReceivers, noiNhanById);
         payload.noiDung = vanBanDen.getNoiDung();
         payload.soPa = vanBanDen.getSoPa();
+        payload.requestId = vanBanDen.getRequestId();
+        payload.requestType = vanBanDen.getRequestType();
         return payload;
     }
 

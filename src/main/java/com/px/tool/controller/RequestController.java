@@ -104,7 +104,7 @@ public class RequestController extends BaseController {
                     } else if (el.getRequestType() == RequestType.DAT_HANG) {
                         payload.setBody("Bạn đang có 1 yêu cầu đặt hàng.");
                     } else if (el.getRequestType() == RequestType.PHUONG_AN) {
-                        payload.setBody("Bạn đang có 1 yêu cầu thông báo.");
+                        payload.setBody("Bạn đang có 1 yêu cầu phương án.");
                     } else if (el.getRequestType() == RequestType.CONG_NHAN_THANH_PHAM) {
                         payload.setBody("Bạn đang có 1 thông yêu cầu CNTP.");
                     }

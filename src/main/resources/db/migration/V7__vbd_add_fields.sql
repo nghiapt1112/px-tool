@@ -1,0 +1,1 @@
+ALTER TABLE `van_ban_den` ADD `request_id` bigint(20) DEFAULT NULL;

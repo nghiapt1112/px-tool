@@ -3,6 +3,7 @@ package com.px.tool.domain.user;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -110,7 +111,7 @@ public class User extends EntityDefault implements UserDetails {
     }
 
     public String getFullName() {
-        return StringUtils.isEmpty(fullName) ? email : fullName;
+        return StringUtils.isEmpty(fullName) ? email : CommonUtils.limitStr(fullName);
     }
 
     public boolean isAdmin() {

@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,6 +91,15 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
                 phieuDatHang.getPhieuDatHangDetails()
                         .stream()
                         .map(PhieuDatHangDetailPayload::fromEntity)
+                        .map(detail -> {
+                            if (!StringUtils.isEmpty(detail.getSoPhieuDatHang())) {
+                                return detail;
+                            }
+                            if (!StringUtils.isEmpty(phieuDatHang.getSo())) {
+                                detail.setSoPhieuDatHang(phieuDatHang.getSo());
+                            }
+                            return detail;
+                        })
                         .collect(Collectors.toList())
         );
         payload.setNoiNhan(null);
@@ -111,6 +121,9 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
                             PhieuDatHangDetail entity = payload.toEntity();
                             if (Objects.nonNull(phieuDatHang.getPdhId())) {
                                 entity.setPhieuDatHang(phieuDatHang);
+                            }
+                            if (!StringUtils.isEmpty(so)) {
+                                entity.setSoPhieuDatHang(so);
                             }
                             return entity;
                         })
@@ -227,6 +240,20 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     public void validateXacNhan(User user, PhieuDatHang request, PhieuDatHang existed) {
         if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers))) {
             throw new PXException("dathang.noi_nhan.empty");
+        }
+        if (user.isTruongPhongVatTu()){
+            if (!tpvatTuXacNhan && StringUtils.isEmpty(yKienTPVatTu) && Objects.nonNull(noiNhan)) {
+                throw new PXException("dathang.tpvattu_xacnhan.ykien");
+            }
+        }
+        if (user.isTruongPhongKTHK()){
+            if(!tpkthkXacNhan && StringUtils.isEmpty(yKienTPKTHK) && Objects.nonNull(noiNhan)) {
+                throw new PXException("dathang.tpkthk_xacnhan.ykien");
+            }
+        }
+        // clear noi nhan, vi day la step cuoi cung, ko can phai co noi nhan
+        if (user.isTruongPhongKTHK()) {
+            noiNhan = null;
         }
     }
 

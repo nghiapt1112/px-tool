@@ -139,6 +139,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);
             vanBanDen.setSoPa("Phương Án số: " + phuongAnPayload.getPaId());
+            vanBanDen.setRequestId(phuongAnPayload.getRequestId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
             throw new PXException("[Phương Án]: Có lỗi khi gửi văn bản đến.");

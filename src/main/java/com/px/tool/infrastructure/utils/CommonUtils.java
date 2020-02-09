@@ -89,4 +89,11 @@ public class CommonUtils {
         }
         return longs.get(index);
     }
+
+    public static String limitStr(String str) {
+        if (!StringUtils.isEmpty(str) && str.length() > 23) {
+            return str.substring(0, 20) + "...";
+        }
+        return str;
+    }
 }

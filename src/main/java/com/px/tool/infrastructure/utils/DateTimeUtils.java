@@ -21,9 +21,7 @@ public final class DateTimeUtils {
         if (Objects.isNull(time)) {
             return "";
         }
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Saigon"));
-        cal.setTime(new Date(time));
-        return String.format("Ngày %s Tháng %s Năm %s", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+        return toString(new Date(time));
     }
 
     // Serve for Statistical
@@ -35,12 +33,13 @@ public final class DateTimeUtils {
     }
 
     public static String nowAsString() {
+        return toString(new Date());
+    }
+
+    public static String toString(Date date) {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Saigon"));
-        cal.setTime(new Date());
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return String.format("Ngày %s Tháng %s Năm %s", day, month + 1, year);
+        cal.setTime(date);
+        return String.format("Ngày %s Tháng %s Năm %s", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
     }
 
 }
