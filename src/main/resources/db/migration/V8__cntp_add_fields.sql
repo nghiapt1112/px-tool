@@ -1,1 +1,0 @@
-ALTER TABLE `cong_nhan_thanh_pham` ADD `pa_id` bigint(20) DEFAULT NULL;

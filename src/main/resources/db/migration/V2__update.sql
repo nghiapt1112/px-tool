@@ -1,1 +1,0 @@
-ALTER TABLE `phuong_an` CHANGE `nguoi_thuc_hien` `nguoi_thuc_hien` VARCHAR(255) DEFAULT NULL;
