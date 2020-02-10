@@ -72,15 +72,11 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
     @Override
     public PhuongAnPayload findById(Long userId, Long id) {
-//        Request request = requestService.findById(id);
-
         PhuongAn pa = phuongAnRepository.findById(id).orElseThrow(() -> new PXException("phuongan.not_found"));
         PhuongAnPayload payload = PhuongAnPayload.fromEntity(pa)
                 .filterPermission(userService.findById(userId))
                 .withFiles(fileStorageService.listFileNames(RequestType.PHUONG_AN, id));
-//        payload.setRequestId(request.getRequestId());// code cu
         payload.setRequestId(pa.getPaId());
-
         payload.processSignImgAndFullName(userService.userById());
         return payload;
     }
@@ -118,7 +114,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             existedPhuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             taoCNTP(phuongAn, thanhPham);
             phuongAn.setCongNhanThanhPham(thanhPham);
-            guiVanBanDen(phuongAnPayload);
+            guiVanBanDen(phuongAnPayload, existedPhuongAn);
             // clear receiverId
             cntpReceiverId = phuongAnPayload.getNoiNhan();
             phuongAnReceiverId = null;
@@ -131,14 +127,21 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     }
 
     @Transactional
-    public void guiVanBanDen(PhuongAnPayload phuongAnPayload) {
+    public void guiVanBanDen(PhuongAnPayload phuongAnPayload, PhuongAn existedPhuongAn) {
         try {
+            Set<Long> userIds = new HashSet<>();
+            userIds.add(existedPhuongAn.getTruongPhongVatTuId());
+            userIds.add(existedPhuongAn.getTruongPhongKeHoachId());
+            userIds.add(existedPhuongAn.getTruongPhongKTHKId());
+            userIds.addAll(phuongAnPayload.getCusReceivers());
+
             VanBanDen vanBanDen = new VanBanDen();
             vanBanDen.setNoiDung(phuongAnPayload.getCusNoiDung());
-            vanBanDen.setNoiNhan(CommonUtils.toString(phuongAnPayload.getCusReceivers()));
+            vanBanDen.setNoiNhan(CommonUtils.toString(userIds));
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);
-            vanBanDen.setSoPa("Phương Án số: " + phuongAnPayload.getPaId());
+            vanBanDen.setSoPa(phuongAnPayload.getMaSo());
+            vanBanDen.setNoiDung("Phương án số : "+ phuongAnPayload.getMaSo() + "đã hoàn thành.");
             vanBanDen.setRequestId(phuongAnPayload.getRequestId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
@@ -155,6 +158,8 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         congNhanThanhPham.setTenSanPham(phuongAn.getSanPham());
         congNhanThanhPham.setNoiDung(phuongAn.getNoiDung());
         congNhanThanhPham.setSoPA(phuongAn.getMaSo());
+        congNhanThanhPham.setPaId(phuongAn.getPaId());
+
         if (!CollectionUtils.isEmpty(phuongAn.getDinhMucLaoDongs())) {
             Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
             NoiDungThucHien detail = null;

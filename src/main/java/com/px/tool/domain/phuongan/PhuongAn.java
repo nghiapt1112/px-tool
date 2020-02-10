@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -172,11 +173,11 @@ public class PhuongAn extends EntityDefault {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
-    private Set<DinhMucLaoDong> dinhMucLaoDongs = new HashSet<>();
+    private Set<DinhMucLaoDong> dinhMucLaoDongs = new LinkedHashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
-    private Set<DinhMucVatTu> dinhMucVatTus = new HashSet<>();
+    private Set<DinhMucVatTu> dinhMucVatTus = new LinkedHashSet<>();
 
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)

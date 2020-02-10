@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -127,7 +128,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
                             }
                             return entity;
                         })
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toCollection(LinkedHashSet::new))
         );
         phieuDatHang.setCusReceivers(CommonUtils.toString(this.getCusReceivers()));
         return phieuDatHang;

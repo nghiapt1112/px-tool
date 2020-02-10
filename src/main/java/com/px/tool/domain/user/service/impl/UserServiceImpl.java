@@ -112,7 +112,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int updateProfile(UserRequest user) {
-        userRepository.updateImage(user.getImgBase64(), user.getFullName(), user.getUserId());
+        User currentUser = userRepository.findById(user.getUserId()).get();
+        if (StringUtils.isEmpty(user.getFullName())) {
+            user.setFullName(currentUser.getFullName());
+        }
+        if (StringUtils.isEmpty(user.getImgBase64())) {
+            userRepository.updateProfile(user.getFullName(), user.getUserId());
+            return 1;
+        }
+        userRepository.updateProfile(user.getImgBase64(), user.getFullName(), user.getUserId());
         return 1;
     }
 
@@ -164,7 +172,6 @@ public class UserServiceImpl implements UserService {
                     filterTheoDatHang(requestParams, currentUser, pbs);
                 }
             }
-
         }
         if (Objects.isNull(pbs)) {
             return Collections.emptyList();
@@ -236,8 +243,8 @@ public class UserServiceImpl implements UserService {
                 // nhan vien dinh muc (phong ke hoach)
                 pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 4);
             } else {
-                // TODO chuyen nhan vien tiep lieu (nhung dang khong luu nen chuyen ve luon nguoi lap)
-                pbs = toUserStream(nguoiDangXuLy.getTpKTHK());
+                // TODO chuyen nhan vien tiep lieu = tpkthk
+                pbs = userRepository.findByIds(Arrays.asList(nguoiDangXuLy.getTpKTHK(), 54L)).stream();
             }
         } else if (currentUser.isNhanVienDinhMuc()) { // chuyen truong phong ke hoach
             pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 3);
@@ -249,9 +256,9 @@ public class UserServiceImpl implements UserService {
                 pbs = userRepository.findByGroup(group_14).stream().filter(el -> el.getLevel() == 4).limit(1);
             }
         } else if (currentUser.getLevel() == 2) { // chuyen den Nguoi thuc hien (nguoi thuc hien la cac PX)
-            // TODO: neu giam doc khong dong y, chuyen ve TPKTHK/XMDC:
+            // TODO: neu giam doc khong dong y, chuyen ve TPKTHK/XMDC, tp.Vat tu, tp.ke hoach:
             if (!requestParams.getGiamDoc()) {
-                pbs = toUserStream(nguoiDangXuLy.getTpKTHK());
+                pbs = userRepository.findByIds(Arrays.asList(nguoiDangXuLy.getTpKTHK(), nguoiDangXuLy.getTpVatTu(), nguoiDangXuLy.getTpKeHoach())).stream();
             } // NOTE: KHi hoàn thành phương án thì sử dụng data ở mục: các đơn vị thực hiện. Đến đây thì tạo p.a success
         }
         if (pbs != null) {

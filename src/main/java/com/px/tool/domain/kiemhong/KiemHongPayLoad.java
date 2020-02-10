@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +136,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
                             }
                             return entity;
                         })
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toCollection(LinkedHashSet::new)));
         kiemHong.setCusReceivers(CommonUtils.toString(this.getCusReceivers()));
         return kiemHong;
     }

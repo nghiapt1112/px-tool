@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -123,7 +124,7 @@ public class KiemHong extends EntityDefault {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "kiemHong", cascade = CascadeType.ALL)
-    private Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
+    private Set<KiemHongDetail> kiemHongDetails = new LinkedHashSet<>();
 
     @JsonBackReference
     @OneToOne(mappedBy = "kiemHong")

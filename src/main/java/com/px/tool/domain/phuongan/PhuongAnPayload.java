@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +158,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                             }
                             return entity;
                         })
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toCollection(LinkedHashSet::new))
         );
         phuongAn.setDinhMucVatTus(
                 dinhMucVatTus.stream()
@@ -168,7 +169,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                             }
                             return entity;
                         })
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toCollection(LinkedHashSet::new))
         );
         try {
             phuongAn.setCusReceivers(CommonUtils.toString(this.cusReceivers));
@@ -317,7 +318,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     @Override
     public void validateXacNhan(User user, PhuongAn request, PhuongAn existed) {
         if (Objects.nonNull(this.noiNhan)) {
-            if (user.isNguoiLapPhieu()) {
+            if (user.isNguoiLapPhieu()) { // tl kthk, xmdc
                 if (Objects.isNull(cusReceivers) || Objects.isNull(nguoiThucHien)) {
                     throw new PXException("phuongan.vanbanden");
                 }
@@ -327,6 +328,16 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 for (DinhMucLaoDongPayload dinhMucLaoDong : dinhMucLaoDongs) {
                     if (dinhMucLaoDong.isInvalidData()) {
                         throw new PXException("phuongan.dmLaoDong");
+                    }
+                }
+
+                // file update: validate them dmVatTu
+                if (CollectionUtils.isEmpty(dinhMucVatTus)) {
+                    throw new PXException("phuongan.dinhmucvattu");
+                }
+                for (DinhMucVatTuPayload mucVatTus : this.dinhMucVatTus) {
+                    if (mucVatTus.isInvalidData()) {
+                        throw new PXException("phuongan.dinhmucvattu");
                     }
                 }
             }
@@ -340,7 +351,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                     }
                 }
             }
-            // TODO: NghiaPT  nơi nhận mà có data thì "xác nhận " của userhiện tại phải == true
+            // TODO: NghiaPT  nơi nhận mà có data thì "xác nhận " của user hiện tại phải == true
         }
         if (request.allApproved() && CollectionUtils.isEmpty(this.nguoiThucHien)) {
             throw new PXException("phuongan.nguoithuchien_missing");

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
 
     @JsonProperty("soPa")
     private String soPA;
+    private Long paId;
 
     @JsonProperty("donViThucHien")
     private String donviThucHien;
@@ -142,6 +144,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         congNhanThanhPhamPayload.setNgayThangNamToTruong3(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong3()));
         congNhanThanhPhamPayload.setNgayThangNamToTruong4(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong4()));
         congNhanThanhPhamPayload.setNgayThangNamToTruong5(DateTimeUtils.toString(congNhanThanhPham.getNgayThangNamToTruong5()));
+        congNhanThanhPhamPayload.setPaId(congNhanThanhPham.getPaId());
         return congNhanThanhPhamPayload;
     }
 
@@ -160,10 +163,11 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                             }
                             return entity;
                         })
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toCollection(LinkedHashSet::new))
         );
-//        congNhanThanhPham.setPhanXuongThucHien(CommonUtils.toString(cusToTruongIds));
-
+        congNhanThanhPham.setGioX(this.getGioX());
+        congNhanThanhPham.setLaoDongTienLuong(this.getLaoDongTienLuong());
+        congNhanThanhPham.setDong(this.getGioX() * this.getLaoDongTienLuong());
         return congNhanThanhPham;
     }
 
@@ -373,15 +377,15 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     }
 
     public Float getLaoDongTienLuong() {
-        return laoDongTienLuong == null ? Float.NaN : laoDongTienLuong;
+        return laoDongTienLuong == null ? 0f : laoDongTienLuong;
     }
 
     public Float getDong() {
-        return dong == null ? Float.NaN : dong;
+        return dong == null ? 0f : dong;
     }
 
     public Float getGioX() {
-        return gioX == null ? Float.NaN : gioX;
+        return gioX == null ? 0f : gioX;
     }
 
 }

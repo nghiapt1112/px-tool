@@ -12,6 +12,7 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.FolderRepository;
 import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;
@@ -57,6 +58,9 @@ public class UserController extends BaseController {
     @Autowired
     private CacheService cacheService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping
     public UserPageResponse findUsers(
             HttpServletRequest request,
@@ -72,7 +76,7 @@ public class UserController extends BaseController {
      */
     @Deprecated
     @PostMapping
-    public int save(@RequestBody UserRequest user) {
+    public int save(@RequestBody UserRequest user) throws InterruptedException {
         this.userService.updateProfile(user);
         cacheService.clearCache(CacheService.CACHE_USER);
         return 1;
@@ -94,7 +98,7 @@ public class UserController extends BaseController {
     @GetMapping("/info")
     public UserPayload getUserInfo(HttpServletRequest httpServletRequest) {
         Long userId = extractUserInfo(httpServletRequest);
-        return UserPayload.fromEntity(this.userService.findById(userId));
+        return UserPayload.fromEntity(userService.findById(userId));
     }
 
     @GetMapping("/detail")

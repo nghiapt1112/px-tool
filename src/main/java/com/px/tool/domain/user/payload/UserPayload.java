@@ -39,6 +39,8 @@ public class UserPayload extends AbstractObject {
             payload.type = UserType.NV_DINH_MUC;
         } else if (user.isTroLyKT()) {
             payload.type = UserType.TL_KY_THUAT;
+        } else if (user.isTruongPhongKTHK()) {
+            payload.type = UserType.TRUONG_PHONG;
         } else {
             payload.type = UserType.GENERAL;
         }

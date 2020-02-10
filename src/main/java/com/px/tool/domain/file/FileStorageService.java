@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -69,12 +70,12 @@ public class FileStorageService {
         fileInfo.setFileUUId(fileName);
         fileInfo.setRequestType(requestType);
         fileInfo.setRequestId(requestId);
-        List<FileStorage> existedFile = fileStorageRepository.findByFileName(orgFileName);
-        if (!CollectionUtils.isEmpty(existedFile)) {
-            this.fileStorageRepository.save(fileInfo);
-        } else {
-            throw new PXException("file_existed");
-        }
+
+//        if (CollectionUtils.isEmpty(existedFile)) {
+        this.fileStorageRepository.save(fileInfo);
+//        } else {
+//            throw new PXException("file_existed");
+//        }
         return fileName;
     }
 

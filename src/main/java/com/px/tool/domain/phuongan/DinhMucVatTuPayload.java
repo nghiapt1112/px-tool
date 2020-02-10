@@ -56,9 +56,9 @@ public class DinhMucVatTuPayload extends AbstractObject {
 
     public DinhMucVatTu toEntity() {
         DinhMucVatTu dinhMucVatTu = new DinhMucVatTu();
-//        if (vtId != null && vtId <= 0) {
-        vtId = null;
-//        }
+        if (vtId != null && vtId <= 0) {
+            vtId = null;
+        }
         BeanUtils.copyProperties(this, dinhMucVatTu);
         return dinhMucVatTu;
     }
@@ -66,7 +66,7 @@ public class DinhMucVatTuPayload extends AbstractObject {
     public boolean isInvalidData() {
         return Objects.isNull(tenVatTuKyThuat) || Objects.isNull(kyMaKyHieu) || Objects.isNull(dvt) ||
                 Objects.isNull(dm1SP) || Objects.isNull(soLuongSanPham) || Objects.isNull(tongNhuCau) ||
-                Objects.isNull(khoDonGia) || Objects.isNull(khoSoLuong) || Objects.isNull(khoThanhTien)  ||
+                Objects.isNull(khoDonGia) || Objects.isNull(khoSoLuong) || Objects.isNull(khoThanhTien) ||
                 Objects.isNull(mnDonGia) || Objects.isNull(mnSoLuong) || Objects.isNull(mnThanhTien);
     }
 }
