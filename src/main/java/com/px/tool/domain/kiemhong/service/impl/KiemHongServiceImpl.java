@@ -236,7 +236,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         Map<Long, User> userById = userService.userById();
         pdh.setDonViYeuCau(userById.get(requestKiemHong.getToSX()).getAlias()); // C3 sheet1
         pdh.setPhanXuong(userById.get(requestKiemHong.getPhanXuong()).getAlias()); // C2 sheet1
-        pdh.setNoiDung(requestKiemHong.getTenVKTBKT() + requestKiemHong.getSoHieu()); // E2 sheet1 + E1 sheet1
+        pdh.setNoiDung(requestKiemHong.getTenVKTBKT() + " " + requestKiemHong.getSoHieu()); // E2 sheet1 + E1 sheet1
         PhieuDatHang savedPdh = phieuDatHangRepository.save(pdh);
 
         Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>(requestKiemHong.getKiemHongDetails().size());

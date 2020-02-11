@@ -14,4 +14,5 @@ public abstract class AbstractPayLoad<E extends EntityDefault> extends AbstractO
 
     public abstract void validateXacNhan(User user, E request, E existed);
 
+    public abstract E toEntity(E e);
 }

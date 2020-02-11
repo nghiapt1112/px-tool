@@ -17,6 +17,7 @@ public class UserRequest extends AbstractObject {
     private String fullName;
 
     private Long phongBanId;
+    private Long phanXuong;
 
     public Integer getLevel() {
         return level != null ? level : 2; // defaullt thi setting role la giam doc, truong phong.

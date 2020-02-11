@@ -116,11 +116,14 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(user.getFullName())) {
             user.setFullName(currentUser.getFullName());
         }
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         if (StringUtils.isEmpty(user.getImgBase64())) {
-            userRepository.updateProfile(user.getFullName(), user.getUserId());
+            userRepository.updateProfile(user.getFullName(), user.getPassword(), user.getUserId());
             return 1;
         }
-        userRepository.updateProfile(user.getImgBase64(), user.getFullName(), user.getUserId());
+        userRepository.updateProfile(user.getImgBase64(), user.getFullName(), user.getPassword(), user.getUserId());
         return 1;
     }
 
@@ -446,8 +449,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void taoUser(UserRequest user) {
-        Role role = roleService.findById(Long.valueOf(user.getLevel()));
-        PhongBan phongBan = phongBanService.findById(user.getPhongBanId() == null ? 1 : user.getPhongBanId());
+        Role role = roleService.findById(3L);
+        PhongBan phongBan = phongBanService.findById(user.getPhanXuong());
         User entity = user.toUserEntity();
         if (!StringUtils.isEmpty(user.getPassword())) {
             entity.setPassword(passwordEncoder.encode(user.getPassword()));

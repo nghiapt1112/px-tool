@@ -7,6 +7,7 @@ import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.payload.AbstractObject;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
     private long requestId;
     private String noiDung;
     private String status;
+    private String ngayGui;
     private RequestType type;
 
     public static DashBoardCongViecCuaToi fromEntity(Request request, Map<Long, User> userById) {
@@ -59,7 +61,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         } catch (Exception ex) {
             // DO no thing
         }
-
+        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.nowAsString();
         return dashBoardCongViecCuaToi;
     }
 
@@ -102,7 +104,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
         }
 
-
+        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.nowAsString();
         return dashBoardCongViecCuaToi;
     }
 
@@ -143,6 +145,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 //        if (el.getQuanDocXacNhan() && el.getTpkcsXacNhan()) {
 //            dashboard.status = "Hoàn Thành";
 //        }
+        dashboard.ngayGui = DateTimeUtils.nowAsString();
         return dashboard;
     }
 }
