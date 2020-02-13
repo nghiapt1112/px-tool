@@ -9,6 +9,7 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,9 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
         User user = userService.findById(userId);
         congNhanThanhPhamPayload.capNhatChuKy(user);
         CongNhanThanhPham congNhanThanhPham = new CongNhanThanhPham();
+        if (congNhanThanhPham.getTpId() == null) {
+            congNhanThanhPham.setNgayGui(DateTimeUtils.nowAsMilliSec());
+        }
         congNhanThanhPhamPayload.toEntity(congNhanThanhPham);
         congNhanThanhPhamPayload.capNhatNgayThangChuKy(congNhanThanhPham, existedCongNhanThanhPham);
         congNhanThanhPhamPayload.validateXacNhan(user, congNhanThanhPham, existedCongNhanThanhPham);

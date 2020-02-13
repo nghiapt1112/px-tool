@@ -1,6 +1,7 @@
 package com.px.tool.domain.vanbanden.payload;
 
 import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ public class VanBanDenResponse {
 
     private Long folder;
     private List<String> files;
+    private String ngayGui;
 
     public static VanBanDenResponse fromEntity(VanBanDen vanBanDen) {
         VanBanDenResponse payload = new VanBanDenResponse();
@@ -27,6 +29,7 @@ public class VanBanDenResponse {
         payload.noiDung = vanBanDen.getNoiDung();
         payload.folder = vanBanDen.getFolder();
         payload.soPa = vanBanDen.getSoPa();
+        payload.ngayGui = DateTimeUtils.toString(vanBanDen.getCreatedAt());
         return payload;
     }
 

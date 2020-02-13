@@ -29,4 +29,8 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
     @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE rq.deleted <> true OR rq.deleted is null")
     Page<Request> findPaging(ThongKePageRequest thongKeRequest, Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Request rq SET rq.ngayGui =?1 WHERE rq.requestId = ?2")
+    void updateNgayGui(long nowAsMilliSec, Long requestId);
 }

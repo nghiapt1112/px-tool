@@ -91,6 +91,9 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column private String ykienToTruong5;
     @Column private Long ngayThangNamToTruong5;
 
+
+    @Column private Long ngayGui;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)
     private Set<NoiDungThucHien> noiDungThucHiens = new LinkedHashSet<>();

@@ -40,7 +40,7 @@ public class VanBanDenRepositoryCustomImpl implements VanBanDenRepositoryCustom 
             params.put("loaiVB", request.getLoaiVb());
         }
 
-        Query jpaQuery = entityManager.createQuery("SELECT v FROM VanBanDen v " + query.toString());
+        Query jpaQuery = entityManager.createQuery("SELECT v FROM VanBanDen v " + query.toString() + "order by v.createdAt DESC");
         params.forEach((k,v) -> jpaQuery.setParameter(k, v));
         jpaQuery.setFirstResult(request.getPage() * request.getSize());
         jpaQuery.setMaxResults(request.getSize());

@@ -24,6 +24,7 @@ import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.px.tool.domain.user.repository.UserRepository.group_cac_truong_phong;
 
 @Service
 public class PhuongAnServiceImpl implements PhuongAnService {
@@ -98,6 +97,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
 
         Long phuongAnReceiverId = Objects.isNull(phuongAnPayload.getNoiNhan()) ? userId : phuongAnPayload.getNoiNhan();
+
         Long cntpReceiverId = existedPhuongAn.getCntpReceiverId();
 
         User user = userService.findById(userId);
@@ -105,6 +105,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
 
         CongNhanThanhPham thanhPham = existedPhuongAn.getCongNhanThanhPham();
         PhuongAn phuongAn = new PhuongAn();
+
         phuongAnPayload.toEntity(phuongAn);
         phuongAnPayload.capNhatNgayThangChuKy(phuongAn, existedPhuongAn);
         phuongAnPayload.validateXacNhan(user, phuongAn, existedPhuongAn);
@@ -123,6 +124,10 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         cleanOldDetailData(phuongAn, existedPhuongAn);
         phuongAn.setPhuongAnReceiverId(phuongAnReceiverId);
         phuongAn.setCntpReceiverId(cntpReceiverId);
+
+        if (phuongAnReceiverId != null && !phuongAnReceiverId.equals(existedPhuongAn.getPhuongAnReceiverId())) {
+            phuongAn.setNgayGui(DateTimeUtils.nowAsMilliSec());
+        }
         return phuongAnRepository.save(phuongAn);
     }
 
@@ -141,7 +146,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             vanBanDen.setRequestType(RequestType.PHUONG_AN);
             vanBanDen.setRead(false);
             vanBanDen.setSoPa(phuongAnPayload.getMaSo());
-            vanBanDen.setNoiDung("Phương án số : "+ phuongAnPayload.getMaSo() + "đã hoàn thành.");
+            vanBanDen.setNoiDung("Phương án số : " + phuongAnPayload.getMaSo() + "đã hoàn thành.");
             vanBanDen.setRequestId(phuongAnPayload.getRequestId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
@@ -171,6 +176,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
             congNhanThanhPham.setNoiDungThucHiens(noiDungThucHiens);
         }
         congNhanThanhPham.setQuanDocIds(phuongAn.getNguoiThucHien());
+        congNhanThanhPham.setNgayGui(DateTimeUtils.nowAsMilliSec());
         congNhanThanhPhamRepository.save(congNhanThanhPham);
     }
 
@@ -236,6 +242,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         PhuongAn pa = new PhuongAn();
         pa.setStep(0L);
         pa.setNguoiLapId(userid);
+        pa.setNgayGui(DateTimeUtils.nowAsMilliSec());
         return phuongAnRepository.save(pa);
     }
 

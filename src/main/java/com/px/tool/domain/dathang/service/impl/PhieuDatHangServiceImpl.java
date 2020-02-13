@@ -99,6 +99,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             cntpReceiverId = null;
         }
         cleanOldDetailData(phieuDatHangPayload, existedPhieuDatHang);
+        if (phieuDatHangReceiverId != null && !phieuDatHangReceiverId.equals(existedPhieuDatHang.getRequest().getPhieuDatHangReceiverId())) {
+            requestService.updateNgayGui(DateTimeUtils.nowAsMilliSec(), requestId);
+        }
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         phieuDatHangRepository.save(phieuDatHang);
 
@@ -118,12 +121,12 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         try {
             VanBanDen vanBanDen = new VanBanDen();
             if (StringUtils.isEmpty(payload.getCusNoiDung())) {
-                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng, " + DateTimeUtils.nowAsString());
+                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Đặt Hàng ");
             } else {
                 vanBanDen.setNoiDung(payload.getCusNoiDung());
             }
             vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
-            vanBanDen.setRequestType(RequestType.PHUONG_AN);
+            vanBanDen.setRequestType(RequestType.DAT_HANG);
             vanBanDen.setRead(false);
             vanBanDen.setSoPa("số: " + payload.getPdhId());
             vanBanDen.setRequestId(payload.getRequestId());

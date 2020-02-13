@@ -21,6 +21,7 @@ import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.CommonUtils;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,7 +105,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 kiemHong.setGiamDocXacNhan(false);
                 kiemHong.setQuanDocXacNhan(false);
                 kiemHong.setTroLyKTXacNhan(false);
-                if(kiemHong.getToTruongXacNhan()) {
+                if (kiemHong.getToTruongXacNhan()) {
                     kiemHong.setNgayThangNamToTruong(nowAsMilliSec());
                 }
 
@@ -170,8 +171,8 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
         Long kiemHongReceiverId = Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? userId : kiemHongPayLoad.getNoiNhan();
         Long phieuDatHangReceiverId = existedKiemHong.getRequest().getPhieuDatHangReceiverId();
-        Long phuongAnReceiverId = existedKiemHong.getRequest().getPhuongAnReceiverId();
-        Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();
+        Long phuongAnReceiverId = existedKiemHong.getRequest().getPhuongAnReceiverId(); // TODO: unused
+        Long cntpReceiverId = existedKiemHong.getRequest().getCntpReceiverId();// TODO: unused
 
         if (requestKiemHong.allApproved()) {
 //            if (Objects.isNull(kiemHongPayLoad.getNoiNhan())) {
@@ -188,7 +189,10 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             createPhieuDatHang(requestKiemHong, pdh);
             guiVanBanDen(existedKiemHong, kiemHongPayLoad);
         }
-
+        if ((  kiemHongReceiverId !=  null && !kiemHongReceiverId.equals(existedKiemHong.getRequest().getKiemHongReceiverId()))
+                || (phieuDatHangReceiverId != null && !phieuDatHangReceiverId.equals(existedKiemHong.getRequest().getPhieuDatHangReceiverId()))) {
+             requestService.updateNgayGui(DateTimeUtils.nowAsMilliSec(), requestId);
+        }
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         kiemHongRepository.save(requestKiemHong);
         kiemHongPayLoad.setRequestId(requestId);
@@ -216,7 +220,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
 
             VanBanDen vanBanDen = new VanBanDen();
             if (StringUtils.isEmpty(payload.getCusNoiDung())) {
-                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng, " + nowAsString());
+                vanBanDen.setNoiDung("Bạn đang có một yêu cầu Kiểm Hỏng");
             } else {
                 vanBanDen.setNoiDung(payload.getCusNoiDung());
             }

@@ -160,4 +160,8 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.updateReceiverId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
     }
 
+    @Override
+    public void updateNgayGui(long nowAsMilliSec, Long requestId) {
+        requestRepository.updateNgayGui(nowAsMilliSec, requestId);
+    }
 }

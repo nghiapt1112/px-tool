@@ -449,7 +449,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void taoUser(UserRequest user) {
-        Role role = roleService.findById(3L);
+        Role role = roleService.findById(Long.valueOf(user.getLevel()));
         PhongBan phongBan = phongBanService.findById(user.getPhanXuong());
         User entity = user.toUserEntity();
         if (!StringUtils.isEmpty(user.getPassword())) {

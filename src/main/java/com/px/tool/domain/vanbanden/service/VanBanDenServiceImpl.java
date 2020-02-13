@@ -20,6 +20,7 @@ import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,7 @@ public class VanBanDenServiceImpl extends BaseServiceImpl {
      * @return
      */
     public VanBanDenPageResponse findAll(Long userId, VanBanDenPageRequest vanBanDenPageRequest) {
-        Page<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize()));
+        Page<VanBanDen> val = vanBanDenRepository.findByCreatedBy(userId, PageRequest.of(vanBanDenPageRequest.getPage(), vanBanDenPageRequest.getSize(), Sort.by(Sort.Order.desc("createdAt"))));
         return toResponse(val, vanBanDenPageRequest);
     }
 

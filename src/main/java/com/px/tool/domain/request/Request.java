@@ -54,6 +54,9 @@ public class Request extends EntityDefault {
     @JoinColumn(name = "pdhId")
     private PhieuDatHang phieuDatHang;
 
+    @Column
+    private Long ngayGui;
+
 //    @JsonManagedReference
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "paId")

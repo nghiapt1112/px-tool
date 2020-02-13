@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,7 +62,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         } catch (Exception ex) {
             // DO no thing
         }
-        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.nowAsString();
+        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.toString(request.getNgayGui());
         return dashBoardCongViecCuaToi;
     }
 
@@ -104,7 +105,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
         }
 
-        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.nowAsString();
+        dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.toString(el.getNgayGui());
         return dashBoardCongViecCuaToi;
     }
 
@@ -145,7 +146,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 //        if (el.getQuanDocXacNhan() && el.getTpkcsXacNhan()) {
 //            dashboard.status = "Hoàn Thành";
 //        }
-        dashboard.ngayGui = DateTimeUtils.nowAsString();
+        dashboard.ngayGui = DateTimeUtils.toString(el.getNgayGui());
         return dashboard;
     }
 }

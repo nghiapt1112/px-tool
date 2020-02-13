@@ -171,6 +171,9 @@ public class PhuongAn extends EntityDefault {
     @Column
     private Long step; // 0: van dang xu ly, 1: success_phuong_an
 
+    @Column
+    private Long ngayGui;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "phuongAn", cascade = CascadeType.ALL)
     private Set<DinhMucLaoDong> dinhMucLaoDongs = new LinkedHashSet<>();
