@@ -53,6 +53,6 @@ public class VanBanDen extends EntityDefault {
 
     @PrePersist
     public void init() {
-        this.setCreatedAt(DateTimeUtils.nowAsDate());
+        this.setCreatedAt(DateTimeUtils.nowAsMilliSec());
     }
 }

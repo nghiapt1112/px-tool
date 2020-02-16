@@ -5,7 +5,9 @@ import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.NoiDungThucHien;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.file.FileStorageService;
+import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.kiemhong.repository.KiemHongDetailRepository;
+import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
 import com.px.tool.domain.phuongan.DinhMucLaoDong;
 import com.px.tool.domain.phuongan.DinhMucVatTu;
 import com.px.tool.domain.phuongan.PhuongAn;
@@ -21,7 +23,6 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
-import com.px.tool.domain.vanbanden.service.VanBanDenServiceImpl;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
@@ -61,13 +62,13 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     private FileStorageService fileStorageService;
 
     @Autowired
-    private VanBanDenServiceImpl vanBanDenService;
-
-    @Autowired
     private KiemHongDetailRepository kiemHongDetailRepository;
 
     @Autowired
     private VanBanDenRepository vanBanDenRepository;
+
+    @Autowired
+    private KiemHongRepository kiemHongRepository;
 
     @Override
     public PhuongAnPayload findById(Long userId, Long id) {
@@ -227,21 +228,27 @@ public class PhuongAnServiceImpl implements PhuongAnService {
     @Override
     @Transactional
     public PhuongAnTaoMoi taoPhuongAnMoi(Long userid, RequestTaoPhuongAnMoi requestTaoPhuongAnMoi) {
-        PhuongAn phuongAn = taoPhuongAnMoi(userid);
+        KiemHong kiemHong = kiemHongRepository.findByDetailId(requestTaoPhuongAnMoi.getDetailIds().get(0))
+                .orElseThrow(() -> new PXException("kiemHong detail id khong chinh xac"));
+        String soPDH = kiemHong.getRequest().getPhieuDatHang().getSo();
+
+        PhuongAn phuongAn = taoPhuongAnMoi(userid, soPDH);
         CongNhanThanhPham cntp = congNhanThanhPhamRepository.save(new CongNhanThanhPham());
+
         kiemHongDetailRepository.taoPhuongAn(phuongAn.getPaId(), requestTaoPhuongAnMoi.getDetailIds());
+        phuongAnRepository.updateCNTP(phuongAn.getPaId(), cntp.getTpId());
+
         PhuongAnTaoMoi paMoi = new PhuongAnTaoMoi();
         paMoi.setPaId(phuongAn.getPaId());
-
-        phuongAnRepository.updateCNTP(phuongAn.getPaId(), cntp.getTpId());
         return paMoi;
     }
 
     @Transactional
-    public PhuongAn taoPhuongAnMoi(Long userid) {
+    public PhuongAn taoPhuongAnMoi(Long userid, String soPDH) {
         PhuongAn pa = new PhuongAn();
         pa.setStep(0L);
         pa.setNguoiLapId(userid);
+        pa.setPDH(soPDH == null ? "" : soPDH);
         pa.setNgayGui(DateTimeUtils.nowAsMilliSec());
         return phuongAnRepository.save(pa);
     }

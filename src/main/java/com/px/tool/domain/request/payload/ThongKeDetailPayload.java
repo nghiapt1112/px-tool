@@ -39,6 +39,7 @@ public class ThongKeDetailPayload extends AbstractObject {
     public String ngayHoanThanh;
     public String xacNhanHoanThanh;
     public Long requestId;
+    public Long createdAt;
 
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
@@ -52,6 +53,7 @@ public class ThongKeDetailPayload extends AbstractObject {
         for (KiemHongDetail detail : request.getKiemHong().getKiemHongDetails()) {
             //        tk.tt =
             tk = new ThongKeDetailPayload();
+            tk.createdAt = request.getCreatedAt();
             tk.tenPhuKien = detail.getTenPhuKien();
             tk.tenLinhKien = detail.getTenLinhKien();
             tk.kyHieu = detail.getKyHieu();

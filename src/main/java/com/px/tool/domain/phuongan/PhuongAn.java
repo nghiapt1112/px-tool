@@ -45,7 +45,6 @@ public class PhuongAn extends EntityDefault {
 
     @Column
     private String sanPham;
-
     @Column
     private String noiDung;
 

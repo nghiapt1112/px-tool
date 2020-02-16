@@ -128,7 +128,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
             vanBanDen.setNoiNhan(CommonUtils.toString(payload.getCusReceivers()));
             vanBanDen.setRequestType(RequestType.DAT_HANG);
             vanBanDen.setRead(false);
-            vanBanDen.setSoPa("số: " + payload.getPdhId());
+            vanBanDen.setSoPa(payload.getSo());
             vanBanDen.setRequestId(payload.getRequestId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {

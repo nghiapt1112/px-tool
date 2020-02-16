@@ -24,21 +24,6 @@ public class ThongKeTest extends PxApplicationTests{
     private PhuongAnRepository phuongAnRepository;
 
     @Test
-    public void thongKePAId() {
-        phuongAnRepository.findDetail(552L);
-    }
-    @Test
-    public void hi() {
-        ThongKePageRequest request = new ThongKePageRequest();
-        request.setPage(1);
-        request.setSize(10);
-        Pageable pageRequest = PageRequest.of(1,10);
-//        List<Request> result = requestRepository.findAll();
-        Page<Request> result = requestRepository.findPaging(request, pageRequest);
-        System.out.println();
-    }
-
-    @Test
     public void thongKe() {
         ThongKePageResponse data = requestService.collectDataThongKe(null);
         System.out.println();

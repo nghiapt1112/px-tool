@@ -12,6 +12,7 @@ import javax.persistence.PreUpdate;
 import java.util.Date;
 
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsDate;
+import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 
 @Getter
 @Setter
@@ -19,13 +20,13 @@ import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsDate;
 public abstract class EntityDefault extends AbstractObject {
 
     @Column
-    private Date createdAt;
+    private Long createdAt;
 
     @Column
     private Long createdBy;
 
     @Column
-    private Date updatedAt;
+    private Long updatedAt;
 
     @Column
     private Long updatedBy;
@@ -35,7 +36,7 @@ public abstract class EntityDefault extends AbstractObject {
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = nowAsDate();
+        this.updatedAt = nowAsMilliSec();
         try {
             this.updatedBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
         } catch (Exception e) {
@@ -44,8 +45,8 @@ public abstract class EntityDefault extends AbstractObject {
 
     @PrePersist
     protected void onSave() {
-        this.createdAt = nowAsDate();
-        this.createdAt = nowAsDate();
+        this.createdAt = nowAsMilliSec();
+        this.createdAt = nowAsMilliSec();
         try {
             this.createdBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
             this.updatedBy = ((User) SecurityContextHolder.getContext().getAuthentication().getDetails()).getUserId();
@@ -55,5 +56,9 @@ public abstract class EntityDefault extends AbstractObject {
 
     public Boolean getDeleted() {
         return deleted == null ? false : deleted;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt == null ? 0 : createdAt;
     }
 }

@@ -1,21 +1,22 @@
 package com.px.tool.domain.user.service.impl;
 
 import com.px.tool.domain.user.Role;
-import com.px.tool.infrastructure.CacheService;
+import com.px.tool.domain.user.repository.RoleRepository;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl {
-
     @Autowired
-    private CacheService cacheService;
+    private RoleRepository roleRepository;
 
     public Map<Long, Role> findAll() {
-        return cacheService.getRoleById_cache();
+        return roleRepository.findAll().stream().collect(Collectors.toMap(el -> el.getRoleId(), Function.identity()));
     }
 
     public Role findById(Long id) {

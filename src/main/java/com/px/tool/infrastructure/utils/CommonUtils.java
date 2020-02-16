@@ -76,11 +76,18 @@ public class CommonUtils {
         }
     }
 
-    public static String assignVal(User user, String defaultVal) {
+    public static String collectFullName(User user, String defaultVal) {
         if (Objects.isNull(user)) {
             return defaultVal;
         }
         return user.getFullName();
+    }
+
+    public static String collectAlias(User user, String defaultVal) {
+        if (Objects.isNull(user)) {
+            return defaultVal;
+        }
+        return user.getAlias();
     }
 
     public static <E extends Object> E getVal(List<E> longs, int index) {

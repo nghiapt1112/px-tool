@@ -21,7 +21,6 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.utils.CollectionUtils;
@@ -44,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,9 +80,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
-    @Autowired
-    private CacheService cacheService;
-
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
@@ -92,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         PXLogger.info("Fetching all users");
-        return cacheService.getUsers_cache();
+        return userRepository.findAll();
     }
 
     @Override
@@ -113,6 +110,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int updateProfile(UserRequest user) {
         User currentUser = userRepository.findById(user.getUserId()).get();
+
         if (StringUtils.isEmpty(user.getFullName())) {
             user.setFullName(currentUser.getFullName());
         }
@@ -144,11 +142,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) {
-        if (userById().containsKey(userId)) {
-            return userById().get(userId);
-        } else {
-            throw new PXException("Không tìm thấy User với Id = " + userId);
-        }
+        return userRepository
+                .findById(userId)
+                .orElseThrow(() -> new PXException("Không tìm thấy User với Id = " + userId));
     }
 
     @Override
@@ -344,7 +340,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<NoiNhan> findVanBanDenNoiNhan() {
-        return cacheService.getUsers_cache()
+        return userRepository.findAll()
                 .stream()
                 .map(NoiNhan::fromUserEntity)
                 .collect(Collectors.toList());
@@ -357,7 +353,7 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
         if (requestType == RequestType.KIEM_HONG) {
-            return cacheService.getUsers_cache()
+            return userRepository.findAll()
                     .stream()
                     .filter(el ->
                                     !el.isAdmin() && (
@@ -370,7 +366,7 @@ public class UserServiceImpl implements UserService {
                     .map(NoiNhan::fromUserEntity)
                     .collect(Collectors.toList());
         } else if (requestType == RequestType.DAT_HANG) {
-            return cacheService.getUsers_cache()
+            return userRepository.findAll()
                     .stream()
                     .filter(el ->
                             !el.isAdmin() && (
@@ -383,7 +379,7 @@ public class UserServiceImpl implements UserService {
                     .map(NoiNhan::fromUserEntity)
                     .collect(Collectors.toList());
         } else if (requestType == RequestType.PHUONG_AN) {
-            return cacheService.getUsers_cache()
+            return userRepository.findAll()
                     .stream()
                     .filter(el -> // all users thuoc cap 2, cap 3
                             !el.isAdmin() && (el.getLevel() == 2 || el.getLevel() == 3))
@@ -443,7 +439,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<Long, User> userById() {
-        return cacheService.getUserById_cache();
+        return userRepository.findAll().stream().collect(Collectors.toMap(el -> el.getUserId(), Function.identity()));
     }
 
     @Override

@@ -17,7 +17,7 @@ public class UserPayload extends AbstractObject {
     // external fields for [admin-page]-list-users
     private String phanXuong;
     private String level;
-
+    private String chucVu;
     private UserType type;
 
     public static UserPayload fromEntity(User user) {
@@ -48,6 +48,7 @@ public class UserPayload extends AbstractObject {
             payload.setPhanXuong(user.getPhongBan().getName());
         } catch (Exception e) {
         }
+        payload.chucVu = user.getAlias();
         return payload;
     }
 

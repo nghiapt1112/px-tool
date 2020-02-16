@@ -1,5 +1,6 @@
 package com.px.tool.domain.user.payload;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.model.payload.AbstractObject;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import org.springframework.util.StringUtils;
 public class UserRequest extends AbstractObject {
     private Long userId;
     private String email;
+
+    @JsonProperty("password")
     private String password;
     private Integer level;
     private String imgBase64;

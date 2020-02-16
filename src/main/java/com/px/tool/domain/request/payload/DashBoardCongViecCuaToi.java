@@ -46,6 +46,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                     dashBoardCongViecCuaToi.status = "Quản đốc đã ký";
                 }
             } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
+                dashBoardCongViecCuaToi.setMa(request.getPhieuDatHang().getSo());
                 dashBoardCongViecCuaToi.status = "Vừa tạo";
                 if (request.getPhieuDatHang().getNguoiDatHangXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Người đặt hàng đã ký";
@@ -79,7 +80,8 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
     public static DashBoardCongViecCuaToi fromPhuongAn(PhuongAn el, Map<Long, User> userById) {
         DashBoardCongViecCuaToi dashBoardCongViecCuaToi = new DashBoardCongViecCuaToi();
-        dashBoardCongViecCuaToi.ma = "Key-" + el.getPaId();
+//        dashBoardCongViecCuaToi.ma = "Key-" + el.getPaId();
+        dashBoardCongViecCuaToi.ma = el.getMaSo();
         dashBoardCongViecCuaToi.requestId = el.getPaId();
         dashBoardCongViecCuaToi.status = "Vừa tạo";
         if (el.getCntpReceiverId() == null) {

@@ -23,7 +23,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.px.tool.infrastructure.utils.CommonUtils.assignVal;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectAlias;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectFullName;
 import static com.px.tool.infrastructure.utils.CommonUtils.getVal;
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 
@@ -84,6 +85,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong1fullName;
     private String ykienToTruong1;
     private String ngayThangNamToTruong1;
+    private String toTruong1Alias;
 
     private Boolean toTruong2XacNhan;
     private Boolean toTruong2Disable = true;
@@ -92,6 +94,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong2fullName;
     private String ykienToTruong2;
     private String ngayThangNamToTruong2;
+    private String toTruong2Alias;
 
     private Boolean toTruong3XacNhan;
     private Boolean toTruong3Disable = true;
@@ -100,6 +103,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong3fullName;
     private String ykienToTruong3;
     private String ngayThangNamToTruong3;
+    private String toTruong3Alias;
 
     private Boolean toTruong4XacNhan;
     private Boolean toTruong4Disable = true;
@@ -108,6 +112,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong4fullName;
     private String ykienToTruong4;
     private String ngayThangNamToTruong4;
+    private String toTruong4Alias;
 
     private Boolean toTruong5XacNhan;
     private Boolean toTruong5Disable = true;
@@ -116,6 +121,7 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private String toTruong5fullName;
     private String ykienToTruong5;
     private String ngayThangNamToTruong5;
+    private String toTruong5Alias;
 
     private List<Long> cusToTruongIds;
     private boolean nghiemThuDisable = true;
@@ -245,12 +251,17 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
                 this.setTpkcsFullName(userById.get(this.getTpkcsId()).getFullName());
                 this.setTpkcsSignImg(userById.get(this.getTpkcsId()).getSignImg());
             }
-            toTruong1fullName = assignVal(userById.get(toTruong1Id), "");
-            toTruong2fullName = assignVal(userById.get(toTruong2Id), "");
-            toTruong3fullName = assignVal(userById.get(toTruong3Id), "");
-            toTruong4fullName = assignVal(userById.get(toTruong4Id), "");
-            toTruong5fullName = assignVal(userById.get(toTruong5Id), "");
+            toTruong1fullName = collectFullName(userById.get(toTruong1Id), "");
+            toTruong2fullName = collectFullName(userById.get(toTruong2Id), "");
+            toTruong3fullName = collectFullName(userById.get(toTruong3Id), "");
+            toTruong4fullName = collectFullName(userById.get(toTruong4Id), "");
+            toTruong5fullName = collectFullName(userById.get(toTruong5Id), "");
 
+            toTruong1Alias = collectAlias(userById.get(toTruong1Id), "");
+            toTruong2Alias = collectAlias(userById.get(toTruong2Id), "");
+            toTruong3Alias = collectAlias(userById.get(toTruong3Id), "");
+            toTruong4Alias = collectAlias(userById.get(toTruong4Id), "");
+            toTruong5Alias = collectAlias(userById.get(toTruong5Id), "");
 
             if (quanDocXacNhan) {
                 quanDocFullName = userById.get(quanDocId).getFullName();

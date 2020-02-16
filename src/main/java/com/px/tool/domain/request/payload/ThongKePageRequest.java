@@ -9,8 +9,18 @@ import lombok.Setter;
 public class ThongKePageRequest extends PageRequest {
     private Long sanPham;
     private Long phanXuong;
+    private Long fromDate;
+    private Long toDate;
 
     public void setSanPham(Long sanPham) {
         this.sanPham = sanPham.equals(-1L) ? null : sanPham;
+    }
+
+    public Long getFromDate() {
+        return fromDate;
+    }
+
+    public Long getToDate() {
+        return toDate;
     }
 }

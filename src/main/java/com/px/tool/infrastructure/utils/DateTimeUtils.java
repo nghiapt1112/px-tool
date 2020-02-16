@@ -1,6 +1,9 @@
 package com.px.tool.infrastructure.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -9,12 +12,28 @@ import java.util.TimeZone;
 public final class DateTimeUtils {
     private static final SimpleDateFormat fm_date_time = new SimpleDateFormat("dd/MM/yyyy");
 
+    /**
+     * now without time (beginning of the day).
+     *
+     */
+    public static Instant now() {
+        return LocalDate
+                .now()
+                .atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant();
+    }
+
     public static long nowAsMilliSec() {
-        return System.currentTimeMillis();
+        return now().toEpochMilli();
     }
 
     public static Date nowAsDate() {
-        return new Date();
+        return Date.from(now());
+    }
+
+    public static Date toDate(Long fromDate) {
+        return new Date(fromDate);
     }
 
     public static String toString(Long time) {

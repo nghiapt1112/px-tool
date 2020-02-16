@@ -17,7 +17,6 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;
 import com.px.tool.infrastructure.BaseController;
-import com.px.tool.infrastructure.CacheService;
 import com.px.tool.infrastructure.exception.PXException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,12 +54,6 @@ public class UserController extends BaseController {
     @Autowired
     private FolderRepository folderRepository;
 
-    @Autowired
-    private CacheService cacheService;
-
-    @Autowired
-    private UserRepository userRepository;
-
     @GetMapping
     public UserPageResponse findUsers(
             HttpServletRequest request,
@@ -72,13 +65,10 @@ public class UserController extends BaseController {
 
     /**
      * Update user Info
-     *
      */
-    @Deprecated
     @PostMapping
     public int save(@RequestBody UserRequest user) throws InterruptedException {
         this.userService.updateProfile(user);
-        cacheService.clearCache(CacheService.CACHE_USER);
         return 1;
     }
 
@@ -109,7 +99,6 @@ public class UserController extends BaseController {
     @PostMapping("/tao-user")
     public void createUser(@RequestBody UserRequest userRequest) {
         userService.taoUser(userRequest);
-        cacheService.clearCache(CacheService.CACHE_USER);
     }
 
     @GetMapping("/roles")
