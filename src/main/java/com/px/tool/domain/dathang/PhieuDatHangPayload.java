@@ -243,13 +243,13 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers))) {
             throw new PXException("dathang.noi_nhan.empty");
         }
-        if (user.isTruongPhongVatTu()){
+        if (user.isTruongPhongVatTu()) {
             if (!tpvatTuXacNhan && StringUtils.isEmpty(yKienTPVatTu) && Objects.nonNull(noiNhan)) {
                 throw new PXException("dathang.tpvattu_xacnhan.ykien");
             }
         }
-        if (user.isTruongPhongKTHK()){
-            if(!tpkthkXacNhan && StringUtils.isEmpty(yKienTPKTHK) && Objects.nonNull(noiNhan)) {
+        if (user.isTruongPhongKTHK()) {
+            if (!tpkthkXacNhan && StringUtils.isEmpty(yKienTPKTHK) && Objects.nonNull(noiNhan)) {
                 throw new PXException("dathang.tpkthk_xacnhan.ykien");
             }
         }

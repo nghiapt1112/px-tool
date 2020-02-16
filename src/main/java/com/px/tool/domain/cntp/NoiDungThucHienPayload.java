@@ -6,8 +6,6 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 public class NoiDungThucHienPayload extends AbstractObject {

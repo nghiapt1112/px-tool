@@ -40,7 +40,7 @@ public class PhieuDatHangDetailPayload extends AbstractObject {
         return mucDichSuDung == null ? "0" : mucDichSuDung.toString();
     }
 
-    public KiemHongDetail toKiemHongDetailEntity(){
+    public KiemHongDetail toKiemHongDetailEntity() {
         KiemHongDetail kiemHongDetail = new KiemHongDetail();
         kiemHongDetail.setKhDetailId(null);
 //        kiemHongDetail.setTt();

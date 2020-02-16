@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,12 +40,12 @@ public class VanBanDenRepositoryCustomImpl implements VanBanDenRepositoryCustom 
         }
 
         Query jpaQuery = entityManager.createQuery("SELECT v FROM VanBanDen v " + query.toString() + " order by v.createdAt DESC");
-        params.forEach((k,v) -> jpaQuery.setParameter(k, v));
+        params.forEach((k, v) -> jpaQuery.setParameter(k, v));
         jpaQuery.setFirstResult(request.getPage() * request.getSize());
         jpaQuery.setMaxResults(request.getSize());
 
         Query totalQuery = entityManager.createQuery("SELECT count(v.vbdId) FROM VanBanDen v " + query.toString());
-        params.forEach((k,v) -> totalQuery.setParameter(k, v));
+        params.forEach((k, v) -> totalQuery.setParameter(k, v));
         long count = (long) totalQuery.getSingleResult();
 
 

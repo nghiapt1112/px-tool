@@ -44,11 +44,6 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
         ThongKeDetailPayload tk = null;
-//        Map<Long, PhieuDatHangDetail> pdhDetailById = new HashMap<>();
-//        for (PhieuDatHangDetail phieuDatHangDetail : request.getPhieuDatHang().getPhieuDatHangDetails()) {
-//            pdhDetailById.put(phieuDatHangDetail.getKiemHongDetailId(), phieuDatHangDetail);
-//        }
-
         PhieuDatHangDetail pdhDt = null;
         for (KiemHongDetail detail : request.getKiemHong().getKiemHongDetails()) {
             //        tk.tt =

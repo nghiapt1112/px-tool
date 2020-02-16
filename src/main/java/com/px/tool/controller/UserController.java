@@ -12,7 +12,6 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.FolderRepository;
 import com.px.tool.domain.user.repository.PhongBanRepository;
-import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;

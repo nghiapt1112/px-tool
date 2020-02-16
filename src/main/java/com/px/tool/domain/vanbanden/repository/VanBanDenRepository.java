@@ -2,7 +2,6 @@ package com.px.tool.domain.vanbanden.repository;
 
 import com.px.tool.domain.vanbanden.VanBanDen;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

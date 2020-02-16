@@ -22,7 +22,7 @@ public class VanBanDenPageRequest extends PageRequest {
     }
 
     public void setFolder(Long folder) {
-        if (folder!= null) {
+        if (folder != null) {
             this.folder = folder < 1 ? null : folder;
         }
 

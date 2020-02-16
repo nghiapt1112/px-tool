@@ -260,7 +260,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
             }
         }
         if (user.isTroLyKT()) {
-            if (troLyKTXacNhan){
+            if (troLyKTXacNhan) {
                 yKienTroLyKT = null;
                 request.setYKienTroLyKT(null);
                 for (KiemHongDetailPayload kiemHongDetail : this.kiemHongDetails) {
@@ -275,7 +275,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
 
         }
         if (user.isQuanDocPhanXuong()) {
-            if (quanDocXacNhan){
+            if (quanDocXacNhan) {
                 yKienQuanDoc = null;
                 request.setYKienQuanDoc(null);
             }

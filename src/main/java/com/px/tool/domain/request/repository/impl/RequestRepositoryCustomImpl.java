@@ -1,13 +1,6 @@
 package com.px.tool.domain.request.repository.impl;
 
-import com.px.tool.domain.request.Request;
-import com.px.tool.domain.request.payload.ThongKePageRequest;
 import com.px.tool.domain.request.repository.RequestRepositoryCustom;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.math.BigInteger;
-import java.util.List;
 
 public class RequestRepositoryCustomImpl implements RequestRepositoryCustom {
 //

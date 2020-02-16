@@ -1,13 +1,11 @@
 package com.px.tool.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.infrastructure.model.payload.EntityDefault;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -21,15 +19,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter

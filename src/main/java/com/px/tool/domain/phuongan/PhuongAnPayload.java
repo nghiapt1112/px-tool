@@ -14,7 +14,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -124,7 +123,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                 .sorted(Comparator.comparingLong(DinhMucVatTuPayload::getVtId))
                 .collect(Collectors.toCollection(LinkedList::new));
 //        phuongAnPayload.files = Arrays.asList("imgpsh_fullsize.jpeg", "1111111111111111ok.jpg");
-        payload.disableAll = phuongAn.getStep() == 1 ? true : false;
+        payload.disableAll = phuongAn.getStep() == 1;
         payload.setNoiNhan(null);
 
         payload.ngayThangNamGiamDoc = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());

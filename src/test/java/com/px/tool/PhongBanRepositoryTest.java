@@ -1,6 +1,5 @@
 package com.px.tool;
 
-import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.repository.PhongBanRepository;
@@ -28,9 +27,4 @@ public class PhongBanRepositoryTest extends PxApplicationTests {
                 });
     }
 
-    @Test
-    public void findByDetailId(){
-        KiemHong detail = kiemHongRepository.findByDetailId(1316L);
-        System.out.println(detail);
-    }
 }

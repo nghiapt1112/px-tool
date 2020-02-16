@@ -30,10 +30,10 @@ public class VanBanDen extends EntityDefault {
     public Long vbdId;
 
     @Column public String noiNhan;
-    @Column private String soPa;
     @Column @Type(type = "text") public String noiDung;
     @Column public String type;
     @Column @Enumerated public RequestType requestType;
+    @Column private String soPa;
     @Column private Boolean read;
     @Column private Long folder;
     @Column private Long requestId; // save kh_id, dh_id, paId

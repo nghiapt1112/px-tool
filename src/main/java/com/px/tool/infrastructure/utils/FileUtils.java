@@ -12,7 +12,7 @@ public class FileUtils {
     public static void copy(File source, File dest) throws IOException {
         try (
                 InputStream is = new FileInputStream(source);
-                OutputStream os = new FileOutputStream(dest);
+                OutputStream os = new FileOutputStream(dest)
         ) {
             byte[] buffer = new byte[1024];
             int length;

@@ -18,19 +18,16 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.utils.CommonUtils;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +151,6 @@ public class RequestServiceImpl implements RequestService {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
                     }
                 })
-//                .sorted(Comparator.comparingLong(ThongKeDetailPayload::getDetailId))
                 .sorted()
                 .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));

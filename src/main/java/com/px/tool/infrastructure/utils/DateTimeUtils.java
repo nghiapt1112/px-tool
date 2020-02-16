@@ -14,7 +14,6 @@ public final class DateTimeUtils {
 
     /**
      * now without time (beginning of the day).
-     *
      */
     public static Instant now() {
         return LocalDate

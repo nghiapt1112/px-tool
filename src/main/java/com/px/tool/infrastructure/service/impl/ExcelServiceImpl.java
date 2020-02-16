@@ -13,7 +13,6 @@ import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.service.ExcelService;
-import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -205,23 +204,23 @@ public class ExcelServiceImpl implements ExcelService {
             setCellVal(row21, 1, payload.getNgayThangNamQuanDoc());
             setCellVal(row21, 4, payload.getNgayThangNamTPKCS());
 
-            if(Objects.nonNull(payload.getToTruong1Id())) {
+            if (Objects.nonNull(payload.getToTruong1Id())) {
                 setCellVal(row25, 0, payload.getNgayThangNamToTruong1());
                 setCellVal(row26, 0, payload.getToTruong1fullName()); // TODO: id /name/chuc vu
             }
-            if(Objects.nonNull(payload.getToTruong2Id())) {
+            if (Objects.nonNull(payload.getToTruong2Id())) {
                 setCellVal(row25, 0, payload.getNgayThangNamToTruong2());
                 setCellVal(row26, 0, payload.getToTruong2fullName());
             }
-            if(Objects.nonNull(payload.getToTruong3Id())) {
+            if (Objects.nonNull(payload.getToTruong3Id())) {
                 setCellVal(row25, 0, payload.getNgayThangNamToTruong3());
                 setCellVal(row26, 0, payload.getToTruong3fullName());
             }
-            if(Objects.nonNull(payload.getToTruong4Id())) {
+            if (Objects.nonNull(payload.getToTruong4Id())) {
                 setCellVal(row25, 0, payload.getNgayThangNamToTruong4());
                 setCellVal(row26, 0, payload.getToTruong4fullName());
             }
-            if(Objects.nonNull(payload.getToTruong5Id())) {
+            if (Objects.nonNull(payload.getToTruong5Id())) {
                 setCellVal(row25, 0, payload.getNgayThangNamToTruong5());
                 setCellVal(row26, 0, payload.getToTruong5fullName());
             }
@@ -355,6 +354,6 @@ public class ExcelServiceImpl implements ExcelService {
         if (Objects.isNull(userId) || !userById.containsKey(userId)) {
             return "";
         }
-        return userById.get(userId).getAlias()  ;
+        return userById.get(userId).getAlias();
     }
 }

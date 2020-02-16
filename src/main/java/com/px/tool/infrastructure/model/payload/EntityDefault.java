@@ -9,9 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import java.util.Date;
 
-import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsDate;
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 
 @Getter

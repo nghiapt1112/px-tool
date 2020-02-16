@@ -9,5 +9,4 @@ public enum UserType {
     NV_DINH_MUC,
     TL_KY_THUAT,
     TRUONG_PHONG
-    ;
 }

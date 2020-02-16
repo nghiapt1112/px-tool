@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 
 import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
-import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsString;
 
 @Service
 public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongService {
@@ -189,9 +188,9 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             createPhieuDatHang(requestKiemHong, pdh);
             guiVanBanDen(existedKiemHong, kiemHongPayLoad);
         }
-        if ((  kiemHongReceiverId !=  null && !kiemHongReceiverId.equals(existedKiemHong.getRequest().getKiemHongReceiverId()))
+        if ((kiemHongReceiverId != null && !kiemHongReceiverId.equals(existedKiemHong.getRequest().getKiemHongReceiverId()))
                 || (phieuDatHangReceiverId != null && !phieuDatHangReceiverId.equals(existedKiemHong.getRequest().getPhieuDatHangReceiverId()))) {
-             requestService.updateNgayGui(DateTimeUtils.nowAsMilliSec(), requestId);
+            requestService.updateNgayGui(DateTimeUtils.nowAsMilliSec(), requestId);
         }
         requestService.updateReceiveId(requestId, kiemHongReceiverId, phieuDatHangReceiverId, phuongAnReceiverId, cntpReceiverId);
         kiemHongRepository.save(requestKiemHong);

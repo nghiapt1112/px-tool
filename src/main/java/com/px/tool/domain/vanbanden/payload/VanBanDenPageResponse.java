@@ -30,7 +30,8 @@ public class VanBanDenPageResponse extends AbstractPageResponse<VanBanDenRespons
                     }
                     try {
                         payload.setNoiNhan(CommonUtils.toString(toCollection(el.getNoiNhan()), noiNhanById));
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                     return payload;
                 })
                 .collect(Collectors.toList());
