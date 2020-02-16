@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     }
 
     public boolean notIncludeId() {
-        return pdhId != null && pdhId <= 0;
+        return pdhId == null || (pdhId != null && pdhId <= 0);
     }
 
     public PhieuDatHangPayload filterPermission(User currentUser) {
@@ -262,45 +263,21 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     public Request toRequestEntity() {
         Request request = new Request();
         request.setStatus(RequestType.DAT_HANG);
-        // TODO: kiem tra xem co miss field gi khong
+        request.setNgayGui(DateTimeUtils.nowAsMilliSec());
+        request.setCreatedAt(DateTimeUtils.nowAsMilliSec());
         return request;
     }
 
     public KiemHong toKiemHongEntity() {
         KiemHong kiemHong = new KiemHong();
-//        kiemHong.setKhId();
         kiemHong.setTenNhaMay(tenNhaMay);
-//        kiemHong.setPhanXuong(phanXuong);
-//        kiemHong.setToSX();
-//        kiemHong.setTenVKTBKT();
-//        kiemHong.setNguonVao();
-//        kiemHong.setCongDoan();
-//        kiemHong.setSoHieu();
-//        kiemHong.setSoXX();
-//        kiemHong.setToSo();
-//        kiemHong.setSoTo();
         kiemHong.setNoiNhan(noiNhan);
-//        kiemHong.setNgayThangNamQuanDoc();
-//        kiemHong.setQuanDocXacNhan();
-//        kiemHong.setQuanDocXacNhan();
-//        kiemHong.setNgayThangNamTroLyKT();
-//        kiemHong.setTroLyKTXacNhan();
-//        kiemHong.setToTruong();
-//        kiemHong.setGiamDocXacNhan();
-//        kiemHong.setYKienGiamDoc();
-//        kiemHong.setYKienQuanDoc();
-//        kiemHong.setYKienToTruong();
-//        kiemHong.setYKienTroLyKT();
-//        kiemHong.setQuanDocId();
-//        kiemHong.setTroLyId();
-//        kiemHong.setToTruongId();
-//        kiemHong.setCusReceivers(cusReceivers);
         kiemHong.setCusNoiDung(noiDung);
-//        kiemHong.setKiemHongDetails();
-        List<KiemHongDetail> kiemHongDetails = new ArrayList<>();
+        Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
         for (PhieuDatHangDetailPayload phieuDatHangDetail : this.phieuDatHangDetails) {
             kiemHongDetails.add(phieuDatHangDetail.toKiemHongDetailEntity());
         }
+        kiemHong.setKiemHongDetails(kiemHongDetails);
         return kiemHong;
     }
 

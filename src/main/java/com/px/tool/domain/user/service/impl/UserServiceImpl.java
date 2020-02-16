@@ -24,7 +24,6 @@ import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
 import com.px.tool.infrastructure.utils.CollectionUtils;
-import com.px.tool.infrastructure.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -211,9 +210,10 @@ public class UserServiceImpl implements UserService {
             pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
         } else if (currentUser.isNhanVienKCS()) {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
+            pbs = Stream.empty();
         } else if (currentUser.isTruongPhongKCS()) {
-            // chuyen lai cho px
-            pbs = userRepository.findByGroup(CommonUtils.toCollection(congNhanThanhPham.getQuanDocIds())).stream().filter(el -> el.getLevel() == 3);
+            // step cuoi cung la TPKCS nen khong can chuyen di dau ca.
+            pbs = Stream.empty();
         }
 
         if (pbs != null) {
@@ -286,8 +286,15 @@ public class UserServiceImpl implements UserService {
             if (!requestParams.getTpVatTu()) {
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getNguoiDatHangId()));
             } else {
-                // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
-                pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getKiemHong().getTroLyId()));
+                Request request = requestService.findById(requestParams.getRequestId());
+                if (request.getPhieuDatHang().getTrolyKT() == null) {
+                    pbs = userRepository.findByIds(Arrays.asList(8L,9L))
+                            .stream()
+                            .filter(el -> el.getLevel() == 3);
+                } else {
+                    // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
+                    pbs = Stream.of(userById().get(request.getKiemHong().getTroLyId()));
+                }
             }
         } else if (currentUser.isTroLyKT()) {
             pbs = userRepository.findByGroup(Arrays.asList(currentUser.getPhongBan().getPhongBanId()))

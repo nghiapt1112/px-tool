@@ -1,19 +1,24 @@
 package com.px.tool.domain.cntp.service.impl;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.CongNhanThanhPhamPayload;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.cntp.repository.NoiDungThucHienRepository;
 import com.px.tool.domain.cntp.service.CongNhanThanhPhamService;
-import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.domain.vanbanden.VanBanDen;
+import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.exception.PXException;
+import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
+import com.px.tool.infrastructure.utils.CommonUtils;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,22 +26,25 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static com.px.tool.domain.user.repository.UserRepository.group_12_PLUS;
 import static com.px.tool.infrastructure.utils.CommonUtils.collectionAdd;
 
 @Service
-public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
+public class CongNhanThanhPhamServiceImpl extends BaseServiceImpl implements CongNhanThanhPhamService {
     @Autowired
     private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
-
-    @Autowired
-    private RequestService requestService;
 
     @Autowired
     private NoiDungThucHienRepository noiDungThucHienRepository;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VanBanDenRepository vanBanDenRepository;
 
 
     @Override
@@ -65,7 +73,37 @@ public class CongNhanThanhPhamServiceImpl implements CongNhanThanhPhamService {
 
         cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
+        if (congNhanThanhPham.getTpkcsXacNhan()) {
+            guiVanBanDen(congNhanThanhPham);
+        }
         return congNhanThanhPhamRepository.save(congNhanThanhPham);
+    }
+
+    /**
+     * Nếu thấy tất cả các nhân viên KCS đã ký xác nhận thì Trưởng
+     * phòng KCS tích chọn vào ô Đồng ý và ấn nút Chuyển để
+     * chuyển cho các Phân xưởng đã thực hiện, Phòng KCS,
+     * Phòng Kế hoạch trong mục Văn bản đến =&gt; Phiếu CNTP
+     * được hoàn thành.
+     */
+    private void guiVanBanDen(CongNhanThanhPham congNhanThanhPham) {
+        try {
+            List<Long> usersId = CommonUtils.toCollection(congNhanThanhPham.getQuanDocIds());
+            usersId.add(10L); // phong KCS
+            usersId.add(14L); // phong ke hoach
+
+            VanBanDen vanBanDen = new VanBanDen();
+            vanBanDen.setNoiDung("Phiếu CNTP đã hoàn thành.");
+            vanBanDen.setNoiNhan(CommonUtils.toString(usersId));
+            vanBanDen.setRequestType(RequestType.CONG_NHAN_THANH_PHAM);
+            vanBanDen.setRead(false);
+            vanBanDen.setRequestId(congNhanThanhPham.getTpId());
+            vanBanDen.setSoPa(congNhanThanhPham.getSoPA());
+            logger.info("CNTP đang gửi vbd: \n-So PA: {}\n-userIds:{}", congNhanThanhPham.getSoPA(), vanBanDen.getNoiNhan());
+            vanBanDenRepository.save(vanBanDen);
+        } catch (Exception e) {
+            throw new PXException("[CNTP]: Có lỗi khi gửi văn bản đến.");
+        }
     }
 
     private void cleanOldDetailData(CongNhanThanhPhamPayload requestCNTP, CongNhanThanhPham existedCongNhanThanhPham) {

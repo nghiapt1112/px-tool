@@ -29,12 +29,11 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
         DashBoardCongViecCuaToi dashBoardCongViecCuaToi = new DashBoardCongViecCuaToi();
         dashBoardCongViecCuaToi.ma = "Key-" + request.getRequestId();
         dashBoardCongViecCuaToi.requestId = request.getRequestId();
-        dashBoardCongViecCuaToi.type = request.getType();
-
-        dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: " + getVal(userById, request.getKiemHong().getPhanXuong()) + " - Tổ sản xuất: " + getVal(userById, request.getKiemHong().getToSX());
         dashBoardCongViecCuaToi.status = "Vừa tạo";
+        dashBoardCongViecCuaToi.type = request.getType();
         try {
             if (dashBoardCongViecCuaToi.type == RequestType.KIEM_HONG) {
+                dashBoardCongViecCuaToi.noiDung = "Gửi từ phân xưởng: " + getVal(userById, request.getKiemHong().getPhanXuong()) + " - Tổ sản xuất: " + getVal(userById, request.getKiemHong().getToSX());
                 if (request.getKiemHong().getToTruongXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Tổ trưởng đã ký";
                 }
@@ -45,6 +44,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                     dashBoardCongViecCuaToi.status = "Quản đốc đã ký";
                 }
             } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
+                dashBoardCongViecCuaToi.noiDung = request.getPhieuDatHang().getNoiDung();
                 dashBoardCongViecCuaToi.setMa(request.getPhieuDatHang().getSo());
                 dashBoardCongViecCuaToi.status = "Vừa tạo";
                 if (request.getPhieuDatHang().getNguoiDatHangXacNhan()) {
@@ -61,6 +61,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
             }
         } catch (Exception ex) {
             // DO no thing
+            ex.printStackTrace();
         }
         dashBoardCongViecCuaToi.ngayGui = DateTimeUtils.toString(request.getNgayGui());
         return dashBoardCongViecCuaToi;

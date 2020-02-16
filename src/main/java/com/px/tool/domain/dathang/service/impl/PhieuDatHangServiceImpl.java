@@ -7,6 +7,8 @@ import com.px.tool.domain.dathang.repository.PhieuDatHangDetailRepository;
 import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHong;
+import com.px.tool.domain.kiemhong.repository.KiemHongDetailRepository;
+import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
@@ -45,6 +47,9 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
     @Autowired
     private VanBanDenRepository vanBanDenRepository;
 
+    @Autowired
+    private KiemHongDetailRepository kiemHongDetailRepository;
+
     @Override
     public List<PhieuDatHang> findByPhongBan(Long userId) {
         return phieuDatHangRepository.findByCreatedBy(userId);
@@ -68,8 +73,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         if (phieuDatHangPayload.notIncludeId()) {
             // TODO: new update truong hop khong co id thi van cho tao phieu dat hang, => copy sang kiem hong
             //
-            createData(phieuDatHangPayload);
-            throw new RuntimeException("Phieu dat hang phai co id");
+            return createData(userId, phieuDatHangPayload);
         }
         PhieuDatHang existedPhieuDatHang = phieuDatHangRepository
                 .findById(phieuDatHangPayload.getPdhId())
@@ -110,10 +114,51 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
 
     /**
      * tao phieu request va kiem hong de sycn data
+     * @return
      */
-    private void createData(PhieuDatHangPayload phieuDatHangPayload) {
-        Request request = requestService.save(phieuDatHangPayload.toRequestEntity());
+    @Transactional
+    public PhieuDatHang createData(Long userId, PhieuDatHangPayload phieuDatHangPayload) {
+        Request reEntity = phieuDatHangPayload.toRequestEntity();
+        reEntity.setPhieuDatHangReceiverId(userId);
+        reEntity.setCreatedBy(userId);
+
         KiemHong kiemHong = phieuDatHangPayload.toKiemHongEntity();
+        PhieuDatHang phieuDatHang = new PhieuDatHang();
+        phieuDatHangPayload.toEntity(phieuDatHang);
+        if(Objects.isNull(phieuDatHang.getNoiNhan())) {
+            phieuDatHang.setNoiNhan(userId);
+            if(phieuDatHang.getNguoiDatHangXacNhan()) {
+                throw new PXException("Nơi nhận phải được chọn.");
+            }
+        }
+
+        if (phieuDatHang.getNguoiDatHangXacNhan()) {
+            phieuDatHang.setNgayThangNamNguoiDatHang(DateTimeUtils.nowAsMilliSec());
+        }
+
+        User user = userService.findById(userId);
+        phieuDatHangPayload.validateXacNhan(user, phieuDatHang, null);
+        reEntity.setKiemHong(kiemHong);
+        reEntity.setPhieuDatHang(phieuDatHang);
+
+        Request savedRequest = requestService.save(reEntity);
+
+        KiemHong savedKiemHong = savedRequest.getKiemHong();
+        kiemHong.getKiemHongDetails()
+                .forEach(el -> el.setKiemHong(savedKiemHong));
+        kiemHongDetailRepository.saveAll(kiemHong.getKiemHongDetails());
+
+
+        phieuDatHang.getPhieuDatHangDetails()
+                .forEach(el -> el.setPhieuDatHang(savedRequest.getPhieuDatHang()));
+        phieuDatHangDetailRepository.saveAll(phieuDatHang.getPhieuDatHangDetails());
+
+//        kiemHong.setRequest(request);
+//        kiemHongRepository.save(kiemHong);
+//        phieuDatHang.setRequest(request);
+        logger.info("[PHuong_an] Generate request , kiem hong success\nRequestId: {}\nKiemHongId:{}", savedRequest.getRequestId(), savedRequest.getKiemHong().getKhId());
+//        phieuDatHangRepository.save(phieuDatHang);
+        return phieuDatHang;
     }
 
     @Transactional
