@@ -112,7 +112,7 @@ public class RequestServiceImpl implements RequestService {
                 .stream()
                 .collect(Collectors.toMap(MucDichSuDung::getMdId, MucDichSuDung::getTen));
 
-        PageRequest pageAble = PageRequest.of(request.getPage(), request.getSize(), Sort.by(Sort.Order.desc("createdAt")));
+        PageRequest pageAble = PageRequest.of(request.getPage(), request.getSize());
         Page<Request> requests = requestRepository.findPaging(pageAble, request.getFromDate(), request.getToDate());
 
         List<Long> paIds = new ArrayList<>();
@@ -154,7 +154,8 @@ public class RequestServiceImpl implements RequestService {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
                     }
                 })
-                .sorted(Comparator.comparingLong(ThongKeDetailPayload::getCreatedAt))
+//                .sorted(Comparator.comparingLong(ThongKeDetailPayload::getDetailId))
+                .sorted()
                 .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
         return tkPayload;

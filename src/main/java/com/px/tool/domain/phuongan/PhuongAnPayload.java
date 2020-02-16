@@ -1,6 +1,7 @@
 package com.px.tool.domain.phuongan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
@@ -108,7 +109,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private boolean disableAll; // 0: van dang xu ly, 1: success_phuong_an
     private boolean dmVatTuDisable = false;
     private boolean dmLaoDOngDisable = false;
-
+    private RequestType currentStatus;
 
 
     public static PhuongAnPayload fromEntity(PhuongAn phuongAn) {
@@ -139,7 +140,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         } catch (Exception e) {
 
         }
-
+        payload.setCurrentStatus(phuongAn.getStatus());
         return payload;
     }
 

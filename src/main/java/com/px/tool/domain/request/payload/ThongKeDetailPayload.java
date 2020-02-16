@@ -19,7 +19,7 @@ import static com.px.tool.infrastructure.utils.DateTimeUtils.dateLongToString;
 @Getter
 @Setter
 @ToString
-public class ThongKeDetailPayload extends AbstractObject {
+public class ThongKeDetailPayload extends AbstractObject implements Comparable<ThongKeDetailPayload> {
     public Long tt;
     public Long detailId;
     public String tenPhuKien;
@@ -99,6 +99,12 @@ public class ThongKeDetailPayload extends AbstractObject {
             }
         }
         return biggest;
+    }
+
+
+    @Override
+    public int compareTo(ThongKeDetailPayload o) {
+        return (this.soPA == null) ? -1 : 1;
     }
 
 }

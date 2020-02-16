@@ -1,6 +1,7 @@
 package com.px.tool.domain.kiemhong;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
@@ -87,6 +88,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
 
     private List<Long> cusReceivers;
     private String cusNoiDung;
+    private RequestType currentStatus;
 
     public static KiemHongPayLoad fromEntity(KiemHong kiemHong) {
         KiemHongPayLoad payload = new KiemHongPayLoad();
@@ -113,6 +115,7 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         payload.ngayThangNamTroLyKT = DateTimeUtils.toString(kiemHong.getNgayThangNamTroLyKT());
 
         payload.setCusReceivers(CommonUtils.toCollection(kiemHong.getCusReceivers()));
+        payload.setCurrentStatus(kiemHong.getRequest().getStatus());
         return payload;
     }
 

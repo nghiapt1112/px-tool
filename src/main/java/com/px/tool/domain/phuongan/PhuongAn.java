@@ -202,4 +202,8 @@ public class PhuongAn extends EntityDefault {
     public String getMaSo() {
         return StringUtils.isEmpty(maSo) ? "PA:" + paId : maSo;
     }
+
+    public RequestType getStatus() {
+        return status == null ? RequestType.PHUONG_AN : status;
+    }
 }

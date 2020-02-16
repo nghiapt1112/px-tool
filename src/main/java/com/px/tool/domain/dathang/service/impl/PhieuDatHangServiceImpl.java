@@ -90,7 +90,7 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         phieuDatHangPayload.capNhatNgayThangChuKy(phieuDatHang, existedPhieuDatHang);
         phieuDatHangPayload.validateXacNhan(user, phieuDatHang, existedPhieuDatHang);
         if (phieuDatHang.allApproved()) {
-            existedPhieuDatHang.getRequest().setStatus(RequestType.DAT_HANG);
+            existedPhieuDatHang.getRequest().setStatus(RequestType.PHUONG_AN); // phieu dat_hang da success
             guiVanBanDen(phieuDatHangPayload);
             // clear back recieverid
             phuongAnReceiverId = null;

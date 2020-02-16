@@ -1,7 +1,6 @@
 package com.px.tool.domain.dathang;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.px.tool.domain.RequestStatus;
 import com.px.tool.domain.RequestType;
 import com.px.tool.domain.kiemhong.KiemHong;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
@@ -84,6 +83,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
 
     private List<Long> cusReceivers;
     private String cusNoiDung;
+    private RequestType currentStatus;
 
     public static PhieuDatHangPayload fromEntity(PhieuDatHang phieuDatHang) {
         PhieuDatHangPayload payload = new PhieuDatHangPayload();
@@ -108,6 +108,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPKTHK());
         payload.ngayThangNamTPVatTu = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPVatTu());
         payload.setCusReceivers(CommonUtils.toCollection(phieuDatHang.getCusReceivers()));
+        payload.setCurrentStatus(phieuDatHang.getRequest().getStatus());
         return payload;
     }
 
