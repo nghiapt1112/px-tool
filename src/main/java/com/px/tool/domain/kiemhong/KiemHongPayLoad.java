@@ -13,15 +13,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.StringUtils.isEmpty;
@@ -115,7 +107,9 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         payload.ngayThangNamTroLyKT = DateTimeUtils.toString(kiemHong.getNgayThangNamTroLyKT());
 
         payload.setCusReceivers(CommonUtils.toCollection(kiemHong.getCusReceivers()));
-        payload.setCurrentStatus(kiemHong.getRequest().getStatus());
+        if (Objects.nonNull(kiemHong.getRequest())) {
+            payload.currentStatus = kiemHong.getRequest().getStatus();
+        }
         return payload;
     }
 
@@ -307,5 +301,11 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
 
     public List<Long> getCusReceivers() {
         return cusReceivers == null ? Collections.emptyList() : cusReceivers;
+    }
+
+    @Override
+    public KiemHongPayLoad andStatus(RequestType status) {
+        this.currentStatus = status;
+        return this;
     }
 }

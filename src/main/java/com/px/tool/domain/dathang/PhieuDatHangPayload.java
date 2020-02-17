@@ -17,15 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -109,7 +101,9 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPKTHK());
         payload.ngayThangNamTPVatTu = DateTimeUtils.toString(phieuDatHang.getNgayThangNamTPVatTu());
         payload.setCusReceivers(CommonUtils.toCollection(phieuDatHang.getCusReceivers()));
-        payload.setCurrentStatus(phieuDatHang.getRequest().getStatus());
+        if (Objects.nonNull(phieuDatHang.getRequest())) {
+            payload.setCurrentStatus(phieuDatHang.getRequest().getStatus());
+        }
         return payload;
     }
 
@@ -281,4 +275,9 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         return kiemHong;
     }
 
+    @Override
+    public PhieuDatHangPayload andStatus(RequestType status) {
+        this.currentStatus = status;
+        return this;
+    }
 }

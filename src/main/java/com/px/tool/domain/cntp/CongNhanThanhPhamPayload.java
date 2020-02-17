@@ -2,6 +2,7 @@ package com.px.tool.domain.cntp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.user.User;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
@@ -399,4 +400,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         return gioX == null ? 0f : gioX;
     }
 
+    @Override
+    public CongNhanThanhPhamPayload andStatus(RequestType status) {
+        return this;
+    }
 }

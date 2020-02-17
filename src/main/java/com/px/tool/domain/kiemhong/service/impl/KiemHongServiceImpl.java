@@ -124,6 +124,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 kiemHongDetailRepository.saveAll(kiemHong.getKiemHongDetails());
                 return KiemHongPayLoad
                         .fromEntity(savedRequest.getKiemHong())
+                        .andStatus(savedRequest.getStatus())
                         .andRequestId(savedRequest.getRequestId());
             } else {
                 return capNhatKiemHong(currentUserId, kiemHongPayLoad);

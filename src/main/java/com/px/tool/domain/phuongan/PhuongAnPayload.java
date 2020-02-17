@@ -358,4 +358,9 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         }
     }
 
+    @Override
+    public PhuongAnPayload andStatus(RequestType status) {
+        this.currentStatus = status;
+        return this;
+    }
 }
