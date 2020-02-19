@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -167,7 +168,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         congNhanThanhPham.setPaId(phuongAn.getPaId());
 
         if (!CollectionUtils.isEmpty(phuongAn.getDinhMucLaoDongs())) {
-            Set<NoiDungThucHien> noiDungThucHiens = new HashSet<>();
+            Set<NoiDungThucHien> noiDungThucHiens = new LinkedHashSet<>();
             NoiDungThucHien detail = null;
             for (DinhMucLaoDong dinhMucLaoDong : phuongAn.getDinhMucLaoDongs()) {
                 detail = new NoiDungThucHien(dinhMucLaoDong.getNoiDungCongViec());
