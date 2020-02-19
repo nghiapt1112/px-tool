@@ -166,4 +166,9 @@ public class RequestServiceImpl implements RequestService {
     public void updateNgayGui(long nowAsMilliSec, Long requestId) {
         requestRepository.updateNgayGui(nowAsMilliSec, requestId);
     }
+
+    @Override
+    public void deleteRequest(Long id) {
+        requestRepository.delete(id);
+    }
 }

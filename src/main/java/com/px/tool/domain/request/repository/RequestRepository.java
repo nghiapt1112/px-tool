@@ -33,4 +33,10 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
     @Transactional
     @Query("UPDATE Request rq SET rq.ngayGui =?1 WHERE rq.requestId = ?2")
     void updateNgayGui(long nowAsMilliSec, Long requestId);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Request rq SET rq.deleted = true WHERE rq.requestId = ?1")
+    void delete(long id);
 }

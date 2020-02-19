@@ -23,7 +23,7 @@ public class ThongKeController extends BaseController {
     private ThongKePageResponse getDataChoThongKe(HttpServletRequest httpServletRequest,
                                                   @RequestParam(required = false, defaultValue = "-1") Long spId,
                                                   @RequestParam(required = false, defaultValue = "-1") Long pxId,
-                                                  @RequestParam(required = false, defaultValue = "-1") Long fromDate,
+                                                  @RequestParam(required = false, defaultValue = "0") Long fromDate,
                                                   @RequestParam(required = false, defaultValue = "-1") Long toDate,
                                                   @RequestParam(required = false, defaultValue = "1") Integer page,
                                                   @RequestParam(required = false, defaultValue = "10") Integer size

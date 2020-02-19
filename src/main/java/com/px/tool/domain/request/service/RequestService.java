@@ -18,4 +18,6 @@ public interface RequestService {
     void updateReceiveId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 
     void updateNgayGui(long nowAsMilliSec, Long requestId);
+
+    void deleteRequest(Long id);
 }

@@ -287,7 +287,7 @@ public class UserServiceImpl implements UserService {
                 pbs = Stream.of(userById().get(requestService.findById(requestParams.getRequestId()).getPhieuDatHang().getNguoiDatHangId()));
             } else {
                 Request request = requestService.findById(requestParams.getRequestId());
-                if (request.getPhieuDatHang().getTrolyKT() == null) {
+                if (request.getKiemHong().getTroLyId() == null) {
                     pbs = userRepository.findByIds(Arrays.asList(8L,9L))
                             .stream()
                             .filter(el -> el.getLevel() == 3);
@@ -303,7 +303,7 @@ public class UserServiceImpl implements UserService {
         } else if (currentUser.isTruongPhongKTHK()) {
             //TODO: neu truong phong kthk dong y thi tao van ban den + PA
             if (!requestParams.getTpKTHK()) {
-                // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng.
+                // NOTE: trả về luôn cho trợ lý đã approve phiếu kiểm hỏng + TP.Vat tu
                 Request request = requestService.findById(requestParams.getRequestId());
 
                 pbs = Stream.of(

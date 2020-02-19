@@ -49,7 +49,7 @@ public class KiemHongController extends BaseController {
      */
     @PostMapping("/tkh")
     public KiemHongPayLoad saveKiemHong(HttpServletRequest httpServletRequest, @RequestBody KiemHongPayLoad kiemHongPayLoad) {
-        logger.info("save kiem hong, \ndata: {}", kiemHongPayLoad);
+        logger.info("save kiem hong, \nrequestId: {}", kiemHongPayLoad.getRequestId());
         Long userId = extractUserInfo(httpServletRequest);
         return kiemHongService.save(userId, kiemHongPayLoad);
     }

@@ -104,15 +104,17 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
                 kiemHong.setGiamDocXacNhan(false);
                 kiemHong.setQuanDocXacNhan(false);
                 kiemHong.setTroLyKTXacNhan(false);
-                if (kiemHong.getToTruongXacNhan()) {
-                    kiemHong.setNgayThangNamToTruong(nowAsMilliSec());
-                }
 
                 Request request = new Request();
+                if (kiemHong.getToTruongXacNhan()) {
+                    kiemHong.setNgayThangNamToTruong(nowAsMilliSec());
+                    kiemHong.setToTruongId(currentUserId); // mac dinh tao kiemhong thi current user la to truong
+                    kiemHong.setToTruongXacNhan(true);
+                    request.setNgayGui(nowAsMilliSec());
+                }
                 request.setCreatedBy(currentUserId);
                 request.setKiemHong(kiemHong);
-//                request.setCongNhanThanhPham(new CongNhanThanhPham());
-//                request.setPhuongAn(new PhuongAn());
+
                 request.setPhieuDatHang(new PhieuDatHang());
                 request.setStatus(RequestType.KIEM_HONG);
                 request.setKiemHongReceiverId(Objects.isNull(kiemHongPayLoad.getNoiNhan()) ? currentUserId : kiemHongPayLoad.getNoiNhan());

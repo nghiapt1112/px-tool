@@ -36,7 +36,7 @@ public class PhieuDatHangController extends BaseController {
 
     @PostMapping
     public void taoPhieuDatHang(SecurityContextHolderAwareRequestWrapper httpServletRequest, @RequestBody PhieuDatHangPayload phieuDatHangPayload) {
-        logger.info("Save Phieu dat hang, \ndata: {}", phieuDatHangPayload);
+        logger.info("Save Phieu dat hang, \nrequestId: {}", phieuDatHangPayload.getRequestId());
         this.phieuDatHangService.save(extractUserInfo(httpServletRequest), phieuDatHangPayload);
     }
 

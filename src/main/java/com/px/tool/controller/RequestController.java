@@ -5,6 +5,7 @@ import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.NotificationPayload;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
 import com.px.tool.domain.request.payload.ToSXPayload;
+import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.payload.NoiNhanRequestParams;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.vanbanden.VanBanDen;
@@ -12,6 +13,7 @@ import com.px.tool.domain.vanbanden.repository.VanBanDenRepository;
 import com.px.tool.infrastructure.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,9 @@ public class RequestController extends BaseController {
 
     @Autowired
     private VanBanDenRepository vanBanDenRepository;
+
+    @Autowired
+    private RequestService requestService;
 
     @GetMapping("/noi-nhan")
     public List<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest,
@@ -138,4 +143,10 @@ public class RequestController extends BaseController {
         return userService.findNhanVienKCS();
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteRequest(@PathVariable Long id) {
+        logger.info("Deleting reuest with id: {}", id);
+        requestService.deleteRequest(id);
+        return "Đã xóa thành công";
+    }
 }

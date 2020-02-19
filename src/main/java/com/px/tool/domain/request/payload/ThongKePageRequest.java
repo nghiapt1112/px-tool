@@ -1,6 +1,7 @@
 package com.px.tool.domain.request.payload;
 
 import com.px.tool.infrastructure.model.payload.PageRequest;
+import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +17,10 @@ public class ThongKePageRequest extends PageRequest {
         this.sanPham = sanPham.equals(-1L) ? null : sanPham;
     }
 
-//    public Long getFromDate() {
-//        return fromDate == null ? 0 : fromDate;
-//    }
-//
-//    public Long getToDate() {
-//        return toDate == null ? DateTimeUtils.nowAsMilliSec() : fromDate;
-//    }
+    public void setToDate(Long toDate) {
+        this.toDate = toDate;
+        if (this.toDate == null || this.toDate.equals(-1L)) {
+            this.toDate = DateTimeUtils.nowAsMilliSec();
+        }
+    }
 }

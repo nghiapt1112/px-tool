@@ -205,4 +205,24 @@ public class PhuongAn extends EntityDefault {
     public RequestType getStatus() {
         return status == null ? RequestType.PHUONG_AN : status;
     }
+
+    public Boolean getTruongPhongKTHKXacNhan() {
+        return getBol(truongPhongKTHKXacNhan);
+    }
+
+    public Boolean getTruongPhongKeHoachXacNhan() {
+        return getBol(truongPhongKeHoachXacNhan);
+    }
+
+    public Boolean getTruongPhongVatTuXacNhan() {
+        return getBol(truongPhongVatTuXacNhan);
+    }
+
+    public Boolean getNguoiLapXacNhan() {
+        return getBol(nguoiLapXacNhan);
+    }
+
+    public Boolean getGiamDocXacNhan() {
+        return getBol(giamDocXacNhan);
+    }
 }
