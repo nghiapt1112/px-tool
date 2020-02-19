@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -151,8 +152,11 @@ public class RequestServiceImpl implements RequestService {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
                     }
                 })
-                .sorted()
-                .collect(Collectors.toList()));
+                .sorted(Comparator
+                        .comparing(ThongKeDetailPayload::getSoPAAsStr)
+                        .thenComparing(Comparator.comparing(ThongKeDetailPayload::getDetailIdAsStr).reversed())
+                )
+                        .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
         return tkPayload;
     }
@@ -171,4 +175,6 @@ public class RequestServiceImpl implements RequestService {
     public void deleteRequest(Long id) {
         requestRepository.delete(id);
     }
+
+
 }

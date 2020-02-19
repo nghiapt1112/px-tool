@@ -26,7 +26,11 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
     @Query("UPDATE Request rq SET rq.kiemHongReceiverId =?2, rq.phieuDatHangReceiverId = ?3, rq.phuongAnReceiverId = ?4, rq.cntpReceiverId =?5 WHERE rq.requestId = ?1")
     void updateReceiverId(Long requestId, Long kiemHongReceiverId, Long phieuDatHangReceiverId, Long phuongAnReceiverId, Long cntpReceiverId);
 
-    @Query("SELECT rq FROM Request rq FETCH ALL PROPERTIES WHERE (rq.deleted <> true OR rq.deleted is null) AND rq.createdAt >= :fromDate AND rq.createdAt <= :toDate ORDER BY rq.createdAt DESC")
+    @Query("SELECT rq " +
+            "FROM Request rq FETCH ALL PROPERTIES " +
+            "WHERE (rq.deleted <> true OR rq.deleted is null) AND rq.createdAt >= :fromDate AND rq.createdAt <= :toDate " +
+            "ORDER BY rq.createdAt DESC")
+//            "ORDER BY rq.kiemHong.kiemHongDetails.khDetailId DESC")
     Page<Request> findPaging(Pageable pageable, @Param("fromDate") Long fromDate, @Param("toDate") Long toDate);
 
     @Modifying

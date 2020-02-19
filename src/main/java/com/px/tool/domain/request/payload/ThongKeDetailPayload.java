@@ -102,4 +102,11 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
         return (this.soPA == null) ? -1 : 1;
     }
 
+    public String getSoPAAsStr() {
+        return this.soPA == null ? "" : this.soPA;
+    }
+
+    public Long getDetailIdAsStr() {
+        return detailId == null ? -1 : this.detailId;
+    }
 }
