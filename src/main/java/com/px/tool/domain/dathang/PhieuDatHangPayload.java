@@ -94,6 +94,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
                             }
                             return detail;
                         })
+                        .sorted(Comparator.comparingLong(PhieuDatHangDetailPayload::getPdhDetailId))
                         .collect(Collectors.toList())
         );
         payload.setNoiNhan(null);

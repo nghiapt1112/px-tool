@@ -264,24 +264,24 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
             toTruong4Alias = collectAlias(userById.get(toTruong4Id), "");
             toTruong5Alias = collectAlias(userById.get(toTruong5Id), "");
 
-            if (quanDocXacNhan) {
+            if (getQuanDocXacNhan()) {
                 quanDocFullName = userById.get(quanDocId).getFullName();
                 quanDocSignImg = userById.get(quanDocId).getSignImg();
             }
-            if (toTruong1XacNhan) {
+            if (getToTruong1XacNhan()) {
                 toTruong1SignImg = userById.get(toTruong1Id).getSignImg();
             }
-            if (toTruong2XacNhan) {
+            if (getToTruong2XacNhan()) {
                 toTruong2SignImg = userById.get(toTruong2Id).getSignImg();
             }
 
-            if (toTruong3XacNhan) {
+            if (getToTruong3XacNhan()) {
                 toTruong3SignImg = userById.get(toTruong3Id).getSignImg();
             }
-            if (toTruong4XacNhan) {
+            if (getToTruong4XacNhan()) {
                 toTruong4SignImg = userById.get(toTruong4Id).getSignImg();
             }
-            if (toTruong5XacNhan) {
+            if (getToTruong5XacNhan()) {
                 toTruong5SignImg = userById.get(toTruong5Id).getSignImg();
             }
         } catch (Exception e) {
@@ -367,12 +367,21 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         request.setToTruong3Id(toTruong3Id);
         request.setToTruong4Id(toTruong4Id);
         request.setToTruong5Id(toTruong5Id);
+
+        // update: tpkcs khong dong y thi gui ve cac nhan vien kcs
+        if (!this.tpkcsXacNhan && !CollectionUtils.isEmpty(cusToTruongIds)) {
+            request.getNoiDungThucHiens().forEach(el -> {
+                if (cusToTruongIds.contains(el.getNghiemThu())) {
+                    el.setXacNhan(false);
+                }
+            });
+        }
     }
 
     @JsonIgnore
     public boolean allNhanVienKCSAssinged() {
         for (NoiDungThucHienPayload noiDungThucHien : this.noiDungThucHiens) {
-            if (noiDungThucHien.isInvalidData()) {
+            if (noiDungThucHien.getNghiemThu() == null || noiDungThucHien.getNghiemThu() <= 0L) {
                 return false;
             }
         }
@@ -404,4 +413,6 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     public CongNhanThanhPhamPayload andStatus(RequestType status) {
         return this;
     }
+
+
 }

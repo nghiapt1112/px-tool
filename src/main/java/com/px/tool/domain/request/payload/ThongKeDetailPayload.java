@@ -1,5 +1,7 @@
 package com.px.tool.domain.request.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
@@ -40,6 +42,8 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
     public String xacNhanHoanThanh;
     public Long requestId;
     public Long createdAt;
+    public Long pdhId;
+    public RequestType currentStatus;
 
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
@@ -48,6 +52,7 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
         for (KiemHongDetail detail : request.getKiemHong().getKiemHongDetails()) {
             //        tk.tt =
             tk = new ThongKeDetailPayload();
+            tk.currentStatus = request.getStatus();
             tk.createdAt = request.getCreatedAt();
             tk.tenPhuKien = detail.getTenPhuKien();
             tk.tenLinhKien = detail.getTenLinhKien();
@@ -62,6 +67,7 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
             tk.phuongPhapKhacPhuc = detail.getPhuongPhapKhacPhuc();
             tk.ngayChuyenPhongVatTu = dateLongToString(request.getKiemHong().getNgayThangNamQuanDoc());
             tk.detailId = detail.getKhDetailId(); // detailId de phuc vu cho viec tao phuong an
+            tk.pdhId = request.getRequestId(); // dang dung request mapping 1-1 kiemhong/dathang
             try {
                 tk.soPhieuDatHang = request.getPhieuDatHang().getSo();
 
@@ -86,6 +92,7 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
         return tks;
     }
 
+    @JsonIgnore
     static long getBiggest(Long... dates) {
         long biggest = -1;
         for (Long date : dates) {
@@ -97,15 +104,18 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
     }
 
 
+    @JsonIgnore
     @Override
     public int compareTo(ThongKeDetailPayload o) {
         return (this.soPA == null) ? -1 : 1;
     }
 
+    @JsonIgnore
     public String getSoPAAsStr() {
         return this.soPA == null ? "" : this.soPA;
     }
 
+    @JsonIgnore
     public Long getDetailIdAsStr() {
         return detailId == null ? -1 : this.detailId;
     }

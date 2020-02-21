@@ -4,6 +4,7 @@ import com.px.tool.domain.user.User;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -102,5 +103,13 @@ public class CommonUtils {
             return str.substring(0, 20) + "...";
         }
         return str;
+    }
+
+    public static BigDecimal getBigDecimal(String val) {
+        try {
+            return new BigDecimal(val);
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
     }
 }

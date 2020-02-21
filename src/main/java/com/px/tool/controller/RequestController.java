@@ -1,6 +1,11 @@
 package com.px.tool.controller;
 
 import com.px.tool.domain.RequestType;
+import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
+import com.px.tool.domain.dathang.repository.PhieuDatHangRepository;
+import com.px.tool.domain.kiemhong.repository.KiemHongDetailRepository;
+import com.px.tool.domain.kiemhong.repository.KiemHongRepository;
+import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.request.payload.NotificationPayload;
 import com.px.tool.domain.request.payload.PhanXuongPayload;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +43,21 @@ public class RequestController extends BaseController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private KiemHongRepository kiemHongRepository;
+
+    @Autowired
+    private KiemHongDetailRepository kiemHongDetailRepository;
+
+    @Autowired
+    private PhieuDatHangRepository phieuDatHangRepository;
+
+    @Autowired
+    private PhuongAnRepository phuongAnRepository;
+
+    @Autowired
+    private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
     @GetMapping("/noi-nhan")
     public List<NoiNhan> getListNoiNhan(HttpServletRequest httpServletRequest,
@@ -143,8 +164,30 @@ public class RequestController extends BaseController {
         return userService.findNhanVienKCS();
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteRequest(@PathVariable Long id) {
+    @DeleteMapping("/kh/{id}")
+    public String deleteKiemhong(@PathVariable Long id) {
+        logger.info("Deleting reuest with id: {}", id);
+        kiemHongRepository.deleteKiemHong(Arrays.asList(id));
+        kiemHongDetailRepository.deleteByKhId(id);
+        return "Đã xóa thành công";
+    }
+
+    @DeleteMapping("/dh/{id}")
+    public String deleteDathang(@PathVariable Long id) {
+        logger.info("Deleting reuest with id: {}", id);
+        requestService.deleteRequest(id);
+        return "Đã xóa thành công";
+    }
+
+    @DeleteMapping("/pa/{id}")
+    public String deletePhuongAn(@PathVariable Long id) {
+        logger.info("Deleting reuest with id: {}", id);
+        requestService.deleteRequest(id);
+        return "Đã xóa thành công";
+    }
+
+    @DeleteMapping("/cntp/{id}")
+    public String deleteCNTP(@PathVariable Long id) {
         logger.info("Deleting reuest with id: {}", id);
         requestService.deleteRequest(id);
         return "Đã xóa thành công";

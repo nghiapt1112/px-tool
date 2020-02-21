@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -245,7 +246,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
         pdh.setNoiDung(requestKiemHong.getTenVKTBKT() + " " + requestKiemHong.getSoHieu()); // E2 sheet1 + E1 sheet1
         PhieuDatHang savedPdh = phieuDatHangRepository.save(pdh);
 
-        Set<PhieuDatHangDetail> phieuDatHangDetails = new HashSet<>(requestKiemHong.getKiemHongDetails().size());
+        Set<PhieuDatHangDetail> phieuDatHangDetails = new LinkedHashSet<>(requestKiemHong.getKiemHongDetails().size());
         PhieuDatHangDetail detail = null;
         for (KiemHongDetail kiemHongDetail : requestKiemHong.getKiemHongDetails()) {
             detail = new PhieuDatHangDetail();

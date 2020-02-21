@@ -209,20 +209,20 @@ public class ExcelServiceImpl implements ExcelService {
                 setCellVal(row26, 0, payload.getToTruong1fullName()); // TODO: id /name/chuc vu
             }
             if (Objects.nonNull(payload.getToTruong2Id())) {
-                setCellVal(row25, 0, payload.getNgayThangNamToTruong2());
-                setCellVal(row26, 0, payload.getToTruong2fullName());
+                setCellVal(row25, 1, payload.getNgayThangNamToTruong2());
+                setCellVal(row26, 1, payload.getToTruong2fullName());
             }
             if (Objects.nonNull(payload.getToTruong3Id())) {
-                setCellVal(row25, 0, payload.getNgayThangNamToTruong3());
-                setCellVal(row26, 0, payload.getToTruong3fullName());
+                setCellVal(row25, 2, payload.getNgayThangNamToTruong3());
+                setCellVal(row26, 2, payload.getToTruong3fullName());
             }
             if (Objects.nonNull(payload.getToTruong4Id())) {
-                setCellVal(row25, 0, payload.getNgayThangNamToTruong4());
-                setCellVal(row26, 0, payload.getToTruong4fullName());
+                setCellVal(row25, 3, payload.getNgayThangNamToTruong4());
+                setCellVal(row26, 3, payload.getToTruong4fullName());
             }
             if (Objects.nonNull(payload.getToTruong5Id())) {
-                setCellVal(row25, 0, payload.getNgayThangNamToTruong5());
-                setCellVal(row26, 0, payload.getToTruong5fullName());
+                setCellVal(row25, 4, payload.getNgayThangNamToTruong5());
+                setCellVal(row26, 4, payload.getToTruong5fullName());
             }
 
 //
@@ -264,20 +264,29 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFRow row3 = sheet.getRow(3);
             XSSFRow row4 = sheet.getRow(4);
             XSSFRow row5 = sheet.getRow(5);
+            XSSFRow row15 = sheet.getRow(15);
+            XSSFRow row29 = sheet.getRow(29);
+            XSSFRow row30 = sheet.getRow(30);
             XSSFRow row32 = sheet.getRow(32);
 
             setCellVal(row1, 13, payload.getToSo());
             setCellVal(row2, 13, payload.getSoTo());
+            setCellVal(row2, 6, payload.getMaSo());
             setCellVal(row3, 13, payload.getPDH());
             setCellVal(row3, 6, payload.getSanPham());
             setCellVal(row4, 6, payload.getNoiDung());
             setCellVal(row5, 6, payload.getNguonKinhPhi());
+            setCellVal(row15, 2, payload.getTongCongDinhMucLaoDong().toString());
 
             setCellVal(row3, 0, payload.getNgayThangNamGiamDoc());
             setCellVal(row32, 1, payload.getNgayThangNamTPKTHK());
             setCellVal(row32, 3, payload.getNgayThangNamTPKEHOACH());
             setCellVal(row32, 8, payload.getNgayThangNamtpVatTu());
             setCellVal(row32, 12, payload.getNgayThangNamNguoiLap());
+
+            setCellVal(row29, 9, payload.getTongDMVTKho().toString());
+            setCellVal(row29, 13, payload.getTongDMVTMuaNgoai().toString());
+            setCellVal(row30, 2, payload.getTienLuong().toString());
 
 //
 

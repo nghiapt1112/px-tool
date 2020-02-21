@@ -58,4 +58,11 @@ public class KiemHongDetail extends AbstractObject {
 
     @Column
     private Long paId;
+
+    @Column
+    private Boolean deleted = false;
+
+    public Boolean getDeleted() {
+        return deleted == null ? false : deleted;
+    }
 }

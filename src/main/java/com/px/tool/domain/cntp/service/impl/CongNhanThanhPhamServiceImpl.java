@@ -67,13 +67,16 @@ public class CongNhanThanhPhamServiceImpl extends BaseServiceImpl implements Con
         congNhanThanhPhamPayload.capNhatNgayThangChuKy(congNhanThanhPham, existedCongNhanThanhPham);
         congNhanThanhPhamPayload.validateXacNhan(user, congNhanThanhPham, existedCongNhanThanhPham);
         // NOTE: tu dong chuyen den TP.KCS
-//        if (congNhanThanhPhamPayload.allNhanVienKCSAssinged()) {
-//            congNhanThanhPham.setTpkcsId(userService.findTPKCS().getUserId());
-//        }
+        if (congNhanThanhPhamPayload.allNhanVienKCSAssinged()) {
+            Long tpkcsId = userService.findTPKCS().getUserId();
+            congNhanThanhPham.setTpkcsId(tpkcsId);
+            congNhanThanhPhamPayload.setTpkcsId(tpkcsId);
+        }
 
         cleanOldDetailData(congNhanThanhPhamPayload, existedCongNhanThanhPham);
 
         if (congNhanThanhPham.getTpkcsXacNhan()) {
+            congNhanThanhPham.setStep(1L);
             guiVanBanDen(congNhanThanhPham);
         }
         return congNhanThanhPhamRepository.save(congNhanThanhPham);

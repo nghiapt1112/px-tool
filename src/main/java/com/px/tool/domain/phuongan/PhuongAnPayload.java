@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.px.tool.infrastructure.utils.CommonUtils.getBigDecimal;
+
 @Getter
 @Setter
 public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
@@ -48,6 +50,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private String ngayThangNamNguoiLap;
     private String NguoiLap;    // cac field tong cong
 
+    @JsonProperty("tongDMLDDM")
     private BigDecimal tongCongDinhMucLaoDong;
     private BigDecimal tongDMVTKho;
     private BigDecimal tongDMVTMuaNgoai;
@@ -55,6 +58,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     private List<DinhMucLaoDongPayload> dinhMucLaoDongs = new LinkedList<>();
     private List<DinhMucVatTuPayload> dinhMucVatTus = new LinkedList<>();
     private Long noiNhan; // id cua user dc nhan
+
 
     private String ngayThangNamGiamDoc;
     private Boolean giamDocXacNhan;
@@ -130,7 +134,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         payload.ngayThangNamtpVatTu = DateTimeUtils.toString(phuongAn.getNgayThangNamtpVatTu());
         payload.ngayThangNamTPKTHK = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKTHK());
         payload.ngayThangNamTPKEHOACH = DateTimeUtils.toString(phuongAn.getNgayThangNamTPKEHOACH());
-        payload.ngayThangNamPheDuyet = DateTimeUtils.toString(phuongAn.getNgayThangNamPheDuyet());
+        payload.ngayThangNamPheDuyet = DateTimeUtils.toString(phuongAn.getNgayThangNamGiamDoc());
         payload.ngayThangNamNguoiLap = DateTimeUtils.toString(phuongAn.getNgayThangNamNguoiLap());
 
         try {
@@ -139,6 +143,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         } catch (Exception e) {
 
         }
+        payload.tongCongDinhMucLaoDong = phuongAn.getTongCongDinhMucLaoDong();
         payload.setCurrentStatus(phuongAn.getStatus());
         return payload;
     }
@@ -177,6 +182,13 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         } catch (Exception e) {
 
         }
+        if (Objects.isNull(tongCongDinhMucLaoDong)) {
+            tongCongDinhMucLaoDong = new BigDecimal(0);
+        }
+        for (DinhMucLaoDongPayload dinhMucLaoDong : this.dinhMucLaoDongs) {
+            tongCongDinhMucLaoDong = tongCongDinhMucLaoDong.add(getBigDecimal(dinhMucLaoDong.getDm()));
+        }
+        phuongAn.setTongCongDinhMucLaoDong(tongCongDinhMucLaoDong);
         return phuongAn;
     }
 
@@ -292,11 +304,12 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setNgayThangNamTPKTHK(existedPhuongAn.getNgayThangNamTPKTHK());
         pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
         pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
-//        pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
-//        pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
-//        pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
-//        pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
-//        pa.setGiamDocId(existedPhuongAn.getGiamDocId());
+
+        if (existedPhuongAn.getNguoiLapId() != null) pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
+        if (existedPhuongAn.getTruongPhongKTHKId() != null) pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
+        if (existedPhuongAn.getTruongPhongKeHoachId() != null) pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
+        if (existedPhuongAn.getTruongPhongVatTuId() != null) pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
+        if (existedPhuongAn.getGiamDocId() != null) pa.setGiamDocId(existedPhuongAn.getGiamDocId());
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());
@@ -362,5 +375,21 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     public PhuongAnPayload andStatus(RequestType status) {
         this.currentStatus = status;
         return this;
+    }
+
+    public BigDecimal getTongCongDinhMucLaoDong() {
+        return tongCongDinhMucLaoDong == null ? new BigDecimal(0) : tongCongDinhMucLaoDong;
+    }
+
+    public BigDecimal getTongDMVTKho() {
+        return tongDMVTKho == null ? new BigDecimal(0): tongDMVTKho;
+    }
+
+    public BigDecimal getTongDMVTMuaNgoai() {
+        return tongDMVTMuaNgoai == null ? new BigDecimal(0): tongDMVTMuaNgoai;
+    }
+
+    public BigDecimal getTienLuong() {
+        return tienLuong == null ? new BigDecimal(0): tienLuong;
     }
 }

@@ -19,4 +19,9 @@ public interface KiemHongDetailRepository extends JpaRepository<KiemHongDetail, 
     @Transactional
     @Query("UPDATE KiemHongDetail rq SET rq.paId =?1 WHERE rq.khDetailId IN ?2")
     void taoPhuongAn(Long paId, Collection<Long> ids);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE KiemHongDetail rq SET rq.deleted = true WHERE rq.kiemHong.khId = ?1")
+    void deleteByKhId(Long khId);
 }

@@ -91,7 +91,10 @@ public class CongNhanThanhPham extends EntityDefault {
     @Column private Long ngayThangNamToTruong5;
 
 
+
     @Column private Long ngayGui;
+    @Column private Long step;
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "congNhanThanhPham", cascade = CascadeType.ALL)

@@ -17,6 +17,7 @@ import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
+import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,8 +173,12 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional
     public void deleteRequest(Long id) {
-        requestRepository.delete(id);
+        Request request = requestRepository
+                .findById(id)
+                .orElseThrow(() -> new PXException("Id khong ton tai"));
+        requestRepository.delete(request);
     }
 
 

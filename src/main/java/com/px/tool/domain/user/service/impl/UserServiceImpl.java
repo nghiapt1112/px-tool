@@ -23,6 +23,7 @@ import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.logger.PXLogger;
+import com.px.tool.infrastructure.service.impl.BaseServiceImpl;
 import com.px.tool.infrastructure.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,7 +57,7 @@ import static com.px.tool.domain.user.repository.UserRepository.group_giam_doc;
 import static com.px.tool.infrastructure.utils.CommonUtils.collectionAdd;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -155,18 +157,24 @@ public class UserServiceImpl implements UserService {
     public List<NoiNhan> findNoiNhan(Long userId, NoiNhanRequestParams requestParams) {
         User currentUser = findById(userId);
         List<User> pbs = new ArrayList<>();
-        if (Objects.isNull(requestParams.getRequestId())) {
-            pbs = userRepository.findByGroup(group_29_40);
+        if (Objects.isNull(requestParams.getRequestId()) && requestParams.getType() != RequestType.DAT_HANG) {
+            pbs = userRepository.findByGroup(group_29_40); // case nay cho kiem hong :)), chua check dc cac case khac nhu the nao
         } else {
             if (requestParams.getType() == RequestType.PHUONG_AN) {
                 filterTheoPhuongAn(requestParams, currentUser, pbs);
             } else if (requestParams.getType() == RequestType.CONG_NHAN_THANH_PHAM) {
                 filterTheoCNTP(requestParams, currentUser, pbs);
             } else {
-                Request existedRequest = requestService.findById(requestParams.getRequestId());
-                if (existedRequest.getStatus() == RequestType.KIEM_HONG) {
+                Request existedRequest = null;
+                try {
+                    existedRequest = requestService.findById(requestParams.getRequestId());
+                } catch (Exception e) {
+                    logger.error("Request not found with id: {}", requestParams.getRequestId());
+                }
+                if (existedRequest != null && existedRequest.getStatus() == RequestType.KIEM_HONG) {
                     filterTheoKiemHong(requestParams, currentUser, pbs);
-                } else if (existedRequest.getStatus() == RequestType.DAT_HANG) {
+                } else if (requestParams.getType() == RequestType.DAT_HANG ||
+                        (existedRequest != null && existedRequest.getStatus() == RequestType.DAT_HANG)) {
                     filterTheoDatHang(requestParams, currentUser, pbs);
                 }
             }
@@ -192,16 +200,18 @@ public class UserServiceImpl implements UserService {
             List<Long> cusIds = new ArrayList<>(5);
             collectionAdd(cusIds, congNhanThanhPham.getToTruong1Id(), congNhanThanhPham.getToTruong2Id(), congNhanThanhPham.getToTruong3Id(), congNhanThanhPham.getToTruong4Id(), congNhanThanhPham.getToTruong5Id());
             if (CollectionUtils.isEmpty(cusIds)) {
-                pbs = Stream.of(
-                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5), // to truong cua to hien tai
-                        userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3)
-                ).flatMap(e -> e);
+                // to truong cua px hien tai
+                pbs = userRepository
+                        .findByGroup(Arrays.asList(currentUser.getUserId()))
+                        .stream()
+                        .filter(el -> el.getLevel() == 5);
+
             } else {
                 pbs = Stream.of(
-                        // to truong da setup + to truong to hien tai + KCS
+                        // to truong da setup + to truong to hien tai
                         userRepository.findByIds(cusIds).stream(),
-                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5),
-                        userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3)
+                        userRepository.findByGroup(Arrays.asList(currentUser.getUserId())).stream().filter(el -> el.getLevel() == 5)
+//                        userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3)
                 )
                         .flatMap(el -> el);
             }
@@ -210,7 +220,21 @@ public class UserServiceImpl implements UserService {
             pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
         } else if (currentUser.isNhanVienKCS()) {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
-            pbs = Stream.empty();
+            if (!requestParams.getTpKCS()) {
+                CongNhanThanhPham cntp = congNhanThanhPhamRepository
+                        .findById(requestParams.getRequestId())
+                        .orElseThrow(() -> new PXException("Cong nhan thanh pham not found"));
+
+
+                Set<Long> userIds = cntp.getNoiDungThucHiens()
+                        .stream()
+                        .map(el -> el.getNghiemThu())
+                        .collect(Collectors.toSet());
+
+                pbs = userRepository.findByIds(userIds).stream();
+            } else {
+                pbs = Stream.empty();
+            }
         } else if (currentUser.isTruongPhongKCS()) {
             // step cuoi cung la TPKCS nen khong can chuyen di dau ca.
             pbs = Stream.empty();
@@ -288,7 +312,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 Request request = requestService.findById(requestParams.getRequestId());
                 if (request.getKiemHong().getTroLyId() == null) {
-                    pbs = userRepository.findByIds(Arrays.asList(8L,9L))
+                    pbs = userRepository.findByIds(Arrays.asList(8L, 9L))
                             .stream()
                             .filter(el -> el.getLevel() == 3);
                 } else {
@@ -482,7 +506,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findTPKCS() {
-        return findAll().stream()
+        return userRepository.findByGroup(group_KCS)
+                .stream()
                 .filter(el -> el.isTruongPhongKCS())
                 .findFirst()
                 .orElse(null);

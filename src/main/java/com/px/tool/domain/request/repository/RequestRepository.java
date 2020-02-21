@@ -41,6 +41,7 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
 
     @Modifying
     @Transactional
-    @Query("UPDATE Request rq SET rq.deleted = true WHERE rq.requestId = ?1")
+//    @Query("UPDATE Request rq SET rq.deleted = true WHERE rq.requestId = ?1")
+    @Query("DELETE FROM Request rq WHERE rq.requestId=?1")
     void delete(long id);
 }

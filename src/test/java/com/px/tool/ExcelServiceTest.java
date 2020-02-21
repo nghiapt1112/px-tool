@@ -239,25 +239,34 @@ public class ExcelServiceTest {
         XSSFRow row3 = sheet.getRow(3);
         XSSFRow row4 = sheet.getRow(4);
         XSSFRow row5 = sheet.getRow(5);
+        XSSFRow row15 = sheet.getRow(15);
+        XSSFRow row29 = sheet.getRow(29);
+        XSSFRow row30 = sheet.getRow(30);
         XSSFRow row32 = sheet.getRow(32);
 
         setCellVal(row1, 13, "To so");
         setCellVal(row2, 13, "so to");
+        setCellVal(row2, 6, "Ma soxxxx");
         setCellVal(row3, 13, "PDH");
         setCellVal(row3, 13, "PDH");
         setCellVal(row3, 6, "san pham");
         setCellVal(row4, 6, "noi dung");
         setCellVal(row5, 6, "nguon kinh phi");
+        setCellVal(row15, 2, "Tong......");
+
 //
 
         setCellVal(row32, 1, "TP. KTHK");
         setCellVal(row32, 3, "TP.KẾ HOẠCH");
         setCellVal(row32, 8, "TP. VẬT TƯ");
         setCellVal(row32, 12, "NGƯỜI LẬP");
+        setCellVal(row29, 9, "tien huy dong kho");
+        setCellVal(row29, 13, "tien mua ngoai");
+        setCellVal(row30, 2, "tien luong, tien cong");
 
 //
 
-        int totalLine = 10;
+        int totalLine = 15;
         int startFix1 = 15;
         int endFix1 = 35;
         if (totalLine > 6) {
@@ -311,7 +320,6 @@ public class ExcelServiceTest {
             setCellVal(crrRow2, 12, "thanh tien");
             setCellVal(crrRow2, 13, "ghi chu");
         }
-        sheet.shiftRows(13,18,-1);
 
         FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Phuong_An.xlsx");
         workbook.write(out);

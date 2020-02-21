@@ -114,7 +114,7 @@ public class User extends EntityDefault implements UserDetails {
             return false;
         } else {
             for (Role authority : authorities) {
-                return authority.getAuthority().equalsIgnoreCase("ADMIN");
+                return authority.getAuthority().equalsIgnoreCase("ADMIN") || authority.getAuthority().equalsIgnoreCase("ROLE_ADMIN");
             }
         }
         return false;
