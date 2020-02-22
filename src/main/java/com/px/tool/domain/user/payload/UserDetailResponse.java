@@ -14,6 +14,7 @@ public class UserDetailResponse extends AbstractObject {
 
     private Long phanXuong;
     private Long level;
+    private String alias;
 
     public static UserDetailResponse fromEntity(User user) {
         UserDetailResponse response = new UserDetailResponse();
@@ -26,6 +27,7 @@ public class UserDetailResponse extends AbstractObject {
                     .stream()
                     .findFirst().orElse(null)
                     .getRoleId();
+            response.alias = user.getAlias();
         } catch (Exception e) {
 
         }

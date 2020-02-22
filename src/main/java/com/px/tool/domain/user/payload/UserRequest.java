@@ -7,21 +7,30 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Setter
 @Getter
 public class UserRequest extends AbstractObject {
+    // @formatter:off
     private Long userId;
     private String email;
 
     @JsonProperty("password")
     private String password;
-    private Integer level;
     private String imgBase64;
+
+
+    @NotNull private Integer level;
+    @NotEmpty(message = "Full name không đc để trống.")
     private String fullName;
 
-    private Long phongBanId;
-    private Long phanXuong;
+    @NotNull private Long phanXuong;
+    @NotEmpty(message = "Tên chức vụ không được để trống.") private String alias;
 
+    @Deprecated private Long phongBanId;
+    // @formatter:on
     public Integer getLevel() {
         return level != null ? level : 2; // defaullt thi setting role la giam doc, truong phong.
     }
@@ -39,5 +48,17 @@ public class UserRequest extends AbstractObject {
             entity.setFullName(fullName);
         }
         return entity;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRequest{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", level=" + level +
+                ", fullName='" + fullName + '\'' +
+                ", phanXuong=" + phanXuong +
+                ", alias='" + alias + '\'' +
+                '}';
     }
 }

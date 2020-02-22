@@ -478,23 +478,43 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     @Override
     @Transactional
     public void taoUser(UserRequest user) {
+        if (Objects.isNull(user.getLevel()) || Objects.isNull(user.getPhanXuong())) {
+            throw new PXException("user.admin.updateUserDetail");
+        }
         Role role = roleService.findById(Long.valueOf(user.getLevel()));
         PhongBan phongBan = phongBanService.findById(user.getPhanXuong());
         User entity = user.toUserEntity();
         if (!StringUtils.isEmpty(user.getPassword())) {
             entity.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+
+        if (StringUtils.isEmpty(user.getAlias())) {
+            entity.setAlias(phongBan.getName());
+        } else {
+            entity.setAlias(user.getAlias());
+        }
+
         entity.setAuthorities(Sets.newHashSet(role));
         entity.setPhongBan(phongBan);
 
         if (user.getUserId() != null) {
             entity = userRepository.findById(user.getUserId()).get();
-            entity.setEmail(user.getEmail());
-            entity.setFullName(user.getFullName());
-            entity.setSignImg(user.getImgBase64());
+            if (!StringUtils.isEmpty(user.getEmail())) {
+                entity.setEmail(user.getEmail());
+            }
+            if (!StringUtils.isEmpty(user.getFullName())) {
+                entity.setFullName(user.getFullName());
+            }
+            if (!StringUtils.isEmpty(user.getImgBase64())) {
+                entity.setSignImg(user.getImgBase64());
+            }
+            if (!StringUtils.isEmpty(user.getAlias())) {
+                entity.setAlias(user.getAlias());
+            }
             entity.setAuthorities(Sets.newHashSet(role));
             entity.setPhongBan(phongBan);
         }
+        logger.info("Saving user with info: {}", user);
         userRepository.save(entity);
     }
 
