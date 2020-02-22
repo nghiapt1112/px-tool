@@ -93,7 +93,7 @@ public class CongNhanThanhPham extends EntityDefault {
 
 
     @Column private Long ngayGui;
-    @Column private Long step;
+    @Column private Long step = 0L;
 
 
     @JsonManagedReference

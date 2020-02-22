@@ -117,6 +117,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         }
         if (!StringUtils.isEmpty(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(currentUser.getPassword());
         }
         if (StringUtils.isEmpty(user.getImgBase64())) {
             userRepository.updateProfile(user.getFullName(), user.getPassword(), user.getUserId());
