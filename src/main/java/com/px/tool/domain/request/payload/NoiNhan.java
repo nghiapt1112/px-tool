@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class NoiNhan extends AbstractObject {
+public class NoiNhan extends AbstractObject implements Comparable<NoiNhan> {
     private Long id;
     private String name;
 
@@ -20,4 +20,13 @@ public class NoiNhan extends AbstractObject {
         return noiNhan;
     }
 
+    @Override
+    public int compareTo(NoiNhan o) {
+        if (this.id < o.id) {
+            return -1;
+        } else if (this.id > o.id) {
+            return 1;
+        }
+        return 0;
+    }
 }

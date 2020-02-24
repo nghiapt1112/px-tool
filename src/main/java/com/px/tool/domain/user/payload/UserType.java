@@ -5,8 +5,11 @@ public enum UserType {
     ADMIN,
     VAN_THU_BAO_MAT,
     TP_VAT_TU,
+    TP_KCS,
     NV_VAT_TU,
     NV_DINH_MUC,
+    NV_KCS,
     TL_KY_THUAT,
-    TRUONG_PHONG
+    TRUONG_PHONG, //truong phong KTHK, XMDC
+    TO_TRUONG // cac to truong
 }

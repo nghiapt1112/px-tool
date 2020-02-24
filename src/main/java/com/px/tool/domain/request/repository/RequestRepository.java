@@ -30,8 +30,14 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
             "FROM Request rq FETCH ALL PROPERTIES " +
             "WHERE (rq.deleted <> true OR rq.deleted is null) AND rq.createdAt >= :fromDate AND rq.createdAt <= :toDate " +
             "ORDER BY rq.createdAt DESC")
-//            "ORDER BY rq.kiemHong.kiemHongDetails.khDetailId DESC")
     Page<Request> findPaging(Pageable pageable, @Param("fromDate") Long fromDate, @Param("toDate") Long toDate);
+
+    @Query("SELECT rq " +
+            "FROM Request rq FETCH ALL PROPERTIES " +
+            "WHERE (rq.deleted <> true OR rq.deleted is null) AND rq.createdAt >= :fromDate AND rq.createdAt <= :toDate " +
+            "AND rq.kiemHong.toTruongId = :toTruongId " +
+            "ORDER BY rq.createdAt DESC")
+    Page<Request> findPaging(Pageable pageable, @Param("toTruongId") Long toTruongId, @Param("fromDate") Long fromDate, @Param("toDate") Long toDate);
 
     @Modifying
     @Transactional

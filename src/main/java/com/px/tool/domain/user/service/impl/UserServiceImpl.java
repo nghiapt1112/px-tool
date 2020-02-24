@@ -218,16 +218,17 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
                         .flatMap(el -> el);
             }
         } else if (currentUser.isToTruong()) {
-            // chuyen cho cac nhan vien kcs
-            pbs = userRepository.findByGroup(group_KCS).stream().filter(el -> el.getLevel() == 3);
+            // chuyen cho cac nhan vien kcs => ma cac nhan vien kcs da dc fill o tren => cho nay empty
+            pbs = Stream.empty();
         } else if (currentUser.isNhanVienKCS()) {
             // khong chuyen di dau ca, vi khi all nhanvienKSC ok thi tu chuyen len truong phong Kcs
+                pbs = Stream.empty();
+        } else if (currentUser.isTruongPhongKCS()) {
+            // TP.KCS khong dong y thi chuyen ve cac nhan vien KCS
             if (!requestParams.getTpKCS()) {
                 CongNhanThanhPham cntp = congNhanThanhPhamRepository
                         .findById(requestParams.getRequestId())
                         .orElseThrow(() -> new PXException("Cong nhan thanh pham not found"));
-
-
                 Set<Long> userIds = cntp.getNoiDungThucHiens()
                         .stream()
                         .map(el -> el.getNghiemThu())
@@ -235,11 +236,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
                 pbs = userRepository.findByIds(userIds).stream();
             } else {
+                // step cuoi cung la TPKCS nen khong can chuyen di dau ca.
                 pbs = Stream.empty();
             }
-        } else if (currentUser.isTruongPhongKCS()) {
-            // step cuoi cung la TPKCS nen khong can chuyen di dau ca.
-            pbs = Stream.empty();
         }
 
         if (pbs != null) {
@@ -380,23 +379,40 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     }
 
     @Override
-    public List<NoiNhan> findVanBanDenNoiNhan(Long currentUserId, RequestType requestType) {
-        User user = userById().get(currentUserId);
+    public List<NoiNhan> findCusNoiNhan(Long currentUserId, RequestType requestType, Long requestId) {
+        User user = findById(currentUserId);
         if (Objects.isNull(user)) {
             return Collections.emptyList();
         }
         if (requestType == RequestType.KIEM_HONG) {
+            Long phongBanId = null;
+            if (user.isToTruong()) {
+                phongBanId = user.getPhongBan().getPhongBanId();
+            } else if (requestId != null) {
+                // truong hop PKH da duoc tao, va current user khong phai la to truong
+                Request request = requestService.findById(requestId);
+                User toTruong = null;
+                if (request != null && request.getKiemHong() != null && request.getKiemHong().getToTruongId() != null) {
+                    toTruong = findById(request.getKiemHong().getToTruongId());
+                }
+                if (toTruong == null) {
+                    throw new PXException("kiemhong.cusNoiNhan.totruong");
+                }
+                phongBanId = toTruong.getPhongBan().getPhongBanId();
+            }
+
+            Long finalPhongBanId = phongBanId;
             return userRepository.findAll()
                     .stream()
                     .filter(el ->
-                                    !el.isAdmin() && (
-//                                    el.isQuanDocPhanXuong() // PX
-                                            el.getPhongBan().getPhongBanId().equals(user.getPhongBan().getPhongBanId()) // PX + to trong PX
-                                                    || el.isTruongPhongVatTu() // Vat.Tu
-                                                    || el.getPhongBan().getGroup().equals(8) // KTHK
-                                                    || el.getPhongBan().getGroup().equals(9)) // XMDC
+                            !el.isAdmin() && (
+                                    el.getPhongBan().getPhongBanId().equals(finalPhongBanId) // PX + to trong PX
+                                            || el.isTruongPhongVatTu() // Vat.Tu
+                                            || el.getPhongBan().getGroup().equals(8) // KTHK
+                                            || el.getPhongBan().getGroup().equals(9)) // XMDC
                     )
                     .map(NoiNhan::fromUserEntity)
+                    .sorted()
                     .collect(Collectors.toList());
         } else if (requestType == RequestType.DAT_HANG) {
             return userRepository.findAll()

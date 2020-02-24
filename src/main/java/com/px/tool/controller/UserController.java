@@ -1,5 +1,6 @@
 package com.px.tool.controller;
 
+import com.px.tool.domain.request.payload.NoiNhan;
 import com.px.tool.domain.user.Folder;
 import com.px.tool.domain.user.PhongBan;
 import com.px.tool.domain.user.payload.FolderPayload;
@@ -12,6 +13,7 @@ import com.px.tool.domain.user.payload.UserPayload;
 import com.px.tool.domain.user.payload.UserRequest;
 import com.px.tool.domain.user.repository.FolderRepository;
 import com.px.tool.domain.user.repository.PhongBanRepository;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.domain.user.service.impl.PhongBanServiceImpl;
 import com.px.tool.domain.user.service.impl.RoleServiceImpl;
@@ -52,6 +54,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private FolderRepository folderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public UserPageResponse findUsers(
@@ -145,5 +150,17 @@ public class UserController extends BaseController {
         IntStream.rangeClosed(1, 15)
                 .forEach(el -> folderRepository.insertFolder("Thư mục " + el, userId));
     }
+
+    @GetMapping("/find-to-truong")
+    public List<NoiNhan> findToTruong(){
+        return userRepository
+                .findByGroup(UserRepository.group_17_25)
+                .stream()
+                .filter(el -> el.getLevel() == 5)
+                .map(NoiNhan::fromUserEntity)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
 
 }

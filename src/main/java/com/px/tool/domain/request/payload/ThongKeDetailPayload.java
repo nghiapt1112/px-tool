@@ -45,6 +45,12 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
     public Long pdhId;
     public RequestType currentStatus;
 
+    // update: add 2 fields
+    private String toTruongFullName;
+    @JsonIgnore
+    private Long toTruongId;
+    private Long soCNTP;
+
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
         ThongKeDetailPayload tk = null;
@@ -75,15 +81,18 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
             }
             tk.ngayChuyenKT = dateLongToString(request.getPhieuDatHang().getNgayThangNamTPVatTu());
             tk.requestId = 0L;
+            tk.toTruongId = request.getKiemHong().getToTruongId();
             try {
-                tk.requestId = phuongAnById.get(detail.getPaId()).getPaId();
-                tk.soPA = phuongAnById.get(detail.getPaId()).getMaSo();
-                tk.ngayRaPA = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamNguoiLap());
-                tk.ngayChuyenKH = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamtpVatTu());
-                tk.ngayPheDuyet = dateLongToString(phuongAnById.get(detail.getPaId()).getNgayThangNamTPKTHK());
-                CongNhanThanhPham cntp = phuongAnById.get(detail.getPaId()).getCongNhanThanhPham();
+                PhuongAn pa = phuongAnById.get(detail.getPaId());
+                tk.requestId =  pa.getPaId();
+                tk.soPA = pa.getMaSo();
+                tk.ngayRaPA = dateLongToString(pa.getNgayThangNamNguoiLap());
+                tk.ngayChuyenKH = dateLongToString(pa.getNgayThangNamtpVatTu());
+                tk.ngayPheDuyet = dateLongToString(pa.getNgayThangNamTPKTHK());
+                CongNhanThanhPham cntp = pa.getCongNhanThanhPham();
                 tk.ngayHoanThanh = dateLongToString(getBiggest(cntp.getNgayThangNamToTruong1(), cntp.getNgayThangNamToTruong2(), cntp.getNgayThangNamToTruong3(), cntp.getNgayThangNamToTruong4(), cntp.getNgayThangNamToTruong5()));
                 tk.xacNhanHoanThanh = dateLongToString(cntp.getNgayThangNamTPKCS());
+                tk.soCNTP = pa.getCongNhanThanhPham().getTpId();
             } catch (Exception e) {
             }
 

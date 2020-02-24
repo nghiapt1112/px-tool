@@ -29,7 +29,7 @@ public class VanBanDenResponse {
         payload.noiDung = vanBanDen.getNoiDung();
         payload.folder = vanBanDen.getFolder();
         payload.soPa = vanBanDen.getSoPa();
-        payload.ngayGui = DateTimeUtils.toString(vanBanDen.getCreatedAt());
+        payload.ngayGui = DateTimeUtils.dateLongToString(vanBanDen.getCreatedAt());
         return payload;
     }
 

@@ -16,6 +16,7 @@ import com.px.tool.domain.request.payload.ThongKePageResponse;
 import com.px.tool.domain.request.repository.RequestRepository;
 import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
+import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
@@ -38,6 +39,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.px.tool.domain.user.repository.UserRepository.group_17_25;
+
 @Service
 public class RequestServiceImpl implements RequestService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -55,6 +58,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private PhuongAnService phuongAnService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -111,8 +117,17 @@ public class RequestServiceImpl implements RequestService {
                 .stream()
                 .collect(Collectors.toMap(MucDichSuDung::getMdId, MucDichSuDung::getTen));
 
+        Map<Long, User> userById = userRepository.findByGroup(group_17_25)
+                .stream()
+                .collect(Collectors.toMap(el -> el.getUserId(), el -> el));
         PageRequest pageAble = PageRequest.of(request.getPage(), request.getSize());
-        Page<Request> requests = requestRepository.findPaging(pageAble, request.getFromDate(), request.getToDate());
+
+        Page<Request> requests;
+        if (request.getToTruongId() != null) {
+            requests = requestRepository.findPaging(pageAble, request.getToTruongId(), request.getFromDate(), request.getToDate());
+        } else {
+            requests = requestRepository.findPaging(pageAble, request.getFromDate(), request.getToDate());
+        }
 
         List<Long> paIds = new ArrayList<>();
         for (Request request1 : requests) {
@@ -152,12 +167,20 @@ public class RequestServiceImpl implements RequestService {
                     if (el.getXacNhanHoanThanh() != null) {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
                     }
+                    try {
+                        if (el.getToTruongId() != null) {
+                            el.setToTruongFullName(userById.get(el.getToTruongId()).getFullName());
+                        }
+                    } catch (Exception e) {
+                        logger.error("To truong id trong PKH khong con ton tai trong he thong.");
+                        el.setToTruongFullName("-");
+                    }
                 })
                 .sorted(Comparator
                         .comparing(ThongKeDetailPayload::getSoPAAsStr)
                         .thenComparing(Comparator.comparing(ThongKeDetailPayload::getDetailIdAsStr).reversed())
                 )
-                        .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));
         return tkPayload;
     }

@@ -12,6 +12,7 @@ public class ThongKePageRequest extends PageRequest {
     private Long phanXuong;
     private Long fromDate;
     private Long toDate;
+    private Long toTruongId;
 
     public void setSanPham(Long sanPham) {
         this.sanPham = sanPham.equals(-1L) ? null : sanPham;
@@ -22,5 +23,12 @@ public class ThongKePageRequest extends PageRequest {
         if (this.toDate == null || this.toDate.equals(-1L)) {
             this.toDate = DateTimeUtils.nowAsMilliSec();
         }
+    }
+
+    public void setToTruongId(Long toTruongId) {
+        if(toTruongId != null && toTruongId < 1) {
+            toTruongId = null;
+        }
+        this.toTruongId = toTruongId;
     }
 }

@@ -155,8 +155,8 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("/cus-noi-nhan")
-    public List<NoiNhan> getCusNoiNhan(HttpServletRequest httpServletRequest, @RequestParam RequestType requestType) {
-        return userService.findVanBanDenNoiNhan(extractUserInfo(httpServletRequest), requestType);
+    public List<NoiNhan> getCusNoiNhan(HttpServletRequest httpServletRequest, @RequestParam RequestType requestType, @RequestParam(required = false) Long requestId) {
+        return userService.findCusNoiNhan(extractUserInfo(httpServletRequest), requestType, requestId);
     }
 
     @GetMapping("/cntp/nguoi-lam")

@@ -346,6 +346,16 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
 
                 // file update: validate them dmVatTu
                 if (CollectionUtils.isEmpty(dinhMucVatTus)) {
+                    throw new PXException("phuongan.dinhmucvattu.nguoiLap");
+                }
+                for (DinhMucVatTuPayload mucVatTus : this.dinhMucVatTus) {
+                    if (mucVatTus.isInvalidData_NguoiLap()) {
+                        throw new PXException("phuongan.dinhmucvattu.nguoiLap");
+                    }
+                }
+            }
+            if (user.isNhanVienTiepLieu()){
+                if (CollectionUtils.isEmpty(dinhMucVatTus)) {
                     throw new PXException("phuongan.dinhmucvattu");
                 }
                 for (DinhMucVatTuPayload mucVatTus : this.dinhMucVatTus) {

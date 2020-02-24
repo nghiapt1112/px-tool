@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/sec/login**", "/sec/token/refresh", "/req/noi-nhan").permitAll()
+                .antMatchers("/sec/login**", "/sec/token/refresh", "/req/noi-nhan", "/users/find-to-truong").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/mdsd").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/mdsd").hasAnyRole("ADMIN")

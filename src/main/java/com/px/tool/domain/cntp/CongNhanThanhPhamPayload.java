@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,6 +76,8 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
     private Long tpkcsId;
     private String tpkcsFullName;
     private String tpkcsSignImg;
+
+    @JsonProperty("yKienTPKCS")
     private String ykientpkcs;
     private String ngayThangNamTPKCS;
 
@@ -369,7 +372,10 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         request.setToTruong5Id(toTruong5Id);
 
         // update: tpkcs khong dong y thi gui ve cac nhan vien kcs
-        if (!this.tpkcsXacNhan && !CollectionUtils.isEmpty(cusToTruongIds)) {
+        if (user.isTruongPhongKCS() && !this.tpkcsXacNhan && (CollectionUtils.isEmpty(cusToTruongIds) || StringUtils.isEmpty(this.ykientpkcs))) {
+            throw new PXException("cntp.kcs.thieu_thong_tin");
+        }
+        if (user.isTruongPhongKCS() && !this.tpkcsXacNhan && !CollectionUtils.isEmpty(cusToTruongIds)) {
             request.getNoiDungThucHiens().forEach(el -> {
                 if (cusToTruongIds.contains(el.getNghiemThu())) {
                     el.setXacNhan(false);

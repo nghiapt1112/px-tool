@@ -66,7 +66,13 @@ public class DinhMucVatTuPayload extends AbstractObject {
     public boolean isInvalidData() {
         return Objects.isNull(tenVatTuKyThuat) || Objects.isNull(kyMaKyHieu) || Objects.isNull(dvt) ||
                 Objects.isNull(dm1SP) || Objects.isNull(soLuongSanPham) || Objects.isNull(tongNhuCau) ||
-                Objects.isNull(khoDonGia) || Objects.isNull(khoSoLuong) || Objects.isNull(khoThanhTien) ||
-                Objects.isNull(mnDonGia) || Objects.isNull(mnSoLuong) || Objects.isNull(mnThanhTien);
+                (Objects.isNull(khoDonGia) && Objects.isNull(mnDonGia))
+                || (Objects.isNull(khoSoLuong) && Objects.isNull(mnSoLuong))
+                || (Objects.isNull(khoThanhTien) && Objects.isNull(mnThanhTien));
+    }
+
+    public boolean isInvalidData_NguoiLap() {
+        return Objects.isNull(tenVatTuKyThuat) || Objects.isNull(kyMaKyHieu) || Objects.isNull(dvt) ||
+                Objects.isNull(dm1SP) || Objects.isNull(soLuongSanPham) || Objects.isNull(tongNhuCau);
     }
 }

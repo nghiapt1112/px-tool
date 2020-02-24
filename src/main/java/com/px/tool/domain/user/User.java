@@ -242,7 +242,8 @@ public class User extends EntityDefault implements UserDetails {
      * Nhân viên tiếp liệu (account 50.d): nhập liệu trang 2 từ H29 đến N29, sau đó ấn Lưu và Chuyển cho Trưởng phòng Vật tư (account 12)
      */
     public boolean isNhanVienTiepLieu() {
-        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(12));
+//        return this.getLevel() == 4 && this.phongBan != null && (phongBan.getGroup().equals(12));
+        return this.userId.equals(54L);
     }
 
 
@@ -283,6 +284,10 @@ public class User extends EntityDefault implements UserDetails {
 
     public String getAlias() {
         return StringUtils.isEmpty(alias) ? getFullName() : alias;
+    }
+
+    public boolean isGiamDoc() {
+        return this.getLevel() == 2 && this.phongBan != null && phongBan.getGroup().equals(2);
     }
 
 //    public String getSignImg() {
