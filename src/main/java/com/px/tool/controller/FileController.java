@@ -75,8 +75,8 @@ public class FileController extends BaseController {
     }
 
     @GetMapping("/export")
-    public String exportThongKe(@RequestParam Long startDate, @RequestParam Long endDate) {
-        excelService.exports(startDate, endDate);
+    public String exportThongKe(@RequestParam Long fromDate, @RequestParam Long toDate) {
+        excelService.exports(fromDate, toDate);
         return "export done";
     }
 

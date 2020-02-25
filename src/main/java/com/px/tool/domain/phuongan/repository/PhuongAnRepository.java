@@ -19,4 +19,7 @@ public interface PhuongAnRepository extends JpaRepository<PhuongAn, Long>, Phuon
 
     @Query("SELECT pa FROM PhuongAn  pa WHERE pa.cntpReceiverId = ?1 OR pa.phuongAnReceiverId = ?1")
     List<PhuongAn> findByUserId(Long userId);
+
+    @Query("SELECT pa FROM PhuongAn  pa WHERE (pa.createdAt >= ?1 AND pa.createdAt <= ?2) OR (pa.updatedAt >= ?1 AND pa.updatedAt <= ?2)")
+    List<PhuongAn> find(Long fromDate, Long toDate);
 }

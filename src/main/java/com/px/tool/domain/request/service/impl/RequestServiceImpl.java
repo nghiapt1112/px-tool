@@ -1,11 +1,13 @@
 package com.px.tool.domain.request.service.impl;
 
+import com.px.tool.domain.cntp.CongNhanThanhPham;
 import com.px.tool.domain.cntp.repository.CongNhanThanhPhamRepository;
 import com.px.tool.domain.dathang.PhieuDatHangDetail;
 import com.px.tool.domain.kiemhong.KiemHongDetail;
 import com.px.tool.domain.mucdich.sudung.MucDichSuDung;
 import com.px.tool.domain.mucdich.sudung.repository.MucDichSuDungRepository;
 import com.px.tool.domain.phuongan.PhuongAn;
+import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
 import com.px.tool.domain.phuongan.service.PhuongAnService;
 import com.px.tool.domain.request.Request;
 import com.px.tool.domain.request.payload.DashBoardCongViecCuaToi;
@@ -18,7 +20,6 @@ import com.px.tool.domain.request.service.RequestService;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.repository.UserRepository;
 import com.px.tool.domain.user.service.UserService;
-import com.px.tool.infrastructure.exception.PXException;
 import com.px.tool.infrastructure.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PhuongAnRepository phuongAnRepository;
 
     @Override
     @Transactional
@@ -196,14 +200,34 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.updateNgayGui(nowAsMilliSec, requestId);
     }
 
+//    @Override
+//    @Transactional
+//    public void deleteRequest(Long id) {
+//        Request request = requestRepository
+//                .findById(id)
+//                .orElseThrow(() -> new PXException("Id khong ton tai"));
+//        requestRepository.delete(request);
+//    }
+
+
     @Override
     @Transactional
-    public void deleteRequest(Long id) {
-        Request request = requestRepository
-                .findById(id)
-                .orElseThrow(() -> new PXException("Id khong ton tai"));
-        requestRepository.delete(request);
+    public void deleteData(Long fromDate, Long toDate) {
+        try {
+            List<Request> requests = requestRepository.find(fromDate, toDate);
+            for (Request request : requests) {
+                requestRepository.delete(request);
+            }
+            List<PhuongAn> pas = phuongAnRepository.find(fromDate, toDate);
+            for (PhuongAn pa : pas) {
+                phuongAnRepository.delete(pa);
+            }
+            List<CongNhanThanhPham> cntps = congNhanThanhPhamRepository.find(fromDate, toDate);
+            for (CongNhanThanhPham cntp : cntps) {
+                congNhanThanhPhamRepository.delete(cntp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
 }

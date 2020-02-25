@@ -44,10 +44,6 @@ public interface RequestRepository extends JpaRepository<Request, Long>, Request
     @Query("UPDATE Request rq SET rq.ngayGui =?1 WHERE rq.requestId = ?2")
     void updateNgayGui(long nowAsMilliSec, Long requestId);
 
-
-    @Modifying
-    @Transactional
-//    @Query("UPDATE Request rq SET rq.deleted = true WHERE rq.requestId = ?1")
-    @Query("DELETE FROM Request rq WHERE rq.requestId=?1")
-    void delete(long id);
+    @Query("SELECT rq FROM Request rq WHERE (rq.createdAt >= ?1 AND rq.createdAt <= ?2) OR (rq.updatedAt >= ?1 AND rq.updatedAt <= ?2)")
+    List<Request> find(Long fromDate, Long toDate);
 }

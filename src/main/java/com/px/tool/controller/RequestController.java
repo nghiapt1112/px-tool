@@ -164,32 +164,10 @@ public class RequestController extends BaseController {
         return userService.findNhanVienKCS();
     }
 
-    @DeleteMapping("/kh/{id}")
-    public String deleteKiemhong(@PathVariable Long id) {
-        logger.info("Deleting reuest with id: {}", id);
-        kiemHongRepository.deleteKiemHong(Arrays.asList(id));
-        kiemHongDetailRepository.deleteByKhId(id);
-        return "Đã xóa thành công";
-    }
-
-    @DeleteMapping("/dh/{id}")
-    public String deleteDathang(@PathVariable Long id) {
-        logger.info("Deleting reuest with id: {}", id);
-        requestService.deleteRequest(id);
-        return "Đã xóa thành công";
-    }
-
-    @DeleteMapping("/pa/{id}")
-    public String deletePhuongAn(@PathVariable Long id) {
-        logger.info("Deleting reuest with id: {}", id);
-        requestService.deleteRequest(id);
-        return "Đã xóa thành công";
-    }
-
-    @DeleteMapping("/cntp/{id}")
-    public String deleteCNTP(@PathVariable Long id) {
-        logger.info("Deleting reuest with id: {}", id);
-        requestService.deleteRequest(id);
-        return "Đã xóa thành công";
+    @DeleteMapping("/del/range")
+    public String deleteData(@RequestParam Long fromDate, @RequestParam Long toDate) {
+        logger.info("delete data\nstartDate:\t{}\nendDate:\t{}", fromDate, toDate);
+        requestService.deleteData(fromDate, toDate);
+        return "Data is deleted !!!!";
     }
 }

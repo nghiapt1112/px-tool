@@ -9,6 +9,8 @@ import com.px.tool.domain.dathang.PhieuDatHangPayload;
 import com.px.tool.domain.dathang.service.PhieuDatHangService;
 import com.px.tool.domain.kiemhong.KiemHongPayLoad;
 import com.px.tool.domain.kiemhong.service.KiemHongService;
+import com.px.tool.domain.mucdich.sudung.MucDichSuDung;
+import com.px.tool.domain.mucdich.sudung.repository.MucDichSuDungRepository;
 import com.px.tool.domain.phuongan.PhuongAn;
 import com.px.tool.domain.phuongan.PhuongAnPayload;
 import com.px.tool.domain.phuongan.repository.PhuongAnRepository;
@@ -37,14 +39,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
+    private static final String base_dir_kiem_hong = "/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/kiem_hong/";
+    private static final String base_dir_dat_hang = "/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/dat_hang/";
+    private static final String base_dir_pa = "/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/phuong_an/";
+    private static final String base_dir_cntp = "/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/cntp/";
+
     @Autowired
     private KiemHongService kiemHongService;
 
@@ -69,6 +80,9 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
     @Autowired
     private CongNhanThanhPhamRepository congNhanThanhPhamRepository;
 
+    @Autowired
+    private MucDichSuDungRepository mucDichSuDungRepository;
+
     @Value("${app.file.export.kiemhong}")
     private String kiemHongPrefix;
 
@@ -90,7 +104,7 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
                 exportKiemHong(fis, outputStream, kiemHongService.findThongTinKiemHong(1L, requestId));
             } else if (requestType == RequestType.DAT_HANG) {
                 fis = new FileInputStream(new File("./src/main/resources/templates/2_Dat_Hang.xlsx"));
-                exportPHieuDatHang(fis, outputStream, phieuDatHangService.findById(1L, requestId));
+                exportPHieuDatHang(fis, outputStream, phieuDatHangService.findById(1L, requestId), mdsdMap());
             } else if (requestType == RequestType.PHUONG_AN) {
                 fis = new FileInputStream(new File("./src/main/resources/templates/3_phuong_an.xlsx"));
                 exportPhuongAn(fis, outputStream, phuongAnService.findById(1L, requestId));
@@ -165,7 +179,7 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
         }
     }
 
-    private void exportPHieuDatHang(InputStream is, OutputStream outputStream, PhieuDatHangPayload payload) {
+    private void exportPHieuDatHang(InputStream is, OutputStream outputStream, PhieuDatHangPayload payload, Map<Long, String> mdsdNameById) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(is);
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -201,7 +215,7 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
                 setCellVal(crrRow, 3, payload.getPhieuDatHangDetails().get(i).getKiMaHieu());
                 setCellVal(crrRow, 4, payload.getPhieuDatHangDetails().get(i).getDvt());
                 setCellVal(crrRow, 5, payload.getPhieuDatHangDetails().get(i).getSl());
-                setCellVal(crrRow, 6, payload.getPhieuDatHangDetails().get(i).getMucDicSuDungAsString());
+                setCellVal(crrRow, 6, getVal(mdsdNameById, payload.getPhieuDatHangDetails().get(i).getMucDichSuDung()));
                 setCellVal(crrRow, 7, payload.getPhieuDatHangDetails().get(i).getPhuongPhapKhacPhuc());
                 setCellVal(crrRow, 8, payload.getPhieuDatHangDetails().get(i).getSoPhieuDatHang());
                 setCellVal(crrRow, 9, payload.getPhieuDatHangDetails().get(i).getNguoiThucHien());
@@ -414,13 +428,19 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
 
     @Override
     public void exports(Long startDate, Long endDate) {
+        mkdirs(base_dir_kiem_hong);
+        mkdirs(base_dir_dat_hang);
+        mkdirs(base_dir_pa);
+        mkdirs(base_dir_cntp);
+
         Page<Request> page = requestRepository.findPaging(of(0, Integer.MAX_VALUE), startDate, endDate);
         Map<Long, User> userById = userService.userById();
         try {
             if (!page.isEmpty()) {
+                Map<Long, String> mdsdNameById = mdsdMap();
                 for (Request request : page) {
                     if (request.getKiemHong().allApproved()) {
-                        try (FileOutputStream os = new FileOutputStream("/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/" + kiemHongPrefix + request.getKiemHong().getKhId() + ".xlsx");
+                        try (FileOutputStream os = new FileOutputStream(base_dir_kiem_hong + kiemHongPrefix + request.getKiemHong().getKhId() + ".xlsx");
                              FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/1_Kiem_Hong.xlsx"))) {
                             KiemHongPayLoad payload = KiemHongPayLoad
                                     .fromEntity(request.getKiemHong())
@@ -433,14 +453,14 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
                         }
                     }
                     if (request.getPhieuDatHang().allApproved()) {
-                        try (FileOutputStream os = new FileOutputStream("/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/" + datHangPrefix + CommonUtils.removeAllSpecialCharacters(request.getPhieuDatHang().getSo()) + ".xlsx");
+                        try (FileOutputStream os = new FileOutputStream(base_dir_dat_hang + datHangPrefix + CommonUtils.removeAllSpecialCharacters(request.getPhieuDatHang().getSo()) + ".xlsx");
                              FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/2_Dat_Hang.xlsx"))) {
                             PhieuDatHangPayload payload = PhieuDatHangPayload
                                     .fromEntity(request.getPhieuDatHang());
 
                             payload.setRequestId(request.getRequestId());
                             payload.processSignImgAndFullName(userById);
-                            exportPHieuDatHang(fis, os, payload);
+                            exportPHieuDatHang(fis, os, payload, mdsdNameById);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -452,13 +472,13 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             if (!CollectionUtils.isEmpty(pas)) {
                 for (PhuongAn pa : pas) {
                     if (pa.allApproved()) {
-                        try (FileOutputStream os = new FileOutputStream("/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/" + paPrefix + CommonUtils.removeAllSpecialCharacters(pa.getMaSo()) + ".xlsx");
+                        try (FileOutputStream os = new FileOutputStream(base_dir_pa + paPrefix + CommonUtils.removeAllSpecialCharacters(pa.getMaSo()) + ".xlsx");
                              FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/3_phuong_an.xlsx"))) {
                             logger.info("Exporting PA with id: {}", pa.getPaId());
-//                            PhuongAnPayload payload = PhuongAnPayload.fromEntity(pa);
-//                            payload.setRequestId(pa.getPaId());
-//                            payload.processSignImgAndFullName(userById);
-                            exportPhuongAn(fis, os, phuongAnService.findById(1L, pa.getPaId()));
+                            PhuongAnPayload payload = PhuongAnPayload.fromEntity(pa);
+                            payload.setRequestId(pa.getPaId());
+                            payload.processSignImgAndFullName(userById);
+                            exportPhuongAn(fis, os, payload);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -469,13 +489,13 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             List<CongNhanThanhPham> cntps = congNhanThanhPhamRepository.findAll();
             for (CongNhanThanhPham cntp : cntps) {
                 if (cntp.allApproved()) {
-                    try (FileOutputStream os = new FileOutputStream("/home/nghiapt/source/thu_muc_cap_nhat_phan_mem/PhuongAnSo_thong_ke/" + cntpPrefix + cntp.getTpId() + ".xlsx");
+                    try (FileOutputStream os = new FileOutputStream(base_dir_cntp + cntpPrefix + cntp.getTpId() + ".xlsx");
                          FileInputStream fis = new FileInputStream(new File("./src/main/resources/templates/4_cntp.xlsx"))) {
                         logger.info("Exporting CNTP with id: {}", cntp.getTpId());
-//                        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(cntp);
-//                        payload.setRequestId(cntp.getTpId());
-//                        payload.processSignImgAndFullName(userById);
-                        exportCNTP(fis, os, congNhanThanhPhamService.timCongNhanThanhPham(1L, cntp.getTpId()));
+                        CongNhanThanhPhamPayload payload = CongNhanThanhPhamPayload.fromEntity(cntp);
+                        payload.setRequestId(cntp.getTpId());
+                        payload.processSignImgAndFullName(userById);
+                        exportCNTP(fis, os, payload);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -486,5 +506,32 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
         }
     }
 
+    private void mkdirs(String dirPath) {
+        try {
+            Path path = Paths.get(dirPath);
+            //if directory exists?
+            if (!Files.exists(path)) Files.createDirectories(path);
+        } catch (Exception e) {
+            //fail to create directory
+            e.printStackTrace();
+        }
 
+    }
+
+
+    private Map<Long, String> mdsdMap() {
+        return mucDichSuDungRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(MucDichSuDung::getMdId, e -> e.getTen()));
+    }
+
+    private String getVal(Map<Long, String> map, Long key) {
+        if (key == null) {
+            return "";
+        }
+        if (map.containsKey(key)) {
+            return map.get(key);
+        } else return "";
+    }
 }

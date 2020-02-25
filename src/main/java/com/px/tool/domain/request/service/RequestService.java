@@ -19,5 +19,5 @@ public interface RequestService {
 
     void updateNgayGui(long nowAsMilliSec, Long requestId);
 
-    void deleteRequest(Long id);
+    void deleteData(Long fromDate, Long toDate);
 }

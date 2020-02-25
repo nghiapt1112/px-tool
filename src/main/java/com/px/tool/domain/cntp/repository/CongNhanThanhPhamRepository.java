@@ -22,4 +22,7 @@ public interface CongNhanThanhPhamRepository extends JpaRepository<CongNhanThanh
             " AND (c.step IS NULL OR c.step <> 1 OR c.step = 0) "
             , nativeQuery = true)
     List<CongNhanThanhPham> findAllTheoNhanVienKCS(Long userId);
+
+    @Query("SELECT c FROM CongNhanThanhPham c WHERE (c.createdAt >= ?1 AND c.createdAt <= ?2) OR (c.updatedAt >= ?1 AND c.updatedAt <= ?2)")
+    List<CongNhanThanhPham> find(Long fromDate, Long toDate);
 }

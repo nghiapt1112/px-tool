@@ -22,6 +22,9 @@ public class CommonUtils {
     }
 
     public static String getPercentage(Integer i1, Integer i2) {
+        if (Objects.isNull(i2) || Objects.equals(i2, 0) || Objects.isNull(i1) || Objects.equals(i1, 0)) {
+            return "0";
+        }
         String val = (((float) i1 * 100) / i2 + "");
         return val.length() > 5 ? val.substring(0, 6) : val;
     }

@@ -289,9 +289,10 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         }
         kiemHong.setKiemHongDetails(kiemHongDetails);
 //        kiemHong.setGiamDocXacNhan();
-        kiemHong.setToTruongXacNhan(true);
-        kiemHong.setTroLyKTXacNhan(true);
-        kiemHong.setQuanDocXacNhan(true);
+        // NOTE: tao dat hang thi ko co Kiem_Hong => ko co' report => ko dc set 3 fields xac_nhan = true.
+//        kiemHong.setToTruongXacNhan(true);
+//        kiemHong.setTroLyKTXacNhan(true);
+//        kiemHong.setQuanDocXacNhan(true);
         return kiemHong;
     }
 

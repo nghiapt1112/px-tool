@@ -316,6 +316,13 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
         cntp.setTpkcsId(existed.getTpkcsId());
         cntp.setQuanDocIds(existed.getQuanDocIds());
 
+        cntp.setNgayThangNamToTruong1(existed.getNgayThangNamToTruong1());
+        cntp.setNgayThangNamToTruong2(existed.getNgayThangNamToTruong2());
+        cntp.setNgayThangNamToTruong3(existed.getNgayThangNamToTruong3());
+        cntp.setNgayThangNamToTruong4(existed.getNgayThangNamToTruong4());
+        cntp.setNgayThangNamToTruong5(existed.getNgayThangNamToTruong5());
+
+
         if (cntp.getTpkcsXacNhan() && !existed.getTpkcsXacNhan()) {
             cntp.setNgayThangNamTPKCS(nowAsMilliSec());
         }
@@ -323,16 +330,16 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
             cntp.setNgayThangNamToTruong1(nowAsMilliSec());
         }
         if (Objects.nonNull(toTruong2Id) && cntp.getToTruong2XacNhan() && (cntp.getToTruong2XacNhan() != existed.getToTruong2XacNhan())) {
-            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+            cntp.setNgayThangNamToTruong2(nowAsMilliSec());
         }
         if (Objects.nonNull(toTruong3Id) && cntp.getToTruong3XacNhan() && (cntp.getToTruong3XacNhan() != existed.getToTruong3XacNhan())) {
-            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+            cntp.setNgayThangNamToTruong3(nowAsMilliSec());
         }
         if (Objects.nonNull(toTruong4Id) && cntp.getToTruong4XacNhan() && (cntp.getToTruong4XacNhan() != existed.getToTruong4XacNhan())) {
-            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+            cntp.setNgayThangNamToTruong4(nowAsMilliSec());
         }
         if (Objects.nonNull(toTruong5Id) && cntp.getToTruong5XacNhan() && (cntp.getToTruong5XacNhan() != existed.getToTruong5XacNhan())) {
-            cntp.setNgayThangNamToTruong1(nowAsMilliSec());
+            cntp.setNgayThangNamToTruong5(nowAsMilliSec());
         }
     }
 

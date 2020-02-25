@@ -4,7 +4,7 @@ app:
   file.export:
     kiemhong: KIEM_HONG__
     dathang: DAT_HANG__
-    pa: PHUONG_AN
+    pa: PHUONG_AN__
     cntp: CNTP__
 
 server.port: 38081
