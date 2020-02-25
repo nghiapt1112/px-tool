@@ -115,6 +115,7 @@ public class PhuongAnServiceImpl implements PhuongAnService {
         if (phuongAn.allApproved()) {
             phuongAn.setStep(1L);
             existedPhuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
+            phuongAn.setStatus(RequestType.CONG_NHAN_THANH_PHAM);
             taoCNTP(phuongAn, thanhPham);
             phuongAn.setCongNhanThanhPham(thanhPham);
             guiVanBanDen(phuongAnPayload, existedPhuongAn);

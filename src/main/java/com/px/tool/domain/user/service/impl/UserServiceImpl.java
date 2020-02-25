@@ -169,7 +169,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             } else {
                 Request existedRequest = null;
                 try {
-                    existedRequest = requestService.findById(requestParams.getRequestId());
+                    if (requestParams.getRequestId()!= null) {
+                        existedRequest = requestService.findById(requestParams.getRequestId());
+                    }
                 } catch (Exception e) {
                     logger.error("Request not found with id: {}", requestParams.getRequestId());
                 }

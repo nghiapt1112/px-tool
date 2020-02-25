@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +165,7 @@ public class RequestServiceImpl implements RequestService {
                 .map(el -> ThongKeDetailPayload.fromRequestEntity(el, phuongAnById))
                 .flatMap(el -> el.stream())
                 .peek(el -> {
-                    if (el.getXacNhanHoanThanh() != null) {
+                    if (!StringUtils.isEmpty(el.getXacNhanHoanThanh())) {
                         hoanThanhCount.getAndSet(hoanThanhCount.get() + 1);
                     }
                     try {

@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.px.tool.infrastructure.utils.CommonUtils.collectFullName;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectSignImg;
 import static com.px.tool.infrastructure.utils.CommonUtils.getBigDecimal;
 
 @Getter
@@ -265,24 +267,24 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     public void processSignImgAndFullName(Map<Long, User> userById) {
         try {
             if (this.getGiamDocXacNhan()) {
-                this.setGiamDocSignImg(userById.get(this.getGiamDocId()).getSignImg());
-                this.setGiamDocFullName(userById.get(this.getGiamDocId()).getFullName());
+                this.setGiamDocSignImg(collectSignImg(userById.get(this.getGiamDocId()), ""));
+                this.setGiamDocFullName(collectFullName(userById.get(this.getGiamDocId()), ""));
             }
             if (this.getTruongPhongKTHKXacNhan()) {
-                this.setTruongPhongKTHKSignImg(userById.get(this.getTruongPhongKTHKId()).getSignImg());
-                this.setTruongPhongKTHKFullName(userById.get(this.getTruongPhongKTHKId()).getFullName());
+                this.setTruongPhongKTHKSignImg(collectSignImg(userById.get(this.getTruongPhongKTHKId()), ""));
+                this.setTruongPhongKTHKFullName(collectFullName(userById.get(this.getTruongPhongKTHKId()), ""));
             }
             if (this.getTruongPhongKeHoachXacNhan()) {
-                this.setTruongPhongKeHoachSignImg(userById.get(this.getTruongPhongKeHoachId()).getSignImg());
-                this.setTruongPhongKeHoachFullName(userById.get(this.getTruongPhongKeHoachId()).getFullName());
+                this.setTruongPhongKeHoachSignImg(collectSignImg(userById.get(this.getTruongPhongKeHoachId()), ""));
+                this.setTruongPhongKeHoachFullName(collectFullName(userById.get(this.getTruongPhongKeHoachId()), ""));
             }
             if (this.getTruongPhongVatTuXacNhan()) {
-                this.setTruongPhongVatTuSignImg(userById.get(this.getTruongPhongVatTuId()).getSignImg());
-                this.setTruongPhongVatTuFullName(userById.get(this.getTruongPhongVatTuId()).getFullName());
+                this.setTruongPhongVatTuSignImg(collectSignImg(userById.get(this.getTruongPhongVatTuId()), ""));
+                this.setTruongPhongVatTuFullName(collectFullName(userById.get(this.getTruongPhongVatTuId()), ""));
             }
             if (this.getNguoiLapXacNhan()) {
-                this.setNguoiLapSignImg(userById.get(this.getNguoiLapId()).getSignImg());
-                this.setNguoiLapFullName(userById.get(this.getNguoiLapId()).getFullName());
+                this.setNguoiLapSignImg(collectSignImg(userById.get(this.getNguoiLapId()), ""));
+                this.setNguoiLapFullName(collectFullName(userById.get(this.getNguoiLapId()), ""));
             }
         } catch (Exception e) {
             PXLogger.error("[PHUONG_AN] Parse chữ ký và full name bị lỗi.");
@@ -306,9 +308,12 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
 
         if (existedPhuongAn.getNguoiLapId() != null) pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
-        if (existedPhuongAn.getTruongPhongKTHKId() != null) pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
-        if (existedPhuongAn.getTruongPhongKeHoachId() != null) pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
-        if (existedPhuongAn.getTruongPhongVatTuId() != null) pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
+        if (existedPhuongAn.getTruongPhongKTHKId() != null)
+            pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
+        if (existedPhuongAn.getTruongPhongKeHoachId() != null)
+            pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
+        if (existedPhuongAn.getTruongPhongVatTuId() != null)
+            pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
         if (existedPhuongAn.getGiamDocId() != null) pa.setGiamDocId(existedPhuongAn.getGiamDocId());
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
@@ -354,7 +359,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
                     }
                 }
             }
-            if (user.isNhanVienTiepLieu()){
+            if (user.isNhanVienTiepLieu()) {
                 if (CollectionUtils.isEmpty(dinhMucVatTus)) {
                     throw new PXException("phuongan.dinhmucvattu");
                 }
@@ -392,14 +397,14 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     }
 
     public BigDecimal getTongDMVTKho() {
-        return tongDMVTKho == null ? new BigDecimal(0): tongDMVTKho;
+        return tongDMVTKho == null ? new BigDecimal(0) : tongDMVTKho;
     }
 
     public BigDecimal getTongDMVTMuaNgoai() {
-        return tongDMVTMuaNgoai == null ? new BigDecimal(0): tongDMVTMuaNgoai;
+        return tongDMVTMuaNgoai == null ? new BigDecimal(0) : tongDMVTMuaNgoai;
     }
 
     public BigDecimal getTienLuong() {
-        return tienLuong == null ? new BigDecimal(0): tienLuong;
+        return tienLuong == null ? new BigDecimal(0) : tienLuong;
     }
 }

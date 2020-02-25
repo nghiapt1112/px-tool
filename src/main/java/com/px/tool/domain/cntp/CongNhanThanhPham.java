@@ -128,4 +128,8 @@ public class CongNhanThanhPham extends EntityDefault {
     public Boolean getToTruong5XacNhan() {
         return toTruong5XacNhan == null ? false : toTruong5XacNhan;
     }
+
+    public boolean allApproved() {
+        return this.step != null && this.step.equals(1L);
+    }
 }

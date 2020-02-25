@@ -13,9 +13,19 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.px.tool.infrastructure.utils.CommonUtils.collectFullName;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectSignImg;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Getter
@@ -98,8 +108,8 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
         payload.troLyKTDisable = true;
         payload.toTruongDisable = true;
 
-        payload.phanXuong = Long.valueOf(kiemHong.getPhanXuong());
-        payload.toSX = Long.valueOf(kiemHong.getToSX());
+        payload.phanXuong = getLong(kiemHong.getPhanXuong());
+        payload.toSX = getLong(kiemHong.getToSX());
         payload.setNoiNhan(null);
 
         payload.ngayThangNamQuanDoc = DateTimeUtils.toString(kiemHong.getNgayThangNamQuanDoc());
@@ -186,16 +196,16 @@ public class KiemHongPayLoad extends AbstractPayLoad<KiemHong> {
     public void processSignImgAndFullName(Map<Long, User> userById) {
         try {
             if (this.getQuanDocXacNhan()) {
-                this.setQuanDocfullName(userById.get(this.getQuanDocId()).getFullName());
-                this.setQuanDocSignImg(userById.get(this.getQuanDocId()).getSignImg());
+                this.setQuanDocfullName(collectFullName(userById.get(this.getQuanDocId()), ""));
+                this.setQuanDocSignImg(collectSignImg(userById.get(this.getQuanDocId()), ""));
             }
             if (this.getTroLyKTXacNhan()) {
-                this.setTroLyfullName(userById.get(this.getTroLyId()).getFullName());
-                this.setTroLyKTSignImg(userById.get(this.getTroLyId()).getSignImg());
+                this.setTroLyfullName(collectFullName(userById.get(this.getTroLyId()), ""));
+                this.setTroLyKTSignImg(collectSignImg(userById.get(this.getTroLyId()), ""));
             }
             if (this.getToTruongXacNhan()) {
-                this.setToTruongfullName(userById.get(this.getToTruongId()).getFullName());
-                this.setToTruongSignImg(userById.get(this.getToTruongId()).getSignImg());
+                this.setToTruongfullName(collectFullName(userById.get(this.getToTruongId()), ""));
+                this.setToTruongSignImg(collectSignImg(userById.get(this.getToTruongId()), ""));
             }
         } catch (Exception e) {
             PXLogger.error("[KiemHong] Parse chữ ký và full name bị lỗi.");

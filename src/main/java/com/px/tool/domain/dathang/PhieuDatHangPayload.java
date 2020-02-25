@@ -17,8 +17,20 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.px.tool.infrastructure.utils.CommonUtils.collectFullName;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectSignImg;
 
 @Getter
 @Setter
@@ -178,16 +190,16 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
     public void processSignImgAndFullName(Map<Long, User> userById) {
         try {
             if (this.getNguoiDatHangXacNhan()) {
-                this.setNguoiDatHangFullName(userById.get(this.getNguoiDatHangId()).getFullName());
-                this.setNguoiDatHangSignImg(userById.get(this.getNguoiDatHangId()).getSignImg());
+                this.setNguoiDatHangFullName(collectFullName(userById.get(this.getNguoiDatHangId()), ""));
+                this.setNguoiDatHangSignImg(collectSignImg(userById.get(this.getNguoiDatHangId()), ""));
             }
             if (this.getTpkthkXacNhan()) {
-                this.setTpkthkFullName(userById.get(this.getTpkthkId()).getFullName());
-                this.setTpkthkSignImg(userById.get(this.getTpkthkId()).getSignImg());
+                this.setTpkthkFullName(collectFullName(userById.get(this.getTpkthkId()), ""));
+                this.setTpkthkSignImg(collectSignImg(userById.get(this.getTpkthkId()), ""));
             }
             if (this.getTpvatTuXacNhan()) {
-                this.setTpvatTuFullName(userById.get(this.getTpvatTuId()).getFullName());
-                this.setTpvatTuSignImg(userById.get(this.getTpvatTuId()).getSignImg());
+                this.setTpvatTuFullName(collectFullName(userById.get(this.getTpvatTuId()), ""));
+                this.setTpvatTuSignImg(collectSignImg(userById.get(this.getTpvatTuId()), ""));
             }
         } catch (Exception e) {
             PXLogger.error("[DAT_HANG] Parse chữ ký và full name bị lỗi.");
@@ -276,6 +288,10 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
             kiemHongDetails.add(phieuDatHangDetail.toKiemHongDetailEntity());
         }
         kiemHong.setKiemHongDetails(kiemHongDetails);
+//        kiemHong.setGiamDocXacNhan();
+        kiemHong.setToTruongXacNhan(true);
+        kiemHong.setTroLyKTXacNhan(true);
+        kiemHong.setQuanDocXacNhan(true);
         return kiemHong;
     }
 

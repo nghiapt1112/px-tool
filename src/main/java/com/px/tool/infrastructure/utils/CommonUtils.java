@@ -84,6 +84,13 @@ public class CommonUtils {
         return user.getFullName();
     }
 
+    public static String collectSignImg(User user, String defaultVal) {
+        if (Objects.isNull(user)) {
+            return defaultVal;
+        }
+        return user.getSignImg();
+    }
+
     public static String collectAlias(User user, String defaultVal) {
         if (Objects.isNull(user)) {
             return defaultVal;
@@ -111,5 +118,11 @@ public class CommonUtils {
         } catch (Exception e) {
             return new BigDecimal(0);
         }
+    }
+
+    public static String removeAllSpecialCharacters(String str) {
+        if (!StringUtils.isEmpty(str)) {
+            return str.replaceAll("[^a-zA-Z0-9]", "");
+        } else return str;
     }
 }

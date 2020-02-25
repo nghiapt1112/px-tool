@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static com.px.tool.infrastructure.utils.CommonUtils.collectAlias;
 import static com.px.tool.infrastructure.utils.CommonUtils.collectFullName;
+import static com.px.tool.infrastructure.utils.CommonUtils.collectSignImg;
 import static com.px.tool.infrastructure.utils.CommonUtils.getVal;
 import static com.px.tool.infrastructure.utils.DateTimeUtils.nowAsMilliSec;
 
@@ -268,24 +269,24 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
             toTruong5Alias = collectAlias(userById.get(toTruong5Id), "");
 
             if (getQuanDocXacNhan()) {
-                quanDocFullName = userById.get(quanDocId).getFullName();
-                quanDocSignImg = userById.get(quanDocId).getSignImg();
+                quanDocFullName = collectFullName(userById.get(quanDocId), "");
+                quanDocSignImg = collectSignImg(userById.get(quanDocId), "");
             }
             if (getToTruong1XacNhan()) {
-                toTruong1SignImg = userById.get(toTruong1Id).getSignImg();
+                toTruong1SignImg = collectSignImg(userById.get(toTruong1Id), "");
             }
             if (getToTruong2XacNhan()) {
-                toTruong2SignImg = userById.get(toTruong2Id).getSignImg();
+                toTruong2SignImg = collectSignImg(userById.get(toTruong2Id), "");
             }
 
             if (getToTruong3XacNhan()) {
-                toTruong3SignImg = userById.get(toTruong3Id).getSignImg();
+                toTruong3SignImg = collectSignImg(userById.get(toTruong3Id), "");
             }
             if (getToTruong4XacNhan()) {
-                toTruong4SignImg = userById.get(toTruong4Id).getSignImg();
+                toTruong4SignImg = collectSignImg(userById.get(toTruong4Id), "");
             }
             if (getToTruong5XacNhan()) {
-                toTruong5SignImg = userById.get(toTruong5Id).getSignImg();
+                toTruong5SignImg = collectSignImg(userById.get(toTruong5Id), "");
             }
         } catch (Exception e) {
             PXLogger.error("[CNTP] Parse chữ ký và full name bị lỗi.");

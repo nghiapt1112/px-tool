@@ -27,4 +27,52 @@ public class NoiNhanRequestParams extends AbstractObject {
     private Boolean nguoiGiaoViec;
     private Long userId;
     private RequestType type;
+
+    public Boolean getToTruong() {
+        return getBol(toTruong);
+    }
+
+    public Boolean getTroLyKT() {
+        return getBol(troLyKT);
+    }
+
+    public Boolean getQuanDoc() {
+        return getBol(quanDoc);
+    }
+
+    public Boolean getNguoiDatHang() {
+        return getBol(nguoiDatHang);
+    }
+
+    public Boolean getNguoiLap() {
+        return getBol(nguoiLap);
+    }
+
+    public Boolean getTpVatTu() {
+        return getBol(tpVatTu);
+    }
+
+    public Boolean getTpKeHoach() {
+        return getBol(tpKeHoach);
+    }
+
+    public Boolean getTpKTHK() {
+        return getBol(tpKTHK);
+    }
+
+    public Boolean getGiamDoc() {
+        return getBol(giamDoc);
+    }
+
+    public Boolean getTpKCS() {
+        return getBol(tpKCS);
+    }
+
+    public Boolean getNguoiThucHien() {
+        return getBol(nguoiThucHien);
+    }
+
+    public Boolean getNguoiGiaoViec() {
+        return getBol(nguoiGiaoViec);
+    }
 }

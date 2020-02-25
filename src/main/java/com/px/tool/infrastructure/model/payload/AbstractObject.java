@@ -14,4 +14,16 @@ public abstract class AbstractObject {
     protected boolean getBol(Boolean val) {
         return (Objects.isNull(val)) ? false : val;
     }
+
+    protected static long getLong(Object o) {
+        if (o == null){
+            return 0L;
+        } else {
+            try {
+                return Long.valueOf(o.toString());
+            } catch (NumberFormatException e) {
+                return 0L;
+            }
+        }
+    }
 }

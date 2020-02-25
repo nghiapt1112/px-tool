@@ -266,10 +266,10 @@ public class ExcelServiceTest {
 
 //
 
-        int totalLine = 15;
+        int totalLine = 6;
         int startFix1 = 15;
         int endFix1 = 35;
-        if (totalLine > 6) {
+        if (totalLine > 5) {
             sheet.copyRows(startFix1, endFix1, endFix1 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
 
             for (int i = startFix1; i < endFix1 + (totalLine - 6); i++) {
@@ -300,9 +300,9 @@ public class ExcelServiceTest {
                 sheet.copyRows(row_mau, row_mau, i - 1, new CellCopyPolicy()); // copy and paste
             }
         }
-
-        // dang in o dong 35 => 34
-        // expect 49 => 48
+//
+//        // dang in o dong 35 => 34
+//        // expect 49 => 48
         for (int i = 0; i < totalLine2; i++) {
             XSSFRow crrRow2 = sheet.getRow(row_mau + i);
             setCellVal(crrRow2, 0, i + 1 + "");

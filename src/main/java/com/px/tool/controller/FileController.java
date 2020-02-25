@@ -69,9 +69,15 @@ public class FileController extends BaseController {
 
     @GetMapping("/print")
     public void downloadKiemHong(@RequestParam Long requestId, HttpServletRequest request, HttpServletResponse response, RequestType requestType) throws IOException {
-        excelService.exportFile(requestId, requestType, response);
+        excelService.exportFile(requestId, requestType, response.getOutputStream());
         response.setHeader("Content-disposition", "attachment; filename=export.xlsx");
         response.setHeader("Content-type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    @GetMapping("/export")
+    public String exportThongKe(@RequestParam Long startDate, @RequestParam Long endDate) {
+        excelService.exports(startDate, endDate);
+        return "export done";
     }
 
 }
