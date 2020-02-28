@@ -174,7 +174,7 @@ public class RequestServiceImpl implements RequestService {
                     }
                     try {
                         if (el.getToTruongId() != null) {
-                            el.setToTruongFullName(userById.get(el.getToTruongId()).getFullName());
+                            el.setToTruongFullName(userById.get(el.getToTruongId()).getAlias());
                         }
                     } catch (Exception e) {
                         logger.error("To truong id trong PKH khong con ton tai trong he thong.");
