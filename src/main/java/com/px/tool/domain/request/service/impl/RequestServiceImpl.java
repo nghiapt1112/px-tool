@@ -183,7 +183,9 @@ public class RequestServiceImpl implements RequestService {
                 })
                 .sorted(Comparator
                         .comparing(ThongKeDetailPayload::getSoPAAsStr)
-                        .thenComparing(Comparator.comparing(ThongKeDetailPayload::getDetailIdAsStr).reversed())
+                        .thenComparing(
+                                Comparator.comparing(ThongKeDetailPayload::getDetailIdAsStr)
+                        )
                 )
                 .collect(Collectors.toList()));
         tkPayload.setTienDo(CommonUtils.getPercentage(hoanThanhCount.get(), tkPayload.getDetails().size()));

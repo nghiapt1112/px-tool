@@ -53,7 +53,7 @@ dependencies {
         systemProperties = System.properties
         jvmArgs = [
                 "-Xdebug",
-                "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5016"
+                "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5016"
         ]
     }
 }

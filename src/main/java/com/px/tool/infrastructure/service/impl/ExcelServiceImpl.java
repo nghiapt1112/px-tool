@@ -336,7 +336,7 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             setCellVal(row3, 6, payload.getSanPham());
             setCellVal(row4, 6, payload.getNoiDung());
             setCellVal(row5, 6, payload.getNguonKinhPhi());
-            setCellVal(row15, 2, payload.getTongCongDinhMucLaoDong().toString());
+            setCellVal(row15, 11, payload.getTongCongDinhMucLaoDong().toString());
 
             setCellVal(row3, 0, payload.getNgayThangNamGiamDoc());
             setCellVal(row32, 1, payload.getNgayThangNamTPKTHK());
@@ -345,7 +345,7 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             setCellVal(row32, 12, payload.getNgayThangNamNguoiLap());
 
             setCellVal(row29, 9, payload.getTongDMVTKho().toString());
-            setCellVal(row29, 13, payload.getTongDMVTMuaNgoai().toString());
+            setCellVal(row29, 12, payload.getTongDMVTMuaNgoai().toString());
             setCellVal(row30, 2, payload.getTienLuong().toString());
 
 //
