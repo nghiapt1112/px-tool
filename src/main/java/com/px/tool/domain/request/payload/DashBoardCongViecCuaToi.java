@@ -27,7 +27,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
     public static DashBoardCongViecCuaToi fromEntity(Request request, Map<Long, User> userById) {
         DashBoardCongViecCuaToi dashBoardCongViecCuaToi = new DashBoardCongViecCuaToi();
-        dashBoardCongViecCuaToi.ma = "Key-" + request.getRequestId();
+        dashBoardCongViecCuaToi.ma = "PKH-" + request.getRequestId();
         dashBoardCongViecCuaToi.requestId = request.getRequestId();
         dashBoardCongViecCuaToi.status = "Vừa tạo";
         dashBoardCongViecCuaToi.type = request.getType();
@@ -45,7 +45,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
                 }
             } else if (dashBoardCongViecCuaToi.type == RequestType.DAT_HANG) {
                 dashBoardCongViecCuaToi.noiDung = request.getPhieuDatHang().getNoiDung();
-                dashBoardCongViecCuaToi.setMa(request.getPhieuDatHang().getSo());
+                dashBoardCongViecCuaToi.ma = request.getPhieuDatHang().getSo();
                 dashBoardCongViecCuaToi.status = "Vừa tạo";
                 if (request.getPhieuDatHang().getNguoiDatHangXacNhan()) {
                     dashBoardCongViecCuaToi.status = "Người đặt hàng đã ký";
@@ -113,7 +113,7 @@ public class DashBoardCongViecCuaToi extends AbstractObject {
 
     public static DashBoardCongViecCuaToi fromCNTP(CongNhanThanhPham el, Map<Long, User> userById) {
         DashBoardCongViecCuaToi dashboard = new DashBoardCongViecCuaToi();
-        dashboard.ma = "Key-" + el.getTpId();
+        dashboard.ma = "CNTP-" + el.getTpId();
         dashboard.requestId = el.getTpId();
         dashboard.status = "Đang xử lý ... ";
         dashboard.noiDung = el.getNoiDung();

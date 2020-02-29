@@ -355,22 +355,17 @@ public class CongNhanThanhPhamPayload extends AbstractPayLoad<CongNhanThanhPham>
             toTruong4Id = getVal(cusToTruongIds, 3);
             toTruong5Id = getVal(cusToTruongIds, 4);
         } else if (user.isToTruong()) {
-            if (cusToTruongIds.size() > 1) {
-                throw new PXException("cntp.kcs_max1");
-            }
-            tpkcsId = getVal(cusToTruongIds, 0);
-            if (CollectionUtils.isNotEmpty(cusToTruongIds)) {
-                for (NoiDungThucHienPayload noiDungThucHien : noiDungThucHiens) {
-                    if (noiDungThucHien.isInvalidData()) {
-                        throw new PXException("cntp.noi_dung_thuc_hien");
-                    }
-                }
-            }
+            // to truong se ko chuyen di dau nua, do to truong chi dinh nhanvienKcs o muc noi dung thuc hien roi. list_cus_id = empty.
+            // NOTE: khong nhac den viec validate.
+//            if (CollectionUtils.isNotEmpty(cusToTruongIds)) {
+//                for (NoiDungThucHienPayload noiDungThucHien : noiDungThucHiens) {
+//                    if (noiDungThucHien.isInvalidData()) {
+//                        throw new PXException("cntp.noi_dung_thuc_hien");
+//                    }
+//                }
+//            }
         } else if (user.isTruongPhongKCS()) {
-            if (cusToTruongIds.size() > 1) {
-                throw new PXException("cntp.phanxuong_max1");
-            }
-            quanDocId = getVal(cusToTruongIds, 0);
+
         }
 
         request.setToTruong1Id(toTruong1Id);

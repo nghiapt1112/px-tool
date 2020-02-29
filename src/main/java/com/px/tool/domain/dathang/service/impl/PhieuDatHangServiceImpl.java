@@ -125,13 +125,13 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         KiemHong kiemHong = phieuDatHangPayload.toKiemHongEntity();
         PhieuDatHang phieuDatHang = new PhieuDatHang();
         phieuDatHangPayload.toEntity(phieuDatHang);
+        phieuDatHang.setNguoiDatHangId(userId);
         if(Objects.isNull(phieuDatHang.getNoiNhan())) {
             phieuDatHang.setNoiNhan(userId);
             if(phieuDatHang.getNguoiDatHangXacNhan()) {
                 throw new PXException("Nơi nhận phải được chọn.");
             }
         }
-
         if (phieuDatHang.getNguoiDatHangXacNhan()) {
             phieuDatHang.setNgayThangNamNguoiDatHang(DateTimeUtils.nowAsMilliSec());
         }
@@ -142,22 +142,20 @@ public class PhieuDatHangServiceImpl extends BaseServiceImpl implements PhieuDat
         reEntity.setPhieuDatHang(phieuDatHang);
 
         Request savedRequest = requestService.save(reEntity);
+        long requestId = savedRequest.getRequestId();
 
         KiemHong savedKiemHong = savedRequest.getKiemHong();
         kiemHong.getKiemHongDetails()
                 .forEach(el -> el.setKiemHong(savedKiemHong));
         kiemHongDetailRepository.saveAll(kiemHong.getKiemHongDetails());
 
+        requestService.updateNgayGui(DateTimeUtils.nowAsMilliSec(), requestId);
+        requestService.updateReceiveId(requestId, -1L, phieuDatHang.getNoiNhan(), -1L, -1L);
 
         phieuDatHang.getPhieuDatHangDetails()
                 .forEach(el -> el.setPhieuDatHang(savedRequest.getPhieuDatHang()));
         phieuDatHangDetailRepository.saveAll(phieuDatHang.getPhieuDatHangDetails());
-
-//        kiemHong.setRequest(request);
-//        kiemHongRepository.save(kiemHong);
-//        phieuDatHang.setRequest(request);
         logger.info("[PHuong_an] Generate request , kiem hong success\nRequestId: {}\nKiemHongId:{}", savedRequest.getRequestId(), savedRequest.getKiemHong().getKhId());
-//        phieuDatHangRepository.save(phieuDatHang);
         return phieuDatHang;
     }
 

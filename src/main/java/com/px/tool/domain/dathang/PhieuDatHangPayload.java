@@ -251,7 +251,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         if (user.isTruongPhongKTHK() && tpkthkXacNhan) {
             noiNhan = null; //  step cuoi cung roi nen noi nhan phai empty
         }
-        if (user.isTroLyKT() && (CollectionUtils.isEmpty(cusReceivers))) {
+        if ((user.isTroLyKT() || user.isTruongPhongKTHK()) && (CollectionUtils.isEmpty(cusReceivers))) {
             throw new PXException("dathang.noi_nhan.empty");
         }
         if (user.isTruongPhongVatTu()) {
@@ -283,7 +283,7 @@ public class PhieuDatHangPayload extends AbstractPayLoad<PhieuDatHang> {
         kiemHong.setTenNhaMay(tenNhaMay);
         kiemHong.setNoiNhan(noiNhan);
         kiemHong.setCusNoiDung(noiDung);
-        Set<KiemHongDetail> kiemHongDetails = new HashSet<>();
+        Set<KiemHongDetail> kiemHongDetails = new LinkedHashSet<>();
         for (PhieuDatHangDetailPayload phieuDatHangDetail : this.phieuDatHangDetails) {
             kiemHongDetails.add(phieuDatHangDetail.toKiemHongDetailEntity());
         }
