@@ -231,7 +231,7 @@ public class KiemHongServiceImpl extends BaseServiceImpl implements KiemHongServ
             vanBanDen.setRequestType(RequestType.KIEM_HONG);
             vanBanDen.setRead(false);
             vanBanDen.setRequestId(existedKiemHong.getRequest().getRequestId());
-            vanBanDen.setSoPa("" + payload.getKhId());
+            vanBanDen.setSoPa("PKH-" + payload.getKhId());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {
             throw new PXException("[Kiểm Hỏng]: Có lỗi khi gửi văn bản đến.");

@@ -101,7 +101,7 @@ public class CongNhanThanhPhamServiceImpl extends BaseServiceImpl implements Con
             vanBanDen.setRequestType(RequestType.CONG_NHAN_THANH_PHAM);
             vanBanDen.setRead(false);
             vanBanDen.setRequestId(congNhanThanhPham.getTpId());
-            vanBanDen.setSoPa(congNhanThanhPham.getSoPA());
+            vanBanDen.setSoPa("CNTP-" + congNhanThanhPham.getSoPA());
             logger.info("CNTP đang gửi vbd: \n-So PA: {}\n-userIds:{}", congNhanThanhPham.getSoPA(), vanBanDen.getNoiNhan());
             vanBanDenRepository.save(vanBanDen);
         } catch (Exception e) {

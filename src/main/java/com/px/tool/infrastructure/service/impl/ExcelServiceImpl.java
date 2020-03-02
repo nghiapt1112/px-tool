@@ -265,24 +265,24 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             setCellVal(row21, 4, payload.getNgayThangNamTPKCS());
 
             if (Objects.nonNull(payload.getToTruong1Id())) {
-                setCellVal(row25, 0, payload.getNgayThangNamToTruong1());
-                setCellVal(row26, 0, payload.getToTruong1fullName()); // TODO: id /name/chuc vu
+                setCellVal(row25, 0, getVal(payload.getNgayThangNamToTruong1()));
+                setCellVal(row26, 0, getVal(payload.getToTruong1fullName())); // TODO: id /name/chuc vu
             }
             if (Objects.nonNull(payload.getToTruong2Id())) {
-                setCellVal(row25, 1, payload.getNgayThangNamToTruong2());
-                setCellVal(row26, 1, payload.getToTruong2fullName());
+                setCellVal(row25, 1, getVal(payload.getNgayThangNamToTruong2()));
+                setCellVal(row26, 1, getVal(payload.getToTruong2fullName()));
             }
             if (Objects.nonNull(payload.getToTruong3Id())) {
-                setCellVal(row25, 2, payload.getNgayThangNamToTruong3());
-                setCellVal(row26, 2, payload.getToTruong3fullName());
+                setCellVal(row25, 2, getVal(payload.getNgayThangNamToTruong3()));
+                setCellVal(row26, 2, getVal(payload.getToTruong3fullName()));
             }
             if (Objects.nonNull(payload.getToTruong4Id())) {
-                setCellVal(row25, 3, payload.getNgayThangNamToTruong4());
-                setCellVal(row26, 3, payload.getToTruong4fullName());
+                setCellVal(row25, 3, getVal(payload.getNgayThangNamToTruong4()));
+                setCellVal(row26, 3, getVal(payload.getToTruong4fullName()));
             }
             if (Objects.nonNull(payload.getToTruong5Id())) {
-                setCellVal(row25, 4, payload.getNgayThangNamToTruong5());
-                setCellVal(row26, 4, payload.getToTruong5fullName());
+                setCellVal(row25, 4, getVal(payload.getNgayThangNamToTruong5()));
+                setCellVal(row26, 4, getVal(payload.getToTruong5fullName()));
             }
 
 //
@@ -533,5 +533,12 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
         if (map.containsKey(key)) {
             return map.get(key);
         } else return "";
+    }
+
+    private String getVal(String val1) {
+        if (val1 == null ){
+            return "";
+        }
+        return val1;
     }
 }

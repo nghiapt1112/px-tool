@@ -1,5 +1,6 @@
 package com.px.tool.domain.vanbanden.payload;
 
+import com.px.tool.domain.RequestType;
 import com.px.tool.domain.vanbanden.VanBanDen;
 import com.px.tool.infrastructure.utils.DateTimeUtils;
 import lombok.Getter;
