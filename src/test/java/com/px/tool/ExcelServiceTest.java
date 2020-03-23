@@ -3,10 +3,17 @@ package com.px.tool;
 import com.px.tool.infrastructure.service.ExcelService;
 import com.px.tool.infrastructure.service.impl.ExcelServiceImpl;
 import com.px.tool.infrastructure.utils.FileUtils;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -18,6 +25,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 
 public class ExcelServiceTest {
 
@@ -121,6 +131,7 @@ public class ExcelServiceTest {
         setCellVal(row13, 2, "kye1");
         setCellVal(row13, 6, "kye2");
         setCellVal(row13, 8, "kye3");
+
 
         if (totalLine > 5) {
             sheet.copyRows(13, 16, 16 + (totalLine - 5), new CellCopyPolicy()); // copy and paste
@@ -324,6 +335,24 @@ public class ExcelServiceTest {
         FileOutputStream out = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/src/main/resources/templates/new_Phuong_An.xlsx");
         workbook.write(out);
         out.close();
+    }
+
+    @Test
+    public void insertImg2() {
+        try(
+                Workbook wb = new XSSFWorkbook(new FileInputStream(new File("./myFile-original.xlsx")));
+                FileOutputStream fileOut = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/myFile-012.xlsx");
+                ) {
+            Sheet sheet = wb.getSheetAt(0);
+            AddDimensionedImage addDimensionedImage = new AddDimensionedImage();
+            Drawing drawing = sheet.createDrawingPatriarch();
+            URL imgUrl = this.getClass().getClassLoader().getResource("templates/image.png");
+            addDimensionedImage.addImageToSheet("B2", sheet, drawing, imgUrl, 30, 30, AddDimensionedImage.OVERLAY_ROW_AND_COLUMN);
+
+            wb.write(fileOut);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @After
