@@ -2,17 +2,13 @@ package com.px.tool;
 
 import com.px.tool.infrastructure.service.ExcelService;
 import com.px.tool.infrastructure.service.impl.ExcelServiceImpl;
+import com.px.tool.infrastructure.utils.ExcelImageService;
 import com.px.tool.infrastructure.utils.FileUtils;
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyPolicy;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -25,9 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 
 public class ExcelServiceTest {
 
@@ -339,15 +332,17 @@ public class ExcelServiceTest {
 
     @Test
     public void insertImg2() {
-        try(
+        try (
                 Workbook wb = new XSSFWorkbook(new FileInputStream(new File("./myFile-original.xlsx")));
-                FileOutputStream fileOut = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/myFile-012.xlsx");
-                ) {
-            Sheet sheet = wb.getSheetAt(0);
-            AddDimensionedImage addDimensionedImage = new AddDimensionedImage();
-            Drawing drawing = sheet.createDrawingPatriarch();
-            URL imgUrl = this.getClass().getClassLoader().getResource("templates/image.png");
-            addDimensionedImage.addImageToSheet("B2", sheet, drawing, imgUrl, 30, 30, AddDimensionedImage.OVERLAY_ROW_AND_COLUMN);
+                FileOutputStream fileOut = new FileOutputStream("/mnt/project/Sources/NGHIA/free/px-toool/myFile-012.xlsx")
+        ) {
+            ExcelImageService addDimensionedImage = new ExcelImageService();
+
+            addDimensionedImage.addImageToSheet(
+                    "B2",
+                    wb.getSheetAt(0),
+                    IOUtils.toByteArray(this.getClass().getClassLoader().getResource("templates/image2.png"))
+            );
 
             wb.write(fileOut);
         } catch (Exception e) {

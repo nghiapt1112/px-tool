@@ -238,7 +238,7 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         if (user.isTruongPhongKTHK() && truongPhongKTHKXacNhan) {
             truongPhongKTHKId = user.getUserId();
         }
-        if (user.getLevel() == 3 && giamDocXacNhan) {
+        if (user.isGiamDoc() && giamDocXacNhan) {
             giamDocId = user.getUserId();
         }
     }
@@ -298,6 +298,20 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
     }
 
     // TODO: nghiapt-> chuyen sang kieu long cho field ngaythangnam
+
+    /**
+     * 22222222222222222
+     * "vi.quynh.31598@gmail.com
+     * Quynh158117299792458
+     *
+     * vi.quynh@hotmail.com
+     * zerotoone299792"
+     *
+     * " quynhntvd00356@fpt.edu.vn
+     *  uynh299792"
+     * @param pa
+     * @param existedPhuongAn
+     */
     @Override
     public void capNhatNgayThangChuKy(PhuongAn pa, PhuongAn existedPhuongAn) {
         pa.setNgayThangNamtpVatTu(existedPhuongAn.getNgayThangNamtpVatTu());
@@ -307,14 +321,21 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
         pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
 
-        if (existedPhuongAn.getNguoiLapId() != null) pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
-        if (existedPhuongAn.getTruongPhongKTHKId() != null)
+        if (existedPhuongAn.getNguoiLapId() != null) {
+            pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
+        }
+        if (existedPhuongAn.getTruongPhongKTHKId() != null) {
             pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
-        if (existedPhuongAn.getTruongPhongKeHoachId() != null)
+        }
+        if (existedPhuongAn.getTruongPhongKeHoachId() != null) {
             pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
-        if (existedPhuongAn.getTruongPhongVatTuId() != null)
+        }
+        if (existedPhuongAn.getTruongPhongVatTuId() != null) {
             pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
-        if (existedPhuongAn.getGiamDocId() != null) pa.setGiamDocId(existedPhuongAn.getGiamDocId());
+        }
+        if (existedPhuongAn.getGiamDocId() != null) {
+            pa.setGiamDocId(existedPhuongAn.getGiamDocId());
+        }
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
             pa.setNgayThangNamtpVatTu(DateTimeUtils.nowAsMilliSec());

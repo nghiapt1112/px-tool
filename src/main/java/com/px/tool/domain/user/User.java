@@ -287,7 +287,9 @@ public class User extends EntityDefault implements UserDetails {
     }
 
     public boolean isGiamDoc() {
-        return this.getLevel() == 2 && this.phongBan != null && phongBan.getGroup().equals(2);
+        return this.getLevel() == 2 && this.phongBan != null
+//                && phongBan.getGroup().equals(2)
+                ;
     }
 
 //    public String getSignImg() {
