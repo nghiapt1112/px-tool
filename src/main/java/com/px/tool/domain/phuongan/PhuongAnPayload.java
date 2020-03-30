@@ -321,20 +321,36 @@ public class PhuongAnPayload extends AbstractPayLoad<PhuongAn> {
         pa.setNgayThangNamGiamDoc(existedPhuongAn.getNgayThangNamGiamDoc());
         pa.setCongNhanThanhPham(existedPhuongAn.getCongNhanThanhPham());
 
-        if (existedPhuongAn.getNguoiLapId() != null) {
-            pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
+//        if (existedPhuongAn.getNguoiLapId() != null) {
+//            pa.setNguoiLapId(existedPhuongAn.getNguoiLapId());
+//        }
+//        if (existedPhuongAn.getTruongPhongKTHKId() != null) {
+//            pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
+//        }
+//        if (existedPhuongAn.getTruongPhongKeHoachId() != null) {
+//            pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
+//        }
+//        if (existedPhuongAn.getTruongPhongVatTuId() != null) {
+//            pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
+//        }
+//        if (existedPhuongAn.getGiamDocId() != null) {
+//            pa.setGiamDocId(existedPhuongAn.getGiamDocId());
+//        }
+        // NOTE: truong hop user thay nguoi_nhan thi phai thay doi theo, case ben tren thi luon lay cai setting da co => data khong dc update.
+        if (Objects.nonNull(this.nguoiLapId)) {
+            pa.setNguoiLapId(nguoiLapId);
         }
-        if (existedPhuongAn.getTruongPhongKTHKId() != null) {
-            pa.setTruongPhongKTHKId(existedPhuongAn.getTruongPhongKTHKId());
+        if (Objects.nonNull(this.truongPhongKTHKId)) {
+            pa.setTruongPhongKTHKId(truongPhongKTHKId);
         }
-        if (existedPhuongAn.getTruongPhongKeHoachId() != null) {
-            pa.setTruongPhongKeHoachId(existedPhuongAn.getTruongPhongKeHoachId());
+        if (Objects.nonNull(this.truongPhongKeHoachId)) {
+            pa.setTruongPhongKeHoachId(truongPhongKeHoachId);
         }
-        if (existedPhuongAn.getTruongPhongVatTuId() != null) {
-            pa.setTruongPhongVatTuId(existedPhuongAn.getTruongPhongVatTuId());
+        if (Objects.nonNull(this.truongPhongVatTuId)){
+            pa.setTruongPhongVatTuId(truongPhongVatTuId);
         }
-        if (existedPhuongAn.getGiamDocId() != null) {
-            pa.setGiamDocId(existedPhuongAn.getGiamDocId());
+        if (Objects.nonNull(this.giamDocId)) {
+            pa.setGiamDocId(giamDocId);
         }
 
         if (pa.getTruongPhongVatTuXacNhan() != existedPhuongAn.getTruongPhongVatTuXacNhan()) {
