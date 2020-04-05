@@ -314,8 +314,8 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
 
             XSSFRow row19 = sheet.getRow(19);
             XSSFRow row21 = sheet.getRow(21);
-            XSSFRow row25 = sheet.getRow(25);
-            XSSFRow row26 = sheet.getRow(26);
+//            XSSFRow row25 = sheet.getRow(27);
+//            XSSFRow row26 = sheet.getRow(28);
 
             setCellVal(row0, 1, payload.getTenSanPham());
             setCellVal(row1, 1, payload.getNoiDung());
@@ -333,29 +333,6 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             setCellVal(row21, 1, payload.getNgayThangNamQuanDoc());
             setCellVal(row21, 4, payload.getNgayThangNamTPKCS());
 
-            if (Objects.nonNull(payload.getToTruong1Id())) {
-                setCellVal(row25, 0, getVal(payload.getNgayThangNamToTruong1()));
-                setCellVal(row26, 0, getVal(payload.getToTruong1fullName())); // TODO: id /name/chuc vu
-            }
-            if (Objects.nonNull(payload.getToTruong2Id())) {
-                setCellVal(row25, 1, getVal(payload.getNgayThangNamToTruong2()));
-                setCellVal(row26, 1, getVal(payload.getToTruong2fullName()));
-            }
-            if (Objects.nonNull(payload.getToTruong3Id())) {
-                setCellVal(row25, 2, getVal(payload.getNgayThangNamToTruong3()));
-                setCellVal(row26, 2, getVal(payload.getToTruong3fullName()));
-            }
-            if (Objects.nonNull(payload.getToTruong4Id())) {
-                setCellVal(row25, 3, getVal(payload.getNgayThangNamToTruong4()));
-                setCellVal(row26, 3, getVal(payload.getToTruong4fullName()));
-            }
-            if (Objects.nonNull(payload.getToTruong5Id())) {
-                setCellVal(row25, 4, getVal(payload.getNgayThangNamToTruong5()));
-                setCellVal(row26, 4, getVal(payload.getToTruong5fullName()));
-            }
-
-//
-
             int totalLine = payload.getNoiDungThucHiens().size();
             if (totalLine > 5) {
                 sheet.copyRows(18, 29, 29 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
@@ -365,6 +342,54 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
                     sheet.copyRows(12, 12, i - 1, new CellCopyPolicy()); // copy and paste
                 }
             }
+            // NOTE: update print anh chu ky
+            int ngayThangNamRow = 27;
+            int imgRow = 30; // row nay bat dau tu 1 nen khong giong index ben tren phai -1
+            int fullNameRow = 30;
+            if (totalLine > 15) {
+                // 18 la so line data fixed , da cho ban dau
+                // 4 la so dong thua , sau khi clone o step ben tren
+                imgRow = imgRow + totalLine - 5 + 5;
+                ngayThangNamRow = ngayThangNamRow + totalLine - 5 + 5;
+                fullNameRow = fullNameRow + totalLine - 5 + 5;
+            }
+
+//            if (Objects.nonNull(payload.getToTruong1Id())) {
+//                setCellVal(sheet.getRow(ngayThangNamRow), 0, getVal(payload.getNgayThangNamToTruong1()));
+//                setCellVal(sheet.getRow(fullNameRow), 0, getVal(payload.getToTruong1fullName())); // TODO: id /name/chuc vu
+//            }
+//            if (Objects.nonNull(payload.getToTruong2Id())) {
+//                setCellVal(row25, 1, getVal(payload.getNgayThangNamToTruong2()));
+//                setCellVal(row26, 1, getVal(payload.getToTruong2fullName()));
+//            }
+//            if (Objects.nonNull(payload.getToTruong3Id())) {
+//                setCellVal(row25, 2, getVal(payload.getNgayThangNamToTruong3()));
+//                setCellVal(row26, 2, getVal(payload.getToTruong3fullName()));
+//            }
+//            if (Objects.nonNull(payload.getToTruong4Id())) {
+//                setCellVal(row25, 3, getVal(payload.getNgayThangNamToTruong4()));
+//                setCellVal(row26, 3, getVal(payload.getToTruong4fullName()));
+//            }
+//            if (Objects.nonNull(payload.getToTruong5Id())) {
+//                setCellVal(row25, 4, getVal(payload.getNgayThangNamToTruong5()));
+//                setCellVal(row26, 4, getVal(payload.getToTruong5fullName()));
+//            }
+
+            if (payload.getNguoiDatHangXacNhan()) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 8, payload.getNgayThangNamNguoiDatHang());
+                setCellVal(sheet.getRow(fullNameRow), 8, payload.getNguoiDatHangFullName());
+                excelImageService.addImageToSheet("I" + imgRow, sheet, imageData(payload.getNguoiDatHangSignImg()));
+            }
+//            if (payload.getTpvatTuXacNhan()) {
+//                setCellVal(sheet.getRow(ngayThangNamRow), 6, payload.getNgayThangNamTPVatTu());
+//                setCellVal(sheet.getRow(fullNameRow), 6, payload.getTpvatTuFullName());
+//                excelImageService.addImageToSheet("G" + imgRow, sheet, imageData(payload.getTpvatTuSignImg()));
+//            }
+//            if (payload.getTpkthkXacNhan()) {
+//                setCellVal(sheet.getRow(ngayThangNamRow), 2, payload.getNgayThangNamTPKTHK());
+//                setCellVal(sheet.getRow(fullNameRow), 2, payload.getTpkthkFullName());
+//                excelImageService.addImageToSheet("C" + imgRow, sheet, imageData(payload.getTpkthkSignImg()));
+//            }
 
             for (int i = 0; i < totalLine; i++) {
                 XSSFRow crrRow = sheet.getRow(11 + i);
