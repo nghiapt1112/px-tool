@@ -49,7 +49,8 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
     private String toTruongFullName;
     @JsonIgnore
     private Long toTruongId;
-    private Long soCNTP;
+    private String soCNTP;
+    private Long cntpId;
 
     public static List<ThongKeDetailPayload> fromRequestEntity(Request request, Map<Long, PhuongAn> phuongAnById) {
         List<ThongKeDetailPayload> tks = new ArrayList<>(request.getKiemHong().getKiemHongDetails().size());
@@ -92,7 +93,8 @@ public class ThongKeDetailPayload extends AbstractObject implements Comparable<T
                 CongNhanThanhPham cntp = pa.getCongNhanThanhPham();
                 tk.ngayHoanThanh = dateLongToString(getBiggest(cntp.getNgayThangNamToTruong1(), cntp.getNgayThangNamToTruong2(), cntp.getNgayThangNamToTruong3(), cntp.getNgayThangNamToTruong4(), cntp.getNgayThangNamToTruong5()));
                 tk.xacNhanHoanThanh = dateLongToString(cntp.getNgayThangNamTPKCS());
-                tk.soCNTP = pa.getCongNhanThanhPham().getTpId();
+                tk.soCNTP = "CNTP-" + pa.getCongNhanThanhPham().getTpId();
+                tk.cntpId = pa.getCongNhanThanhPham().getTpId();
             } catch (Exception e) {
             }
 

@@ -31,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -107,16 +108,16 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
         FileInputStream fis = null;
         try {
             if (requestType == RequestType.KIEM_HONG) {
-                fis = new FileInputStream(new File("./src/main/resources/templates/1_Kiem_Hong.xlsx"));
+                fis = new FileInputStream(new File(this.getClass().getResource("/templates/1_Kiem_Hong.xlsx").getFile()));
                 exportKiemHong(fis, outputStream, kiemHongService.findThongTinKiemHong(1L, requestId));
             } else if (requestType == RequestType.DAT_HANG) {
-                fis = new FileInputStream(new File("./src/main/resources/templates/2_Dat_Hang.xlsx"));
+                fis = new FileInputStream(new File(this.getClass().getResource("/templates/2_Dat_Hang.xlsx").getFile()));
                 exportPHieuDatHang(fis, outputStream, phieuDatHangService.findById(1L, requestId), mdsdMap());
             } else if (requestType == RequestType.PHUONG_AN) {
-                fis = new FileInputStream(new File("./src/main/resources/templates/3_phuong_an.xlsx"));
+                fis = new FileInputStream(new File(this.getClass().getResource("/templates/3_phuong_an.xlsx").getFile()));
                 exportPhuongAn(fis, outputStream, phuongAnService.findById(1L, requestId));
             } else if (requestType == RequestType.CONG_NHAN_THANH_PHAM) {
-                fis = new FileInputStream(new File("./src/main/resources/templates/4_cntp.xlsx"));
+                fis = new FileInputStream(new File(this.getClass().getResource("/templates/4_cntp.xlsx").getFile()));
                 exportCNTP(fis, outputStream, congNhanThanhPhamService.timCongNhanThanhPham(1L, requestId));
             }
         } catch (Exception e) {
@@ -313,9 +314,6 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             XSSFRow row5 = sheet.getRow(7);
 
             XSSFRow row19 = sheet.getRow(19);
-            XSSFRow row21 = sheet.getRow(21);
-//            XSSFRow row25 = sheet.getRow(27);
-//            XSSFRow row26 = sheet.getRow(28);
 
             setCellVal(row0, 1, payload.getTenSanPham());
             setCellVal(row1, 1, payload.getNoiDung());
@@ -330,66 +328,74 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
             setCellVal(row19, 3, payload.getGioX().toString());
             setCellVal(row19, 5, payload.getDong().toString());
 
-            setCellVal(row21, 1, payload.getNgayThangNamQuanDoc());
-            setCellVal(row21, 4, payload.getNgayThangNamTPKCS());
-
             int totalLine = payload.getNoiDungThucHiens().size();
             if (totalLine > 5) {
-                sheet.copyRows(18, 29, 29 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
+                sheet.copyRows(18, 33, 33 + (totalLine - 6), new CellCopyPolicy()); // copy and paste
 
-                for (int i = 18; i < 29 + (totalLine - 6); i++) {
+                for (int i = 18; i < 33 + (totalLine - 6); i++) {
                     sheet.createRow(i);
                     sheet.copyRows(12, 12, i - 1, new CellCopyPolicy()); // copy and paste
                 }
             }
             // NOTE: update print anh chu ky
+            int ngayThangNamTPKCS = 21;
+            int signImgTPKCS = 24;
+            int fullNameTPKCS = 24;
+
+
             int ngayThangNamRow = 27;
+            int toTuongAlias = 28;
             int imgRow = 30; // row nay bat dau tu 1 nen khong giong index ben tren phai -1
             int fullNameRow = 30;
-            if (totalLine > 15) {
+            if (totalLine > 5) {
+                int so_dong_lech_noi_dung_thuc_hien = totalLine - 5 + 14;
                 // 18 la so line data fixed , da cho ban dau
                 // 4 la so dong thua , sau khi clone o step ben tren
-                imgRow = imgRow + totalLine - 5 + 5;
-                ngayThangNamRow = ngayThangNamRow + totalLine - 5 + 5;
-                fullNameRow = fullNameRow + totalLine - 5 + 5;
+                imgRow += so_dong_lech_noi_dung_thuc_hien;
+                ngayThangNamRow += so_dong_lech_noi_dung_thuc_hien;
+                fullNameRow += so_dong_lech_noi_dung_thuc_hien;
+                toTuongAlias += so_dong_lech_noi_dung_thuc_hien;
+
+                ngayThangNamTPKCS += so_dong_lech_noi_dung_thuc_hien;
+                signImgTPKCS += so_dong_lech_noi_dung_thuc_hien;
+                fullNameTPKCS += so_dong_lech_noi_dung_thuc_hien;
             }
 
-//            if (Objects.nonNull(payload.getToTruong1Id())) {
-//                setCellVal(sheet.getRow(ngayThangNamRow), 0, getVal(payload.getNgayThangNamToTruong1()));
-//                setCellVal(sheet.getRow(fullNameRow), 0, getVal(payload.getToTruong1fullName())); // TODO: id /name/chuc vu
-//            }
-//            if (Objects.nonNull(payload.getToTruong2Id())) {
-//                setCellVal(row25, 1, getVal(payload.getNgayThangNamToTruong2()));
-//                setCellVal(row26, 1, getVal(payload.getToTruong2fullName()));
-//            }
-//            if (Objects.nonNull(payload.getToTruong3Id())) {
-//                setCellVal(row25, 2, getVal(payload.getNgayThangNamToTruong3()));
-//                setCellVal(row26, 2, getVal(payload.getToTruong3fullName()));
-//            }
-//            if (Objects.nonNull(payload.getToTruong4Id())) {
-//                setCellVal(row25, 3, getVal(payload.getNgayThangNamToTruong4()));
-//                setCellVal(row26, 3, getVal(payload.getToTruong4fullName()));
-//            }
-//            if (Objects.nonNull(payload.getToTruong5Id())) {
-//                setCellVal(row25, 4, getVal(payload.getNgayThangNamToTruong5()));
-//                setCellVal(row26, 4, getVal(payload.getToTruong5fullName()));
-//            }
-
-            if (payload.getNguoiDatHangXacNhan()) {
-                setCellVal(sheet.getRow(ngayThangNamRow), 8, payload.getNgayThangNamNguoiDatHang());
-                setCellVal(sheet.getRow(fullNameRow), 8, payload.getNguoiDatHangFullName());
-                excelImageService.addImageToSheet("I" + imgRow, sheet, imageData(payload.getNguoiDatHangSignImg()));
+            if (payload.getTpkcsXacNhan()) {
+                setCellVal(sheet.getRow(ngayThangNamTPKCS), 4, payload.getNgayThangNamTPKCS());
+                setCellVal(sheet.getRow(fullNameTPKCS), 4, payload.getTpkcsFullName());
+                excelImageService.addImageToSheet("E" + signImgTPKCS, sheet, imageData(payload.getTpkcsSignImg()));
             }
-//            if (payload.getTpvatTuXacNhan()) {
-//                setCellVal(sheet.getRow(ngayThangNamRow), 6, payload.getNgayThangNamTPVatTu());
-//                setCellVal(sheet.getRow(fullNameRow), 6, payload.getTpvatTuFullName());
-//                excelImageService.addImageToSheet("G" + imgRow, sheet, imageData(payload.getTpvatTuSignImg()));
-//            }
-//            if (payload.getTpkthkXacNhan()) {
-//                setCellVal(sheet.getRow(ngayThangNamRow), 2, payload.getNgayThangNamTPKTHK());
-//                setCellVal(sheet.getRow(fullNameRow), 2, payload.getTpkthkFullName());
-//                excelImageService.addImageToSheet("C" + imgRow, sheet, imageData(payload.getTpkthkSignImg()));
-//            }
+            if (payload.getToTruong1XacNhan()) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 0, payload.getNgayThangNamToTruong1());
+                setCellVal(sheet.getRow(fullNameRow), 0, payload.getToTruong1fullName());
+                setCellVal(sheet.getRow(toTuongAlias), 0, payload.getToTruong1Alias());
+                excelImageService.addImageToSheet("A" + imgRow, sheet, imageData(payload.getToTruong1SignImg()));
+            }
+            if (Objects.nonNull(payload.getToTruong2Id())) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 1, payload.getNgayThangNamToTruong2());
+                setCellVal(sheet.getRow(fullNameRow), 1, payload.getToTruong2fullName());
+                setCellVal(sheet.getRow(toTuongAlias), 1, payload.getToTruong2Alias());
+                excelImageService.addImageToSheet("B" + imgRow, sheet, imageData(payload.getToTruong2SignImg()));
+            }
+            if (Objects.nonNull(payload.getToTruong3Id())) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 2, payload.getNgayThangNamToTruong3());
+                setCellVal(sheet.getRow(fullNameRow), 2, payload.getToTruong3fullName());
+                setCellVal(sheet.getRow(toTuongAlias), 2, payload.getToTruong3Alias());
+                excelImageService.addImageToSheet("C" + imgRow, sheet, imageData(payload.getToTruong3SignImg()));
+            }
+            if (Objects.nonNull(payload.getToTruong4Id())) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 3, payload.getNgayThangNamToTruong4());
+                setCellVal(sheet.getRow(fullNameRow), 3, payload.getToTruong4fullName());
+                setCellVal(sheet.getRow(toTuongAlias), 3, payload.getToTruong4Alias());
+                excelImageService.addImageToSheet("D" + imgRow, sheet, imageData(payload.getToTruong4SignImg()));
+            }
+            if (Objects.nonNull(payload.getToTruong5Id())) {
+                setCellVal(sheet.getRow(ngayThangNamRow), 4, payload.getNgayThangNamToTruong5());
+                setCellVal(sheet.getRow(fullNameRow), 4, payload.getToTruong5fullName());
+                setCellVal(sheet.getRow(toTuongAlias), 4, payload.getToTruong5Alias());
+                excelImageService.addImageToSheet("E" + imgRow, sheet, imageData(payload.getToTruong5SignImg()));
+            }
 
             for (int i = 0; i < totalLine; i++) {
                 XSSFRow crrRow = sheet.getRow(11 + i);
