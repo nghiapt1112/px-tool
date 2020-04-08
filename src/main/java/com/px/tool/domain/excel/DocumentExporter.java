@@ -91,12 +91,12 @@ public abstract class DocumentExporter<O extends AbstractPayLoad> {
         } else return "";
     }
 
-    protected String getVal(String val1) {
-        if (val1 == null) {
-            return "";
-        }
-        return val1;
-    }
+//    protected String getVal(String val1) {
+//        if (val1 == null) {
+//            return "";
+//        }
+//        return val1;
+//    }
 
     protected void setCellVal(Row row, int col, String val) {
 //        if (row.getCell(col) == null) {

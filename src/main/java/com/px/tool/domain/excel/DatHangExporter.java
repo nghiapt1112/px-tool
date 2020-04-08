@@ -24,6 +24,7 @@ public class DatHangExporter extends DocumentExporter<PhieuDatHangPayload> {
     @Autowired
     public DatHangExporter(ExcelImageService excelImageService, UserService userService, MucDichSuDungRepository mucDichSuDungRepository) {
         super(excelImageService, userService);
+        this.mucDichSuDungRepository = mucDichSuDungRepository;
     }
 
     @Override

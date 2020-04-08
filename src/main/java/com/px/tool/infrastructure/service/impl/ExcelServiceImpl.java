@@ -139,16 +139,6 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
         DocumentFactory.get(RequestType.KIEM_HONG).export(fis, response, payload);
     }
 
-    private String getNoiNhan(Map<Long, User> userById, List<Long> cusReceivers) {
-        if (CollectionUtils.isEmpty(cusReceivers)) {
-            return "";
-        }
-        return cusReceivers.stream()
-                .map(userId -> this.fillUserInfo(userId, userById))
-                .filter(userName -> !StringUtils.isEmpty(userName))
-                .collect(Collectors.joining(","));
-    }
-
     private void exportPHieuDatHang(InputStream is, OutputStream outputStream, PhieuDatHangPayload payload, Map<Long, String> mdsdNameById) {
         DocumentFactory.get(RequestType.DAT_HANG).export(is, outputStream, payload);
     }
@@ -414,13 +404,6 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
 //        }
     }
 
-    private String fillUserInfo(Long userId, Map<Long, User> userById) {
-        if (Objects.isNull(userId) || !userById.containsKey(userId)) {
-            return "";
-        }
-        return userById.get(userId).getAlias();
-    }
-
     @Override
     public void exports(Long startDate, Long endDate) {
         mkdirs(base_dir_kiem_hong);
@@ -513,42 +496,5 @@ public class ExcelServiceImpl extends BaseServiceImpl implements ExcelService {
 
     }
 
-
-    private Map<Long, String> mdsdMap() {
-        return mucDichSuDungRepository
-                .findAll()
-                .stream()
-                .collect(Collectors.toMap(MucDichSuDung::getMdId, e -> e.getTen()));
-    }
-
-    private String getVal(Map<Long, String> map, Long key) {
-        if (key == null) {
-            return "";
-        }
-        if (map.containsKey(key)) {
-            return map.get(key);
-        } else return "";
-    }
-
-    private String getVal(String val1) {
-        if (val1 == null) {
-            return "";
-        }
-        return val1;
-    }
-
-    private void setCellVal(Row row, int col, String val) {
-//        if (row.getCell(col) == null) {
-//            row.createCell(col).setCellValue(val);
-//        }
-        row.getCell(col).setCellValue(val);
-    }
-
-    private byte[] imageData(String base64) {
-        if (Objects.isNull(base64)) {
-            return "".getBytes();
-        }
-        return Base64.getDecoder().decode(base64.substring(base64.indexOf(",") + 1).getBytes(StandardCharsets.UTF_8));
-    }
 
 }
