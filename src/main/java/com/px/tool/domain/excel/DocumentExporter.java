@@ -1,7 +1,5 @@
 package com.px.tool.domain.excel;
 
-import com.px.tool.domain.mucdich.sudung.MucDichSuDung;
-import com.px.tool.domain.mucdich.sudung.repository.MucDichSuDungRepository;
 import com.px.tool.domain.user.User;
 import com.px.tool.domain.user.service.UserService;
 import com.px.tool.infrastructure.model.payload.AbstractPayLoad;
@@ -16,7 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class DocumentExporter<O extends AbstractPayLoad> {
@@ -91,17 +92,7 @@ public abstract class DocumentExporter<O extends AbstractPayLoad> {
         } else return "";
     }
 
-//    protected String getVal(String val1) {
-//        if (val1 == null) {
-//            return "";
-//        }
-//        return val1;
-//    }
-
     protected void setCellVal(Row row, int col, String val) {
-//        if (row.getCell(col) == null) {
-//            row.createCell(col).setCellValue(val);
-//        }
         row.getCell(col).setCellValue(val);
     }
 

@@ -44,7 +44,7 @@ public final class DateTimeUtils {
 
     // Serve for Statistical
     public static String dateLongToString(Long time) {
-        if (Objects.isNull(time)) {
+        if (Objects.isNull(time) || time.equals(Long.valueOf(-1)) || time == -1L) {
             return "";
         }
         return fm_date_time.format(new Date(time));
